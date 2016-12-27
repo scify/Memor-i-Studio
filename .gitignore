@@ -1,0 +1,47 @@
+/node_modules
+/public/storage
+/storage/*.key
+/vendor
+/.idea/workspace.xml
+Homestead.json
+Homestead.yaml
+.env
+############
+## MAC OS ##
+############
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+##############
+## LINUX OS ##
+##############
+*~
+.directory
+.Trash-*
+storage
+
+################
+## WINDOWS OS ##
+################
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
