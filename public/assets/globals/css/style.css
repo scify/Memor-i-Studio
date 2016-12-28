@@ -1,3 +1,12 @@
 .nav-user .user img {
     border-radius: 0px;
 }
+
+.mainLogo {
+    width: 100px;
+    margin: 30px auto;
+}
+
+.mainLogo img {
+    width: 100%;
+}
