@@ -2,11 +2,14 @@
 <html>
     <!-- Header -->
     @include('common.header.header')
-    @include('common.header.navbar', ['page_title' => isset($page_title) ? $page_title:''])
+    @if(Auth::check())
+        @include('common.header.navbarVertical')
+    @endif
+    @include('common.header.navbarHorizontal')
     <body class="page-header-fixed" data-url="{!! URL::to('/') !!}">
         <div class="content-wrapper">
             <section class="content-header">
-                {{--<h3 style="float: left;"> {{$page_title}} <span id="feedback-header"></span></h3>--}}
+                <h3 style="float: left;"> {{isset($page_title) ? $page_title:''}} <span id="feedback-header"></span></h3>
                 <div class="row example-row">
                     <div class="col-md-9" style="float: right; padding-top: 10px;">
                         <div class="loading-bar indeterminate margin-top-10" id="globalLoader" hidden></div>

@@ -2,9 +2,8 @@
 <!--BEGIN CORE CSS-->
 <link rel="stylesheet" href="{{asset("/assets/admin1/css/admin1.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/globals/css/elements.css")}}">
-
-<link rel="stylesheet" href="{{asset("/assets/globals/plugins/bootstrap/dist/css/bootstrap.min.css")}}">
-<link rel="stylesheet" href="{{asset("/assets/globals/plugins/bootstrap/dist/css/bootstrap-theme.min.css")}}">
+{{--<link rel="stylesheet" href="{{asset("/assets/globals/plugins/bootstrap/dist/css/bootstrap.min.css")}}">--}}
+{{--<link rel="stylesheet" href="{{asset("/assets/globals/plugins/bootstrap/dist/css/bootstrap-theme.min.css")}}">--}}
 
 <!-- BEGIN PLUGINS CSS -->
 <link rel="stylesheet" type="text/css" href="{{asset("/assets/globals/plugins/sweetalert/dist/sweetalert.css")}}">

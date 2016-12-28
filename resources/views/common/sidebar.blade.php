@@ -2,7 +2,6 @@
     <!-- BEGIN MENU LAYER -->
     <div class="menu-layer">
         <ul>
-
         </ul>
     </div>
     <!--.menu-layer-->
