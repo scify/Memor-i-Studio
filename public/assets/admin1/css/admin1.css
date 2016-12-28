@@ -37,7 +37,7 @@ TABLE OF CONTENTS:
 */
 /* 1.1 - Bootstrap */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
-@import url("https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500");
+@import url("http://fonts.googleapis.com/css?family=RobotoDraft:300,400,500");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -2572,9 +2572,9 @@ output {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #5DC1AA;
+  border-color: #66afe9;
   outline: 0;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 275, 133, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .form-control::-moz-placeholder {
   color: #999999;
@@ -12231,7 +12231,7 @@ h6 {
   top: -11px;
   opacity: 1 !important;
   background-color: transparent;
-  border: 3px solid #5DC1AA;
+  border: 3px solid #3e50b4;
   border-top-color: transparent;
   border-left-color: transparent;
   border-radius: 50%;
@@ -12428,7 +12428,7 @@ h6 {
 .page-header {
   display: block;
   position: relative;
-  background: #5DC1AA;
+  background: #3e50b4;
   width: auto;
   height: auto;
   min-height: 80px;
@@ -12567,8 +12567,8 @@ h6 {
           transition: all 500ms cubic-bezier(0.35, 0, 0.25, 1);
 }
 .footer ul.social li a:hover {
-  border-color: #5DC1AA;
-  color: #5DC1AA;
+  border-color: #3e50b4;
+  color: #3e50b4;
 }
 /*
 4.5 - Overlay
@@ -12739,7 +12739,7 @@ h6 {
           transition: transform 500ms cubic-bezier(0.35, 0, 0.25, 1);
 }
 .menu-layer li.open > a {
-  color: #5DC1AA;
+  color: #3e50b4;
 }
 .menu-layer li.open > .hover-bg {
   display: none;
@@ -13864,16 +13864,16 @@ button.toast-close-button {
 6.1 - Default Color
 */
 .nav-menu .hamburger .patty {
-  background: #5DC1AA;
+  background: #3e50b4;
 }
 .nav-menu.active .patty {
   background: #fff;
 }
 .nav-search .search:before {
-  border-color: #5DC1AA;
+  border-color: #3e50b4;
 }
 .nav-search .search:after {
-  background: #5DC1AA;
+  background: #3e50b4;
 }
 .nav-search.active .search:before {
   background: #fff;
@@ -13883,21 +13883,21 @@ button.toast-close-button {
   background: #fff;
 }
 .overlay .starting-point span {
-  background-color: #5DC1AA;
+  background-color: #3e50b4;
 }
 .layer-container .menu-layer li.open > a,
 .layer-container .menu-layer li:hover > a {
-  color: #41454C;
+  color: #3e50b4;
 }
 .layer-container .menu-layer li.open:before,
 .layer-container .menu-layer li:hover:before {
-  color: #5DC1AA;
+  color: #3e50b4;
 }
 .layer-container .menu-layer li .child-menu li a {
-  /*color: #5DC1AA;*/
+  color: #3e50b4;
 }
 .layer-container .menu-layer li .child-menu li.has-child:before {
-  color: #5DC1AA;
+  color: #3e50b4;
 }
 .layer-container .menu-layer li .child-menu li.has-child.open {
   background: rgba(62, 80, 180, 0.05);
@@ -13915,24 +13915,24 @@ button.toast-close-button {
   background: #3a4ba9;
 }
 .layer-container .user-layer .nav > li > a {
-  color: #5DC1AA;
+  color: #3e50b4;
 }
 .layer-container .user-layer .nav > li.active > a {
   color: #fff;
-  background: #5DC1AA;
+  background: #3e50b4;
 }
 .layer-container .user-layer .nav > li.active > a:hover,
 .layer-container .user-layer .nav > li.active > a:focus {
-  background: #5DC1AA;
+  background: #3e50b4;
 }
 .layer-container .user-layer .tab-content .message-list .selected a {
   background: rgba(62, 80, 180, 0.1) !important;
 }
 .layer-container .user-layer .tab-content .message-list .list-content .title {
-  color: #5DC1AA;
+  color: #3e50b4;
 }
 .layer-container .user-layer #messages .mobile-back {
-  background: #5DC1AA;
+  background: #3e50b4;
 }
 /*
 6.2 - Brown Theme

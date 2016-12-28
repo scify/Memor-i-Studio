@@ -1,6 +1,5 @@
 
 <!--BEGIN CORE CSS-->
-<link rel="stylesheet" href="{{asset("/assets/globals/css/style.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/admin1/css/admin1.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/globals/css/elements.css")}}">
 
@@ -20,3 +19,5 @@
 <link href="{{ asset("/assets/globals/plugins/datatables/themes/bootstrap/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset("/assets/globals/plugins/iCheck/minimal/red.css")}}" rel="stylesheet" type="text/css" />
 <!-- END PLUGINS CSS -->
+<link rel="stylesheet" href="{{asset("/assets/globals/css/style.css")}}">
+
