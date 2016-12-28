@@ -1,0 +1,14 @@
+{
+  "name": "bootstrap-session-timeout",
+  "homepage": "https://github.com/orangehill/bootstrap-session-timeout",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.1",
+    "commit": "37767f42cda0537ebe23567493e900cee0265e71"
+  },
+  "_source": "git://github.com/orangehill/bootstrap-session-timeout.git",
+  "_target": "*",
+  "_originalSource": "bootstrap-session-timeout"
+}

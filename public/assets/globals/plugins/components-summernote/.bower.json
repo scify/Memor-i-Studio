@@ -1,0 +1,29 @@
+{
+  "name": "copmponents-summernote",
+  "version": "0.5.2",
+  "main": [
+    "./dist/summernote.js",
+    "./dist/summernote.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "sass-bootstrap": ">= 3.0.1",
+    "components-font-awesome": ">= 4.0.3"
+  },
+  "homepage": "https://github.com/Arelav/components-summernote",
+  "_release": "0.5.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.5.2",
+    "commit": "5528c20d2ed6595cc27aecd83a2480d4914e75e4"
+  },
+  "_source": "git://github.com/Arelav/components-summernote.git",
+  "_target": "*",
+  "_originalSource": "components-summernote"
+}
