@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguagesTableSeeder::class);
         $this->call(SoundCategoryTableSeeder::class);
         $this->call(ImgCategoryTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
     }
 }

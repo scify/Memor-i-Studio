@@ -38,4 +38,12 @@ class GameVersion extends Model
     public function language() {
         return $this->hasOne('App\Models\Language', 'lang_id', 'id');
     }
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

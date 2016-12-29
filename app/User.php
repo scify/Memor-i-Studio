@@ -26,4 +26,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function role() {
+        return $this->hasOne('App\Models\Role', 'role_id', 'id');
+    }
+
+    /**
+     * Get game versions this user has created
+     */
+    public function gameVersions()
+    {
+        return $this->hasMany('App\Model\GameVersion');
+    }
 }
