@@ -22,6 +22,6 @@ class Image extends Model
     protected $fillable = ['category_id', 'file_path', 'order_id'];
 
     public function imageCategory() {
-        return $this->hasOne('App\Models\ImageCategory', 'category_id', 'id');
+        return $this->hasOne('App\Models\ImageCategory', 'id', 'category_id');
     }
 }

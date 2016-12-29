@@ -19,7 +19,7 @@ class GameVersion extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','lang_id', 'description'];
+    protected $fillable = ['name','lang_id', 'description', 'creator_id'];
 
     /**
      * Get the images for the card.
@@ -36,7 +36,7 @@ class GameVersion extends Model
     }
 
     public function language() {
-        return $this->hasOne('App\Models\Language', 'lang_id', 'id');
+        return $this->hasOne('App\Models\Language', 'id', 'lang_id');
     }
 
     /**
@@ -44,6 +44,6 @@ class GameVersion extends Model
      */
     public function creator()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id', 'creator_id');
     }
 }

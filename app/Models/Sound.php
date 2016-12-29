@@ -22,6 +22,6 @@ class Sound extends Model
     protected $fillable = ['category_id', 'file_path', 'order_id'];
 
     public function soundCategory() {
-        return $this->hasOne('App\Models\SoundCategory', 'category_id', 'id');
+        return $this->hasOne('App\Models\SoundCategory', 'id', 'category_id');
     }
 }

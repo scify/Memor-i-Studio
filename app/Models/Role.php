@@ -9,7 +9,9 @@
 namespace App\Models;
 
 
-class Role {
+use Illuminate\Database\Eloquent\Model;
+
+class Role extends Model {
     /**
      * The table associated with the model.
      *
@@ -21,5 +23,13 @@ class Role {
      *
      * @var array
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['id', 'name', 'description'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'role_id', 'id');
+    }
 }

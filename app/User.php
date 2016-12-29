@@ -2,12 +2,22 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
-{
-    use Notifiable;
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+    use Authenticatable, CanResetPassword;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id',
     ];
 
     /**
@@ -28,7 +38,7 @@ class User extends Authenticatable
     ];
 
     public function role() {
-        return $this->hasOne('App\Models\Role', 'role_id', 'id');
+        return $this->hasOne('App\Models\Role', 'id', 'role_id');
     }
 
     /**
@@ -36,6 +46,22 @@ class User extends Authenticatable
      */
     public function gameVersions()
     {
-        return $this->hasMany('App\Model\GameVersion');
+        return $this->hasMany('App\Models\GameVersion', 'creator_id');
+    }
+
+    /**
+     * Checks if the user has one of the admin roles.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+
+        if ( $this->has('role') and ( $this->role->id ==2 ) )
+        {
+            return true;
+        }
+
+        return false;
     }
 }
