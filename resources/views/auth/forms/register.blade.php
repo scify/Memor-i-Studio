@@ -85,6 +85,7 @@
                         </button>
                     </div>
                 </div>
+                Already have an account? <a href="{{ url('login') }}">Login here</a>
             </div>
         </form>
     </div>

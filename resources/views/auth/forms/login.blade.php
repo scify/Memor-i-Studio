@@ -63,6 +63,7 @@
                         </a>
                     </div>
                 </div>
+                <a href="{{ url('register') }}">Register here</a>
             </div>
         </form>
     </div>
