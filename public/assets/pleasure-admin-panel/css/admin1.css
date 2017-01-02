@@ -6553,8 +6553,8 @@ button.close {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.eot?v=4.3.0');
-  src: url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../../globals/plugins/fontawesome/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  src: url('../fontawesome/fonts/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../fontawesome/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../fontawesome/fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../fontawesome/fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../fontawesome/fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../fontawesome/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
