@@ -15,8 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::get('test', 'CardController@testView')->name('testview');
 Auth::routes();
+
+
+Route::group([ 'middleware' => 'auth' ], function () {
+    Route::get('test', 'CardController@testView')->name('testview');
+});
+
 
 Route::get('/home', 'HomeController@index');
