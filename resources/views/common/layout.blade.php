@@ -2,7 +2,9 @@
 <html>
     <!-- Header -->
     @include('common.header.header')
-    @include('common.header.navbarVertical')
+    @if(Auth::check())
+        @include('common.header.navbarVertical')
+    @endif
     @include('common.header.navbarHorizontal')
     <body class="page-header-fixed" data-url="{!! URL::to('/') !!}">
         <div class="content-wrapper">
