@@ -1,5 +1,5 @@
 <div class="row">
     <div class="mainLogo">
-        <img src="{{asset("/assets/globals/img/memori.png")}}" alt="">
+        <img src="{{asset("/assets/img/memori.png")}}" alt="">
     </div>
 </div>

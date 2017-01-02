@@ -18,7 +18,7 @@
 
     <div class="nav-user">
         <div class="user">
-            <img src="{{asset("/assets/globals/img/memori.png")}}" alt="">
+            <img src="{{asset("/assets/img/memori.png")}}" alt="">
             {{--<span class="badge">3</span>--}}
         </div><!--.user-->
         <div class="cross">

@@ -40,6 +40,6 @@
         @if(Auth::check())
             @include('common.sidebar', ['user' => Auth::user()])
         @endif
-        @include('common.footer.footer')
+        @include('common.footer')
     </body>
 </html>

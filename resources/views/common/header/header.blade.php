@@ -7,8 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-touch-fullscreen" content="yes">
-    <link rel="shortcut icon" href="{{asset("/assets/globals/img/favicon.ico")}}" type="image/x-icon">
-    <link rel="icon" href="{{asset("/assets/globals/img/favicon.ico")}}" type="image/x-icon">
-
-    @include('common.header.headerScripts')
+    <link rel="shortcut icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
+    <link rel="icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
+    <!--The elixir function takes as parameter a versioned file relative to the public folder-->
+    <link rel="stylesheet" href="{{elixir('dist/app.css')}}">
+    {{--<link rel="stylesheet" href="{{asset("/assets/css/style.css")}}">--}}
 </head>
