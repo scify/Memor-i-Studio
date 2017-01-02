@@ -12,9 +12,9 @@
         </div><!--.hamburger-->
     </div><!--.nav-menu-->
 
-    <div class="nav-search">
-        <span class="search"></span>
-    </div><!--.nav-search-->
+    {{--<div class="nav-search">--}}
+        {{--<span class="search"></span>--}}
+    {{--</div><!--.nav-search-->--}}
 
     <div class="nav-user">
         <div class="user">

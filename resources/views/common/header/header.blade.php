@@ -9,7 +9,8 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <link rel="shortcut icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
     <link rel="icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
+
     <!--The elixir function takes as parameter a versioned file relative to the public folder-->
+    <link rel="stylesheet" href="{{asset('/assets/pleasure-admin-panel/css/admin1.css')}}">
     <link rel="stylesheet" href="{{asset(elixir('dist/app.css'))}}">
-    {{--<link rel="stylesheet" href="{{asset("/assets/css/style.css")}}">--}}
 </head>

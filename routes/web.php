@@ -20,6 +20,7 @@ Auth::routes();
 
 Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('test', 'CardController@testView')->name('testview');
+    Route::get('createNewVersion', 'GameVersionController@create')->name('createGameVersion');
 });
 
 

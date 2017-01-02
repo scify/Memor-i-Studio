@@ -14,7 +14,6 @@ elixir(function(mix) {
         'node_modules/icheck/skins/square/blue.css',
         'public/assets/pleasure-admin-panel/css/elements.css',
         'public/assets/pleasure-admin-panel/css/plugins.css',
-        'public/assets/pleasure-admin-panel/css/admin1.css',
         'public/css/style.css'
     ], 'public/dist/app.css', './');
 
@@ -37,6 +36,10 @@ elixir(function(mix) {
         'public/assets/pleasure-admin-panel/js/layout.js',
         'public/assets/pleasure-admin-panel/js/pleasure.js'
     ], 'public/dist/app.js' , './');
+
+    mix.copy([
+        'public/assets/pleasure-admin-panel/fonts'
+    ], 'public/build/fonts');
 
     //the parameter is relative to the public directory
     mix.version(['dist/app.css', 'dist/app.js']);

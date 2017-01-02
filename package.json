@@ -11,6 +11,7 @@
     "bxslider": "^4.2.6",
     "chosen-js": "^1.6.2",
     "datatables": "^1.10.13",
+    "font-awesome": "^4.7.0",
     "gauge": "^2.7.2",
     "gauge-js": "^1.0.5",
     "gulp": "^3.9.1",

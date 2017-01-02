@@ -2,6 +2,9 @@
     <!-- BEGIN MENU LAYER -->
     <div class="menu-layer">
         <ul>
+            <li class="{{ (Route::current()->getName() == 'createGameVersion') ? 'open' : '' }}">
+                <a href="{{ route('createGameVersion') }}"><i class="fa fa-plus" aria-hidden="true"></i> Create new version </a>
+            </li>
         </ul>
     </div>
     <!--.menu-layer-->

@@ -19,7 +19,7 @@ class GameVersion extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','lang_id', 'description', 'creator_id'];
+    protected $fillable = ['name','lang_id', 'description', 'creator_id', 'cover_img_id'];
 
     /**
      * Get the images for the card.
