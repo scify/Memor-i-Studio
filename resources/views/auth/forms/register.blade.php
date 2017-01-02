@@ -85,8 +85,12 @@
                         </button>
                     </div>
                 </div>
-                Already have an account? <a href="{{ url('login') }}">Login here</a>
             </div>
         </form>
     </div>
+    <div class="panel-footer footer-light text-dark">
+        <ul class="justified-list">
+            <li><small><a href="{{ url('login') }}">I already have an account</a></small></li>
+        </ul>
+    </div><!--.panel-footer-->
 </div>

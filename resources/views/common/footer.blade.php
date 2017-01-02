@@ -1,4 +1,4 @@
-<script src="{{elixir('dist/app.js')}}">
+<script src="{{asset(elixir('dist/app.js'))}}">
 </script>
 
 <script>

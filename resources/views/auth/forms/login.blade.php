@@ -63,8 +63,13 @@
                         </a>
                     </div>
                 </div>
-                <a href="{{ url('register') }}">Register here</a>
+
             </div>
         </form>
     </div>
+    <div class="panel-footer footer-light text-dark">
+        <ul class="justified-list">
+            <li><small><a href="{{ url('register') }}">I don't have an account</a></small></li>
+        </ul>
+    </div><!--.panel-footer-->
 </div>
