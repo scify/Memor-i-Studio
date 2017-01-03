@@ -1,4 +1,4 @@
-<form id="gameVersion-handling-form" class="memoriForm" method="POST" action="#" enctype="multipart/form-data">
+<form id="gameVersion-handling-form" class="memoriForm" method="POST" action="{{($gameVersion->id == null ? route('createGameVersion') : route('editGameVersion'))}}" enctype="multipart/form-data">
     <div class="panelContainer">
         <div class="panel">
             <div class="panel-heading">
@@ -14,10 +14,9 @@
                                 <div class="inputer">
                                     Version name <span class="required">*</span>
                                     <div class="input-wrapper">
-                                        <input name="tour_name" type="text"
-                                               class="maxlength maxlength-position form-control
-                                                            tourNameInput" maxlength="50"
-                                               placeholder="Game title">
+                                        <input name="name" type="text"
+                                               class="maxlength maxlength-position form-control" maxlength="50"
+                                               placeholder="Game title" >
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +26,7 @@
                             <div class="form-group">
                                 <div class="inputer">
                                     <div class="input-wrapper">
-                                        <input name="tour_by" type="text"
+                                        <input name="description" type="text"
                                                class="form-control" placeholder="Game description">
                                     </div>
                                 </div>
@@ -36,7 +35,7 @@
                         <div class="row">
                             <div class="col-md-3">Game Language</div><!--.col-md-3-->
                             <div class="col-md-9">
-                                <select class="form-control" name="lang_id">
+                                <select class="form-control selecter" name="lang_id">
                                     @foreach($languages as $language)
                                         <option value="{{$language->id}}">{{$language->name}}</option>
                                     @endforeach
@@ -46,21 +45,35 @@
                         <div class="row">
                             <div class="col-md-3">Game cover image</div><!--.col-md-3-->
                             <div class="col-md-9">
-                                <div class="fileinput  {{($gameVersion->cover_img_id == '' ? 'fileinput-new' : 'fileinput-exists')}}" data-provides="fileinput">
-                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="max-height: 200px; min-height: 150px; min-width: 200px">
+                                <div class="fileinput  {{($gameVersion->cover_img_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
+                                     data-provides="fileinput">
+                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput"
+                                         style="max-height: 200px; min-height: 150px; min-width: 200px">
                                         @if($gameVersion->cover_img_id != '')
                                             <img src="{{$gameVersion->cover_img_id}}" style="max-height: 140px;">
                                         @endif
                                     </div>
                                     <div>
 										<span class="btn btn-default btn-file">
-										<span class="fileinput-new">Select image</span>
-										<span class="fileinput-exists">Change</span>
-										<input class="tourFile " type="file" name="website_img"  ></span>
-                                        <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            @if($gameVersion->cover_img_id == null)
+                                                <span class="fileinput-new">Select image</span>
+                                            @else
+                                                <span class="fileinput-exists">Change</span>
+                                            @endif
+                                            <input type="file" name="cover_img"></span>
+                                        <a href="#"
+                                           class="btn btn-default {{($gameVersion->cover_img_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
+                                           data-dismiss="fileinput">Remove</a>
                                     </div>
                                 </div>
                             </div><!--.col-md-9-->
+                        </div>
+                        <div class="submitBtnContainer">
+                            {{--<button type="button" class="btn btn-flat-primary"><a class="cancelTourCreateBtn" href="{{ URL::route('home') }}">Cancel</a> </button>--}}
+                            <button type="submit" id="gameVersionSubmitBtn" class="btn btn-primary btn-ripple">
+                                {{($gameVersion->id == null ? 'Create' : 'Edit')}}
+                            </button>
+
                         </div>
                     </div>
                 </div>

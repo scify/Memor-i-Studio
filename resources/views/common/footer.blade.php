@@ -1,8 +1,7 @@
-<script src="{{asset("dist/npm-modernizr/modernizr.js")}}"></script>
-<script src="{{asset("dist/jquery/dist/jquery.min.js")}}"></script>
-<script src="{{asset("dist/chosen-js/chosen.jquery.js")}}"></script>
 <script src="{{asset("dist/pleasure-admin-panel/js/global-vendors.js")}}"></script>
-<script src="{{asset("dist/bootstrap/dist/js/bootstrap.min.js")}}"></script>
+<script src="{{asset("dist/npm-modernizr/modernizr.js")}}"></script>
+<script src="{{asset("dist/chosen-js/chosen.jquery.js")}}"></script>
+
 <script src="{{asset("dist/bxslider/dist/jquery.bxslider.min.js")}}"></script>
 <script src="{{asset("dist/jquery-knob/dist/jquery.knob.min.js")}}"></script>
 <script src="{{asset("dist/jquery-knob/excanvas.js")}}"></script>
@@ -13,6 +12,7 @@
 <script src="{{asset("dist/sweetalert/dist/sweetalert.min.js")}}"></script>
 <script src="{{asset("dist/datatables/media/js/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("dist/icheck/icheck.min.js")}}"></script>
+
 <script src="{{asset("dist/pleasure-admin-panel/js/sliders.js")}}"></script>
 <script src="{{asset("dist/pleasure-admin-panel/js/layout.js")}}"></script>
 <script src="{{asset("dist/pleasure-admin-panel/js/pleasure.js")}}"></script>
@@ -29,7 +29,7 @@
             $(".alert-dismissable").fadeTo(4000, 500).slideUp(500, function(){
                 $(".alert-dismissable").alert('close');
             });
-        }, 4000);
+        }, 3000);
     });
 </script>
 
