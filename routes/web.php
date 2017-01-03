@@ -17,11 +17,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('home', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
 
 Route::group([ 'middleware' => 'auth' ], function () {
-    Route::get('test', 'CardController@testView')->name('testview');
-    Route::get('gameVersion/createIndex', 'GameVersionController@createIndex')->name('createGameVersionIndex');
+    Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
+    Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
+    Route::post('gameVersion/edit', 'GameVersionController@edit')->name('editGameVersion');
 });
 
+//Route::get('/home', function () {
+//    return view('welcome');
+//});
 
-Route::get('/home', 'HomeController@index');
+Route::get('data/{dataDir}/{dataType}/{filename}', 'DataController@resolvePath');
+
+//Route::get('/home', 'HomeController@index');
