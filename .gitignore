@@ -2,6 +2,7 @@
 /bower_components
 /public/build
 /public/dist
+/public/node_modules
 /public/storage
 /storage/*.key
 /vendor
