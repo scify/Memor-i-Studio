@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
-    public function testView() {
+    public function homeView() {
         return view('common.layout');
     }
 }

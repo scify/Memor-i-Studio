@@ -46,4 +46,12 @@ class GameVersion extends Model
     {
         return $this->belongsTo('App\User', 'id', 'creator_id');
     }
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function coverImg()
+    {
+        return $this->hasOne('App\Models\Image', 'id', 'cover_img_id');
+    }
 }

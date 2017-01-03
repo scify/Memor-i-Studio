@@ -14,3 +14,24 @@
 .memoriForm .row {
     margin-bottom: 30px;
 }
+
+.content .alert {
+    float: right;
+    width: 500px;
+    right: 100px;
+    position: absolute;
+}
+
+.coverImg img {
+    height:100%;
+}
+
+.coverImg {
+    text-align: center;
+}
+
+.gameVersionTitle {
+    font-size: 35px;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.7);
+}

@@ -13,7 +13,7 @@ class ImageCategory extends Model
      *
      * @var string
      */
-    protected $table = 'sound_category';
+    protected $table = 'image_category';
     /**
      * The attributes that are mass assignable.
      *
