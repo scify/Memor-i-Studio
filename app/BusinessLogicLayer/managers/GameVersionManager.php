@@ -11,6 +11,7 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersion;
 use App\StorageLayer\GameVersionStorage;
+use Illuminate\Support\Facades\Auth;
 
 class GameVersionManager {
 
@@ -32,7 +33,11 @@ class GameVersionManager {
         return $this->gameVersionStorage->storeGameVersion($gameVersion);
     }
 
-    public function getAllGameVersions() {
+    public function getGameVersions() {
+        $user = Auth::user();
+        if($user->isAdmin()) {
+            return $this->gameVersionStorage->getAllGameVersions();
+        }
         return $this->gameVersionStorage->getPublishedGameVersions();
     }
 }

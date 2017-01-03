@@ -28,11 +28,8 @@ class GameVersionController extends Controller
      */
     public function showAllGameVersions() {
         $gameVersionManager = new GameVersionManager();
-        $gameVersions = $gameVersionManager->getAllGameVersions();
+        $gameVersions = $gameVersionManager->getGameVersions();
 
-//        foreach ($gameVersions as $gameVersion) {
-//            dd($gameVersion->coverImg->imageCategory);
-//        }
         return view('gameVersion.list', ['gameVersions'=>$gameVersions]);
     }
 

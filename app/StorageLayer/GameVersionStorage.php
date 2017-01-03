@@ -24,6 +24,10 @@ class GameVersionStorage {
     }
 
     public function getPublishedGameVersions() {
-        return GameVersion::where('published', true)->get();
+        return GameVersion::where('published', true)->sortByDesc("created_at")->get();
+    }
+
+    public function getAllGameVersions() {
+        return GameVersion::all()->sortByDesc("created_at");
     }
 }

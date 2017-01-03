@@ -22,11 +22,11 @@
     position: absolute;
 }
 
-.coverImg img {
+.coverImgContainer .coverImg {
     height:100%;
 }
 
-.coverImg {
+.coverImgContainer {
     text-align: center;
 }
 
@@ -34,4 +34,24 @@
     font-size: 35px;
     margin: 0;
     color: rgba(0, 0, 0, 0.7);
+}
+
+.statusIcon {
+    font-size: large;
+}
+
+.gameVersionItem {
+    height: 450px;
+}
+
+.gameVersionItem .card-body {
+    height:190px;
+}
+
+.langImg {
+    height: 25px;
+    position: absolute;
+    float: right;
+    right: 5px;
+    top: 5px;
 }
