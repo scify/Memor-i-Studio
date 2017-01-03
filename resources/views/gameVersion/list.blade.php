@@ -4,7 +4,7 @@
         <div class="col-md-12">
         @foreach($gameVersions as $gameVersion)
                 <div class="col-md-3">
-                    @include('gameVersion.single', ['gameVersion' => $gameVersion])
+                    @include('gameVersion.single', ['gameVersion' => $gameVersion, 'user' => \Illuminate\Support\Facades\Auth::user()])
                 </div>
         @endforeach
         </div>
