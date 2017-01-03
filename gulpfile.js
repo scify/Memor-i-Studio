@@ -22,18 +22,17 @@ elixir(function(mix) {
 
     var directories = {
         'node_modules/npm-modernizr': 'public/dist/npm-modernizr',
-        'node_modules/jquery': 'public/dist/jquery',
         'node_modules/chosen-js': 'public/dist/chosen-js',
         'public/assets/pleasure-admin-panel/js': 'public/dist/pleasure-admin-panel/js',
-        'node_modules/bootstrap': 'public/dist/bootstrap',
         'node_modules/bxslider': 'public/dist/bxslider',
         'node_modules/jquery-knob': 'public/dist/jquery-knob',
         'node_modules/html2canvas': 'public/dist/html2canvas',
-        'node_modules/gauge-js': 'public/dist//gauge-js',
+        'node_modules/gauge-js': 'public/dist/gauge-js',
         'node_modules/jasny-bootstrap': 'public/dist/jasny-bootstrap',
         'node_modules/sweetalert': 'public/dist/sweetalert',
         'node_modules/datatables': 'public/dist/datatables',
-        'node_modules/icheck': 'public/dist/icheck'
+        'node_modules/icheck': 'public/dist/icheck',
+        'public/assets/pleasure-admin-panel/fonts': 'public/build/fonts'
 
     };
 
@@ -61,9 +60,6 @@ elixir(function(mix) {
     //     'public/assets/pleasure-admin-panel/js/pleasure.js'
     // ], 'public/dist/app.js' , './');
 
-    mix.copy([
-        'public/assets/pleasure-admin-panel/fonts'
-    ], 'public/build/fonts');
 
     //the parameter is relative to the public directory
     mix.version(['dist/app.css']);
