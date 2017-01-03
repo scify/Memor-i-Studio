@@ -14,7 +14,7 @@ class AddCoverImgToGameVersionTable extends Migration
     public function up()
     {
       Schema::table('game_version', function ($table) {
-          $table->integer('cover_img_id')->unsigned();
+          $table->integer('cover_img_id')->nullable()->unsigned();
       });
 
       Schema::table('game_version', function ($table) {
