@@ -1,4 +1,6 @@
-<form id="gameVersion-handling-form" class="memoriForm" method="POST" action="{{($gameVersion->id == null ? route('createGameVersion') : route('editGameVersion', $gameVersion->id))}}" enctype="multipart/form-data">
+<form id="gameVersion-handling-form" class="memoriForm" method="POST"
+      action="{{($gameVersion->id == null ? route('createGameVersion') : route('editGameVersion', $gameVersion->id))}}"
+      enctype="multipart/form-data">
     <div class="panelContainer">
         <div class="panel">
             <div class="panel-heading">
@@ -27,10 +29,8 @@
                             <div class="form-group">
                                 <div class="inputer">
                                     <div class="input-wrapper">
-                                        <textarea name="description"
-                                               class="form-control" placeholder="Game description" rows="3">
-                                            {{ old('description') != '' ? old('description') : $gameVersion['description']}}
-                                        </textarea>
+                                        <textarea name="description" class="form-control" placeholder="Game description"
+                                                  rows="3">{{ old('description') != '' ? old('description') : $gameVersion['description']}}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,8 @@
                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                          style="max-height: 200px; min-height: 150px; min-width: 200px">
                                         @if($gameVersion->cover_img_id != '')
-                                            <img class="coverImg" src="{{url('data/images/' . $gameVersion->coverImg->imageCategory->category .  '/' . $gameVersion->coverImg->file_path)}}">
+                                            <img class="coverImg"
+                                                 src="{{url('data/images/' . $gameVersion->coverImg->imageCategory->category .  '/' . $gameVersion->coverImg->file_path)}}">
                                         @endif
                                     </div>
                                     <div>
