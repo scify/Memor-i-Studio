@@ -23,8 +23,8 @@ class GameVersionStorage {
         return $gameVersion;
     }
 
-    public function getPublishedGameVersions() {
-        return GameVersion::where('published', true)->get()->sortByDesc("created_at");
+    public function getGameVersionsByPublishedState($state) {
+        return GameVersion::where('published', $state)->get()->sortByDesc("created_at");
     }
 
     public function getAllGameVersions() {
@@ -33,5 +33,23 @@ class GameVersionStorage {
 
     public function getGameVersionById($id) {
         return GameVersion::find($id);
+    }
+
+    public function getGameVersionsByPublishedStateByUser($state, $userId) {
+        return GameVersion::where([
+            ['published', '=', $state],
+            ['creator_id', '=', $userId],
+        ])->get()->sortByDesc("created_at");
+    }
+
+    public function getGameVersionByIdCreatedByUser($id, $userId) {
+        return GameVersion::where([
+            ['id', '=', $id],
+            ['creator_id', '=', $userId],
+        ])->get()->first();
+    }
+
+    public function deleteGameVersion(GameVersion $gameVersion) {
+        $gameVersion->delete();
     }
 }
