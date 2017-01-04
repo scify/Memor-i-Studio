@@ -46,7 +46,6 @@ class GameVersionController extends Controller
      */
     public function create(Request $request) {
         $gameVersionManager = new GameVersionManager();
-        $imgManager = new ImgManager();
 
         $this->validate($request, [
             'name' => 'required|max:255',
@@ -54,20 +53,22 @@ class GameVersionController extends Controller
         ]);
 
         $input = $request->all();
-        $inputFields = array();
-        $inputFields['name'] = $input['name'];
-        $inputFields['description'] = $input['description'];
-        $inputFields['lang_id'] = $input['lang_id'];
-        $inputFields['creator_id'] = Auth::user()->id;
+        $gameVersionFields = $this->assignInputFields($input);
+        $gameVersionFields['creator_id'] = Auth::user()->id;
 
-        $inputFields['cover_img_id'] = $imgManager->uploadGameVersionCoverImg($request->file('cover_img'), $request->hasFile('cover_img'));
-        if($inputFields['cover_img_id'] == null)
-            return Redirect::back()->withErrors(['error', 'Something went wring when uploading the cover image. please try again.']);
+        //upload the cover image
+        if($request->hasFile('cover_img')) {
+            $gameVersionFields['cover_img_id'] = $this->processFile($request);
+            if ($gameVersionFields['cover_img_id'] == null)
+                return Redirect::back()->withInput()->withErrors(['error', 'Something went wring when uploading the cover image. please try again.']);
+        } else {
+            $gameVersionFields['cover_img_id'] = null;
+        }
 
-        $newGameVersion = $gameVersionManager->createGameVersion($inputFields);
-//        dd($newGameVersion);
+        $newGameVersion = $gameVersionManager->createGameVersion($gameVersionFields);
+
         //TODO: return view to create game cards (step 2)
-        session()->flash('flash_message_success', 'Successfully created game ".' . $newGameVersion->name . '"');
+        session()->flash('flash_message_success', 'Successfully created game "' . $newGameVersion->name . '"');
         return redirect()->back();
 
     }
@@ -83,7 +84,11 @@ class GameVersionController extends Controller
     {
         $gameVersionManager = new GameVersionManager();
         $languageManager = new LanguageManager();
-        $gameVersion = $gameVersionManager->getGameVersion($id);
+        $gameVersion = $gameVersionManager->getGameVersionForEdit($id);
+        if($gameVersion == null) {
+            //TODO: redirect to 404 page
+            return redirect()->back();
+        }
         $languages = $languageManager->getAvailableLanguages();
         //dd($gameVersion);
         return view('gameVersion.createIndex', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
@@ -99,7 +104,6 @@ class GameVersionController extends Controller
     public function edit(Request $request, $id)
     {
         $gameVersionManager = new GameVersionManager();
-        $imgManager = new ImgManager();
 
         $this->validate($request, [
             'name' => 'required|max:255',
@@ -107,28 +111,39 @@ class GameVersionController extends Controller
         ]);
 
         $input = $request->all();
-        $inputFields = array();
-        $inputFields['name'] = $input['name'];
-        $inputFields['description'] = $input['description'];
-        $inputFields['lang_id'] = $input['lang_id'];
+        $gameVersionFields = $this->assignInputFields($input);
 
         if($request->hasFile('cover_img')) {
-            $inputFields['cover_img_id'] = $imgManager->uploadGameVersionCoverImg($request->file('cover_img'), $request->hasFile('cover_img'));
-            if ($inputFields['cover_img_id'] == null)
+            $gameVersionFields['cover_img_id'] = $this->processFile($request);
+            if ($gameVersionFields['cover_img_id'] == null)
                 return Redirect::back()->withInput()->withErrors(['error', 'Something went wring when uploading the cover image. please try again.']);
         } else {
-            $inputFields['cover_img_id'] = null;
+            $gameVersionFields['cover_img_id'] = null;
         }
 
-        $newGameVersion = $gameVersionManager->editGameVersion($id, $inputFields);
+
+        $newGameVersion = $gameVersionManager->editGameVersion($id, $gameVersionFields);
 
         if($newGameVersion != null) {
-            //session()->flash('flash_message_success', 'Successfully edited game ".' . $newGameVersion->name . '"');
             return redirect()->route('showAllGameVersions')->with('flash_message_success', 'Successfully edited game ".' . $newGameVersion->name . '"');
         } else {
             session()->flash('flash_message_failure', 'Error updating game. Please try again.');
             return redirect()->back()->withInput();
         }
+    }
+
+
+    private function processFile(Request $request) {
+        $imgManager = new ImgManager();
+        return $imgManager->uploadGameVersionCoverImg($request->file('cover_img'));
+    }
+
+    private function assignInputFields(array $inputFields) {
+        $gameVersionFields = array();
+        $gameVersionFields['name'] = $inputFields['name'];
+        $gameVersionFields['description'] = $inputFields['description'];
+        $gameVersionFields['lang_id'] = $inputFields['lang_id'];
+        return $gameVersionFields;
     }
 
     /**
@@ -137,8 +152,14 @@ class GameVersionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
-    {
-        //
+    public function delete($id) {
+        $gameVersionManager = new GameVersionManager();
+
+        $result = $gameVersionManager->deleteGameVersion($id);
+        if(!$result) {
+            //TODO: redirect to 404 page
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 }
