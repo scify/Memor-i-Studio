@@ -12,7 +12,7 @@ namespace App\BusinessLogicLayer\managers;
 use App\Models\GameVersion;
 use App\StorageLayer\GameVersionStorage;
 use App\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GameVersionManager {
@@ -24,11 +24,34 @@ class GameVersionManager {
         $this->gameVersionStorage = new GameVersionStorage();
     }
 
-    public function createGameVersion(array $gameVersionFields) {
-        $gameVersion = new GameVersion;
-        $gameVersion = $this->assignValuesToGameVersion($gameVersion, $gameVersionFields);
+    public function saveGameVersion($gameVersionId, array $gameVersionFields, Request $request) {
+        //TODO: add try-catch
+        //upload the cover image
+        if($request->hasFile('cover_img')) {
+            $gameVersionFields['cover_img_id'] = $this->processFile($request);
+            if ($gameVersionFields['cover_img_id'] == null)
+                return null;
+        } else {
+            $gameVersionFields['cover_img_id'] = null;
+        }
+
+        if($gameVersionId == null) {
+            $gameVersionFields['creator_id'] = Auth::user()->id;
+            $gameVersion = new GameVersion;
+            $gameVersion = $this->assignValuesToGameVersion($gameVersion, $gameVersionFields);
+        } else {
+
+            $gameVersion = $this->getGameVersionForEdit($gameVersionId);
+
+            $gameVersion = $this->assignValuesToGameVersion($gameVersion, $gameVersionFields);
+        }
 
         return $this->gameVersionStorage->storeGameVersion($gameVersion);
+    }
+
+    private function processFile(Request $request) {
+        $imgManager = new ImgManager();
+        return $imgManager->uploadGameVersionCoverImg($request->file('cover_img'));
     }
 
     public function getGameVersions() {
@@ -79,29 +102,18 @@ class GameVersionManager {
         return null;
     }
 
-    /**
-     * Edits the game version identified by id
-     *
-     * @param $id . game version id
-     * @param $gameVersionFields . the new values
-     * @return GameVersion the edited object
-     */
-    public function editGameVersion($id, $gameVersionFields) {
-        $gameVersionToBeEdited = $this->getGameVersionForEdit($id);
-
-        $gameVersionToBeEdited = $this->assignValuesToGameVersion($gameVersionToBeEdited, $gameVersionFields);
-
-        return $this->gameVersionStorage->storeGameVersion($gameVersionToBeEdited);
-    }
 
     private function assignValuesToGameVersion(GameVersion $gameVersion, $gameVersionFields) {
+
         $gameVersion->name = $gameVersionFields['name'];
         $gameVersion->description = $gameVersionFields['description'];
         $gameVersion->lang_id = $gameVersionFields['lang_id'];
+
         if(isset($gameVersionFields['creator_id']) && $gameVersionFields['creator_id'] != null)
             $gameVersion->creator_id = $gameVersionFields['creator_id'];
         if($gameVersionFields['cover_img_id'] != null)
             $gameVersion->cover_img_id = $gameVersionFields['cover_img_id'];
+
         return $gameVersion;
     }
 

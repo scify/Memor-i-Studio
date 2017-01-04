@@ -40,6 +40,8 @@ class GameVersionStorage {
             ['published', '=', $state],
             ['creator_id', '=', $userId],
         ])->get()->sortByDesc("created_at");
+
+
     }
 
     public function getGameVersionByIdCreatedByUser($id, $userId) {

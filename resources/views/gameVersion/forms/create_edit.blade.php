@@ -27,9 +27,10 @@
                             <div class="form-group">
                                 <div class="inputer">
                                     <div class="input-wrapper">
-                                        <input name="description" type="text"
-                                               class="form-control" placeholder="Game description"
-                                               value="{{ old('description') != '' ? old('description') : $gameVersion['description']}}">
+                                        <textarea name="description"
+                                               class="form-control" placeholder="Game description" rows="3">
+                                            {{ old('description') != '' ? old('description') : $gameVersion['description']}}
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
