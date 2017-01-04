@@ -25,6 +25,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
 
     Route::get('gameVersion/edit/{id}', 'GameVersionController@editIndex')->name('editGameVersionIndex');
     Route::post('gameVersion/edit/{id}', 'GameVersionController@edit')->name('editGameVersion');
+    Route::get('gameVersion/delete/{id}', 'GameVersionController@delete')->name('deleteGameVersion');
 });
 
 //Route::get('/home', function () {
