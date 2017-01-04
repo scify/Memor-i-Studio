@@ -22,7 +22,9 @@ Route::get('home', 'GameVersionController@showAllGameVersions')->name('showAllGa
 Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
     Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
-    Route::post('gameVersion/edit', 'GameVersionController@edit')->name('editGameVersion');
+
+    Route::get('gameVersion/edit/{id}', 'GameVersionController@editIndex')->name('editGameVersionIndex');
+    Route::post('gameVersion/edit/{id}', 'GameVersionController@edit')->name('editGameVersion');
 });
 
 //Route::get('/home', function () {

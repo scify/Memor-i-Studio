@@ -17,9 +17,11 @@
 
 .content .alert {
     float: right;
-    width: 500px;
+    min-width: 500px;
     right: 100px;
     position: absolute;
+    width: auto;
+    z-index: 1;
 }
 
 .coverImgContainer .coverImg {
@@ -54,4 +56,9 @@
     float: right;
     right: 5px;
     top: 5px;
+}
+
+body {
+    margin: 0 81px 0 81px;
+    background: #F7F7F7;
 }
