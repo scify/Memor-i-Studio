@@ -25,14 +25,7 @@ class ImgManager {
         $this->imgCategoryStorage = new ImgCategoryStorage();
     }
 
-    public function uploadGameVersionCoverImg(UploadedFile $coverImg, $imgWasUploaded) {
-        if($imgWasUploaded)
-            return $this->createGameVersionCoverImg($coverImg);
-        else
-            $this->createGameVersionCoverImgDefault();
-    }
-
-    private function createGameVersionCoverImg(UploadedFile $coverImg) {
+    public function uploadGameVersionCoverImg(UploadedFile $coverImg) {
         $filename = 'cover_img' . '_' . time() . '.' . $coverImg->getClientOriginalExtension();
         $imgCategory = $this->imgCategoryStorage->getImgCategoryByName('game_cover');
         $coverImgAttrs = array(
@@ -40,16 +33,10 @@ class ImgManager {
             'category_id' => $imgCategory->id
         );
         $coverImg->storeAs('images/' . $imgCategory->category, $filename);
-        return $this->createNewImage($coverImgAttrs);
-
+        return $this->createAndStoreNewImage($coverImgAttrs);
     }
 
-    private function createGameVersionCoverImgDefault() {
-
-    }
-
-    public function createNewImage(array $imgFields) {
-
+    public function createAndStoreNewImage(array $imgFields) {
         $image = new Image;
         $image->category_id = $imgFields['category_id'];
         $image->file_path = $imgFields['file_path'];
