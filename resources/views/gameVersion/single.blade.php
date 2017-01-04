@@ -46,7 +46,7 @@
                 @endif
             @endif
         </h3>
-        <p>{{$gameVersion->description}}</p>
+        <p class="gameVersionDescription">{{$gameVersion->description}}</p>
 
     </div><!--.card-body-->
 

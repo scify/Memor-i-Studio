@@ -43,11 +43,16 @@
 }
 
 .gameVersionItem {
-    height: 450px;
+    height: 480px;
 }
 
 .gameVersionItem .card-body {
-    height:190px;
+    height: 220px;
+}
+
+.gameVersionDescription {
+    height: 60%;
+    overflow: auto;
 }
 
 .langImg {
