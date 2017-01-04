@@ -18,8 +18,9 @@
                 <div class="layered-content bg-green">
                     <div class="overflow-content">
                         <ul class="borderless">
-                            <li><a class="btn btn-flat btn-ripple">Publish</a></li>
-                            <li><a href="{{url('gameVersion/edit', $gameVersion->id)}}" class="btn btn-flat btn-ripple">Edit</a></li>
+                            <li><a class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                            <li><a href="{{url('gameVersion/edit', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                            <li><a href="{{url('gameVersion/delete', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
                         </ul>
                     </div><!--.overflow-content-->
                     <div class="clickable-close-button">
@@ -43,16 +44,12 @@
             @endif
         </h3>
         <p>{{$gameVersion->description}}</p>
-        {{--<ul class="social-links">--}}
-            {{--<li><a href="#"><i class="fa fa-linkedin"></i></a></li>--}}
-            {{--<li><a href="#"><i class="fa fa-twitter"></i></a></li>--}}
-            {{--<li><a href="#"><i class="fa fa-facebook"></i></a></li>--}}
-        {{--</ul>--}}
+
     </div><!--.card-body-->
 
     <div class="card-footer">
-        {{--<a href="#" class="pull-left"><small>8 friends in common</small></a>--}}
         <button class="btn btn-xs btn-flat pull-left" style="color: #337ab7"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
+        <small class="pull-right">Created by: {{$gameVersion->creator->name}}</small>
     </div><!--.card-footer-->
 
 </div><!--.card-->
