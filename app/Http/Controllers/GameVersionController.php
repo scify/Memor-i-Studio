@@ -121,7 +121,6 @@ class GameVersionController extends Controller
             $gameVersionFields['cover_img_id'] = null;
         }
 
-
         $newGameVersion = $gameVersionManager->editGameVersion($id, $gameVersionFields);
 
         if($newGameVersion != null) {

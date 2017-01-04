@@ -54,4 +54,20 @@ class GameVersion extends Model
     {
         return $this->hasOne('App\Models\Image', 'id', 'cover_img_id');
     }
+
+    /***
+     * https://laravel.com/docs/5.3/eloquent-mutators#accessors-and-mutators
+     *
+     * @param $value
+     * @return mixed
+     */
+    public function getAccessedByUserAttribute($value)
+    {
+        return $value;
+    }
+
+    public function setAccessedByUserAttribute($value)
+    {
+        $this->attributes['accessed_by_user'] = $value;
+    }
 }

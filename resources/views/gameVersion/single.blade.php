@@ -9,7 +9,7 @@
             <img class="langImg" src="{{asset('assets/img/' . $gameVersion->language->flag_img_path)}}">
         </div>
         @if($user != null)
-            @if($user->isAdmin())
+            @if($gameVersion->accessed_by_user)
                 <div class="clickable-button">
                     <div class="layer bg-green"></div>
                     <a class="btn btn-floating btn-green initial-position floating-open"><i class="fa fa-cog" aria-hidden="true"></i></a>
@@ -18,9 +18,12 @@
                 <div class="layered-content bg-green">
                     <div class="overflow-content">
                         <ul class="borderless">
-                            <li><a class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+
                             <li><a href="{{url('gameVersion/edit', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
                             <li><a href="{{url('gameVersion/delete', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
+                            @if($user->isAdmin())
+                                <li><a class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                            @endif
                         </ul>
                     </div><!--.overflow-content-->
                     <div class="clickable-close-button">

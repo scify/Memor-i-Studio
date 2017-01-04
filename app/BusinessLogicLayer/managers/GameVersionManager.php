@@ -11,6 +11,7 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersion;
 use App\StorageLayer\GameVersionStorage;
+use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,9 +50,15 @@ class GameVersionManager {
             $gameVersionsToBeReturned = $this->gameVersionStorage->getGameVersionsByPublishedState(true);
         }
 
+        foreach ($gameVersionsToBeReturned as $gameVersion) {
+            $gameVersion->accessed_by_user = $this->isGameVersionAccessedByUser($gameVersion, $user);
+        }
+
         return $gameVersionsToBeReturned;
 
     }
+
+
 
     /**
      * Gets a Version
@@ -61,17 +68,15 @@ class GameVersionManager {
      */
     public function getGameVersionForEdit($id) {
         $user = Auth::user();
-        if($user != null) {
-            if ($user->isAdmin()) {
-                $gameVersion = $this->gameVersionStorage->getGameVersionById($id);
-            } else {
-                $gameVersion = $this->gameVersionStorage->getGameVersionByIdCreatedByUser($id, $user->id);
-            }
-        } else {
-            $gameVersion = null;
+        $gameVersion = $this->gameVersionStorage->getGameVersionById($id);
+
+        //if the game Version exists, check if the user has access
+        if($gameVersion != null) {
+            if ($this->isGameVersionAccessedByUser($gameVersion, $user))
+                return $gameVersion;
         }
 
-        return $gameVersion;
+        return null;
     }
 
     /**
@@ -111,5 +116,23 @@ class GameVersionManager {
             return false;
         $this->gameVersionStorage->deleteGameVersion($gameVersion);
         return true;
+    }
+
+    /**
+     * Checks if a game Version object is accessed by a user
+     * (If user is admin or has created it, then they should have access, otherwise they should not)
+     *
+     * @param $gameVersion GameVersion
+     * @param $user User
+     * @return bool user access
+     */
+    private function isGameVersionAccessedByUser($gameVersion, $user) {
+        if($user == null)
+            return false;
+        if($user->isAdmin())
+            return true;
+        if($gameVersion->creator->id == $user->id)
+            return true;
+        return false;
     }
 }
