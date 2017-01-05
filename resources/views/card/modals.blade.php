@@ -34,6 +34,9 @@
                 @include('card.forms.create_edit', ['formTitle' => 'Single card'])
             </div>
             <div class="modal-footer">
+                <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
+                    {{($card->id == null ? 'Create' : 'Edit')}}
+                </button>
                 <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
             </div>
         </div>
@@ -49,6 +52,9 @@
                 @include('card.forms.create_edit', ['formTitle' => 'Advanced card'])
             </div>
             <div class="modal-footer">
+                <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
+                    {{($card->id == null ? 'Create' : 'Edit')}}
+                </button>
                 <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
             </div>
         </div>

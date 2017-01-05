@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
-use App\Models\Card;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -18,14 +17,12 @@ class CardController extends Controller
     }
 
     /**
-     * Show the form for creating a new Game Version
+     * Create a new card
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View the view with the form
+     * @param Request $request the request containing the data
      */
-    public function createIndex() {
-        $card = new Card();
-        $equivalentCard = new Card();
-        return view('card.create_edit_index', ['card' => $card, 'equivalentCard' => $equivalentCard]);
+    public function create(Request $request) {
+        dd($request->all());
     }
 
     public function showCardsForGameVersion($gameVersionId) {

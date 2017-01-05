@@ -24,11 +24,12 @@
                     </div>
                 </div>
             </div>
-
+            <div class="row">
             <div class="row">
                 <div class="col-md-6">Card image</div><!--.col-md-3-->
                 <div class="col-md-6">Card negative image</div><!--.col-md-3-->
             </div>
+
             <div class="col-md-6">
                 <div class="fileinput  {{($card->image_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
                      data-provides="fileinput">
@@ -40,10 +41,10 @@
                         @endif
                     </div>
                     <div>
-										<span class="btn btn-default btn-file">
-                                            <span class="fileinput-new">Select image</span>
-                                            <span class="fileinput-exists">Change</span>
-                                            <input type="file" name="cover_img"></span>
+                        <span class="btn btn-default btn-file">
+                        <span class="fileinput-new">Select image</span>
+                        <span class="fileinput-exists">Change</span>
+                        <input type="file" name="image_id"></span>
                         <a href="#"
                            class="btn btn-default {{($card->image_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
                            data-dismiss="fileinput">Remove</a>
@@ -65,18 +66,33 @@
                         <span class="btn btn-default btn-file">
                         <span class="fileinput-new">Select image</span>
                         <span class="fileinput-exists">Change</span>
-                        <input type="file" name="cover_img"></span>
+                        <input type="file" name="negative_image_id"></span>
                         <a href="#"
                            class="btn btn-default {{($card->negative_image_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
                            data-dismiss="fileinput">Remove</a>
                     </div>
                 </div>
             </div><!--.col-md-9-->
+            </div>
+            <div class="row example-row">
+                <div class="col-md-6">
+                    <div class="margin-bottom-10">Card sound</div>
+                </div>
+                <div class="col-md-12">
+                    @if($card->sound_id != null)
+                        <p class="margin-bottom-10">Current sound: {{$card->sound()->file_path}}</p>
+                    @endif
+                    <div class="form-group">
+                        <input type="file" name="card_sound">
+                        <p class="help-block">Maximum size: 3Mb.</p>
+                    </div><!--.form-group-->
+                    <div class="col-md-6">Remove audio</div><!--.col-md-3-->
+                    <div class="col-md-6">
+                    </div><!--.col-md-9-->
+                </div><!--.col-md-9-->
+            </div><!--.row-->
         </div>
         <div class="submitBtnContainer">
-            <button type="submit" id="gameVersionSubmitBtn" class="btn btn-primary btn-ripple">
-                {{($card->id == null ? 'Create' : 'Edit')}}
-            </button>
 
         </div>
     </div>
