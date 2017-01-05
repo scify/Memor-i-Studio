@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameVersionManager;
-use App\BusinessLogicLayer\managers\ImgManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameVersion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class GameVersionController extends Controller
@@ -147,6 +145,27 @@ class GameVersionController extends Controller
             //TODO: redirect to 404 page
             return redirect()->back();
         }
+        session()->flash('flash_message_success', 'Game version deleted.');
+        return redirect()->back();
+    }
+
+    public function publish($id) {
+        $result = $this->gameVersionManager->toggleGameVersionState($id);
+        if(!$result) {
+            //TODO: redirect to error page
+            return redirect()->back();
+        }
+        session()->flash('flash_message_success', 'Game version published.');
+        return redirect()->back();
+    }
+
+    public function unPublish($id) {
+        $result = $this->gameVersionManager->toggleGameVersionState($id);
+        if(!$result) {
+            //TODO: redirect to error page
+            return redirect()->back();
+        }
+        session()->flash('flash_message_success', 'Game version unpublished.');
         return redirect()->back();
     }
 }

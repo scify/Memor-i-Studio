@@ -22,7 +22,11 @@
                             <li><a href="{{url('gameVersion/edit', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
                             <li><a href="{{url('gameVersion/delete', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
                             @if($user->isAdmin())
-                                <li><a class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                                @if(!$gameVersion->published)
+                                    <li><a href="{{url('gameVersion/unpublish', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                                @else
+                                    <li><a href="{{url('gameVersion/unpublish', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
+                                @endif
                             @endif
                         </ul>
                     </div><!--.overflow-content-->

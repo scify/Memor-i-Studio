@@ -147,4 +147,21 @@ class GameVersionManager {
             return true;
         return false;
     }
+
+    public function toggleGameVersionState($gameVersionId) {
+        $gameVersion = $this->getGameVersionForEdit($gameVersionId);
+        if($gameVersion == null)
+            return false;
+        $gameVersion = $this->toggleGameVersionPublishedAttribute($gameVersion);
+        if($this->gameVersionStorage->storeGameVersion($gameVersion) != null) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private function toggleGameVersionPublishedAttribute($gameVersion) {
+        $gameVersion->published = !$gameVersion->published;
+        return $gameVersion;
+    }
 }
