@@ -33,8 +33,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
 
     Route::get('gameVersion/{id}/cards', 'CardController@showCardsForGameVersion')->name('showCardsForGameVersion');
     //Card routes
-    Route::get('card/create', 'CardController@createIndex')->name('createCardIndex');
-    Route::post('card/create', 'CardController@create')->name('createCard');
+    Route::post('card/create', 'CardController@createCardSimple')->name('createCardSimple');
 
 
 });

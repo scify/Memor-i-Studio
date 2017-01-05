@@ -18,4 +18,9 @@ class CardStorage {
             ['game_version_id', '=', $gameVersionId]
         ])->get()->sortByDesc("created_at");
     }
+
+    public function saveCard(Card $card) {
+        $card->save();
+        return $card;
+    }
 }

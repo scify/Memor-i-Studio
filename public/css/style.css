@@ -107,3 +107,7 @@ body {
     color: white;
     font-size: 40px;
 }
+
+.height100x100 {
+    height: 100%;
+}

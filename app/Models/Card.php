@@ -19,14 +19,14 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['label', 'description_sound', 'image_id', 'negative_image_id', 'sound_id', 'game_version_id', 'equivalent_card_id'];
+    protected $fillable = ['label', 'image_id', 'negative_image_id', 'sound_id', 'game_version_id', 'equivalent_card_id'];
 
     /**
      * Get the first image for the card.
      */
     public function image()
     {
-        return $this->hasOne('App\Models\Image', 'image_id', 'id');
+        return $this->hasOne('App\Models\Image', 'id', 'image_id');
     }
 
     /**
@@ -34,7 +34,7 @@ class Card extends Model
      */
     public function secondImage()
     {
-        return $this->hasOne('App\Models\Image', 'negative_image_id', 'id');
+        return $this->hasOne('App\Models\Image', 'id', 'negative_image_id');
     }
 
     /**

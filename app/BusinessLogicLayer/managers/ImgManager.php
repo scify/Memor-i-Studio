@@ -26,17 +26,21 @@ class ImgManager {
     }
 
     public function uploadGameVersionCoverImg(UploadedFile $coverImg) {
-        $filename = 'cover_img' . '_' . time() . '.' . $coverImg->getClientOriginalExtension();
-        $imgCategory = $this->imgCategoryStorage->getImgCategoryByName('game_cover');
-        $coverImgAttrs = array(
+        return $this->createAndStoreNewImage($coverImg, 'game_cover');
+    }
+
+    public function uploadCardImg(UploadedFile $coverImg) {
+        return $this->createAndStoreNewImage($coverImg, 'card_images');
+    }
+
+    public function createAndStoreNewImage(UploadedFile $coverImg, $imgCategory) {
+        $filename = 'img' . '_' . time() . '.' . $coverImg->getClientOriginalExtension();
+        $imgCategory = $this->imgCategoryStorage->getImgCategoryByName($imgCategory);
+        $imgFields = array(
             'file_path' => $filename,
             'category_id' => $imgCategory->id
         );
         $coverImg->storeAs('images/' . $imgCategory->category, $filename);
-        return $this->createAndStoreNewImage($coverImgAttrs);
-    }
-
-    public function createAndStoreNewImage(array $imgFields) {
         $image = new Image;
         $image->category_id = $imgFields['category_id'];
         $image->file_path = $imgFields['file_path'];

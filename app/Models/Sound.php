@@ -13,7 +13,7 @@ class Sound extends Model
      *
      * @var string
      */
-    protected $table = 'language';
+    protected $table = 'sound';
     /**
      * The attributes that are mass assignable.
      *
