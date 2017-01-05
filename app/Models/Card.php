@@ -19,21 +19,39 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['label', 'description_sound'];
+    protected $fillable = ['label', 'description_sound', 'image_id', 'negative_image_id', 'sound_id', 'game_version_id'];
 
     /**
-     * Get the images for the card.
+     * Get the first image for the card.
      */
-    public function images()
+    public function image()
     {
-        return $this->hasMany('App\Models\Image');
+        return $this->hasOne('App\Models\Image', 'image_id', 'id');
     }
 
     /**
-     * Get the images for the card.
+     * Get the second (possible negative) image for the card
      */
-    public function sounds()
+    public function secondImage()
     {
-        return $this->hasMany('App\Models\Sound');
+        return $this->hasOne('App\Models\Image', 'negative_image_id', 'id');
     }
+
+    /**
+     * Get the card sound.
+     */
+    public function sound()
+    {
+        return $this->hasOne('App\Models\Sound', 'sound_id', 'id');
+    }
+
+    /**
+     * Get the game version this card belongs to.
+     */
+    public function gameVersion()
+    {
+        return $this->hasOne('App\Models\GameVersion', 'game_version_id', 'id');
+    }
+
+
 }
