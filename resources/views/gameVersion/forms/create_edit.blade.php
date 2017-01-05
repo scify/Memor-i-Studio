@@ -59,11 +59,8 @@
                                     </div>
                                     <div>
 										<span class="btn btn-default btn-file">
-                                            @if($gameVersion->cover_img_id == null)
-                                                <span class="fileinput-new">Select image</span>
-                                            @else
-                                                <span class="fileinput-exists">Change</span>
-                                            @endif
+                                            <span class="fileinput-new">Select image</span>
+                                            <span class="fileinput-exists">Change</span>
                                             <input type="file" name="cover_img"></span>
                                         <a href="#"
                                            class="btn btn-default {{($gameVersion->cover_img_id == null ? 'fileinput-new' : 'fileinput-exists')}}"

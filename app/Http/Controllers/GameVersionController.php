@@ -32,7 +32,7 @@ class GameVersionController extends Controller
         $languages = $languageManager->getAvailableLanguages();
         $gameVersion = new GameVersion();
 
-        return view('gameVersion.createIndex', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
+        return view('gameVersion.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
     }
 
     /**
