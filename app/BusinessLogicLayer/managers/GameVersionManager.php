@@ -11,7 +11,7 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersion;
 use App\StorageLayer\GameVersionStorage;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
