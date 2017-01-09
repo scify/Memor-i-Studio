@@ -16,12 +16,6 @@ class AddSoftDeleteToCardTables extends Migration
         Schema::table("card", function ($table) {
             $table->softDeletes();
         });
-        Schema::table("card_image", function ($table) {
-            $table->softDeletes();
-        });
-        Schema::table("card_sound", function ($table) {
-            $table->softDeletes();
-        });
     }
 
     /**

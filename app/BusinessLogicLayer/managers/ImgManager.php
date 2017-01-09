@@ -25,7 +25,7 @@ class ImgManager {
         $this->imgCategoryStorage = new ImgCategoryStorage();
     }
 
-    public function uploadGameVersionCoverImg(UploadedFile $coverImg) {
+    public function uploadGameFlavorCoverImg(UploadedFile $coverImg) {
         return $this->createAndStoreNewImage($coverImg, 'game_cover');
     }
 
@@ -34,7 +34,7 @@ class ImgManager {
     }
 
     public function createAndStoreNewImage(UploadedFile $coverImg, $imgCategory) {
-        $filename = 'img' . '_' . time() . '.' . $coverImg->getClientOriginalExtension();
+        $filename = 'img' . '_' . $this->milliseconds() . '_' . $coverImg->getClientOriginalName();
         $imgCategory = $this->imgCategoryStorage->getImgCategoryByName($imgCategory);
         $imgFields = array(
             'file_path' => $filename,
@@ -45,5 +45,9 @@ class ImgManager {
         $image->category_id = $imgFields['category_id'];
         $image->file_path = $imgFields['file_path'];
         return $this->imgStorage->storeImg($image);
+    }
+
+    private function milliseconds() {
+        return round(microtime(true) * 1000);
     }
 }

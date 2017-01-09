@@ -101,6 +101,12 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'card.*.image' => [
+            'required' => 'Each card should have an image',
+        ],
+        'card.*.sound' => [
+            'required' => 'Each card should have a sound file',
+        ]
     ],
 
     /*

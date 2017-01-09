@@ -19,7 +19,7 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['label', 'image_id', 'negative_image_id', 'sound_id', 'game_version_id', 'equivalent_card_id'];
+    protected $fillable = ['label', 'image_id', 'negative_image_id', 'sound_id', 'equivalence_set_id'];
 
     /**
      * Get the first image for the card.
@@ -46,16 +46,13 @@ class Card extends Model
     }
 
     /**
-     * Get the game version this card belongs to.
+     * Get the Equivalence Set this card belongs to.
      */
-    public function gameVersion()
+    public function equivalenceSet()
     {
-        return $this->hasOne('App\Models\GameVersion', 'game_version_id', 'id');
+        return $this->hasOne('App\Models\EquivalenceSet', 'equivalence_set_id', 'id');
     }
 
-    public function equivalentCard() {
-        return $this->hasOne('App\Models\Card', 'equivalent_card_id', 'id');
-    }
 
 
 }

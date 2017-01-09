@@ -1,5 +1,5 @@
 <form id="gameVersion-handling-form" class="memoriForm" method="POST"
-      action="{{($gameVersion->id == null ? route('createGameVersion') : route('editGameVersion', $gameVersion->id))}}"
+      action="{{($gameVersion->id == null ? route('createGameFlavor') : route('editGameFlavor', $gameVersion->id))}}"
       enctype="multipart/form-data">
     <div class="panelContainer">
         <div class="panel">

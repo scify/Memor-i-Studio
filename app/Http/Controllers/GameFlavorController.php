@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\BusinessLogicLayer\managers\GameVersionManager;
+use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
-use App\Models\GameVersion;
+use App\Models\GameFlavor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class GameVersionController extends Controller
+class GameFlavorController extends Controller
 {
     private $languageManager;
     private $gameVersionManager;
 
     /**
-     * GameVersionController constructor.
+     * GameFlavorController constructor.
      */
     public function __construct() {
         $this->languageManager = new LanguageManager();
-        $this->gameVersionManager = new GameVersionManager();
+        $this->gameVersionManager = new GameFlavorManager();
     }
 
 
@@ -30,7 +30,7 @@ class GameVersionController extends Controller
     public function createIndex() {
         $languageManager = new LanguageManager();
         $languages = $languageManager->getAvailableLanguages();
-        $gameVersion = new GameVersion();
+        $gameVersion = new GameFlavor();
 
         return view('gameVersion.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
     }
@@ -40,9 +40,8 @@ class GameVersionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showAllGameVersions() {
-
-        $gameVersions = $this->gameVersionManager->getGameVersions();
+    public function showAllGameFlavors() {
+        $gameVersions = $this->gameVersionManager->getGameFlavors();
 
         return view('gameVersion.list', ['gameVersions'=>$gameVersions]);
     }
@@ -64,12 +63,12 @@ class GameVersionController extends Controller
         $gameVersionFields = $this->assignInputFields($input);
 
 
-        $newGameVersion = $this->gameVersionManager->saveGameVersion(null, $gameVersionFields, $request);
-        if($newGameVersion == null)
+        $newGameFlavor = $this->gameVersionManager->saveGameFlavor(null, $gameVersionFields, $request);
+        if($newGameFlavor == null)
             return Redirect::back()->withInput()->withErrors(['error', 'Something went wrong. please try again.']);
 
         //TODO: return view to create game cards (step 2)
-        session()->flash('flash_message_success', 'Successfully created game "' . $newGameVersion->name . '"');
+        session()->flash('flash_message_success', 'Successfully created game "' . $newGameFlavor->name . '"');
         return redirect()->back();
 
     }
@@ -83,7 +82,7 @@ class GameVersionController extends Controller
      */
     public function editIndex($id)
     {
-        $gameVersion = $this->gameVersionManager->getGameVersionForEdit($id);
+        $gameVersion = $this->gameVersionManager->getGameFlavorForEdit($id);
         if($gameVersion == null) {
             //TODO: redirect to 404 page
             return redirect()->back();
@@ -111,10 +110,10 @@ class GameVersionController extends Controller
         $input = $request->all();
         $gameVersionFields = $this->assignInputFields($input);
 
-        $newGameVersion = $this->gameVersionManager->saveGameVersion($id, $gameVersionFields, $request);
+        $newGameFlavor = $this->gameVersionManager->saveGameFlavor($id, $gameVersionFields, $request);
 
-        if($newGameVersion != null) {
-            return redirect()->route('showAllGameVersions')->with('flash_message_success', 'Successfully edited game "' . $newGameVersion->name . '"');
+        if($newGameFlavor != null) {
+            return redirect()->route('showAllGameFlavors')->with('flash_message_success', 'Successfully edited game "' . $newGameFlavor->name . '"');
         } else {
             session()->flash('flash_message_failure', 'Error updating game. Please try again.');
             return redirect()->back()->withInput();
@@ -140,7 +139,7 @@ class GameVersionController extends Controller
      */
     public function delete($id) {
 
-        $result = $this->gameVersionManager->deleteGameVersion($id);
+        $result = $this->gameVersionManager->deleteGameFlavor($id);
         if(!$result) {
             //TODO: redirect to 404 page
             return redirect()->back();
@@ -150,7 +149,7 @@ class GameVersionController extends Controller
     }
 
     public function publish($id) {
-        $result = $this->gameVersionManager->toggleGameVersionState($id);
+        $result = $this->gameVersionManager->toggleGameFlavorState($id);
         if(!$result) {
             //TODO: redirect to error page
             return redirect()->back();
@@ -160,7 +159,7 @@ class GameVersionController extends Controller
     }
 
     public function unPublish($id) {
-        $result = $this->gameVersionManager->toggleGameVersionState($id);
+        $result = $this->gameVersionManager->toggleGameFlavorState($id);
         if(!$result) {
             //TODO: redirect to error page
             return redirect()->back();

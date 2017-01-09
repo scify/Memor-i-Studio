@@ -9,22 +9,22 @@
 namespace App\BusinessLogicLayer\managers;
 
 
-use App\Models\GameVersion;
-use App\StorageLayer\GameVersionStorage;
+use App\Models\GameFlavor;
+use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class GameVersionManager {
+class GameFlavorManager {
 
     private $gameVersionStorage;
 
     public function __construct() {
         // initialize $userStorage
-        $this->gameVersionStorage = new GameVersionStorage();
+        $this->gameVersionStorage = new GameFlavorStorage();
     }
 
-    public function saveGameVersion($gameVersionId, array $gameVersionFields, Request $request) {
+    public function saveGameFlavor($gameVersionId, array $gameVersionFields, Request $request) {
         //TODO: add try-catch
         //upload the cover image
         if($request->hasFile('cover_img')) {
@@ -37,44 +37,44 @@ class GameVersionManager {
 
         if($gameVersionId == null) {
             $gameVersionFields['creator_id'] = Auth::user()->id;
-            $gameVersion = new GameVersion;
-            $gameVersion = $this->assignValuesToGameVersion($gameVersion, $gameVersionFields);
+            $gameVersion = new GameFlavor;
+            $gameVersion = $this->assignValuesToGameFlavor($gameVersion, $gameVersionFields);
         } else {
 
-            $gameVersion = $this->getGameVersionForEdit($gameVersionId);
+            $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
 
-            $gameVersion = $this->assignValuesToGameVersion($gameVersion, $gameVersionFields);
+            $gameVersion = $this->assignValuesToGameFlavor($gameVersion, $gameVersionFields);
         }
 
-        return $this->gameVersionStorage->storeGameVersion($gameVersion);
+        return $this->gameVersionStorage->storeGameFlavor($gameVersion);
     }
 
     private function processFile(Request $request) {
         $imgManager = new ImgManager();
-        return $imgManager->uploadGameVersionCoverImg($request->file('cover_img'));
+        return $imgManager->uploadGameFlavorCoverImg($request->file('cover_img'));
     }
 
-    public function getGameVersions() {
+    public function getGameFlavors() {
         $user = Auth::user();
 
         //if not logged in user, get only the published versions
         if($user != null) {
             if ($user->isAdmin()) {
                 //if admin, get all game versions
-                $gameVersionsToBeReturned = $this->gameVersionStorage->getAllGameVersions();
+                $gameVersionsToBeReturned = $this->gameVersionStorage->getAllGameFlavors();
             } else {
                 //if regular user, merge the published game versions with the game versions created by the user
-                $publishedGameVersions = $this->gameVersionStorage->getGameVersionsByPublishedState(true);
-                $gameVersionsCreatedByUser = $this->gameVersionStorage->getGameVersionsByPublishedStateByUser(false, $user->id);
+                $publishedGameFlavors = $this->gameVersionStorage->getGameFlavorsByPublishedState(true);
+                $gameVersionsCreatedByUser = $this->gameVersionStorage->getGameFlavorsByPublishedStateByUser(false, $user->id);
 
-                $gameVersionsToBeReturned = $gameVersionsCreatedByUser->merge($publishedGameVersions);
+                $gameVersionsToBeReturned = $gameVersionsCreatedByUser->merge($publishedGameFlavors);
             }
         } else {
-            $gameVersionsToBeReturned = $this->gameVersionStorage->getGameVersionsByPublishedState(true);
+            $gameVersionsToBeReturned = $this->gameVersionStorage->getGameFlavorsByPublishedState(true);
         }
 
         foreach ($gameVersionsToBeReturned as $gameVersion) {
-            $gameVersion->accessed_by_user = $this->isGameVersionAccessedByUser($gameVersion, $user);
+            $gameVersion->accessed_by_user = $this->isGameFlavorAccessedByUser($gameVersion, $user);
         }
 
         return $gameVersionsToBeReturned;
@@ -87,15 +87,15 @@ class GameVersionManager {
      * Gets a Version
      *
      * @param $id . the id of game version
-     * @return GameVersion desired {@see GameVersion} object, or null if the user has no access to this object
+     * @return GameFlavor desired {@see GameFlavor} object, or null if the user has no access to this object
      */
-    public function getGameVersionForEdit($id) {
+    public function getGameFlavorForEdit($id) {
         $user = Auth::user();
-        $gameVersion = $this->gameVersionStorage->getGameVersionById($id);
+        $gameVersion = $this->gameVersionStorage->getGameFlavorById($id);
 
         //if the game Version exists, check if the user has access
         if($gameVersion != null) {
-            if ($this->isGameVersionAccessedByUser($gameVersion, $user))
+            if ($this->isGameFlavorAccessedByUser($gameVersion, $user))
                 return $gameVersion;
         }
 
@@ -103,7 +103,7 @@ class GameVersionManager {
     }
 
 
-    private function assignValuesToGameVersion(GameVersion $gameVersion, $gameVersionFields) {
+    private function assignValuesToGameFlavor(GameFlavor $gameVersion, $gameVersionFields) {
 
         $gameVersion->name = $gameVersionFields['name'];
         $gameVersion->description = $gameVersionFields['description'];
@@ -122,11 +122,11 @@ class GameVersionManager {
      * @param $gameVersionId. The id of the game version to be deleted
      * @return bool. True if the game version was deleted successfully, false if the user has no access
      */
-    public function deleteGameVersion($gameVersionId) {
-        $gameVersion = $this->getGameVersionForEdit($gameVersionId);
+    public function deleteGameFlavor($gameVersionId) {
+        $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
         if($gameVersion == null)
             return false;
-        $this->gameVersionStorage->deleteGameVersion($gameVersion);
+        $this->gameVersionStorage->deleteGameFlavor($gameVersion);
         return true;
     }
 
@@ -134,11 +134,11 @@ class GameVersionManager {
      * Checks if a game Version object is accessed by a user
      * (If user is admin or has created it, then they should have access, otherwise they should not)
      *
-     * @param $gameVersion GameVersion
+     * @param $gameVersion GameFlavor
      * @param $user User
      * @return bool user access
      */
-    private function isGameVersionAccessedByUser($gameVersion, $user) {
+    private function isGameFlavorAccessedByUser($gameVersion, $user) {
         if($user == null)
             return false;
         if($user->isAdmin())
@@ -148,19 +148,19 @@ class GameVersionManager {
         return false;
     }
 
-    public function toggleGameVersionState($gameVersionId) {
-        $gameVersion = $this->getGameVersionForEdit($gameVersionId);
+    public function toggleGameFlavorState($gameVersionId) {
+        $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
         if($gameVersion == null)
             return false;
-        $gameVersion = $this->toggleGameVersionPublishedAttribute($gameVersion);
-        if($this->gameVersionStorage->storeGameVersion($gameVersion) != null) {
+        $gameVersion = $this->toggleGameFlavorPublishedAttribute($gameVersion);
+        if($this->gameVersionStorage->storeGameFlavor($gameVersion) != null) {
             return true;
         }
         return false;
     }
 
 
-    private function toggleGameVersionPublishedAttribute($gameVersion) {
+    private function toggleGameFlavorPublishedAttribute($gameVersion) {
         $gameVersion->published = !$gameVersion->published;
         return $gameVersion;
     }

@@ -46,7 +46,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function gameVersions()
     {
-        return $this->hasMany('App\Models\GameVersion', 'creator_id');
+        return $this->hasMany('App\Models\GameFlavor', 'creator_id');
     }
 
     /**

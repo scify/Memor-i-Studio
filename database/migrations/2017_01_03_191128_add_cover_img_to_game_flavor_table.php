@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCoverImgToGameVersionTable extends Migration
+class AddCoverImgToGameFlavorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class AddCoverImgToGameVersionTable extends Migration
      */
     public function up()
     {
-      Schema::table('game_version', function ($table) {
+      Schema::table('game_flavor', function ($table) {
           $table->integer('cover_img_id')->nullable()->unsigned();
       });
 
-      Schema::table('game_version', function ($table) {
+      Schema::table('game_flavor', function ($table) {
           $table->foreign('cover_img_id')->references('id')->on('image');
       });
     }
@@ -29,8 +29,8 @@ class AddCoverImgToGameVersionTable extends Migration
      */
     public function down()
     {
-      Schema::table('game_version', function(Blueprint $table){
-          $table->dropForeign('game_version_cover_img_id_foreign');
+      Schema::table('game_flavor', function(Blueprint $table){
+          $table->dropForeign('game_flavor_cover_img_id_foreign');
           $table->dropColumn('cover_img_id');
       });
     }

@@ -47,7 +47,7 @@
         </div>
         <!-- Footer -->
         @if(Auth::check())
-            @include('common.sidebar', ['user' => Auth::user()])
+            @include('common.sidebar')
         @endif
         @include('common.footer')
     </body>

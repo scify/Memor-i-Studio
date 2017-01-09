@@ -29,19 +29,19 @@
 <div class="modal fade full-height" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
-              action="{{($card->id == null ? route('createCardSimple') : route('editCard', $card->id))}}"
+              action="{{($equivalenceSet->id == null ? route('createEquivalenceSet') : route('editEquivalenceSet', $equivalenceSet->id))}}"
               enctype="multipart/form-data">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title">Create a new Card</h4>
+                    <h4 class="modal-title">Create a new card set</h4>
                 </div>
                 <div class="modal-body">
-                    @include('card.forms.create_edit', ['formTitle' => 'Single card'])
+                    @include('card.forms.create_edit', ['formTitle' => 'Single card', 'formNum' => 1])
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
-                        {{($card->id == null ? 'Create' : 'Edit')}}
+                        {{($equivalenceSet->id == null ? 'Create' : 'Edit')}}
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
                 </div>
@@ -53,20 +53,20 @@
 <div class="modal fade full-height" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
-              action="{{($card->id == null ? route('createCardSimple') : route('editCard', $card->id))}}"
+              action="{{($equivalenceSet->id == null ? route('createEquivalenceSet') : route('editEquivalenceSet', $equivalenceSet->id))}}"
               enctype="multipart/form-data">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title">Create a new Card</h4>
+                    <h4 class="modal-title">Create a new card set</h4>
                 </div>
                 <div class="modal-body">
-                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card'])
-                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card'])
+                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card', 'formNum' => 1])
+                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card', 'formNum' => 2])
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
-                        {{($card->id == null ? 'Create' : 'Edit')}}
+                        {{($equivalenceSet->id == null ? 'Create' : 'Edit')}}
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
                 </div>

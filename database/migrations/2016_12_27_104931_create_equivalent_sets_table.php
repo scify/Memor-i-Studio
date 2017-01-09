@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGameVersionTable extends Migration
+class CreateEquivalentSetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateGameVersionTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_version', function (Blueprint $table) {
+        Schema::create('equivalence_set', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 300);
-            $table->string('description', 1000);
-            $table->integer('lang_id')->unsigned()->default(1);
-            $table->foreign('lang_id')->references('id')->on('language');
+            $table->integer('flavor_id')->unsigned()->default(1);
+            $table->foreign('flavor_id')->references('id')->on('game_flavor');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ class CreateGameVersionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_version');
+        Schema::dropIfExists('equivalence_set');
     }
 }

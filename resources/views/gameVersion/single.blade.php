@@ -40,7 +40,7 @@
 
     <div class="card-body">
         <h3 class="gameVersionTitle">
-        <a href="{{route('showCardsForGameVersion', $gameVersion->id)}}"> {{$gameVersion->name}}</a>
+        <a href="{{route('showCardsForGameFlavor', $gameVersion->id)}}"> {{$gameVersion->name}}</a>
             @if($user != null)
                 @if($user->isAdmin())
                     @if(!$gameVersion->published)

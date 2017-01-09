@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCardsTable extends Migration
+class CreateGameFlavorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('card', function (Blueprint $table) {
+        Schema::create('game_flavor', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('label', 300);
-            $table->integer('equivalence_set_id')->unsigned()->default(1);
-            $table->foreign('equivalence_set_id')->references('id')->on('equivalence_set');
+            $table->string('name', 300);
+            $table->string('description', 1000);
+            $table->integer('lang_id')->unsigned()->default(1);
+            $table->foreign('lang_id')->references('id')->on('language');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +31,6 @@ class CreateCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card');
+        Schema::dropIfExists('game_flavor');
     }
 }

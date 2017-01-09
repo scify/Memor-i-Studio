@@ -29,7 +29,7 @@ class SoundManager {
     }
 
     public function createAndStoreNewSound(UploadedFile $sound, $soundCategory) {
-        $filename = 'sound' . '_' . time() . '.' . $sound->getClientOriginalExtension();
+        $filename = 'sound' . '_' . $this->milliseconds() . '_' . $sound->getClientOriginalName();
         $soundCategory = $this->soundCategoryStorage->getSoundCategoryByName($soundCategory);
 
         $sound->storeAs('sounds/' . $soundCategory->category, $filename);
@@ -38,5 +38,9 @@ class SoundManager {
         $soundObj->file_path = $filename;
 
         return $this->soundStorage->storeSound($soundObj);
+    }
+
+    private function milliseconds() {
+        return round(microtime(true) * 1000);
     }
 }

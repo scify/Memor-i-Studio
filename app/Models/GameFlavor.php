@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GameVersion extends Model
+class GameFlavor extends Model
 {
     use SoftDeletes;
     /**
@@ -13,7 +13,7 @@ class GameVersion extends Model
      *
      * @var string
      */
-    protected $table = 'game_version';
+    protected $table = 'game_flavor';
     /**
      * The attributes that are mass assignable.
      *
@@ -22,10 +22,10 @@ class GameVersion extends Model
     protected $fillable = ['name','lang_id', 'description', 'creator_id', 'cover_img_id'];
 
     /**
-     * Get the images for the card.
+     * Get the Equivalence Sets for the card.
      */
-    public function cards() {
-        return $this->hasMany('App\Models\Card');
+    public function equivalenceSets() {
+        return $this->hasMany('App\Models\EquivalenceSet');
     }
 
     /**
