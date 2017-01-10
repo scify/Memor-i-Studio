@@ -6,6 +6,8 @@ var gulp = require('gulp');
 elixir(function(mix) {
 
     mix.styles([
+        'public/assets/pleasure-admin-panel/css/plugins.css',
+        'public/assets/pleasure-admin-panel/css/elements.css',
         'node_modules/sweetalert/dist/sweetalert.css',
         'node_modules/chosen-js/chosen.css',
         'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
@@ -15,8 +17,6 @@ elixir(function(mix) {
         'node_modules/bxslider/dist/jquery.bxslider.min.css',
         'node_modules/datatables/media/css/jquery.dataTables.min.css',
         'node_modules/icheck/skins/square/blue.css',
-        'public/assets/pleasure-admin-panel/css/elements.css',
-        'public/assets/pleasure-admin-panel/css/plugins.css',
         'public/css/style.css'
     ], 'public/dist/app.css', './');
 

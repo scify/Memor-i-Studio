@@ -13,5 +13,5 @@
             @endforeach
         </div>
     </div>
-    @include('equivalence_set.modals', ['equivalenceSet' => new \App\Models\EquivalenceSet()])
+    @include('equivalence_set.modals')
 @endsection

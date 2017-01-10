@@ -6,7 +6,7 @@
     {{--</div><!--.panel-heading-->--}}
     {{--<div class="panel-body">--}}
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="card[{{$formNum}}][game_flavor_id]" value="{{ $gameVersionId }}">
+    <input type="hidden" name="card[{{$formNum}}][game_flavor_id]" value="{{ $gameFlavor->id }}">
     <div class="row example-row">
         <div class="col-md-12">
             {{--<div class="row">--}}

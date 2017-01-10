@@ -29,7 +29,7 @@
 <div class="modal fade full-height" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
-              action="{{($equivalenceSet->id == null ? route('createEquivalenceSet') : route('editEquivalenceSet', $equivalenceSet->id))}}"
+              action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
 
@@ -41,7 +41,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
-                        {{($equivalenceSet->id == null ? 'Create' : 'Edit')}}
+                        Create
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
                 </div>
@@ -53,7 +53,7 @@
 <div class="modal fade full-height" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
-              action="{{($equivalenceSet->id == null ? route('createEquivalenceSet') : route('editEquivalenceSet', $equivalenceSet->id))}}"
+              action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
 
@@ -66,7 +66,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
-                        {{($equivalenceSet->id == null ? 'Create' : 'Edit')}}
+                        Create
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
                 </div>

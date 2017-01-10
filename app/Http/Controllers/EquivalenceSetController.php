@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
+use App\BusinessLogicLayer\managers\GameFlavorManager;
 use Illuminate\Http\Request;
 
 class EquivalenceSetController extends Controller
@@ -19,9 +20,11 @@ class EquivalenceSetController extends Controller
         $this->cardManager = new CardManager();
     }
 
-    public function showEquivalenceSetsForGameFlavor($gameVersionId) {
-        $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameVersionId);
-        return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameVersionId' => $gameVersionId]);
+    public function showEquivalenceSetsForGameFlavor($gameFlavorId) {
+        $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        $gameFlavorManager = new GameFlavorManager();
+        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+        return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
     }
 
     /**
@@ -35,6 +38,7 @@ class EquivalenceSetController extends Controller
         //dd($request->all());
         //The validation messages are defined in resources/lang/en/validation.php
         $this->validate($request, [
+            'card.*.game_flavor_id' => 'required',
             'card.*.image' => 'required|file|image|max:2000',
             'card.*.negative_image' => 'file|image|max:2000',
             'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg'

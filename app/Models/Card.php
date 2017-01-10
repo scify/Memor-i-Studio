@@ -42,7 +42,7 @@ class Card extends Model
      */
     public function sound()
     {
-        return $this->hasOne('App\Models\Sound', 'sound_id', 'id');
+        return $this->hasOne('App\Models\Sound', 'id', 'sound_id');
     }
 
     /**
@@ -50,7 +50,7 @@ class Card extends Model
      */
     public function equivalenceSet()
     {
-        return $this->hasOne('App\Models\EquivalenceSet', 'equivalence_set_id', 'id');
+        return $this->hasOne('App\Models\EquivalenceSet', 'id', 'equivalence_set_id');
     }
 
 

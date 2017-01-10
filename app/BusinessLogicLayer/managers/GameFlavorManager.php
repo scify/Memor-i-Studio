@@ -84,22 +84,40 @@ class GameFlavorManager {
 
 
     /**
-     * Gets a Version
+     * Gets a Flavor if the user has access rights
      *
      * @param $id . the id of game version
      * @return GameFlavor desired {@see GameFlavor} object, or null if the user has no access to this object
      */
     public function getGameFlavorForEdit($id) {
         $user = Auth::user();
-        $gameVersion = $this->gameVersionStorage->getGameFlavorById($id);
+        $gameFlavor = $this->gameVersionStorage->getGameFlavorById($id);
 
         //if the game Version exists, check if the user has access
-        if($gameVersion != null) {
-            if ($this->isGameFlavorAccessedByUser($gameVersion, $user))
-                return $gameVersion;
+        if($gameFlavor != null) {
+            if ($this->isGameFlavorAccessedByUser($gameFlavor, $user))
+                return $gameFlavor;
         }
 
         return null;
+    }
+
+    /**
+     * Gets a game flavor
+     *
+     * @param $id . the id of game version
+     * @return GameFlavor desired {@see GameFlavor} object
+     */
+    public function getGameFlavor($id) {
+        $user = Auth::user();
+        $gameFlavor = $this->gameVersionStorage->getGameFlavorById($id);
+
+        //if the game Version exists, check if the user has access
+        if($gameFlavor != null) {
+            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
+        }
+
+        return $gameFlavor;
     }
 
 
@@ -116,6 +134,7 @@ class GameFlavorManager {
 
         return $gameVersion;
     }
+
 
 
     /**
