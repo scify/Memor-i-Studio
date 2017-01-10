@@ -53,9 +53,22 @@ class EquivalenceSetController extends Controller
             $this->cardManager->createCards($newEquivalenceSet, $input);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            return redirect()->back();
         }
 
         session()->flash('flash_message_success', 'Game cards created!');
+        return redirect()->back();
+    }
+
+    public function delete(Request $request) {
+        try {
+            $this->equivalenceSetManager->deleteSet($request->id);
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            return redirect()->back();
+        }
+
+        session()->flash('flash_message_success', 'Card set deleted');
         return redirect()->back();
     }
 }

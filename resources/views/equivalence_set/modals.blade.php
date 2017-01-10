@@ -74,3 +74,19 @@
         </form>
     </div>
 </div><!--.modal-->
+<div class="modal scale fade" id="deleteEquivalenceSetModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this card set?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancel</button>
+                <a href="" class="btn btn-flat btn-primary btn-danger submitLink">Delete</a>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->

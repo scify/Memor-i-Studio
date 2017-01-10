@@ -44,4 +44,8 @@ class EquivalenceSetManager {
         }
         return $randomString;
     }
+
+    public function deleteSet($id) {
+        $this->equivalenceSetStorage->deleteSet($id);
+    }
 }
