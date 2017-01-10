@@ -58,7 +58,6 @@ elixir(function(mix) {
         'node_modules/jquery-knob/excanvas.js',
         'node_modules/html2canvas/dist/html2canvas.min.js',
         'node_modules/html2canvas/dist/html2canvas.svg.min.js',
-        'node_modules/gauge-js/dest/gauge.min.js',
         'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
         'node_modules/sweetalert/dist/sweetalert.min.js',
         'node_modules/datatables/media/js/jquery.dataTables.min.js',
