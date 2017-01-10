@@ -19,7 +19,7 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['label', 'image_id', 'negative_image_id', 'sound_id', 'equivalence_set_id'];
+    protected $fillable = ['label', 'category', 'unique', 'image_id', 'negative_image_id', 'sound_id', 'equivalence_set_id'];
 
     /**
      * Get the first image for the card.

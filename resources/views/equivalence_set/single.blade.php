@@ -1,3 +1,3 @@
-<div class="col-md-7">
-    @include('card.list', ['cards' => $equivalenceSet->cards()])
+<div class="col-md-6">
+    @include('card.list', ['cards' => $equivalenceSet->cards()->get()])
 </div>

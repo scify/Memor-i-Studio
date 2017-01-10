@@ -18,4 +18,9 @@ class EquivalentSetStorage {
             ['flavor_id', '=', $gameFlavorId]
         ])->get()->sortByDesc("created_at");
     }
+
+    public function saveEquivalenceSet(EquivalenceSet $equivalenceSet) {
+        $equivalenceSet->save();
+        return $equivalenceSet;
+    }
 }

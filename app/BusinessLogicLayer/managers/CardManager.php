@@ -10,7 +10,9 @@ namespace App\BusinessLogicLayer\managers;
 
 
 use App\Models\Card;
+use App\Models\EquivalenceSet;
 use App\StorageLayer\CardStorage;
+use League\Flysystem\Exception;
 
 class CardManager {
 
@@ -31,11 +33,13 @@ class CardManager {
 //        return $cards = $this->cardStorage->getCardsForGameFlavor($gameVersionId);
 //    }
 
-    public function createNewCard($input) {
+    public function createNewCard($input, $equivalenceSetId, $category) {
         //dd($input);
         $newCard = new Card();
         $newCard->label = $this->generateRandomString();
         $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
+        $newCard->equivalence_set_id = $equivalenceSetId;
+        $newCard->category = $category;
         if(isset($input['negative_image'])) {
             if ($input['negative_image'] != null)
                 $newCard->negative_image_id = $this->imgManager->uploadCardImg($input['negative_image']);
@@ -62,36 +66,30 @@ class CardManager {
         return $randomString;
     }
 
-    public function associateCards(array $createdCards) {
-        //if only one card, it is associated with itself
-        if(count($createdCards) == 1) {
-            $this->associateCardWithItself($createdCards[0]);
-        } else {
-            //if many cards, associate each card with the next one
-            $this->associateCardsArray($createdCards);
+    public function addCardsToEquivalenceSet(array $createdCards, EquivalenceSet $newEquivalenceSet) {
+        foreach ($createdCards as $createdCard) {
+            $createdCard->equivalence_set_id = $newEquivalenceSet->id;
+            $this->cardStorage->saveCard($createdCard);
         }
     }
 
-//    private function associateCardsArray(array $createdCards) {
-//        //for each card, we set as equivalent the current card with the next one.
-//        // The last card is associated with it's previous.
-//        foreach ($createdCards as $card) {
-//            $nextCard = next($createdCards);
-//            if($nextCard != null) {
-//                $card->equivalent_card_id = $nextCard->id;
-//                $this->cardStorage->saveCard($card);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Sets a card as aquivalent with itself
-//     *
-//     * @param Card $card the card that will be associated
-//     */
-//    private function associateCardWithItself(Card $card) {
-//        $card->equivalent_card_id = $card->id;
-//        $this->cardStorage->saveCard($card);
-//    }
+    public function createCards(EquivalenceSet $newEquivalenceSet, array $input) {
+        $index = 1;
+        foreach ($input['card'] as $cardFields) {
+            $newCard = $this->createNewCard($cardFields, $newEquivalenceSet->id, $index % 2 == 1 ? 'item' : 'item_equivalent');
+            $index++;
+            if ($newCard == null) {
+                throw new Exception('Card creation failed');
+            }
+        }
+        //TODO: discuss with ggianna
+        if(count($input['card']) == 1) {
+            $newCard = $this->createNewCard($input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
+            if ($newCard == null) {
+                throw new Exception('Card creation failed');
+            }
+        }
+    }
+
 
 }

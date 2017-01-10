@@ -31,7 +31,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('gameVersion/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
     Route::get('gameVersion/unpublish/{id}', 'GameFlavorController@publish')->name('unPublishGameFlavor');
 
-    Route::get('gameVersion/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
+    Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
     //Card routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
 

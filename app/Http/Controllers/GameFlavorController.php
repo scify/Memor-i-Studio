@@ -32,7 +32,7 @@ class GameFlavorController extends Controller
         $languages = $languageManager->getAvailableLanguages();
         $gameVersion = new GameFlavor();
 
-        return view('gameVersion.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
+        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
     }
 
     /**
@@ -43,7 +43,7 @@ class GameFlavorController extends Controller
     public function showAllGameFlavors() {
         $gameVersions = $this->gameVersionManager->getGameFlavors();
 
-        return view('gameVersion.list', ['gameVersions'=>$gameVersions]);
+        return view('game_flavor.list', ['gameVersions'=>$gameVersions]);
     }
 
     /**
@@ -89,7 +89,7 @@ class GameFlavorController extends Controller
         }
         $languages = $this->languageManager->getAvailableLanguages();
         //dd($gameVersion);
-        return view('gameVersion.createIndex', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
+        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
     }
 
     /**

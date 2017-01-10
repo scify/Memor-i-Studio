@@ -40,24 +40,18 @@ class EquivalenceSetController extends Controller
             'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg'
         ]);
 
-
         $input = $request->all();
-//        dd($input);
-        $createdCards = array();
         $gameFlavorId = $input['card'][1]['game_flavor_id'];
-        dd($gameFlavorId);
-        foreach ($input['card'] as $cardFields) {
-            $newCard = $this->cardManager->createNewCard($cardFields);
-            if($newCard == null) {
-                //TODO: redirect to 404 page
-                return redirect()->back();
-            }
-            array_push($createdCards, $newCard);
+
+        //TODO: discuss try catch with alex
+        try {
+            $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId);
+            $this->cardManager->createCards($newEquivalenceSet, $input);
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
         }
 
-        $this->cardManager->associateCards($createdCards);
-
-        session()->flash('flash_message_success', 'Game card created!');
+        session()->flash('flash_message_success', 'Game cards created!');
         return redirect()->back();
     }
 }
