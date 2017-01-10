@@ -18,7 +18,7 @@
     @include('equivalence_set.modals')
 @endsection
 @section('additionalFooter')
-    <script src="{{asset("assets/js/equivalenceSetsController.js")}}"></script>
+    {{--<script src="{{asset("assets/js/equivalenceSetsController.js")}}"></script>--}}
     <script>
         $(function() {
 

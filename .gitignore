@@ -1,6 +1,8 @@
 /node_modules
 /bower_components
 /public/build
+/public/js
+/public/css
 /public/dist
 /public/node_modules
 /public/storage

@@ -12,5 +12,5 @@
 
     <!--The elixir function takes as parameter a versioned file relative to the public folder-->
     <link rel="stylesheet" href="{{asset('/assets/pleasure-admin-panel/css/admin1.css')}}">
-    <link rel="stylesheet" href="{{asset(elixir('dist/app.css'))}}">
+    <link rel="stylesheet" href="{{asset(elixir('css/app.css'))}}">
 </head>

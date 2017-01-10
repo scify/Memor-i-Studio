@@ -5,6 +5,8 @@ var gulp = require('gulp');
 
 elixir(function(mix) {
 
+    mix.sass('app.scss',  'public/css/style.css');
+
     mix.styles([
         'public/assets/pleasure-admin-panel/css/plugins.css',
         'public/assets/pleasure-admin-panel/css/elements.css',
@@ -18,7 +20,7 @@ elixir(function(mix) {
         'node_modules/datatables/media/css/jquery.dataTables.min.css',
         'node_modules/icheck/skins/square/blue.css',
         'public/css/style.css'
-    ], 'public/dist/app.css', './');
+    ], 'public/css/app.css', './');
 
     // var directories = {
     //     'node_modules/npm-modernizr': 'public/dist/npm-modernizr',
@@ -65,11 +67,12 @@ elixir(function(mix) {
         'public/assets/pleasure-admin-panel/js/sliders.js',
         'public/assets/pleasure-admin-panel/js/layout.js',
         'public/assets/pleasure-admin-panel/js/pleasure.js'
-    ], 'public/dist/app.js' , './');
+    ], 'public/js/app.js' , './')
+        .scripts(['resources/assets/js/controllers/equivalenceSetsController.js'], 'public/js/controllers.js');
 
 
     //the parameter is relative to the public directory
-    mix.version(['dist/app.css', 'dist/app.js']);
+    mix.version(['css/app.css', 'js/app.js', 'js/controllers.js']);
 
     // mix.sass('app.scss',
     //     'public/assets/css/app.css')

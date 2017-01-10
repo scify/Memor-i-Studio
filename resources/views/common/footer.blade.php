@@ -16,9 +16,8 @@
 {{--<script src="{{asset("dist/pleasure-admin-panel/js/sliders.js")}}"></script>--}}
 {{--<script src="{{asset("dist/pleasure-admin-panel/js/layout.js")}}"></script>--}}
 {{--<script src="{{asset("dist/pleasure-admin-panel/js/pleasure.js")}}"></script>--}}
-<script src="{{asset(elixir('dist/app.js'))}}">
-</script>
-
+<script src="{{asset(elixir('js/app.js'))}}"></script>
+<script src="{{asset(elixir('js/controllers.js'))}}"></script>
 <script>
     $(document).ready(function () {
         Pleasure.init();
