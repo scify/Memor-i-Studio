@@ -28,7 +28,7 @@
 </div><!--.modal-->
 <div class="modal fade full-height" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
+        <form id="simpleCardForm" class="memoriForm height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
@@ -40,7 +40,7 @@
                     @include('card.forms.create_edit', ['formTitle' => 'Single card', 'formNum' => 1])
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
+                    <button type="submit" id="cardSubmitBtn" class="pull-left btn btn-primary btn-ripple">
                         Create
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
@@ -52,7 +52,7 @@
 </div><!--.modal-->
 <div class="modal fade full-height" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="gameVersion-handling-form" class="memoriForm height100x100" method="POST"
+        <form class="memoriForm height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
@@ -65,7 +65,7 @@
                     @include('card.forms.create_edit', ['formTitle' => 'Advanced card', 'formNum' => 2])
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="gameVersionSubmitBtn" class="pull-left btn btn-primary btn-ripple">
+                    <button type="submit" id="cardSubmitBtnAdvanced" class="pull-left btn btn-primary btn-ripple">
                         Create
                     </button>
                     <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>

@@ -8,3 +8,4 @@
     @endif
     @include('card.list', ['cards' => $equivalenceSet->cards()->get()])
 </div>
+

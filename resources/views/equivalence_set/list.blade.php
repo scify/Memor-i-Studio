@@ -21,7 +21,8 @@
     <script src="{{asset("assets/js/equivalenceSetsController.js")}}"></script>
     <script>
         $(function() {
-            var controller = new window.EquivalenceSetController();
+
+            var controller = new window.EquivalenceSetsController(cards, editCardRoute);
             controller.init();
         });
     </script>

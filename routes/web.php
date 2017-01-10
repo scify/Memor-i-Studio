@@ -36,6 +36,8 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
     Route::get('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
 
+    //Card routes
+    Route::post('card/edit', 'CardController@edit')->name('editCard');
 
 });
 Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');

@@ -6,6 +6,7 @@ use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
 use Illuminate\Http\Request;
+use Javascript;
 
 class EquivalenceSetController extends Controller
 {
@@ -24,6 +25,20 @@ class EquivalenceSetController extends Controller
         $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+        $cards = array();
+
+        foreach ($equivalenceSets as $equivalenceSet) {
+            foreach ($equivalenceSet->cards as $card) {
+                $card->imageObj = $card->image;
+                $card->soundObj = $card->sound;
+                array_push($cards, $card);
+            }
+        }
+        JavaScript::put([
+            'cards' => json_encode($cards),
+            'editCardRoute' => route('editCard')
+        ]);
+
         return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
     }
 

@@ -18,7 +18,7 @@
                     <div class="overflow-content">
                         <ul class="borderless">
 
-                            <li><a class="btn btn-flat btn-ripple editCard"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                            <li><a data-cardId="{{$card->id}}" class="btn btn-flat btn-ripple editCardBtn"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
                             {{--@if($user->isAdmin())--}}
                                 {{--@if(!$gameVersion->published)--}}
                                     {{--<li><a href="{{url('gameVersion/unpublish', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>--}}
