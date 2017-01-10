@@ -23,17 +23,18 @@ Route::get('home', 'GameFlavorController@showAllGameFlavors')->name('showAllGame
 Route::group([ 'middleware' => 'auth' ], function () {
 
     //Game Version routes
-    Route::get('gameVersion/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
-    Route::post('gameVersion/create', 'GameFlavorController@create')->name('createGameFlavor');
-    Route::get('gameVersion/edit/{id}', 'GameFlavorController@editIndex')->name('editGameFlavorIndex');
-    Route::post('gameVersion/edit/{id}', 'GameFlavorController@edit')->name('editGameFlavor');
-    Route::get('gameVersion/delete/{id}', 'GameFlavorController@delete')->name('deleteGameFlavor');
-    Route::get('gameVersion/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
-    Route::get('gameVersion/unpublish/{id}', 'GameFlavorController@publish')->name('unPublishGameFlavor');
+    Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
+    Route::post('gameFlavor/create', 'GameFlavorController@create')->name('createGameFlavor');
+    Route::get('gameFlavor/edit/{id}', 'GameFlavorController@editIndex')->name('editGameFlavorIndex');
+    Route::post('gameFlavor/edit/{id}', 'GameFlavorController@edit')->name('editGameFlavor');
+    Route::get('gameFlavor/delete/{id}', 'GameFlavorController@delete')->name('deleteGameFlavor');
+    Route::get('gameFlavor/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
+    Route::get('gameFlavor/unpublish/{id}', 'GameFlavorController@publish')->name('unPublishGameFlavor');
 
 
-    //Card routes
+    //Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
+    Route::get('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
 
 
 });
