@@ -29,12 +29,6 @@ class CardManager {
         $this->soundManager = new SoundManager();
     }
 
-//    public function getCardsForGameFlavor($gameVersionId) {
-//        return $cards = $this->cardStorage->getCardsForGameFlavor($gameVersionId);
-//    }
-
-
-
     /**
      * Generates and returns a random string
      *
@@ -115,7 +109,7 @@ class CardManager {
             $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($cardFields['image']);
         if(isset($cardFields['negative_image']))
             $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($cardFields['negative_image']);
-        if(isset($cardFields['negative_image']))
+        if(isset($cardFields['sound']))
             $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($cardFields['sound']);
 
         return $this->cardStorage->saveCard($cardToBeEdited);
