@@ -1,7 +1,8 @@
 # Memor-i Studio
-
-![Memor-i logo](https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/memori.png)
-
+<p align="center">
+<img src="https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/memori.png" width="400">
+</p>
+<br>
 Memor-i is a Memory card game especially tailored to meet the needs of blind people.
 
 Memor-i Studio, is an online games repository that people can use in order to create their own flavors of Memor-i game!
