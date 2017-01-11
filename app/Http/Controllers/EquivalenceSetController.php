@@ -31,6 +31,9 @@ class EquivalenceSetController extends Controller
 
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+        if(!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
+            return view('common.error_message', ['message' => 'This game flavor is not published yet.']);
+        }
         $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
         $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
 

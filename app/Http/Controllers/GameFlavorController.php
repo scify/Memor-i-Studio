@@ -67,9 +67,8 @@ class GameFlavorController extends Controller
         if($newGameFlavor == null)
             return Redirect::back()->withInput()->withErrors(['error', 'Something went wrong. please try again.']);
 
-        //TODO: return view to create game cards (step 2)
-        session()->flash('flash_message_success', 'Successfully created game "' . $newGameFlavor->name . '"');
-        return redirect()->back();
+
+        return redirect()->route('showEquivalenceSetsForGameFlavor', ['gameFlavorId' => $newGameFlavor->id])->with('flash_message_success', 'Successfully created game "' . $newGameFlavor->name . '"');
 
     }
 

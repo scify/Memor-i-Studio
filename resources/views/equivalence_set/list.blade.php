@@ -4,6 +4,11 @@
         <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
         <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
     </ol>
+    @if(count($equivalenceSets) == 0)
+        <div class="alert alert-info">
+            <strong>This game flavor does not contain any card sets!</strong> @if($gameFlavor->accessed_by_user)Press the "+" button to add one.@endif
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
             @if($gameFlavor->accessed_by_user)
