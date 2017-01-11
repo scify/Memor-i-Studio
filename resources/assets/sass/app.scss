@@ -29,7 +29,13 @@
 }
 
 .breadcrumb {
-  float: left;
+  //float: left;
+  max-width: 35%;
+}
+
+.noFloatAlert {
+  float: none !important;
+  position: initial !important;
 }
 
 .coverImgContainer .coverImg {
