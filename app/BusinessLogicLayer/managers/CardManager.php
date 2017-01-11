@@ -15,6 +15,8 @@ use App\Models\GameFlavor;
 use App\StorageLayer\CardStorage;
 use League\Flysystem\Exception;
 
+include_once 'functions.php';
+
 class CardManager {
 
     private $cardStorage;
@@ -28,22 +30,6 @@ class CardManager {
         $this->cardStorage = new CardStorage();
         $this->imgManager = new ImgManager();
         $this->soundManager = new SoundManager();
-    }
-
-    /**
-     * Generates and returns a random string
-     *
-     * @param int $length the length of the string
-     * @return string the random string generated
-     */
-    private function generateRandomString($length = 10) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 
     /**
@@ -88,7 +74,7 @@ class CardManager {
     public function createNewCard($input, $equivalenceSetId, $category) {
         //dd($input);
         $newCard = new Card();
-        $newCard->label = $this->generateRandomString();
+        $newCard->label = generateRandomString();
         $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
         $newCard->equivalence_set_id = $equivalenceSetId;
         $newCard->category = $category;

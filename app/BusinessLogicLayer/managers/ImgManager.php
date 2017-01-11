@@ -14,6 +14,8 @@ use App\StorageLayer\ImgCategoryStorage;
 use App\StorageLayer\ImgStorage;
 use Illuminate\Http\UploadedFile;
 
+include_once 'functions.php';
+
 class ImgManager {
 
     private $imgStorage;
@@ -34,7 +36,7 @@ class ImgManager {
     }
 
     public function createAndStoreNewImage(UploadedFile $coverImg, $imgCategory) {
-        $filename = 'img' . '_' . $this->milliseconds() . '_' . $coverImg->getClientOriginalName();
+        $filename = 'img' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $coverImg->getClientOriginalName();
         $imgCategory = $this->imgCategoryStorage->getImgCategoryByName($imgCategory);
         $imgFields = array(
             'file_path' => $filename,
@@ -47,7 +49,5 @@ class ImgManager {
         return $this->imgStorage->storeImg($image);
     }
 
-    private function milliseconds() {
-        return round(microtime(true) * 1000);
-    }
+
 }

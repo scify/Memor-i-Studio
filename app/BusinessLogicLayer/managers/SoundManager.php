@@ -13,6 +13,7 @@ use App\Models\Sound;
 use App\StorageLayer\SoundCategoryStorage;
 use App\StorageLayer\SoundStorage;
 use Illuminate\Http\UploadedFile;
+include_once 'functions.php';
 
 class SoundManager {
 
@@ -29,7 +30,7 @@ class SoundManager {
     }
 
     public function createAndStoreNewSound(UploadedFile $sound, $soundCategory) {
-        $filename = 'sound' . '_' . $this->milliseconds() . '_' . $sound->getClientOriginalName();
+        $filename = 'sound' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $sound->getClientOriginalName();
         $soundCategory = $this->soundCategoryStorage->getSoundCategoryByName($soundCategory);
 
         $sound->storeAs('sounds/' . $soundCategory->category, $filename);
@@ -40,7 +41,4 @@ class SoundManager {
         return $this->soundStorage->storeSound($soundObj);
     }
 
-    private function milliseconds() {
-        return round(microtime(true) * 1000);
-    }
 }
