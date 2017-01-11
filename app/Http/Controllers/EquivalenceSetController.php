@@ -32,7 +32,7 @@ class EquivalenceSetController extends Controller
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
         $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
-        $cards = $this->cardManager->getCardsForEquivalenceSets($equivalenceSets);
+        $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
 
         JavaScript::put([
             'cards' => json_encode($cards),

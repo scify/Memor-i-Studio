@@ -11,6 +11,7 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\Models\Card;
 use App\Models\EquivalenceSet;
+use App\Models\GameFlavor;
 use App\StorageLayer\CardStorage;
 use League\Flysystem\Exception;
 
@@ -45,9 +46,15 @@ class CardManager {
         return $randomString;
     }
 
-    public function addCardsToEquivalenceSet(array $createdCards, EquivalenceSet $newEquivalenceSet) {
-        foreach ($createdCards as $createdCard) {
-            $createdCard->equivalence_set_id = $newEquivalenceSet->id;
+    /**
+     * Adds an array of @see Card objects to a given @see EquivalentSet instance
+     *
+     * @param array $cards the array of @see Card cards
+     * @param EquivalenceSet $equivalenceSet  the set that these cards will belong
+     */
+    public function addCardsToEquivalenceSet(array $cards, EquivalenceSet $equivalenceSet) {
+        foreach ($cards as $createdCard) {
+            $createdCard->equivalence_set_id = $equivalenceSet->id;
             $this->cardStorage->saveCard($createdCard);
         }
     }
@@ -86,7 +93,16 @@ class CardManager {
         return $this->cardStorage->saveCard($newCard);
     }
 
-    public function getCardsForEquivalenceSets($equivalenceSets) {
+    /**
+     * Each @see GameFlavor has a set of equivalence sets. Each of these sets contains a set of @see Card instances.
+     *
+     * @param $gameFlavorId
+     * @return array
+     */
+    public function getCardsForGameFlavor($gameFlavorId) {
+        $equivalenceSetManager = new EquivalenceSetManager();
+        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+
         $cards = array();
         foreach ($equivalenceSets as $equivalenceSet) {
             foreach ($equivalenceSet->cards as $card) {
