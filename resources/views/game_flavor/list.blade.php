@@ -2,9 +2,9 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-        @foreach($gameVersions as $gameVersion)
+        @foreach($gameFlavors as $gameFlavor)
                 <div class="col-md-3">
-                    @include('game_flavor.single', ['gameVersion' => $gameVersion, 'user' => \Illuminate\Support\Facades\Auth::user()])
+                    @include('game_flavor.single', ['gameFlavor' => $gameFlavor, 'user' => \Illuminate\Support\Facades\Auth::user()])
                 </div>
         @endforeach
         </div>

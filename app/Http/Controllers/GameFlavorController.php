@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessLogicLayer\managers\CardManager;
+use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameFlavor;
@@ -41,9 +43,9 @@ class GameFlavorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showAllGameFlavors() {
-        $gameVersions = $this->gameVersionManager->getGameFlavors();
+        $gameFlavors = $this->gameVersionManager->getGameFlavors();
 
-        return view('game_flavor.list', ['gameVersions'=>$gameVersions]);
+        return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
     }
 
     /**
@@ -119,9 +121,6 @@ class GameFlavorController extends Controller
         }
     }
 
-
-
-
     private function assignInputFields(array $inputFields) {
         $gameVersionFields = array();
         $gameVersionFields['name'] = $inputFields['name'];
@@ -165,5 +164,37 @@ class GameFlavorController extends Controller
         }
         session()->flash('flash_message_success', 'Game version unpublished.');
         return redirect()->back();
+    }
+
+    public function download($gameFlavorId) {
+        $cardManager = new CardManager();
+        $equivalenceSetManager = new EquivalenceSetManager();
+        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        //dd($equivalenceSets);
+        $equivalence_card_sets = array();
+        $equivalence_card_sets['equivalence_card_sets'] = array();
+        foreach ($equivalenceSets as $equivalenceSet) {
+            $cards = array();
+
+            foreach ($equivalenceSet->cards as $card) {
+                $current_card = array();
+                $current_card['label'] = $card->label;
+                $current_card['category'] = $card->category;
+                $current_card['unique'] = $card->unique;
+                $current_card['sounds'] = array();
+                $current_card['images'] = array();
+                $current_card['description_sound'] = "";
+                $current_card['equivalenceCardSetHashCode'] = "";
+                array_push($current_card['sounds'], $card->sound->file_path);
+                if($card->image != null)
+                    array_push($current_card['images'], $card->image->file_path);
+                if($card->secondImage != null)
+                    array_push($current_card['images'], $card->secondImage->file_path);
+                array_push($cards, $current_card);
+            }
+            array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
+        }
+
+       return json_encode($equivalence_card_sets);
     }
 }
