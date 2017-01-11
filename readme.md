@@ -1,13 +1,16 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img width="150"src="https://laravel.com/laravel.png"></a></p>
+# Memor-i Studio
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+![Memor-i logo](https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/memori.png)
 
-## About Laravel
+Memor-i is a Memory card game especially tailored to meet the needs of blind people.
+
+Memor-i Studio, is an online games repository that people can use in order to create their own flavors of Memor-i game!
+Following the open-source paradigm, Memor-i Studio lets anyone sign up and create their own version of the popular game.
+
+
+## About the project
+
+This is a Laravel project:
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
 
@@ -21,11 +24,99 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
 
-## Learning Laravel
+##Installing dependencies (assuming apache as web server and mysql as db):
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+In a nutshell (assuming debian-based OS), first install the dependencies needed:
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Note: php5 package installs apache2 as a dependency so we have no need to add it manually.
+
+```
+% sudo aptitude install php5 php5-cli mcrypt php5-mcrypt mysql-server php5-mysql
+```
+
+Install composer according to official instructions (link above) and move binary to ~/bin:
+```% curl -sS https://getcomposer.org/installer | php5 && mv composer.phar ~/bin```
+
+Download Laravel installer via composer:
+```% composer global require "laravel/installer=~1.1"```
+
+
+And add ~/.composer/vendor/bin to your $PATH. Example:
+```
+% cat ~/.profile
+[..snip..]
+LARAVEL=/home/username/.composer/vendor
+PATH=$PATH:$LARAVEL/bin
+```
+And source your .profile with % source ~/.profile
+
+##Apache configuration:
+```
+% cat /etc/apache2/sites-available/mysite.conf
+<VirtualHost *:80>
+    ServerName myapp.localhost.com
+    DocumentRoot "/path/to/VoluntEasy/VoluntEasy/public"
+    <Directory "/path/to/VoluntEasy/VoluntEasy/public">
+        AllowOverride all
+    </Directory>
+</VirtualHost>
+```
+Make the symbolic link:
+```
+% cd /etc/apache2/sites-enabled && sudo ln -s ../sites-available/mysite.conf
+```
+Enable mod_rewrite and restart apache:
+```
+% sudo a2enmod rewrite && sudo service apache2 restart
+```
+Fix permissions for storage directory:
+```
+sudo chown -R user:www-data storage
+chmod 775 storage
+cd storage/
+find . -type f -exec chmod 664 {} \;
+find . -type d -exec chmod 775 {} \;
+```
+Test your setup with:
+```
+% php artisan serve
+```
+and navigate to localhost:8000.
+
+## Setup DB
+Laravel provides a simple yet powerful mechanism for creating the DB schema, called [Migrations](https://laravel.com/docs/5.3/migrations)
+Simply run ```php artisan migrate``` to create the appropriate DB schema.
+
+## Add seed data to DB
+Run ```php artisan db:seed``` in order to insert the starter data to the DB by using [Laravel seeder](https://laravel.com/docs/5.3/seeding)
+
+## Building project
+After cloning the project, create an .env file (should be a copy of .env.example),
+containing the information about your database name and credentials. 
+After that, download all Laravel dependencies through [Composer](https://laravel.com/docs/5.3/installation), by running
+
+```
+composer install
+
+composer update
+```
+
+After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. 
+We achieve that by using [npm](https://www.npmjs.com/). So, when in project root directory, run
+```
+npm install
+```
+To download and install all libraries and dependencies.
+
+## Compiling assets
+
+This project uses [Elixir](https://laravel.com/docs/5.3/elixir) which is a tool built on [Gulp](http://gulpjs.com/),
+a popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and minification.
+
+
+## Deploying
+You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}
+
 
 ## Contributing
 
