@@ -17,15 +17,7 @@
                 <div class="layered-content bg-green">
                     <div class="overflow-content">
                         <ul class="borderless">
-
                             <li><a data-cardId="{{$card->id}}" class="btn btn-flat btn-ripple editCardBtn"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
-                            {{--@if($user->isAdmin())--}}
-                                {{--@if(!$gameVersion->published)--}}
-                                    {{--<li><a href="{{url('gameVersion/unpublish', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>--}}
-                                {{--@else--}}
-                                    {{--<li><a href="{{url('gameVersion/unpublish', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>--}}
-                                {{--@endif--}}
-                            {{--@endif--}}
                         </ul>
                     </div><!--.overflow-content-->
                     <div class="clickable-close-button">
@@ -36,28 +28,12 @@
         @endif
     </div><!--.card-heading-->
 
-    {{--<div class="card-body">--}}
-        {{--<h3 class="gameVersionTitle">--}}
-            {{--<a href="{{route('showCardsForGameFlavor', $gameVersion->id)}}"> {{$gameVersion->name}}</a>--}}
-            {{--@if($user != null)--}}
-                {{--@if($user->isAdmin())--}}
-                    {{--@if(!$gameVersion->published)--}}
-                        {{--<i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: orangered" title="This game is not published yet."></i>--}}
-                    {{--@else--}}
-                        {{--<i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: forestgreen" title="Published game."></i>--}}
-                    {{--@endif--}}
-                {{--@endif--}}
-            {{--@endif--}}
-        {{--</h3>--}}
-        {{----}}
-
-    {{--</div><!--.card-body-->--}}
-
     <div class="card-footer">
         <div class="cardSound">
             @if($card->sound != null)
                 <audio controls>
                     <source src="{{url('data/sounds/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/mpeg">
+                    <source src="{{url('data/sounds/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/wav">
                     Your browser does not support the audio element.
                 </audio>
             @endif

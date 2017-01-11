@@ -1,5 +1,9 @@
 @extends('common.layout')
 @section('content')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+        <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
+    </ol>
     <div class="row">
         <div class="col-md-12">
             @if($gameFlavor->accessed_by_user)

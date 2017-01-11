@@ -25,6 +25,9 @@ class CardController extends Controller
      */
     public function edit(Request $request) {
         //dd($request->all());
+        $this->validate($request, [
+            'card.*.sound' => 'mimetypes:audio/mpeg,audio/x-wav'
+        ]);
         try {
             $editedCard = $this->cardManager->editCard($request->all());
             if($editedCard == null)
