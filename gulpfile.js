@@ -8,8 +8,9 @@ elixir(function(mix) {
     mix.sass('app.scss',  'public/css/style.css');
 
     mix.styles([
-        'public/assets/pleasure-admin-panel/css/plugins.css',
-        'public/assets/pleasure-admin-panel/css/elements.css',
+        'resources/assets/pleasure-admin-panel/css/plugins.css',
+        'resources/assets/pleasure-admin-panel/css/admin1.css',
+        'resources/assets/pleasure-admin-panel/css/elements.css',
         'node_modules/sweetalert/dist/sweetalert.css',
         'node_modules/chosen-js/chosen.css',
         'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
@@ -22,25 +23,14 @@ elixir(function(mix) {
         'public/css/style.css'
     ], 'public/css/app.css', './');
 
-    // var directories = {
-    //     'node_modules/npm-modernizr': 'public/dist/npm-modernizr',
-    //     'node_modules/chosen-js': 'public/dist/chosen-js',
-    //     'public/assets/pleasure-admin-panel/js': 'public/dist/pleasure-admin-panel/js',
-    //     'node_modules/bxslider': 'public/dist/bxslider',
-    //     'node_modules/jquery-knob': 'public/dist/jquery-knob',
-    //     'node_modules/html2canvas': 'public/dist/html2canvas',
-    //     'node_modules/gauge-js': 'public/dist/gauge-js',
-    //     'node_modules/jasny-bootstrap': 'public/dist/jasny-bootstrap',
-    //     'node_modules/sweetalert': 'public/dist/sweetalert',
-    //     'node_modules/datatables': 'public/dist/datatables',
-    //     'node_modules/icheck': 'public/dist/icheck',
-    //     'public/assets/pleasure-admin-panel/fonts': 'public/build/fonts'
-    //
-    // };
-    //
-    // for (var directory in directories) {
-    //     mix.copy(directory, directories[directory]);
-    // }
+    var fontDirectories = {
+        'resources/assets/pleasure-admin-panel/fonts': 'public/build/fonts',
+        'resources/assets/pleasure-admin-panel/fontawesome': 'public/build/fontawesome'
+    };
+
+    for (var directory in fontDirectories) {
+        mix.copy(directory, fontDirectories[directory]);
+    }
 
     mix.scripts([
         'node_modules/npm-modernizr/modernizr.js',
@@ -64,11 +54,14 @@ elixir(function(mix) {
         'node_modules/sweetalert/dist/sweetalert.min.js',
         'node_modules/datatables/media/js/jquery.dataTables.min.js',
         'node_modules/icheck/icheck.min.js',
-        'public/assets/pleasure-admin-panel/js/sliders.js',
-        'public/assets/pleasure-admin-panel/js/layout.js',
-        'public/assets/pleasure-admin-panel/js/pleasure.js'
-    ], 'public/js/app.js' , './')
-        .scripts(['resources/assets/js/controllers/equivalenceSetsController.js'], 'public/js/controllers.js');
+        'resources/assets/pleasure-admin-panel/js/sliders.js',
+        'resources/assets/pleasure-admin-panel/js/layout.js',
+        'resources/assets/pleasure-admin-panel/js/pleasure.js'
+    ],
+        'public/js/app.js' , './')
+        .scripts([
+            'resources/assets/js/controllers/'
+        ], 'public/js/controllers.js');
 
 
     //the parameter is relative to the public directory
