@@ -77,6 +77,14 @@ class CardManager {
         }
     }
 
+    /**
+     * Creates a new @see Card instance and assignes values to it, as well as its @see EquivalenceSet
+     *
+     * @param $input array an associative array with the card data
+     * @param $equivalenceSetId int the id of the @see EquivalenceSet the card will belong.
+     * @param $category string the category this card will be assigned with
+     * @return Card the newly created card
+     */
     public function createNewCard($input, $equivalenceSetId, $category) {
         //dd($input);
         $newCard = new Card();
@@ -94,7 +102,27 @@ class CardManager {
     }
 
     /**
-     * Each @see GameFlavor has a set of equivalence sets. Each of these sets contains a set of @see Card instances.
+     * Finds and assigns new values to a @see Card instance.
+     *
+     * @param array $input an associative array with the card data
+     * @return Card the just edited Card
+     */
+    public function editCard(array $input) {
+        $cardFields = $input['card'][1];
+        $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
+        if(isset($cardFields['image']))
+            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($cardFields['image']);
+        if(isset($cardFields['negative_image']))
+            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($cardFields['negative_image']);
+        if(isset($cardFields['sound']))
+            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($cardFields['sound']);
+
+        return $this->cardStorage->saveCard($cardToBeEdited);
+    }
+
+    /**
+     * Each @see GameFlavor has a set of equivalence sets.
+     * Each of these sets contains a set of @see Card instances.
      *
      * @param $gameFlavorId
      * @return array
@@ -116,19 +144,6 @@ class CardManager {
             }
         }
         return $cards;
-    }
-
-    public function editCard(array $input) {
-        $cardFields = $input['card'][1];
-        $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
-        if(isset($cardFields['image']))
-            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($cardFields['image']);
-        if(isset($cardFields['negative_image']))
-            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($cardFields['negative_image']);
-        if(isset($cardFields['sound']))
-            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($cardFields['sound']);
-
-        return $this->cardStorage->saveCard($cardToBeEdited);
     }
 
 
