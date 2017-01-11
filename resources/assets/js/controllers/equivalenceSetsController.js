@@ -1,6 +1,7 @@
-window.EquivalenceSetsController = function (cards, editCardRoute) {
+window.EquivalenceSetsController = function (cards, editCardRoute, createEquivalenceSetRoute) {
     this.cards = JSON.parse(cards);
     this.editCardRoute = editCardRoute;
+    this.createEquivalenceSetRoute = createEquivalenceSetRoute;
 };
 
 window.EquivalenceSetsController.prototype = function () {
@@ -33,6 +34,39 @@ window.EquivalenceSetsController.prototype = function () {
         },
         populateCardForm = function(card) {
             console.log(card);
+            if(card.imageObj.file_path != null && card.imageObj.file_path != '') {
+                $('.cardImage').removeClass("fileinput-new");
+                $('.cardImage').addClass("fileinput-exists");
+                $('.cardImage .fileinput-preview').append('<img src="' + card.imgPath +'" style="max-height: 170px;">');
+            }
+
+            if(card.negativeImageObj != null) {
+                if (card.negativeImageObj.file_path != null && card.negativeImageObj.file_path != '') {
+                    $('.cardNegativeImage').removeClass("fileinput-new");
+                    $('.cardNegativeImage').addClass("fileinput-exists");
+                    $('.cardNegativeImage .fileinput-preview').append('<img src="' + card.negativeImgPath + '" style="max-height: 170px;">');
+                }
+            }
+
+            if(card.soundObj.file_path != null && card.soundObj.file_path != '') {
+                $('.cardAudioVal').html(card.soundObj.file_path);
+            }
+            $("#cardSubmitBtn").html("Edit");
+
+        },
+        clearCardForm = function(instance) {
+            $('.cardImage').addClass("fileinput-new");
+            $('.cardImage').removeClass("fileinput-exists");
+            $('.cardImage .fileinput-preview img').remove();
+            $('.cardAudioVal').html("");
+            $("#cardSubmitBtn").html("Create");
+            $('#simpleCardForm').attr("action", instance.createEquivalenceSetRoute);
+        },
+        modalCloseHandler = function(instance) {
+            $('#cardSimpleModal').on('hidden.bs.modal', function () {
+                clearCardForm(instance);
+                console.log("form cleared");
+            })
         },
         init = function () {
             var instance = this;
@@ -40,6 +74,7 @@ window.EquivalenceSetsController.prototype = function () {
             console.log("here");
             deleteEquivalenceSetBtnHandler();
             editCardBtnHandler(instance.cards, instance.editCardRoute);
+            modalCloseHandler(instance);
         };
     return {
         init: init

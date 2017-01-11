@@ -17,4 +17,8 @@ class CardStorage {
         $card->save();
         return $card;
     }
+
+    public function getCardById($cardId) {
+        return Card::findOrFail($cardId);
+    }
 }

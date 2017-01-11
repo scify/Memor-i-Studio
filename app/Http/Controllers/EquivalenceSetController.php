@@ -21,22 +21,23 @@ class EquivalenceSetController extends Controller
         $this->cardManager = new CardManager();
     }
 
+    /**
+     * Prepares and returns a blade view with the appropriate data for a game flavor
+     *
+     * @param $gameFlavorId int the id of the game flavor the user views
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View a view with the appropriate data
+     */
     public function showEquivalenceSetsForGameFlavor($gameFlavorId) {
-        $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
-        $cards = array();
+        $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        $cards = $this->cardManager->getCardsForEquivalenceSets($equivalenceSets);
 
-        foreach ($equivalenceSets as $equivalenceSet) {
-            foreach ($equivalenceSet->cards as $card) {
-                $card->imageObj = $card->image;
-                $card->soundObj = $card->sound;
-                array_push($cards, $card);
-            }
-        }
         JavaScript::put([
             'cards' => json_encode($cards),
-            'editCardRoute' => route('editCard')
+            'editCardRoute' => route('editCard'),
+            'createEquivalenceSetRoute' => route('createEquivalenceSet')
         ]);
 
         return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
@@ -75,6 +76,12 @@ class EquivalenceSetController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Deletes an equivalence set
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete(Request $request) {
         try {
             $this->equivalenceSetManager->deleteSet($request->id);

@@ -33,21 +33,6 @@ class CardManager {
 //        return $cards = $this->cardStorage->getCardsForGameFlavor($gameVersionId);
 //    }
 
-    public function createNewCard($input, $equivalenceSetId, $category) {
-        //dd($input);
-        $newCard = new Card();
-        $newCard->label = $this->generateRandomString();
-        $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
-        $newCard->equivalence_set_id = $equivalenceSetId;
-        $newCard->category = $category;
-        if(isset($input['negative_image'])) {
-            if ($input['negative_image'] != null)
-                $newCard->negative_image_id = $this->imgManager->uploadCardImg($input['negative_image']);
-        }
-
-        $newCard->sound_id = $this->soundManager->uploadCardSound($input['sound']);
-        return $this->cardStorage->saveCard($newCard);
-    }
 
 
     /**
@@ -89,6 +74,51 @@ class CardManager {
                 throw new Exception('Card creation failed');
             }
         }
+    }
+
+    public function createNewCard($input, $equivalenceSetId, $category) {
+        //dd($input);
+        $newCard = new Card();
+        $newCard->label = $this->generateRandomString();
+        $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
+        $newCard->equivalence_set_id = $equivalenceSetId;
+        $newCard->category = $category;
+        if(isset($input['negative_image'])) {
+            if ($input['negative_image'] != null)
+                $newCard->negative_image_id = $this->imgManager->uploadCardImg($input['negative_image']);
+        }
+
+        $newCard->sound_id = $this->soundManager->uploadCardSound($input['sound']);
+        return $this->cardStorage->saveCard($newCard);
+    }
+
+    public function getCardsForEquivalenceSets($equivalenceSets) {
+        $cards = array();
+        foreach ($equivalenceSets as $equivalenceSet) {
+            foreach ($equivalenceSet->cards as $card) {
+                $card->imageObj = $card->image;
+                $card->negativeImageObj = $card->secondImage;
+                $card->imgPath = url('data/images/' . $card->image->imageCategory->category .  '/' . $card->image->file_path);
+                if($card->secondImage != null)
+                    $card->negativeImgPath = url('data/images/' . $card->secondImage->imageCategory->category .  '/' . $card->secondImage->file_path);
+                $card->soundObj = $card->sound;
+                array_push($cards, $card);
+            }
+        }
+        return $cards;
+    }
+
+    public function editCard(array $input) {
+        $cardFields = $input['card'][1];
+        $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
+        if(isset($cardFields['image']))
+            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($cardFields['image']);
+        if(isset($cardFields['negative_image']))
+            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($cardFields['negative_image']);
+        if(isset($cardFields['negative_image']))
+            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($cardFields['sound']);
+
+        return $this->cardStorage->saveCard($cardToBeEdited);
     }
 
 
