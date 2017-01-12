@@ -177,7 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider'
+        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
+        'Chumper\Zipper\ZipperServiceProvider'
 
     ],
 
@@ -226,7 +227,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Javascript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class
+        'Javascript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
+        'Zipper' => Chumper\Zipper\Zipper::class
     ],
 
 ];

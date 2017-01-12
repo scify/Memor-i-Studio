@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
-use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameFlavor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
+
 class GameFlavorController extends Controller
 {
     private $languageManager;
-    private $gameVersionManager;
+    private $gameFlavorManager;
 
     /**
      * GameFlavorController constructor.
      */
     public function __construct() {
         $this->languageManager = new LanguageManager();
-        $this->gameVersionManager = new GameFlavorManager();
+        $this->gameFlavorManager = new GameFlavorManager();
     }
 
 
@@ -43,7 +43,7 @@ class GameFlavorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showAllGameFlavors() {
-        $gameFlavors = $this->gameVersionManager->getGameFlavors();
+        $gameFlavors = $this->gameFlavorManager->getGameFlavors();
 
         return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
     }
@@ -65,7 +65,7 @@ class GameFlavorController extends Controller
         $gameVersionFields = $this->assignInputFields($input);
 
 
-        $newGameFlavor = $this->gameVersionManager->saveGameFlavor(null, $gameVersionFields, $request);
+        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor(null, $gameVersionFields, $request);
         if($newGameFlavor == null)
             return Redirect::back()->withInput()->withErrors(['error', 'Something went wrong. please try again.']);
 
@@ -83,7 +83,7 @@ class GameFlavorController extends Controller
      */
     public function editIndex($id)
     {
-        $gameVersion = $this->gameVersionManager->getGameFlavorForEdit($id);
+        $gameVersion = $this->gameFlavorManager->getGameFlavorForEdit($id);
         if($gameVersion == null) {
             //TODO: redirect to 404 page
             return redirect()->back();
@@ -111,7 +111,7 @@ class GameFlavorController extends Controller
         $input = $request->all();
         $gameVersionFields = $this->assignInputFields($input);
 
-        $newGameFlavor = $this->gameVersionManager->saveGameFlavor($id, $gameVersionFields, $request);
+        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor($id, $gameVersionFields, $request);
 
         if($newGameFlavor != null) {
             return redirect()->route('showAllGameFlavors')->with('flash_message_success', 'Successfully edited game "' . $newGameFlavor->name . '"');
@@ -137,7 +137,7 @@ class GameFlavorController extends Controller
      */
     public function delete($id) {
 
-        $result = $this->gameVersionManager->deleteGameFlavor($id);
+        $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if(!$result) {
             //TODO: redirect to 404 page
             return redirect()->back();
@@ -147,7 +147,7 @@ class GameFlavorController extends Controller
     }
 
     public function publish($id) {
-        $result = $this->gameVersionManager->toggleGameFlavorState($id);
+        $result = $this->gameFlavorManager->toggleGameFlavorState($id);
         if(!$result) {
             //TODO: redirect to error page
             return redirect()->back();
@@ -157,7 +157,7 @@ class GameFlavorController extends Controller
     }
 
     public function unPublish($id) {
-        $result = $this->gameVersionManager->toggleGameFlavorState($id);
+        $result = $this->gameFlavorManager->toggleGameFlavorState($id);
         if(!$result) {
             //TODO: redirect to error page
             return redirect()->back();
@@ -167,34 +167,14 @@ class GameFlavorController extends Controller
     }
 
     public function download($gameFlavorId) {
-        $cardManager = new CardManager();
-        $equivalenceSetManager = new EquivalenceSetManager();
-        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
-        //dd($equivalenceSets);
-        $equivalence_card_sets = array();
-        $equivalence_card_sets['equivalence_card_sets'] = array();
-        foreach ($equivalenceSets as $equivalenceSet) {
-            $cards = array();
-
-            foreach ($equivalenceSet->cards as $card) {
-                $current_card = array();
-                $current_card['label'] = $card->label;
-                $current_card['category'] = $card->category;
-                $current_card['unique'] = $card->unique;
-                $current_card['sounds'] = array();
-                $current_card['images'] = array();
-                $current_card['description_sound'] = "";
-                $current_card['equivalenceCardSetHashCode'] = "";
-                array_push($current_card['sounds'], $card->sound->file_path);
-                if($card->image != null)
-                    array_push($current_card['images'], $card->image->file_path);
-                if($card->secondImage != null)
-                    array_push($current_card['images'], $card->secondImage->file_path);
-                array_push($cards, $current_card);
-            }
-            array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
+        //TODO: change
+        try {
+            $jsonFile = $this->gameFlavorManager->createEquivalenceSetsJSONFile($gameFlavorId);
+            $this->gameFlavorManager->zipGameFlavor($gameFlavorId);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
         }
 
-       return json_encode($equivalence_card_sets);
+        return $jsonFile;
     }
 }

@@ -14,6 +14,9 @@ use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Chumper\Zipper\Zipper;
+use Illuminate\Support\Facades\Storage;
 
 class GameFlavorManager {
 
@@ -165,20 +168,81 @@ class GameFlavorManager {
         return false;
     }
 
+    /**
+     * Toggles the @see GameFlavor instance's published attribute
+     *
+     * @param $gameVersionId int the id of the @see GameFlavor to be updated
+     * @return bool if the update process was successful or not
+     */
     public function toggleGameFlavorState($gameVersionId) {
-        $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
-        if($gameVersion == null)
+        $gameFlavor = $this->getGameFlavorForEdit($gameVersionId);
+        if($gameFlavor == null)
             return false;
-        $gameVersion = $this->toggleGameFlavorPublishedAttribute($gameVersion);
-        if($this->gameVersionStorage->storeGameFlavor($gameVersion) != null) {
+        $gameFlavor->published = !$gameFlavor->published;
+        if($this->gameVersionStorage->storeGameFlavor($gameFlavor) != null) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Prepares the JSON file describing the equivalence sets
+     *
+     * @param $gameFlavorId int the id of the @see GameFlavor
+     * @return string
+     */
+    public function createEquivalenceSetsJSONFile($gameFlavorId) {
+        $equivalenceSetManager = new EquivalenceSetManager();
+        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        //dd($equivalenceSets);
+        $equivalence_card_sets = array();
+        $equivalence_card_sets['equivalence_card_sets'] = array();
+        foreach ($equivalenceSets as $equivalenceSet) {
+            $cards = array();
 
-    private function toggleGameFlavorPublishedAttribute($gameVersion) {
-        $gameVersion->published = !$gameVersion->published;
-        return $gameVersion;
+            foreach ($equivalenceSet->cards as $card) {
+                $current_card = array();
+                $current_card['label'] = $card->label;
+                $current_card['category'] = $card->category;
+                $current_card['unique'] = $card->unique;
+                $current_card['sounds'] = array();
+                $current_card['images'] = array();
+                $current_card['description_sound'] = "";
+                $current_card['equivalenceCardSetHashCode'] = "";
+                array_push($current_card['sounds'], $card->sound->file_path);
+                if($card->image != null)
+                    array_push($current_card['images'], $card->image->file_path);
+                if($card->secondImage != null)
+                    array_push($current_card['images'], $card->secondImage->file_path);
+                array_push($cards, $current_card);
+            }
+            array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
+        }
+        $filePath = storage_path() . '/app/packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json';
+        if(!File::exists($filePath)) {
+            File::delete($filePath);
+        }
+
+//        $bytes_written = File::put($filePath, $equivalence_card_sets);
+//        if ($bytes_written === false) {
+//            throwException(new \Exception("Could not write to JSON file"));
+//        }
+        Storage::put('packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json', json_encode($equivalence_card_sets));
+
+        return json_encode($equivalence_card_sets);
+    }
+
+    /**
+     * Zips a directory containing Game flavor data (images, sounds, etc) into a .zip file
+     *
+     * @param $gameFlavorId int the id of the @see GameFlavor
+     */
+    public function zipGameFlavor($gameFlavorId) {
+        $packDir = storage_path() . '/app/packs/' . $gameFlavorId;
+        $zipper = new Zipper();
+        File::delete($packDir . '/memori_data.zip');
+        $zipper->make($packDir . '/memori_data_' . $gameFlavorId . '.zip')
+            ->add($packDir)
+            ->remove('memori_data_' . $gameFlavorId . '.zip');
     }
 }
