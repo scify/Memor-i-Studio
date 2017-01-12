@@ -69,7 +69,7 @@ class EquivalenceSetController extends Controller
         //TODO: discuss try catch with alex
         try {
             $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId);
-            $this->cardManager->createCards($newEquivalenceSet, $input);
+            $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();

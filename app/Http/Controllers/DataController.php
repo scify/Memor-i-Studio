@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Response;
 
 class DataController extends Controller
 {
-    public function resolvePath($dir, $subDir, $filename) {
-        $path = storage_path() . '/app/' . $dir . '/' . $subDir . '/' . $filename;
+    public function resolvePath($dataPackName, $dir, $subDir, $filename) {
+        $path = storage_path() . '/app/packs/' . $dataPackName . '/' . $dir . '/' . $subDir . '/' . $filename;
+
         $response = null;
 
 

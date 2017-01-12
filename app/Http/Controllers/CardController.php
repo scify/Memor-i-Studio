@@ -28,8 +28,10 @@ class CardController extends Controller
         $this->validate($request, [
             'card.*.sound' => 'mimetypes:audio/mpeg,audio/x-wav'
         ]);
+        $input = $request->all();
+        $gameFlavorId = $input['card'][1]['game_flavor_id'];
         try {
-            $editedCard = $this->cardManager->editCard($request->all());
+            $editedCard = $this->cardManager->editCard($gameFlavorId, $request->all());
             if($editedCard == null)
                 throwException(new \Exception("Something went wrong. Please try again."));
         }  catch (\Exception $e) {

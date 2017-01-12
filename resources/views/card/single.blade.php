@@ -4,7 +4,7 @@
             @if($card->image_id == null)
                 <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{url('data/images/' . $card->image->imageCategory->category .  '/' . $card->image->file_path)}}">
+                <img class="coverImg" src="{{url('data/' . $gameFlavor->id . '/img/' . $card->image->imageCategory->category .  '/' . $card->image->file_path)}}">
             @endif
         </div>
         @if($user != null)
@@ -32,8 +32,8 @@
         <div class="cardSound">
             @if($card->sound != null)
                 <audio controls>
-                    <source src="{{url('data/sounds/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/mpeg">
-                    <source src="{{url('data/sounds/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/wav">
+                    <source src="{{url('data/' . $gameFlavor->id . '/audios/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/mpeg">
+                    <source src="{{url('data/' . $gameFlavor->id . '/audios/' . $card->sound->soundCategory->category .  '/' . $card->sound->file_path)}}" type="audio/wav">
                     Your browser does not support the audio element.
                 </audio>
             @endif

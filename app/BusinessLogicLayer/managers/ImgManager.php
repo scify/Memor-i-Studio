@@ -27,22 +27,22 @@ class ImgManager {
         $this->imgCategoryStorage = new ImgCategoryStorage();
     }
 
-    public function uploadGameFlavorCoverImg(UploadedFile $coverImg) {
-        return $this->createAndStoreNewImage($coverImg, 'game_cover');
+    public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
+        return $this->createAndStoreNewImage($coverImg, 'game_cover', $gameFlavorId);
     }
 
-    public function uploadCardImg(UploadedFile $coverImg) {
-        return $this->createAndStoreNewImage($coverImg, 'card_images');
+    public function uploadCardImg($gameFlavorId, UploadedFile $img) {
+        return $this->createAndStoreNewImage($img, 'card_images', $gameFlavorId);
     }
 
-    public function createAndStoreNewImage(UploadedFile $coverImg, $imgCategory) {
-        $filename = 'img' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $coverImg->getClientOriginalName();
+    public function createAndStoreNewImage(UploadedFile $img, $imgCategory, $gameFlavorId) {
+        $filename = 'img' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $img->getClientOriginalName();
         $imgCategory = $this->imgCategoryStorage->getImgCategoryByName($imgCategory);
         $imgFields = array(
             'file_path' => $filename,
             'category_id' => $imgCategory->id
         );
-        $coverImg->storeAs('images/' . $imgCategory->category, $filename);
+        $img->storeAs('packs/' . $gameFlavorId . '/' . 'img/' . $imgCategory->category, $filename);
         $image = new Image;
         $image->category_id = $imgFields['category_id'];
         $image->file_path = $imgFields['file_path'];

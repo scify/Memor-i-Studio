@@ -45,11 +45,11 @@ class CardManager {
         }
     }
 
-    public function createCards(EquivalenceSet $newEquivalenceSet, array $input) {
+    public function createCards($gameFlavorId, EquivalenceSet $newEquivalenceSet, array $input) {
         $index = 1;
         $cardLabel = generateRandomString();
         foreach ($input['card'] as $cardFields) {
-            $newCard = $this->createNewCard($cardLabel, $cardFields, $newEquivalenceSet->id, $index % 2 == 1 ? 'item' : 'item_equivalent');
+            $newCard = $this->createNewCard($gameFlavorId, $cardLabel, $cardFields, $newEquivalenceSet->id, $index % 2 == 1 ? 'item' : 'item_equivalent');
             $index++;
             if ($newCard == null) {
                 throw new Exception('Card creation failed');
@@ -57,7 +57,7 @@ class CardManager {
         }
         //TODO: discuss with ggianna
         if(count($input['card']) == 1) {
-            $newCard = $this->createNewCard($cardLabel, $input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
+            $newCard = $this->createNewCard($gameFlavorId, $cardLabel, $input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
             if ($newCard == null) {
                 throw new Exception('Card creation failed');
             }
@@ -72,37 +72,38 @@ class CardManager {
      * @param $category string the category this card will be assigned with
      * @return Card the newly created card
      */
-    public function createNewCard($cardLabel, $input, $equivalenceSetId, $category) {
+    public function createNewCard($gameFlavorId, $cardLabel, $input, $equivalenceSetId, $category) {
         //dd($input);
         $newCard = new Card();
         $newCard->label = $cardLabel;
-        $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
+        $newCard->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['image']);
         $newCard->equivalence_set_id = $equivalenceSetId;
         $newCard->category = $category;
         if(isset($input['negative_image'])) {
             if ($input['negative_image'] != null)
-                $newCard->negative_image_id = $this->imgManager->uploadCardImg($input['negative_image']);
+                $newCard->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['negative_image']);
         }
 
-        $newCard->sound_id = $this->soundManager->uploadCardSound($input['sound']);
+        $newCard->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $input['sound']);
         return $this->cardStorage->saveCard($newCard);
     }
 
     /**
      * Finds and assigns new values to a @see Card instance.
      *
+     * @param $gameFlavorId int the id of the game flavor this card belongs to
      * @param array $input an associative array with the card data
      * @return Card the just edited Card
      */
-    public function editCard(array $input) {
+    public function editCard($gameFlavorId, array $input) {
         $cardFields = $input['card'][1];
         $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
         if(isset($cardFields['image']))
-            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($cardFields['image']);
+            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['image']);
         if(isset($cardFields['negative_image']))
-            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($cardFields['negative_image']);
+            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['negative_image']);
         if(isset($cardFields['sound']))
-            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($cardFields['sound']);
+            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $cardFields['sound']);
 
         return $this->cardStorage->saveCard($cardToBeEdited);
     }
@@ -123,9 +124,9 @@ class CardManager {
             foreach ($equivalenceSet->cards as $card) {
                 $card->imageObj = $card->image;
                 $card->negativeImageObj = $card->secondImage;
-                $card->imgPath = url('data/images/' . $card->image->imageCategory->category .  '/' . $card->image->file_path);
+                $card->imgPath = url('data/' . $gameFlavorId . '/img/' . $card->image->imageCategory->category .  '/' . $card->image->file_path);
                 if($card->secondImage != null)
-                    $card->negativeImgPath = url('data/images/' . $card->secondImage->imageCategory->category .  '/' . $card->secondImage->file_path);
+                    $card->negativeImgPath = url('data/' . $gameFlavorId . '/img/' . $card->secondImage->imageCategory->category .  '/' . $card->secondImage->file_path);
                 $card->soundObj = $card->sound;
                 array_push($cards, $card);
             }

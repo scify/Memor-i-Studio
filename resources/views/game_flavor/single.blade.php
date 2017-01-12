@@ -4,7 +4,7 @@
             @if($gameFlavor->cover_img_id == null)
                 <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{url('data/images/' . $gameFlavor->coverImg->imageCategory->category .  '/' . $gameFlavor->coverImg->file_path)}}">
+                <img class="coverImg" src="{{url('data/' . $gameFlavor->id . '/img/' . $gameFlavor->coverImg->imageCategory->category .  '/' . $gameFlavor->coverImg->file_path)}}">
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>
@@ -19,13 +19,13 @@
                     <div class="overflow-content">
                         <ul class="borderless">
 
-                            <li><a href="{{url('gameVersion/edit', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
-                            <li><a href="{{url('gameVersion/delete', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
+                            <li><a href="{{url('gameFlavor/edit', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                            <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
                             @if($user->isAdmin())
                                 @if(!$gameFlavor->published)
-                                    <li><a href="{{url('gameVersion/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                                    <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
                                 @else
-                                    <li><a href="{{url('gameVersion/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
+                                    <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
                                 @endif
                             @endif
                         </ul>

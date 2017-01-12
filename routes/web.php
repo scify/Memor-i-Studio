@@ -43,5 +43,5 @@ Route::group([ 'middleware' => 'auth' ], function () {
 Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
 Route::get('flavor/{id}/download', 'GameFlavorController@download')->name('downloadGameFlavor');
 
-Route::get('data/{dataDir}/{dataType}/{filename}', 'DataController@resolvePath');
+Route::get('data/{packName}/{dataDir}/{dataType}/{filename}', 'DataController@resolvePath');
 

@@ -25,15 +25,6 @@ class GameFlavorManager {
     }
 
     public function saveGameFlavor($gameVersionId, array $gameVersionFields, Request $request) {
-        //TODO: add try-catch
-        //upload the cover image
-        if($request->hasFile('cover_img')) {
-            $gameVersionFields['cover_img_id'] = $this->processFile($request);
-            if ($gameVersionFields['cover_img_id'] == null)
-                return null;
-        } else {
-            $gameVersionFields['cover_img_id'] = null;
-        }
 
         if($gameVersionId == null) {
             $gameVersionFields['creator_id'] = Auth::user()->id;
@@ -45,13 +36,20 @@ class GameFlavorManager {
 
             $gameVersion = $this->assignValuesToGameFlavor($gameVersion, $gameVersionFields);
         }
+        //TODO: add try-catch
+        //upload the cover image
+        if($request->hasFile('cover_img')) {
+            $gameVersion['cover_img_id'] = $this->processFile($gameVersion->id, $request);
+            if ($gameVersion['cover_img_id'] == null)
+                return null;
+        }
 
         return $this->gameVersionStorage->storeGameFlavor($gameVersion);
     }
 
-    private function processFile(Request $request) {
+    private function processFile($gameVersionId, Request $request) {
         $imgManager = new ImgManager();
-        return $imgManager->uploadGameFlavorCoverImg($request->file('cover_img'));
+        return $imgManager->uploadGameFlavorCoverImg($gameVersionId, $request->file('cover_img'));
     }
 
     public function getGameFlavors() {
@@ -129,8 +127,8 @@ class GameFlavorManager {
 
         if(isset($gameVersionFields['creator_id']) && $gameVersionFields['creator_id'] != null)
             $gameVersion->creator_id = $gameVersionFields['creator_id'];
-        if($gameVersionFields['cover_img_id'] != null)
-            $gameVersion->cover_img_id = $gameVersionFields['cover_img_id'];
+//        if($gameVersionFields['cover_img_id'] != null)
+//            $gameVersion->cover_img_id = $gameVersionFields['cover_img_id'];
 
         return $gameVersion;
     }

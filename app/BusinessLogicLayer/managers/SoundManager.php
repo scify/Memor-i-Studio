@@ -25,15 +25,15 @@ class SoundManager {
         $this->soundCategoryStorage = new SoundCategoryStorage();
     }
 
-    public function uploadCardSound(UploadedFile $sound) {
-        return $this->createAndStoreNewSound($sound, 'card_sounds');
+    public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
+        return $this->createAndStoreNewSound($sound, 'card_sounds', $gameFlavorId);
     }
 
-    public function createAndStoreNewSound(UploadedFile $sound, $soundCategory) {
+    public function createAndStoreNewSound(UploadedFile $sound, $soundCategory, $gameFlavorId) {
         $filename = 'sound' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $sound->getClientOriginalName();
         $soundCategory = $this->soundCategoryStorage->getSoundCategoryByName($soundCategory);
 
-        $sound->storeAs('sounds/' . $soundCategory->category, $filename);
+        $sound->storeAs('packs/' . $gameFlavorId . '/' . 'audios/' . $soundCategory->category, $filename);
         $soundObj = new Sound();
         $soundObj->category_id = $soundCategory->id;
         $soundObj->file_path = $filename;
