@@ -18,8 +18,11 @@
         {{--</div>--}}
         <div class="row">
             <div class="row">
-                <div class="col-md-6">Card image</div><!--.col-md-3-->
-                <div class="col-md-6">Card negative image</div><!--.col-md-3-->
+                <h3 class="col-md-12 text-purple">{{$formTitle}}</h3><!--.col-md-12-->
+            </div>
+            <div class="row">
+                <div class="col-md-6">{{$formTitle}} image</div><!--.col-md-6-->
+                <div class="col-md-6">{{$formTitle}} negative image</div><!--.col-md-6-->
             </div>
 
             <div class="col-md-6">
@@ -60,7 +63,7 @@
         </div>
         <div class="row example-row">
             <div class="col-md-6">
-                <div class="">Card sound</div>
+                <div class="">{{$formTitle}} sound</div>
                 <div class="cardAudioVal margin-bottom-10"></div>
             </div>
             <div class="col-md-12">

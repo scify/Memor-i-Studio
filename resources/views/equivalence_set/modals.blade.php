@@ -37,7 +37,7 @@
                     <h4 class="modal-title">Create a new card set</h4>
                 </div>
                 <div class="modal-body">
-                    @include('card.forms.create_edit', ['formTitle' => 'Single card', 'formNum' => 1])
+                    @include('card.forms.create_edit', ['formTitle' => 'Card', 'formNum' => 1])
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cardSubmitBtn" class="pull-left btn btn-primary btn-ripple">
@@ -50,7 +50,7 @@
 
     </div>
 </div><!--.modal-->
-<div class="modal fade full-height" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal scale full-height fade" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <form class="memoriForm height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
@@ -61,8 +61,18 @@
                     <h4 class="modal-title">Create a new card set</h4>
                 </div>
                 <div class="modal-body">
-                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card', 'formNum' => 1])
-                    @include('card.forms.create_edit', ['formTitle' => 'Advanced card', 'formNum' => 2])
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li class="active"><a href="#first_card" data-toggle="tab">Card</a></li>
+                        <li><a href="#equivalent_card" data-toggle="tab">Equivalent Card</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="first_card">
+                            @include('card.forms.create_edit', ['formTitle' => 'First card', 'formNum' => 1])
+                        </div><!--.tab-pane-->
+                        <div class="tab-pane" id="equivalent_card">
+                            @include('card.forms.create_edit', ['formTitle' => 'Equivalent card', 'formNum' => 2])
+                        </div><!--.tab-pane-->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cardSubmitBtnAdvanced" class="pull-left btn btn-primary btn-ripple">
