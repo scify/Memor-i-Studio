@@ -100,7 +100,7 @@ body {
 
 #newEquivalenceSetBtn {
   width: 100%;
-  height: 340px;
+  height: 350px;
   padding: 100px;
   border: 2px dashed #337ab7;
 }
@@ -137,10 +137,24 @@ body {
   height: 210px !important;
 }
 
-.equivalenceSet {
-  padding-bottom: 15px;
-  padding-top: 15px;
+.equivalenceSetContainer {
+  margin-bottom: 20px;
+  height: 350px;
   background-color: lightslategray;
-  margin-bottom: 10px;
-  margin-right: 10px;
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 992px) {
+  .equivalenceSetContainer {
+      height: auto;
+  }
+  #newEquivalenceSetBtn {
+      margin-bottom: 20px;
+  }
+}
+
+.equivalenceSet {
+
+  padding: 15px;
+  //margin-right: 10px;
 }
