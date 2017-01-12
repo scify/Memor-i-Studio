@@ -223,10 +223,6 @@ class GameFlavorManager {
             File::delete($filePath);
         }
 
-//        $bytes_written = File::put($filePath, $equivalence_card_sets);
-//        if ($bytes_written === false) {
-//            throwException(new \Exception("Could not write to JSON file"));
-//        }
         Storage::put('packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json', json_encode($equivalence_card_sets));
 
         return json_encode($equivalence_card_sets);
@@ -240,9 +236,11 @@ class GameFlavorManager {
     public function zipGameFlavor($gameFlavorId) {
         $packDir = storage_path() . '/app/packs/' . $gameFlavorId;
         $zipper = new Zipper();
-        File::delete($packDir . '/memori_data.zip');
-        $zipper->make($packDir . '/memori_data_' . $gameFlavorId . '.zip')
-            ->add($packDir)
-            ->remove('memori_data_' . $gameFlavorId . '.zip');
+        $zipFile = storage_path() . '/app/zips/' . 'memori_data_' . $gameFlavorId . '.zip';
+        if(File::exists($zipFile)) {
+            File::delete($zipFile);
+        }
+        $zipper->make($zipFile)
+            ->add($packDir);
     }
 }
