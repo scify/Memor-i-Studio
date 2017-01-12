@@ -47,8 +47,9 @@ class CardManager {
 
     public function createCards(EquivalenceSet $newEquivalenceSet, array $input) {
         $index = 1;
+        $cardLabel = generateRandomString();
         foreach ($input['card'] as $cardFields) {
-            $newCard = $this->createNewCard($cardFields, $newEquivalenceSet->id, $index % 2 == 1 ? 'item' : 'item_equivalent');
+            $newCard = $this->createNewCard($cardLabel, $cardFields, $newEquivalenceSet->id, $index % 2 == 1 ? 'item' : 'item_equivalent');
             $index++;
             if ($newCard == null) {
                 throw new Exception('Card creation failed');
@@ -56,7 +57,7 @@ class CardManager {
         }
         //TODO: discuss with ggianna
         if(count($input['card']) == 1) {
-            $newCard = $this->createNewCard($input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
+            $newCard = $this->createNewCard($cardLabel, $input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
             if ($newCard == null) {
                 throw new Exception('Card creation failed');
             }
@@ -71,10 +72,10 @@ class CardManager {
      * @param $category string the category this card will be assigned with
      * @return Card the newly created card
      */
-    public function createNewCard($input, $equivalenceSetId, $category) {
+    public function createNewCard($cardLabel, $input, $equivalenceSetId, $category) {
         //dd($input);
         $newCard = new Card();
-        $newCard->label = generateRandomString();
+        $newCard->label = $cardLabel;
         $newCard->image_id = $this->imgManager->uploadCardImg($input['image']);
         $newCard->equivalence_set_id = $equivalenceSetId;
         $newCard->category = $category;
