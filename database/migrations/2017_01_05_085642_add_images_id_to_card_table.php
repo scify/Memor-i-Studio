@@ -19,8 +19,8 @@ class AddImagesIdToCardTable extends Migration
         });
 
         Schema::table('card', function ($table) {
-            $table->foreign('image_id')->references('id')->on('image');
-            $table->foreign('negative_image_id')->references('id')->on('image');
+            $table->foreign('image_id')->references('id')->on('resource');
+            $table->foreign('negative_image_id')->references('id')->on('resource');
         });
     }
 

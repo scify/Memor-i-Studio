@@ -18,7 +18,7 @@ class AddCoverImgToGameFlavorTable extends Migration
       });
 
       Schema::table('game_flavor', function ($table) {
-          $table->foreign('cover_img_id')->references('id')->on('image');
+          $table->foreign('cover_img_id')->references('id')->on('resource');
       });
     }
 
