@@ -19,7 +19,7 @@ class GameFlavor extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','lang_id', 'description', 'creator_id', 'cover_img_id'];
+    protected $fillable = ['name','lang_id', 'description', 'creator_id', 'cover_img_id', 'game_version_id'];
 
     /**
      * Get the Equivalence Sets for the card.
@@ -32,7 +32,11 @@ class GameFlavor extends Model
      * Get the images for the card.
      */
     public function sounds() {
-        return $this->hasMany('App\Models\Sound');
+        return $this->hasMany('App\Models\Resource');
+    }
+
+    public function gameVersion() {
+        return $this->hasOne('App\Models\GameVersion', 'id', 'game_version_id');
     }
 
     public function language() {
@@ -52,7 +56,7 @@ class GameFlavor extends Model
      */
     public function coverImg()
     {
-        return $this->hasOne('App\Models\Image', 'id', 'cover_img_id');
+        return $this->hasOne('App\Models\Resource', 'id', 'cover_img_id');
     }
 
     /***
