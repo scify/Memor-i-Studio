@@ -8,7 +8,6 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\Resource;
 
 class ResourceStorage {
