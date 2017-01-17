@@ -15,6 +15,9 @@
 //    return view('welcome');
 //});
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 Route::get('/', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
@@ -22,7 +25,15 @@ Route::get('home', 'GameFlavorController@showAllGameFlavors')->name('showAllGame
 
 Route::group([ 'middleware' => 'auth' ], function () {
 
-    //Game Version routes
+    //Game Flavor routes
+    Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
+    Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
+    Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
+    Route::get('gameVersion/{id}/edit', 'GameVersionController@editIndex')->name('editGameVersionIndex');
+    Route::post('gameVersion/{id}/edit', 'GameVersionController@edit')->name('editGameVersion');
+    Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
+
+    //Game Flavor routes
     Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
     Route::post('gameFlavor/create', 'GameFlavorController@create')->name('createGameFlavor');
     Route::get('gameFlavor/edit/{id}', 'GameFlavorController@editIndex')->name('editGameFlavorIndex');
@@ -43,5 +54,5 @@ Route::group([ 'middleware' => 'auth' ], function () {
 Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
 Route::get('flavor/{id}/download', 'GameFlavorController@download')->name('downloadGameFlavor');
 
-Route::get('data/{packName}/{dataDir}/{dataType}/{filename}', 'DataController@resolvePath');
+Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
 
