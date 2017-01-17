@@ -16,8 +16,14 @@
             <div class="overflow-content">
                 <ul class="borderless">
                     <li><a href="{{route('editGameVersion', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
-                    {{--<li><a href="{{url('gameVersion/delete', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>--}}
-
+                    <li><a href="{{route('addGameVersionLanguage', ['id' => $gameVersion->id])}}" class="btn btn-flat btn-ripple">
+                            <i class="fa fa-globe" aria-hidden="true"></i> Add Language
+                        </a>
+                    </li>
+                    <li><a href="{{route('showGameVersionResources', ['id' => $gameVersion->id])}}" class="btn btn-flat btn-ripple">
+                            <i class="fa fa-table" aria-hidden="true"></i> Translate resources
+                        </a>
+                    </li>
                 </ul>
             </div><!--.overflow-content-->
             <div class="clickable-close-button">
