@@ -16,6 +16,8 @@ include_once 'functions.php';
 
 class EquivalenceSetManager {
 
+    private $equivalenceSetStorage;
+
     public function __construct() {
         $this->equivalenceSetStorage = new EquivalentSetStorage();
     }
