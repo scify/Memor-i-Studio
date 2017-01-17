@@ -8,21 +8,15 @@
 
 namespace App\BusinessLogicLayer\managers;
 
-
-use App\Models\Sound;
-use App\StorageLayer\SoundCategoryStorage;
-use App\StorageLayer\SoundStorage;
 use Illuminate\Http\UploadedFile;
 include_once 'functions.php';
 
 class SoundManager {
 
-    private $soundStorage;
-    private $soundCategoryStorage;
+    private $resourceManager;
 
     public function __construct() {
-        $this->soundStorage = new SoundStorage();
-        $this->soundCategoryStorage = new SoundCategoryStorage();
+        $this->resourceManager = new \ResourceManager();
     }
 
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
@@ -30,15 +24,7 @@ class SoundManager {
     }
 
     public function createAndStoreNewSound(UploadedFile $sound, $soundCategory, $gameFlavorId) {
-        $filename = 'sound' . '_' . milliseconds() . '_' . generateRandomString(6) . '_' . $sound->getClientOriginalName();
-        $soundCategory = $this->soundCategoryStorage->getSoundCategoryByName($soundCategory);
-
-        $sound->storeAs('packs/' . $gameFlavorId . '/' . 'audios/' . $soundCategory->category, $filename);
-        $soundObj = new Sound();
-        $soundObj->category_id = $soundCategory->id;
-        $soundObj->file_path = $filename;
-
-        return $this->soundStorage->storeSound($soundObj);
+        return $this->resourceManager->createAndStoreNewResource($sound, $soundCategory, $gameFlavorId);
     }
 
 }
