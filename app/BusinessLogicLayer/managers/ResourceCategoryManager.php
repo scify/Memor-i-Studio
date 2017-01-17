@@ -2,8 +2,11 @@
 namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersion;
+use App\Models\Resource;
 use App\Models\ResourceCategory;
 use App\StorageLayer\ResourceCategoryStorage;
+use App\StorageLayer\ResourceTranslationStorage;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class containing the Business logic for Resource Categories
@@ -52,6 +55,39 @@ class ResourceCategoryManager {
      */
     public function getResourceCategoryByNameForGameVersion($resourceCategoryName, $gameVersionId) {
         return $this->resourceCategoryStorage->getResourceCategoryByPathForGameVersion($resourceCategoryName, $gameVersionId);
+    }
+
+    /**
+     * Gets a @see Collection of @see ResourceCategory instances for the Game Version
+     *
+     * @param $gameVersionId int the GameVersion id
+     * @return Collection a set of the ResourceCategory instances
+     */
+    public function getResourceCategoriesForGameVersion($gameVersionId) {
+        return $this->resourceCategoryStorage->getResourceCategoriesForGameVersion($gameVersionId);
+    }
+
+    /**
+     * For a given game version id and a language id, get the corresponding @see ResourceCategory instances,
+     * each containing @see Resource instances
+     *
+     * @param $gameVersionId int the game version id
+     * @param $langId int the language id
+     * @return Collection set of ResourceCategories containing resource instances
+     */
+    public function getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId) {
+        $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId);
+        $resourceTranslationStorage = new ResourceTranslationStorage();
+        foreach ($gameVersionResourceCategories as $category) {
+            $currCatResources = $category->resources;
+            foreach ($currCatResources as $resource) {
+                $translationForResource = $resourceTranslationStorage->getTranslationForResource($resource->id, $langId);
+                if($translationForResource != null) {
+                    $resource->default_text = $translationForResource;
+                }
+            }
+        }
+        return $gameVersionResourceCategories;
     }
 
 }
