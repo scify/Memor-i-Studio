@@ -56,25 +56,37 @@
   font-size: large;
 }
 
-.gameVersionItem {
+.gameFlavorItem {
   height: 480px;
 }
 
-.gameVersionItem .card-body {
-  height: 220px;
+.gameFlavorItem {
+  .card-body {
+    height: 220px;
+  }
+
+  .description {
+    height: 55%;
+    overflow: auto;
+  }
+
+  .langImg {
+    height: 25px;
+    position: absolute;
+    float: right;
+    right: 5px;
+    top: 5px;
+  }
 }
 
-.gameVersionDescription {
-  height: 55%;
-  overflow: auto;
+.coverImg {
+  width:100%;
 }
 
-.langImg {
-  height: 25px;
-  position: absolute;
-  float: right;
-  right: 5px;
-  top: 5px;
+.gameVersionItem {
+  .user-image {
+    height: 270px !important;
+  }
 }
 
 body {
@@ -157,4 +169,13 @@ body {
 
   padding: 15px;
   //margin-right: 10px;
+}
+
+.resourcesTable {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.width-percent-80 {
+  width: 80% !important;
 }
