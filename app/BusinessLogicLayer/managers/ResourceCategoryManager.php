@@ -83,7 +83,7 @@ class ResourceCategoryManager {
             foreach ($currCatResources as $resource) {
                 $translationForResource = $resourceTranslationStorage->getTranslationForResource($resource->id, $langId);
                 if($translationForResource != null) {
-                    $resource->default_text = $translationForResource;
+                    $resource->default_text = $translationForResource->description;
                 }
             }
         }

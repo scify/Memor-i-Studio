@@ -4,16 +4,24 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersionLanguage;
 use App\StorageLayer\GameVersionLanguageStorage;
+use Illuminate\Database\Eloquent\Collection;
 
 class GameVersionLanguageManager {
     private $gameVersionLanguageStorage;
+    private $languageManager;
 
     public function __construct() {
         $this->gameVersionLanguageStorage = new GameVersionLanguageStorage();
+        $this->languageManager = new LanguageManager();
     }
 
     public function getGameVersionLanguages($id) {
-        return $this->gameVersionLanguageStorage->getGameVersionLanguages($id);
+        $gameVersionLanguages =  $this->gameVersionLanguageStorage->getGameVersionLanguages($id);
+        $languages = new Collection();
+        foreach ($gameVersionLanguages as $gameVersionLanguage) {
+            $languages->add($this->languageManager->getLanguage($gameVersionLanguage->lang_id));
+        }
+        return $languages;
     }
 
     public function gameVersionHasLanguage($gameVersionId, $langId) {

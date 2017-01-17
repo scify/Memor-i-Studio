@@ -15,4 +15,8 @@ class LanguageManager {
     public function getAvailableLanguages() {
         return $this->languagesStorage->getAllLanguages();
     }
+
+    public function getLanguage($langId) {
+        return $this->languagesStorage->getLanguageById($langId);
+    }
 }
