@@ -25,13 +25,17 @@ Route::get('home', 'GameFlavorController@showAllGameFlavors')->name('showAllGame
 
 Route::group([ 'middleware' => 'auth' ], function () {
 
-    //Game Flavor routes
+    //Game Version routes
     Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
     Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
     Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
     Route::get('gameVersion/{id}/edit', 'GameVersionController@editIndex')->name('editGameVersionIndex');
     Route::post('gameVersion/{id}/edit', 'GameVersionController@edit')->name('editGameVersion');
     Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
+    Route::get('gameVersion/{id}/resources', 'GameVersionController@showGameVersionResources')->name('showGameVersionResources');
+    Route::get('gameVersion/resourcesForLanguage', 'GameVersionController@showGameVersionResourcesForLanguage')->name('showGameVersionResourcesForLanguage');
+    Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->name('addGameVersionLanguage');
+    Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
 
     //Game Flavor routes
     Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
@@ -42,6 +46,8 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('gameFlavor/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
     Route::get('gameFlavor/unpublish/{id}', 'GameFlavorController@publish')->name('unPublishGameFlavor');
 
+    //Game Resources
+    Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->name('updateGameResourcesTranslations');
 
     //Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
