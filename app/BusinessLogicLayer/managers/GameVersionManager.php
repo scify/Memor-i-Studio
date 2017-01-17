@@ -43,7 +43,7 @@ class GameVersionManager {
         }
 
         $newGameVersion = $this->gameVersionStorage->storeGameVersion($newGameVersion);
-        $zipFilePath = $this->storeZipFile($newGameVersion->id, $input['gameJarFile']);
+        $zipFilePath = $this->storeZipFile($newGameVersion->id, $input['gameResPack']);
         $this->extractResourceDirectoriesFromZipFile($zipFilePath);
         $resourceCategoriesManager = new ResourceCategoryManager();
         $resourcesManager = new ResourceManager();
