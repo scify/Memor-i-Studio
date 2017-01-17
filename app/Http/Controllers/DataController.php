@@ -7,14 +7,11 @@ use Illuminate\Support\Facades\Response;
 
 class DataController extends Controller
 {
-    public function resolvePath($dataPackName, $dir, $subDir, $filename) {
-        $path = storage_path() . '/app/packs/' . $dataPackName . '/' . $dir . '/' . $subDir . '/' . $filename;
-
+    public function resolvePath($filePath) {
+        $path = storage_path() . '/app/' . $filePath;
         $response = null;
 
-
         if(File::exists($path)) {
-
             $file = File::get($path);
             $type = File::mimeType($path);
             $response = Response::make($file, 200);
