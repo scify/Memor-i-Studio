@@ -21,7 +21,15 @@ class Resource extends Model
      */
     protected $fillable = ['category_id', 'name', 'file_path', 'default_text'];
 
-    public function soundCategory() {
+    public function resourceCategory() {
         return $this->hasOne('App\Models\ResourceCategory', 'id', 'category_id');
+    }
+
+    /**
+     * Get the translations of this resource
+     */
+    public function translations()
+    {
+        return $this->hasMany('App\Models\ResourceTranslation', 'resource_id', 'id');
     }
 }

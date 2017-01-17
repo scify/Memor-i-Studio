@@ -29,4 +29,12 @@ class ResourceCategory extends Model
     {
         return $this->hasOne('App\Models\GameVersion', 'id', 'game_version_id');
     }
+
+    /**
+     * Get the @see GameVersion this resource category belongs to.
+     */
+    public function resources()
+    {
+        return $this->hasMany('App\Models\Resource', 'category_id', 'id')->orderBy('name');
+    }
 }
