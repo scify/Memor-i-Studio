@@ -7,6 +7,7 @@ use App\Models\ResourceCategory;
 use App\Models\ResourceCategoryTranslation;
 use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceCategoryTranslationStorage;
+use App\StorageLayer\ResourceFileStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -82,7 +83,6 @@ class ResourceCategoryManager {
         $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId);
         $resourceTranslationStorage = new ResourceTranslationStorage();
         $resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
-
         foreach ($gameVersionResourceCategories as $category) {
             $translationForResourceCategory = $resourceCategoryTranslationStorage->getTranslationForResourceCategory($category->id, $langId);
             if($translationForResourceCategory != null) {

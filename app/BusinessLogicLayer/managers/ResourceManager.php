@@ -41,8 +41,7 @@ class ResourceManager {
         $file->storeAs($pathToStore, $filename);
         $resource = new Resource();
         $resource->category_id = $resourceCategory->id;
-        //TODO remove (?)
-        $resource->file_path = $pathToStore;
+
         return $this->resourceStorage->storeResource($resource);
     }
 
@@ -58,10 +57,10 @@ class ResourceManager {
         $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
 
         $file->storeAs($pathToStore, $filename);
-        $resource = new CardResource();
-        $resource->card_id = $cardId;
-        $resource->file_path = $pathToStore . $filename;
-        return $this->resourceStorage->storeCardResource($resource);
+        $cardResource = new CardResource();
+        $cardResource->card_id = $cardId;
+        $cardResource->file_path = $pathToStore . $filename;
+        return $this->resourceStorage->storeCardResource($cardResource);
     }
 
     /**

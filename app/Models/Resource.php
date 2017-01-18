@@ -19,7 +19,7 @@ class Resource extends Model
      *
      * @var array
      */
-    protected $fillable = ['category_id', 'name', 'file_path', 'default_text'];
+    protected $fillable = ['category_id', 'name', 'default_text'];
 
     public function resourceCategory() {
         return $this->hasOne('App\Models\ResourceCategory', 'id', 'category_id');
@@ -31,5 +31,21 @@ class Resource extends Model
     public function translations()
     {
         return $this->hasMany('App\Models\ResourceTranslation', 'resource_id', 'id');
+    }
+
+    /***
+     * https://laravel.com/docs/5.3/eloquent-mutators#accessors-and-mutators
+     *
+     * @param $value
+     * @return mixed
+     */
+    public function getFilePathAttribute($value)
+    {
+        return $value;
+    }
+
+    public function setFilePathAttribute($value)
+    {
+        $this->attributes['file_path'] = $value;
     }
 }

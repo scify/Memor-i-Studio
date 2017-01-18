@@ -17,7 +17,7 @@
             </div>
         @else
             <div class="alert alert-info noFloatAlert">
-                Click <a href="">here</a> to proceed to game sounds
+                Click <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">here</a> to proceed to game sounds
             </div>
         @endif
     @endif

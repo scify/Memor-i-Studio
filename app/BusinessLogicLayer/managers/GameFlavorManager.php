@@ -12,6 +12,7 @@ namespace App\BusinessLogicLayer\managers;
 use App\Models\GameFlavor;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
+use App\StorageLayer\ResourceFileStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -49,6 +50,25 @@ class GameFlavorManager {
 //        }
 
         return $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+    }
+
+    public function getResourcesForGameFlavor($gameFlavor) {
+        $resourceCategoryManager = new ResourceCategoryManager();
+        $resourceFileStorage = new ResourceFileStorage();
+        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
+        foreach ($gameVersionResourceCategories as $category) {
+
+            $currCatResources = $category->resources;
+            foreach ($currCatResources as $resource) {
+                $fileForResource = $resourceFileStorage->getPathForGameFlavorResource($resource->id, $gameFlavor->id);
+                if($fileForResource != null) {
+                    $resource->file_path = $fileForResource->file_path;
+                } else {
+                    $resource->file_path = null;
+                }
+            }
+        }
+        return $gameVersionResourceCategories;
     }
 
     private function uploadCoverImageFile($gameVersionId, Request $request) {

@@ -24,4 +24,8 @@ class ResourceFileStorage {
             return $resource->id;
         return null;
     }
+
+    public function getPathForGameFlavorResource($resourceId, $gameFlavorId) {
+        return GameFlavorResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
+    }
 }

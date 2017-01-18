@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
 use Illuminate\Http\Request;
@@ -39,5 +41,13 @@ class ResourceController extends Controller
         }
         session()->flash('flash_message_success', 'Resource translation updated');
         return redirect()->back();
+    }
+
+    public function getResourcesForGameFlavor($gameFlavorId) {
+        $gameFlavorManager = new GameFlavorManager();
+        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+
+        $gameFlavorResources = $gameFlavorManager->getResourcesForGameFlavor($gameFlavor);
+        dd($gameFlavorResources);
     }
 }
