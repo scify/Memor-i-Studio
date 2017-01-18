@@ -5,7 +5,7 @@
               enctype="multipart/form-data">
             <div class="panel">
                 <div class="panel-heading">
-                    <div class="panel-title"><h3><input name="resource_category_translation" value="{{$resourceCategory->description}}"></h3></div>
+                    <div class="panel-title"><h3><input class="width-percent-60" name="resource_category_translation" value="{{$resourceCategory->description}}"></h3></div>
                     <input name="resource_category_id" type="hidden" value="{{$resourceCategory->id}}">
                 </div><!--.panel-heading-->
                 <div class="panel-body">
