@@ -183,3 +183,12 @@ body {
 .width-percent-60 {
   width: 60% !important;
 }
+
+
+.accordion .panel-heading.active a:after {
+  content: '\f123';
+}
+
+.accordion .panel-heading a:after {
+  content: '\f124';
+}

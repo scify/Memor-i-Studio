@@ -133,7 +133,7 @@ class GameVersionController extends Controller
 
         $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId);
 
-        return view('game_resource_category.list', ['resourceCategories' => $gameVersionResourceCategories, 'languages' => $gameVersionLanguages, 'gameVersionId' => $gameVersionId, 'langId' => $langId]);
+        return view('game_resource_category.list_for_admin', ['resourceCategories' => $gameVersionResourceCategories, 'languages' => $gameVersionLanguages, 'gameVersionId' => $gameVersionId, 'langId' => $langId]);
     }
 
 

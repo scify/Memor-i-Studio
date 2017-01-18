@@ -30,7 +30,8 @@ elixir(function(mix) {
 
     var fontDirectories = {
         'resources/assets/pleasure-admin-panel/fonts': 'public/build/fonts',
-        'resources/assets/pleasure-admin-panel/fontawesome': 'public/build/fontawesome'
+        'resources/assets/pleasure-admin-panel/fontawesome': 'public/build/fontawesome',
+        'resources/assets/pleasure-admin-panel/ionicons': 'public/build/ionicons'
     };
 
     for (var directory in fontDirectories) {
