@@ -8358,8 +8358,8 @@ MIT License: https://github.com/driftyco/ionicons
 */
 @font-face {
   font-family: "Ionicons";
-  src: url("../../globals/plugins/ionicons/fonts/ionicons.eot?v=2.0.0");
-  src: url("../../globals/plugins/ionicons/fonts/ionicons.eot?v=2.0.0#iefix") format("embedded-opentype"), url("../../globals/plugins/ionicons/fonts/ionicons.ttf?v=2.0.0") format("truetype"), url("../../globals/plugins/ionicons/fonts/ionicons.woff?v=2.0.0") format("woff"), url("../../globals/plugins/ionicons/fonts/ionicons.svg?v=2.0.0#Ionicons") format("svg");
+  src: url("../ionicons/fonts/ionicons.eot?v=2.0.0");
+  src: url("../ionicons/fonts/ionicons.eot?v=2.0.0#iefix") format("embedded-opentype"), url("../ionicons/fonts/ionicons.ttf?v=2.0.0") format("truetype"), url("../ionicons/fonts/ionicons.woff?v=2.0.0") format("woff"), url("../ionicons/fonts/ionicons.svg?v=2.0.0#Ionicons") format("svg");
   font-weight: normal;
   font-style: normal;
 }
