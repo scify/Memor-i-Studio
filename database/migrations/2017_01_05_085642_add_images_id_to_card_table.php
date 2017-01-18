@@ -14,13 +14,13 @@ class AddImagesIdToCardTable extends Migration
     public function up()
     {
         Schema::table('card', function ($table) {
-            $table->integer('image_id')->unsigned();
+            $table->integer('image_id')->unsigned()->nullable();
             $table->integer('negative_image_id')->unsigned()->nullable();
         });
 
         Schema::table('card', function ($table) {
-            $table->foreign('image_id')->references('id')->on('resource');
-            $table->foreign('negative_image_id')->references('id')->on('resource');
+            $table->foreign('image_id')->references('id')->on('card_resource');
+            $table->foreign('negative_image_id')->references('id')->on('card_resource');
         });
     }
 

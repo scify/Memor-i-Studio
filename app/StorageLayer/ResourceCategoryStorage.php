@@ -14,7 +14,7 @@ use App\Models\ResourceCategory;
 class ResourceCategoryStorage {
 
     public function getResourceCategoryByPath($name) {
-        return ResourceCategory::where('path', $name)->firstOrFail();
+        return ResourceCategory::where('path', $name)->first();
     }
 
     public function getResourceCategoryByPathForGameVersion($name, $gameVersionId) {

@@ -14,11 +14,11 @@ class AddSoundToCardTable extends Migration
     public function up()
     {
         Schema::table('card', function ($table) {
-            $table->integer('sound_id')->unsigned();
+            $table->integer('sound_id')->unsigned()->nullable();
         });
 
         Schema::table('card', function ($table) {
-            $table->foreign('sound_id')->references('id')->on('resource');
+            $table->foreign('sound_id')->references('id')->on('card_resource');
         });
     }
 

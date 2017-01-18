@@ -26,7 +26,7 @@ class Card extends Model
      */
     public function image()
     {
-        return $this->hasOne('App\Models\Resource', 'id', 'image_id');
+        return $this->hasOne('App\Models\CardResource', 'id', 'image_id');
     }
 
     /**
@@ -34,7 +34,7 @@ class Card extends Model
      */
     public function secondImage()
     {
-        return $this->hasOne('App\Models\Resource', 'id', 'negative_image_id');
+        return $this->hasOne('App\Models\CardResource', 'id', 'negative_image_id');
     }
 
     /**
@@ -42,7 +42,7 @@ class Card extends Model
      */
     public function sound()
     {
-        return $this->hasOne('App\Models\Resource', 'id', 'sound_id');
+        return $this->hasOne('App\Models\CardResource', 'id', 'sound_id');
     }
 
     /**
@@ -50,7 +50,7 @@ class Card extends Model
      */
     public function equivalenceSet()
     {
-        return $this->hasOne('App\Models\EquivalenceSet', 'id', 'equivalence_set_id');
+        return $this->belongsTo('App\Models\EquivalenceSet', 'equivalence_set_id', 'id');
     }
 
 

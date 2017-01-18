@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResourceTable extends Migration
+class CreateCardResourceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateResourceTable extends Migration
      */
     public function up()
     {
-        Schema::create('resource', function (Blueprint $table) {
+        Schema::create('card_resource', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('category_id')->unsigned()->nullable();
+            $table->integer('card_id')->unsigned()->nullable();
             $table->string('file_path', 500);
-            $table->string('default_text', 500);
-            $table->foreign('category_id')->references('id')->on('resource_category');
+            $table->foreign('card_id')->references('id')->on('card');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ class CreateResourceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('resource');
+        Schema::dropIfExists('card_resource');
     }
 }
