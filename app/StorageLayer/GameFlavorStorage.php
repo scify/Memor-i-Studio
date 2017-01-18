@@ -15,12 +15,12 @@ class GameFlavorStorage {
 
     /**
      * Stores @see GameFlavor object to DB
-     * @param GameFlavor $gameVersion the object to be stored
+     * @param GameFlavor $gameFlavor the object to be stored
      * @return GameFlavor the newly created game version
      */
-    public function storeGameFlavor(GameFlavor $gameVersion) {
-        $gameVersion->save();
-        return $gameVersion;
+    public function storeGameFlavor(GameFlavor $gameFlavor) {
+        $gameFlavor->save();
+        return $gameFlavor;
     }
 
     public function getGameFlavorsByPublishedState($state) {
@@ -50,7 +50,7 @@ class GameFlavorStorage {
         ])->get()->first();
     }
 
-    public function deleteGameFlavor(GameFlavor $gameVersion) {
-        $gameVersion->delete();
+    public function deleteGameFlavor(GameFlavor $gameFlavor) {
+        $gameFlavor->delete();
     }
 }
