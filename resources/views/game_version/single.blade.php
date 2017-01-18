@@ -15,8 +15,8 @@
         <div class="layered-content bg-green">
             <div class="overflow-content">
                 <ul class="borderless">
-                    <li><a href="{{route('editGameVersion', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
-                    <li><a href="{{route('addGameVersionLanguage', ['id' => $gameVersion->id])}}" class="btn btn-flat btn-ripple">
+                    <li><a href="{{route('editGameVersionIndex', $gameVersion->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                    <li><a href="{{route('addGameVersionLanguageIndex', $gameVersion->id)}}" class="btn btn-flat btn-ripple">
                             <i class="fa fa-globe" aria-hidden="true"></i> Add Language
                         </a>
                     </li>

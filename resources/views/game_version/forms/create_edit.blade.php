@@ -67,8 +67,7 @@
                                             <span class="fileinput-exists">Change</span>
                                             <input type="file" name="cover_img"></span>
                                         <a href="#"
-                                           class="btn btn-default {{($gameVersion->cover_img_path == null ? 'fileinput-new' : 'fileinput-exists')}}"
-                                           data-dismiss="fileinput">Remove</a>
+                                           class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                     </div>
                                 </div>
                             </div><!--.col-md-9-->
