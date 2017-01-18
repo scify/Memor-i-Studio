@@ -4,7 +4,9 @@ namespace App\BusinessLogicLayer\managers;
 use App\Models\GameVersion;
 use App\Models\Resource;
 use App\Models\ResourceCategory;
+use App\Models\ResourceCategoryTranslation;
 use App\StorageLayer\ResourceCategoryStorage;
+use App\StorageLayer\ResourceCategoryTranslationStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -14,9 +16,10 @@ use Illuminate\Database\Eloquent\Collection;
 class ResourceCategoryManager {
 
     private $resourceCategoryStorage;
-
+    private $resourceCategoryTranslationStorage;
     public function __construct() {
         $this->resourceCategoryStorage = new ResourceCategoryStorage();
+        $this->resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
     }
 
     /**
@@ -78,7 +81,14 @@ class ResourceCategoryManager {
     public function getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId) {
         $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId);
         $resourceTranslationStorage = new ResourceTranslationStorage();
+        $resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
+
         foreach ($gameVersionResourceCategories as $category) {
+            $translationForResourceCategory = $resourceCategoryTranslationStorage->getTranslationForResourceCategory($category->id, $langId);
+            if($translationForResourceCategory != null) {
+                $category->description = $translationForResourceCategory->description;
+            }
+
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
                 $translationForResource = $resourceTranslationStorage->getTranslationForResource($resource->id, $langId);
@@ -88,6 +98,51 @@ class ResourceCategoryManager {
             }
         }
         return $gameVersionResourceCategories;
+    }
+
+
+    /**
+     * Updates or creates new resource category translation
+     *
+     * @param $resourceCategoryId int the id of the resource category
+     * @param $langId int the language id for the translation
+     * @param $translationText string the translation string
+     */
+    public function createOrUpdateResourceCategoryTranslation($resourceCategoryId, $langId, $translationText) {
+        $existingResourceCategoryTranslation = $this->resourceCategoryTranslationStorage->getTranslationForResourceCategory($resourceCategoryId, $langId);
+        if($existingResourceCategoryTranslation == null) {
+            //create  new resource translation
+            $this->createNewTranslationForResourceCategory($translationText, $resourceCategoryId, $langId);
+        } else {
+            //update the existing translation
+            $this->updateTranslationForResourceCategory($existingResourceCategoryTranslation, $translationText);
+        }
+    }
+
+    /**
+     * Creates a new @see ResourceTranslation instance
+     *
+     * @param $translationText string the translation message
+     * @param $resourceId int the resource id
+     * @param $langId int the language id
+     */
+    private function createNewTranslationForResourceCategory($translationText, $resourceId, $langId) {
+        $resourceTranslationCategory = new ResourceCategoryTranslation();
+        $resourceTranslationCategory->description = $translationText;
+        $resourceTranslationCategory->resource_category_id = $resourceId;
+        $resourceTranslationCategory->lang_id = $langId;
+        $this->resourceCategoryTranslationStorage->saveResourceCategoryTranslation($resourceTranslationCategory);
+    }
+
+    /**
+     * Updates the description of the resource translation
+     *
+     * @param ResourceCategoryTranslation $existingResourceCategoryTranslation the resource category translation instance
+     * @param $translationText string the translation message
+     */
+    private function updateTranslationForResourceCategory(ResourceCategoryTranslation $existingResourceCategoryTranslation, $translationText) {
+        $existingResourceCategoryTranslation->description = $translationText;
+        $this->resourceCategoryTranslationStorage->saveResourceCategoryTranslation($existingResourceCategoryTranslation);
     }
 
 }
