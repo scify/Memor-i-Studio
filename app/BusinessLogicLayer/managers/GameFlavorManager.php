@@ -20,37 +20,38 @@ use Illuminate\Support\Facades\Storage;
 
 class GameFlavorManager {
 
-    private $gameVersionStorage;
+    private $gameFlavorStorage;
 
     public function __construct() {
         // initialize $userStorage
-        $this->gameVersionStorage = new GameFlavorStorage();
+        $this->gameFlavorStorage = new GameFlavorStorage();
     }
 
-    public function saveGameFlavor($gameVersionId, array $gameVersionFields, Request $request) {
+    public function saveGameFlavor($gameFlavorId, array $inputFields, Request $request) {
 
-        if($gameVersionId == null) {
-            $gameVersionFields['creator_id'] = Auth::user()->id;
-            $gameVersion = new GameFlavor;
-            $gameVersion = $this->assignValuesToGameFlavor($gameVersion, $gameVersionFields);
+        if($gameFlavorId == null) {
+            $inputFields['creator_id'] = Auth::user()->id;
+            $gameFlavor = new GameFlavor;
+            $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
+            $gameFlavor->game_version_id = $inputFields['game_version_id'];
         } else {
 
-            $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
+            $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
 
-            $gameVersion = $this->assignValuesToGameFlavor($gameVersion, $gameVersionFields);
+            $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
         }
-        //TODO: add try-catch
         //upload the cover image
-        if($request->hasFile('cover_img')) {
-            $gameVersion['cover_img_id'] = $this->processFile($gameVersion->id, $request);
-            if ($gameVersion['cover_img_id'] == null)
-                return null;
-        }
+        //TODO: this should be done in resources page
+//        if($request->hasFile('cover_img')) {
+//            $gameFlavor['cover_img_id'] = $this->uploadCoverImageFile($gameFlavor->id, $request);
+//            if ($gameFlavor['cover_img_id'] == null)
+//                return null;
+//        }
 
-        return $this->gameVersionStorage->storeGameFlavor($gameVersion);
+        return $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
-    private function processFile($gameVersionId, Request $request) {
+    private function uploadCoverImageFile($gameVersionId, Request $request) {
         $imgManager = new ImgManager();
         return $imgManager->uploadGameFlavorCoverImg($gameVersionId, $request->file('cover_img'));
     }
@@ -62,23 +63,23 @@ class GameFlavorManager {
         if($user != null) {
             if ($user->isAdmin()) {
                 //if admin, get all game versions
-                $gameVersionsToBeReturned = $this->gameVersionStorage->getAllGameFlavors();
+                $gameFlavorsToBeReturned = $this->gameFlavorStorage->getAllGameFlavors();
             } else {
                 //if regular user, merge the published game versions with the game versions created by the user
-                $publishedGameFlavors = $this->gameVersionStorage->getGameFlavorsByPublishedState(true);
-                $gameVersionsCreatedByUser = $this->gameVersionStorage->getGameFlavorsByPublishedStateByUser(false, $user->id);
+                $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavorsByPublishedState(true);
+                $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavorsByPublishedStateByUser(false, $user->id);
 
-                $gameVersionsToBeReturned = $gameVersionsCreatedByUser->merge($publishedGameFlavors);
+                $gameFlavorsToBeReturned = $gameFlavorsCreatedByUser->merge($publishedGameFlavors);
             }
         } else {
-            $gameVersionsToBeReturned = $this->gameVersionStorage->getGameFlavorsByPublishedState(true);
+            $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavorsByPublishedState(true);
         }
 
-        foreach ($gameVersionsToBeReturned as $gameVersion) {
+        foreach ($gameFlavorsToBeReturned as $gameVersion) {
             $gameVersion->accessed_by_user = $this->isGameFlavorAccessedByUser($gameVersion, $user);
         }
 
-        return $gameVersionsToBeReturned;
+        return $gameFlavorsToBeReturned;
 
     }
 
@@ -92,7 +93,7 @@ class GameFlavorManager {
      */
     public function getGameFlavorForEdit($id) {
         $user = Auth::user();
-        $gameFlavor = $this->gameVersionStorage->getGameFlavorById($id);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
 
         //if the game Version exists, check if the user has access
         if($gameFlavor != null) {
@@ -111,7 +112,7 @@ class GameFlavorManager {
      */
     public function getGameFlavor($id) {
         $user = Auth::user();
-        $gameFlavor = $this->gameVersionStorage->getGameFlavorById($id);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
 
         //if the game Version exists, check if the user has access
         if($gameFlavor != null) {
@@ -122,31 +123,29 @@ class GameFlavorManager {
     }
 
 
-    private function assignValuesToGameFlavor(GameFlavor $gameVersion, $gameVersionFields) {
+    private function assignValuesToGameFlavor(GameFlavor $gameFlavor, $gameFlavorFields) {
 
-        $gameVersion->name = $gameVersionFields['name'];
-        $gameVersion->description = $gameVersionFields['description'];
-        $gameVersion->lang_id = $gameVersionFields['lang_id'];
+        $gameFlavor->name = $gameFlavorFields['name'];
+        $gameFlavor->description = $gameFlavorFields['description'];
+        $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
 
-        if(isset($gameVersionFields['creator_id']) && $gameVersionFields['creator_id'] != null)
-            $gameVersion->creator_id = $gameVersionFields['creator_id'];
-//        if($gameVersionFields['cover_img_id'] != null)
-//            $gameVersion->cover_img_id = $gameVersionFields['cover_img_id'];
+        if(isset($gameFlavorFields['creator_id']) && $gameFlavorFields['creator_id'] != null)
+            $gameFlavor->creator_id = $gameFlavorFields['creator_id'];
 
-        return $gameVersion;
+        return $gameFlavor;
     }
 
 
 
     /**
-     * @param $gameVersionId. The id of the game version to be deleted
+     * @param $gameFlavorId. The id of the game version to be deleted
      * @return bool. True if the game version was deleted successfully, false if the user has no access
      */
-    public function deleteGameFlavor($gameVersionId) {
-        $gameVersion = $this->getGameFlavorForEdit($gameVersionId);
-        if($gameVersion == null)
+    public function deleteGameFlavor($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
+        if($gameFlavor == null)
             return false;
-        $this->gameVersionStorage->deleteGameFlavor($gameVersion);
+        $this->gameFlavorStorage->deleteGameFlavor($gameFlavor);
         return true;
     }
 
@@ -179,7 +178,7 @@ class GameFlavorManager {
         if($gameFlavor == null)
             return false;
         $gameFlavor->published = !$gameFlavor->published;
-        if($this->gameVersionStorage->storeGameFlavor($gameFlavor) != null) {
+        if($this->gameFlavorStorage->storeGameFlavor($gameFlavor) != null) {
             return true;
         }
         return false;
