@@ -76,15 +76,19 @@ class CardManager {
         //dd($input);
         $newCard = new Card();
         $newCard->label = $cardLabel;
-        $newCard->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['image']);
+
         $newCard->equivalence_set_id = $equivalenceSetId;
         $newCard->category = $category;
+
+
+
+        $newCard =  $this->cardStorage->saveCard($newCard);
+        $newCard->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $newCard->id, $input['image']);
+        $newCard->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $newCard->id, $input['sound']);
         if(isset($input['negative_image'])) {
             if ($input['negative_image'] != null)
-                $newCard->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['negative_image']);
+                $newCard->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $newCard->id, $input['negative_image']);
         }
-
-        $newCard->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $input['sound']);
         return $this->cardStorage->saveCard($newCard);
     }
 
@@ -99,11 +103,11 @@ class CardManager {
         $cardFields = $input['card'][1];
         $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
         if(isset($cardFields['image']))
-            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['image']);
+            $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardToBeEdited->id, $cardFields['image']);
         if(isset($cardFields['negative_image']))
-            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['negative_image']);
+            $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardToBeEdited->id, $cardFields['negative_image']);
         if(isset($cardFields['sound']))
-            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $cardFields['sound']);
+            $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $cardToBeEdited->id, $cardFields['sound']);
 
         return $this->cardStorage->saveCard($cardToBeEdited);
     }
@@ -124,9 +128,9 @@ class CardManager {
             foreach ($equivalenceSet->cards as $card) {
                 $card->imageObj = $card->image;
                 $card->negativeImageObj = $card->secondImage;
-                $card->imgPath = url('data/' . $gameFlavorId . '/img/' . $card->image->imageCategory->category .  '/' . $card->image->file_path);
+                $card->imgPath = url('data/' . $card->image->file_path);
                 if($card->secondImage != null)
-                    $card->negativeImgPath = url('data/' . $gameFlavorId . '/img/' . $card->secondImage->imageCategory->category .  '/' . $card->secondImage->file_path);
+                    $card->negativeImgPath = url('data/' . $card->secondImage->file_path);
                 $card->soundObj = $card->sound;
                 array_push($cards, $card);
             }

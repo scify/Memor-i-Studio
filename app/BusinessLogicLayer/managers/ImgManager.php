@@ -21,16 +21,14 @@ class ImgManager {
     }
 
     public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
-        return $this->createAndStoreNewImage($coverImg, 'game_cover', $gameFlavorId);
+        //TODO: fix
+        $soundPath = '';
+        return $this->resourceManager->createAndStoreNewResource($gameFlavorId, $soundPath);
     }
 
-    public function uploadCardImg($gameFlavorId, UploadedFile $img) {
-        return $this->createAndStoreNewImage($img, 'card_images', $gameFlavorId);
+    public function uploadCardImg($gameFlavorId, $cardId, UploadedFile $img) {
+        $soundPath = 'data_packs/' . $gameFlavorId . '/img/card_images/';
+        return $this->resourceManager->createAndStoreNewCardResource($cardId, $img, $soundPath);
     }
-
-    public function createAndStoreNewImage(UploadedFile $img, $imgCategory, $gameFlavorId) {
-        return $this->resourceManager->createAndStoreNewResource($img, $imgCategory, $gameFlavorId);
-    }
-
 
 }

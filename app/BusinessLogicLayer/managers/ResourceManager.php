@@ -1,6 +1,7 @@
 <?php
 namespace App\BusinessLogicLayer\managers;
 
+use App\Models\CardResource;
 use App\Models\Resource;
 use App\Models\ResourceTranslation;
 use App\StorageLayer\ResourceCategoryStorage;
@@ -40,8 +41,27 @@ class ResourceManager {
         $file->storeAs($pathToStore, $filename);
         $resource = new Resource();
         $resource->category_id = $resourceCategory->id;
+        //TODO remove (?)
         $resource->file_path = $pathToStore;
         return $this->resourceStorage->storeResource($resource);
+    }
+
+    /**
+     * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
+     *
+     * @param $cardId int the id of the card
+     * @param UploadedFile $file the file to be stored (eg image or audio)
+     * @param $pathToStore string the path to store the file
+     * @return Resource the newly created instance
+     */
+    public function createAndStoreNewCardResource($cardId, UploadedFile $file, $pathToStore) {
+        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
+
+        $file->storeAs($pathToStore, $filename);
+        $resource = new CardResource();
+        $resource->card_id = $cardId;
+        $resource->file_path = $pathToStore . $filename;
+        return $this->resourceStorage->storeCardResource($resource);
     }
 
     /**

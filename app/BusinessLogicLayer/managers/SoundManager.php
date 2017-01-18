@@ -16,15 +16,12 @@ class SoundManager {
     private $resourceManager;
 
     public function __construct() {
-        $this->resourceManager = new \ResourceManager();
+        $this->resourceManager = new ResourceManager();
     }
 
-    public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
-        return $this->createAndStoreNewSound($sound, 'card_sounds', $gameFlavorId);
-    }
-
-    public function createAndStoreNewSound(UploadedFile $sound, $soundCategory, $gameFlavorId) {
-        return $this->resourceManager->createAndStoreNewResource($sound, $soundCategory, $gameFlavorId);
+    public function uploadCardSound($gameFlavorId, $cardId, UploadedFile $sound) {
+        $soundPath = 'data_packs/' . $gameFlavorId . '/audios/card_sounds/';
+        return $this->resourceManager->createAndStoreNewCardResource($cardId, $sound, $soundPath);
     }
 
 }
