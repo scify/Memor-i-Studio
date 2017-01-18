@@ -24,7 +24,7 @@ class ResourceCategoryTranslation extends Model
     /**
      * Get the @see Resource this translation belongs to.
      */
-    public function resource() {
+    public function resourceCategory() {
         return $this->belongsTo('App\Models\ResourceCategory', 'resource_category_id', 'id');
     }
 
