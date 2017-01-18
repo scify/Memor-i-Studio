@@ -21,7 +21,7 @@ elixir(function(mix) {
 
         // 'node_modules/chosen-js/chosen.css',
         // 'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
-        // 'node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
+        'node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
         // 'node_modules/bxslider/dist/jquery.bxslider.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/datatables/media/css/jquery.dataTables.min.css',
@@ -55,7 +55,7 @@ elixir(function(mix) {
         // 'node_modules/jquery-knob/excanvas.js',
         // 'node_modules/html2canvas/dist/html2canvas.min.js',
         // 'node_modules/html2canvas/dist/html2canvas.svg.min.js',
-        // 'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
+        'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
         'node_modules/sweetalert/dist/sweetalert.min.js',
         'node_modules/datatables/media/js/jquery.dataTables.min.js',
         // 'node_modules/icheck/icheck.min.js',
