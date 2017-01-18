@@ -38,6 +38,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
 
     //Game Flavor routes
+    Route::get('gameFlavor/selectVersion', 'GameFlavorController@showGameVersionSelectionForm')->name('showGameVersionSelectionForm');
     Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
     Route::post('gameFlavor/create', 'GameFlavorController@create')->name('createGameFlavor');
     Route::get('gameFlavor/edit/{id}', 'GameFlavorController@editIndex')->name('editGameFlavorIndex');
