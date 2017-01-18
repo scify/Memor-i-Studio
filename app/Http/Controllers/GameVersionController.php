@@ -162,7 +162,7 @@ class GameVersionController extends Controller
     public function addGameVersionLanguageIndex($id) {
         $languageManager = new LanguageManager();
         $languages = $languageManager->getAvailableLanguages();
-        return view('game_version.add_language', ['languages' => $languages, 'gameVersionId' => $id]);
+        return view('game_version.forms.add_language', ['languages' => $languages, 'gameVersionId' => $id]);
     }
 
     /**

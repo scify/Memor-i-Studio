@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
+use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameFlavor;
 use Illuminate\Http\Request;
@@ -14,27 +16,35 @@ class GameFlavorController extends Controller
 {
     private $languageManager;
     private $gameFlavorManager;
-
+    private $gameVersionManager;
     /**
      * GameFlavorController constructor.
      */
     public function __construct() {
         $this->languageManager = new LanguageManager();
         $this->gameFlavorManager = new GameFlavorManager();
+        $this->gameVersionManager = new GameVersionManager();
     }
 
+    public function showGameVersionSelectionForm() {
+        $gameVersions = $this->gameVersionManager->getAllGameVersions();
+        return view('game_flavor.forms.select_game_version', ['gameVersions'=>$gameVersions]);
+    }
 
     /**
      * Show the form for creating a new Game Version
      *
+     * @param Request $request contains the game version parameter (upon which the game flavor will be built)
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View the view with the form
      */
-    public function createIndex() {
-        $languageManager = new LanguageManager();
-        $languages = $languageManager->getAvailableLanguages();
-        $gameVersion = new GameFlavor();
+    public function createIndex(Request $request) {
+        $input = $request->all();
+        $gameVersionId = $input['game_version_id'];
+        $gameVersionLanguageManager = new GameVersionLanguageManager();
+        $languages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
+        $gameFlavor = new GameFlavor();
 
-        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
+        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameFlavor' => $gameFlavor, 'gameVersionId' => $gameVersionId]);
     }
 
     /**
@@ -62,10 +72,13 @@ class GameFlavorController extends Controller
         ]);
 
         $input = $request->all();
-        $gameVersionFields = $this->assignInputFields($input);
 
-
-        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor(null, $gameVersionFields, $request);
+        try {
+            $newGameFlavor = $this->gameFlavorManager->saveGameFlavor(null, $input, $request);
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            return redirect()->back();
+        }
         if($newGameFlavor == null)
             return Redirect::back()->withInput()->withErrors(['error', 'Something went wrong. please try again.']);
 
@@ -83,14 +96,14 @@ class GameFlavorController extends Controller
      */
     public function editIndex($id)
     {
-        $gameVersion = $this->gameFlavorManager->getGameFlavorForEdit($id);
-        if($gameVersion == null) {
+        $gameFlavor = $this->gameFlavorManager->getGameFlavorForEdit($id);
+        if($gameFlavor == null) {
             //TODO: redirect to 404 page
             return redirect()->back();
         }
         $languages = $this->languageManager->getAvailableLanguages();
-        //dd($gameVersion);
-        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameVersion' => $gameVersion]);
+        //dd($gameFlavor);
+        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameFlavor' => $gameFlavor]);
     }
 
     /**
@@ -109,9 +122,8 @@ class GameFlavorController extends Controller
         ]);
 
         $input = $request->all();
-        $gameVersionFields = $this->assignInputFields($input);
 
-        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor($id, $gameVersionFields, $request);
+        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor($id, $input, $request);
 
         if($newGameFlavor != null) {
             return redirect()->route('showAllGameFlavors')->with('flash_message_success', 'Successfully edited game "' . $newGameFlavor->name . '"');
@@ -121,13 +133,6 @@ class GameFlavorController extends Controller
         }
     }
 
-    private function assignInputFields(array $inputFields) {
-        $gameVersionFields = array();
-        $gameVersionFields['name'] = $inputFields['name'];
-        $gameVersionFields['description'] = $inputFields['description'];
-        $gameVersionFields['lang_id'] = $inputFields['lang_id'];
-        return $gameVersionFields;
-    }
 
     /**
      * Remove the specified resource from storage.

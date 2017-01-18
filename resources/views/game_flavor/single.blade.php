@@ -1,4 +1,4 @@
-<div class="card card-user card-clickable card-clickable-over-content gameVersionItem">
+<div class="card card-user card-clickable card-clickable-over-content gameFlavorItem">
     <div class="card-heading heading-full">
         <div class="user-image coverImgContainer">
             @if($gameFlavor->cover_img_id == null)
@@ -39,7 +39,7 @@
     </div><!--.card-heading-->
 
     <div class="card-body">
-        <h3 class="gameVersionTitle">
+        <h3>
         <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
             @if($user != null)
                 @if($user->isAdmin())
@@ -51,7 +51,7 @@
                 @endif
             @endif
         </h3>
-        <p class="gameVersionDescription">{{$gameFlavor->description}}</p>
+        <p class="description">{{$gameFlavor->description}}</p>
 
     </div><!--.card-body-->
 
