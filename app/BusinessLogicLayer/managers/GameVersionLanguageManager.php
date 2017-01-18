@@ -15,8 +15,14 @@ class GameVersionLanguageManager {
         $this->languageManager = new LanguageManager();
     }
 
-    public function getGameVersionLanguages($id) {
-        $gameVersionLanguages =  $this->gameVersionLanguageStorage->getGameVersionLanguages($id);
+    /**
+     * Gets the languages the game version has
+     *
+     * @param $gameVersionId int the id of the game version
+     * @return Collection a set of @see Language instances
+     */
+    public function getGameVersionLanguages($gameVersionId) {
+        $gameVersionLanguages =  $this->gameVersionLanguageStorage->getGameVersionLanguages($gameVersionId);
         $languages = new Collection();
         foreach ($gameVersionLanguages as $gameVersionLanguage) {
             $languages->add($this->languageManager->getLanguage($gameVersionLanguage->lang_id));
@@ -24,6 +30,13 @@ class GameVersionLanguageManager {
         return $languages;
     }
 
+    /**
+     * Checks if a given game version has a specified language
+     *
+     * @param $gameVersionId int the id of the game version
+     * @param $langId int the id of the language
+     * @return bool true if the game version has the selected language, otherwise false
+     */
     public function gameVersionHasLanguage($gameVersionId, $langId) {
         $gameVersionLanguage = $this->gameVersionLanguageStorage->getLanguageForGameVersion($gameVersionId, $langId);
         if($gameVersionLanguage == null)
@@ -31,6 +44,12 @@ class GameVersionLanguageManager {
         return true;
     }
 
+    /**
+     * Adds a given language to a Game version
+     *
+     * @param $gameVersionId int the id of the game version
+     * @param $langId int the id of the language
+     */
     public function addGameVersionLanguage($gameVersionId, $langId) {
         $gameVersionLanguage = new GameVersionLanguage();
         $gameVersionLanguage->lang_id = $langId;
