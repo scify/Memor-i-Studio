@@ -14,7 +14,7 @@ elixir(function(mix) {
     mix.sass('app.scss',  'public/css/app.css');
 
     mix.styles([
-        'resources/assets/pleasure-admin-panel/css/plugins.css',
+        // 'resources/assets/pleasure-admin-panel/css/plugins.css',
         'resources/assets/pleasure-admin-panel/css/admin1.css',
         'resources/assets/pleasure-admin-panel/css/elements.css',
         'node_modules/sweetalert/dist/sweetalert.css',
