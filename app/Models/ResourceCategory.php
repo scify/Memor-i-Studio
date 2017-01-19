@@ -20,7 +20,7 @@ class ResourceCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['path', 'description', 'game_version_id'];
+    protected $fillable = ['path', 'description', 'game_version_id', 'type_id'];
 
     /**
      * Get the @see GameVersion this resource category belongs to.
@@ -36,5 +36,13 @@ class ResourceCategory extends Model
     public function resources()
     {
         return $this->hasMany('App\Models\Resource', 'category_id', 'id')->orderBy('name');
+    }
+
+    /**
+     * Get the @see GameVersion this resource category belongs to.
+     */
+    public function categoryType()
+    {
+        return $this->hasOne('App\Models\ResourceCategoryType', 'id', 'type_id');
     }
 }
