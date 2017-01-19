@@ -47,7 +47,21 @@ class ResourceCategoryManager {
         $resourceCategory->path = $categoryPath;
         $resourceCategory->game_version_id = $gameVersionId;
         $resourceCategory->description = trim($categoryPath, "/");
+        if($this->isResourceCategoryDynamic($categoryPath))
+            $resourceCategory->type_id = 2;
+        else
+            $resourceCategory->type_id = 1;
         return $this->resourceCategoryStorage->storeResourceCategory($resourceCategory);
+    }
+
+    private function isResourceCategoryDynamic($categoryPath) {
+        if (strpos($categoryPath, 'card_sounds') === false && strpos($categoryPath, 'card_description_sounds') === false) {
+            return true;
+        }
+        if (strpos($categoryPath, 'card_images') === false) {
+            return true;
+        }
+        return false;
     }
 
     /**

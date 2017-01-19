@@ -153,9 +153,10 @@ class GameVersionManager {
      */
     private function entryIsApplicableForAudioResource($entryName) {
         if (starts_with($entryName, 'scify_pack/audios/') && ($entryName != 'scify_pack/audios/')) {
-            if (strpos($entryName, 'card_sounds') === false && strpos($entryName, 'card_description_sounds') === false) {
-                return true;
-            }
+//            if (strpos($entryName, 'card_sounds') === false && strpos($entryName, 'card_description_sounds') === false) {
+//                return true;
+//            }
+            return true;
         }
         return false;
     }
@@ -168,9 +169,10 @@ class GameVersionManager {
      */
     private function entryIsApplicableForImageResource($entryName) {
         if (starts_with($entryName, 'scify_pack/img/') && ($entryName != 'scify_pack/img/')) {
-            if (strpos($entryName, 'card_images') === false) {
-                return true;
-            }
+//            if (strpos($entryName, 'card_images') === false) {
+//                return true;
+//            }
+            return true;
         }
         return false;
     }
