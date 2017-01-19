@@ -30,7 +30,7 @@ class GameVersionStorage {
      * @return Collection with all the instances
      */
     public function getAllGameVersions() {
-        return GameVersion::all()->sortByDesc("created_at");
+        return GameVersion::all();
     }
 
     /**

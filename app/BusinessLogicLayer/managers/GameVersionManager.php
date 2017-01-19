@@ -60,7 +60,7 @@ class GameVersionManager {
      * @return Collection with all the instances
      */
     public function getAllGameVersions() {
-        $gameVersions = $this->gameVersionStorage->getAllGameVersions();
+        $gameVersions = $this->gameVersionStorage->getAllGameVersions()->sortByDesc("created_at");
         return $gameVersions;
     }
 

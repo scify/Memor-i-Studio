@@ -62,7 +62,8 @@ class GameVersionController extends Controller
         }
 
         session()->flash('flash_message_success', 'Game Version created!');
-        return redirect()->back();
+        return $this->showAllGameVersions();
+        //return redirect()->back();
 
     }
 
@@ -95,7 +96,7 @@ class GameVersionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
@@ -114,7 +115,8 @@ class GameVersionController extends Controller
         }
 
         session()->flash('flash_message_success', 'Game Version updated!');
-        return redirect()->back();
+        //return redirect()->back();
+        return $this->showAllGameVersions();
     }
 
     /**
