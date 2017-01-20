@@ -47,21 +47,18 @@ class ResourceCategoryManager {
         $resourceCategory->path = $categoryPath;
         $resourceCategory->game_version_id = $gameVersionId;
         $resourceCategory->description = trim($categoryPath, "/");
-        if($this->isResourceCategoryDynamic($categoryPath))
-            $resourceCategory->type_id = 2;
-        else
+        if($this->isResourceCategoryStatic($categoryPath))
             $resourceCategory->type_id = 1;
+        else
+            $resourceCategory->type_id = 2;
         return $this->resourceCategoryStorage->storeResourceCategory($resourceCategory);
     }
 
-    private function isResourceCategoryDynamic($categoryPath) {
-        if (strpos($categoryPath, 'card_sounds') === false && strpos($categoryPath, 'card_description_sounds') === false) {
-            return true;
+    private function isResourceCategoryStatic($categoryPath) {
+        if (strpos($categoryPath, 'card_sounds') !== false || strpos($categoryPath, 'card_description_sounds') !== false || strpos($categoryPath, 'card_images') !== false) {
+            return false;
         }
-        if (strpos($categoryPath, 'card_images') === false) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -81,8 +78,12 @@ class ResourceCategoryManager {
      * @param $gameVersionId int the GameVersion id
      * @return Collection a set of the ResourceCategory instances
      */
-    public function getResourceCategoriesForGameVersion($gameVersionId) {
-        return $this->resourceCategoryStorage->getResourceCategoriesForGameVersion($gameVersionId);
+    public function getResourceCategoriesForGameVersion($gameVersionId, $shouldResourcesBeOnlyStatic) {
+        if($shouldResourcesBeOnlyStatic)
+            $resourceTypeId = 1;
+        else
+            $resourceTypeId = 2;
+        return $this->resourceCategoryStorage->getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId);
     }
 
     /**
@@ -94,7 +95,8 @@ class ResourceCategoryManager {
      * @return Collection set of ResourceCategories containing resource instances
      */
     public function getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId) {
-        $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId);
+        $shouldResourcesBeOnlyStatic = true;
+        $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId, $shouldResourcesBeOnlyStatic);
         $resourceTranslationStorage = new ResourceTranslationStorage();
         $resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
         foreach ($gameVersionResourceCategories as $category) {

@@ -28,8 +28,8 @@ class ResourceCategoryStorage {
         return null;
     }
 
-    public function getResourceCategoriesForGameVersion($gameVersionId) {
-        return ResourceCategory::where(['game_version_id' =>$gameVersionId])->get();
+    public function getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId) {
+        return ResourceCategory::where(['game_version_id' =>$gameVersionId, 'type_id' => $resourceTypeId])->get();
     }
 
 }
