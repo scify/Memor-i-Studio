@@ -1,8 +1,9 @@
 <div class="row margin-bottom-30">
     <div class="col-md-12">
         <form id="gameVersion-handling-form" class="memoriForm" method="POST"
-              action="{{route('updateGameResourcesTranslations')}}"
+              action="{{route('updateGameResourcesFiles')}}"
               enctype="multipart/form-data">
+            <input name="game_flavor_id" type="hidden" value="{{$gameFlavorId}}">
             <div class="panel">
                 <div class="panel-heading {{$index == 0 ? 'active' : ''}}">
                     <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#panelBody_{{$index}}"><h3>{{$resourceCategory->description}}</h3></a>
@@ -24,7 +25,14 @@
                                     <tr>
                                         <td>{{$resource->default_text}}</td>
                                         <td>
-                                            {{$resource->file_path}}
+                                            @if($resource->file_path == null)
+                                                <div class="resourceRow">
+                                                    <div class="form-group">
+                                                        <input type="file" name="resources[{{$index}}][sound]">
+                                                        <p class="help-block">Maximum size: 3Mb.</p>
+                                                    </div><!--.form-group-->
+                                                </div><!--.col-md-9-->
+                                            @endif
                                             <input name="resources[{{$index}}][id]" type="hidden" value="{{$resource->id}}">
                                         </td>
                                     </tr>

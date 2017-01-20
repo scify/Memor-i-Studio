@@ -50,6 +50,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
 
     //Game Resources
     Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->name('updateGameResourcesTranslations');
+    Route::post('gameResources/update', 'ResourceController@updateGameResourcesFiles')->name('updateGameResourcesFiles');
 
     //Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');

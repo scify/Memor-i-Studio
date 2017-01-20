@@ -49,6 +49,11 @@ class ResourceController extends Controller
 
         $gameFlavorResources = $gameFlavorManager->getResourcesForGameFlavor($gameFlavor);
 
-        return view('game_resource_category.list', ['resourceCategories' => $gameFlavorResources]);
+        return view('game_resource_category.list', ['resourceCategories' => $gameFlavorResources, 'gameFlavorId' => $gameFlavorId]);
+    }
+
+    public function updateGameResourcesFiles(Request $request) {
+        $input = $request->all();
+        dd($input);
     }
 }

@@ -62,9 +62,8 @@ class GameFlavorManager {
 
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
-                $fileForResource = $resourceFileStorage->getPathForGameFlavorResource($resource->id, $gameFlavor->id);
-                if($fileForResource != null) {
-                    $resource->file_path = $fileForResource->file_path;
+                if($resource->file != null) {
+                    $resource->file_path = $resource->file->file_path;
                 } else {
                     $resource->file_path = null;
                 }
