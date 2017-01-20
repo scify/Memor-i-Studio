@@ -41,10 +41,11 @@ class GameFlavorController extends Controller
         $input = $request->all();
         $gameVersionId = $input['game_version_id'];
         $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $languages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
+        $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
+        $languages = $this->languageManager->getAvailableLanguages();
         $gameFlavor = new GameFlavor();
 
-        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameFlavor' => $gameFlavor, 'gameVersionId' => $gameVersionId]);
+        return view('game_flavor.create_edit_index', ['languages' => $languages, 'interfaceLanguages'=>$interfaceLanguages, 'gameFlavor' => $gameFlavor, 'gameVersionId' => $gameVersionId]);
     }
 
     /**
@@ -96,14 +97,17 @@ class GameFlavorController extends Controller
      */
     public function editIndex($id)
     {
+        $gameVersionLanguageManager = new GameVersionLanguageManager();
         $gameFlavor = $this->gameFlavorManager->getGameFlavorForEdit($id);
         if($gameFlavor == null) {
             //TODO: redirect to 404 page
             return redirect()->back();
         }
+        $gameVersionId = $gameFlavor->game_version_id;
         $languages = $this->languageManager->getAvailableLanguages();
+        $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
         //dd($gameFlavor);
-        return view('game_flavor.create_edit_index', ['languages'=>$languages, 'gameFlavor' => $gameFlavor]);
+        return view('game_flavor.create_edit_index', ['gameVersionId' => $gameVersionId, 'languages'=>$languages, 'interfaceLanguages' => $interfaceLanguages, 'gameFlavor' => $gameFlavor]);
     }
 
     /**

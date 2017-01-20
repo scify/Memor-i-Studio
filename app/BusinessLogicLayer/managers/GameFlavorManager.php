@@ -31,12 +31,14 @@ class GameFlavorManager {
     public function saveGameFlavor($gameFlavorId, array $inputFields, Request $request) {
 
         if($gameFlavorId == null) {
+            //create new instance
             $inputFields['creator_id'] = Auth::user()->id;
             $gameFlavor = new GameFlavor;
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
             $gameFlavor->game_version_id = $inputFields['game_version_id'];
+            $gameFlavor->creator_id = $inputFields['creator_id'];
         } else {
-
+            //edit existing
             $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
 
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
@@ -148,9 +150,7 @@ class GameFlavorManager {
         $gameFlavor->name = $gameFlavorFields['name'];
         $gameFlavor->description = $gameFlavorFields['description'];
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
-
-        if(isset($gameFlavorFields['creator_id']) && $gameFlavorFields['creator_id'] != null)
-            $gameFlavor->creator_id = $gameFlavorFields['creator_id'];
+        $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
 
         return $gameFlavor;
     }

@@ -5,7 +5,7 @@
     <div class="panelContainer">
         <div class="panel">
             <div class="panel-heading">
-                <div class="panel-title"><h4>Create new Memor-i version</h4></div>
+                <div class="panel-title"><h4>Create new Memor-i flavor</h4></div>
             </div><!--.panel-heading-->
             <div class="panel-body">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -15,7 +15,7 @@
                             <div class="requiredExpl"><span class="required">*</span> = required</div>
                             <div class="form-group">
                                 <div class="inputer">
-                                    Version name <span class="required">*</span>
+                                    Flavor name <span class="required">*</span>
                                     <div class="input-wrapper">
                                         <input name="name" type="text"
                                                class="maxlength maxlength-position form-control" maxlength="50"
@@ -37,7 +37,17 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">Studio Language</div><!--.col-md-3-->
+                            <div class="col-md-3">Interface Language</div><!--.col-md-3-->
+                            <div class="col-md-9">
+                                <select class="form-control selecter" name="interface_lang_id">
+                                    @foreach($interfaceLanguages as $interfaceLanguage)
+                                        <option value="{{$interfaceLanguage->id}}" {{ old('interface_lang_id') == $interfaceLanguage->id || $gameFlavor['interface_lang_id'] == $interfaceLanguage->id ? 'selected' : ''}}>{{$interfaceLanguage->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div><!--.col-md-9-->
+                        </div><!--.row-->
+                        <div class="row">
+                            <div class="col-md-3">Target Language</div><!--.col-md-3-->
                             <div class="col-md-9">
                                 <select class="form-control selecter" name="lang_id">
                                     @foreach($languages as $language)

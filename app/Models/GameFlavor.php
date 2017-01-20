@@ -19,7 +19,7 @@ class GameFlavor extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','lang_id', 'description', 'creator_id', 'cover_img_id', 'game_version_id'];
+    protected $fillable = ['name', 'lang_id', 'interface_lang_id', 'description', 'creator_id', 'cover_img_id', 'game_version_id'];
 
     /**
      * Get the Equivalence Sets for the card.
@@ -41,6 +41,10 @@ class GameFlavor extends Model
 
     public function language() {
         return $this->hasOne('App\Models\Language', 'id', 'lang_id');
+    }
+
+    public function interfaceLanguage() {
+        return $this->hasOne('App\Models\Language', 'id', 'interface_lang_id');
     }
 
     /**

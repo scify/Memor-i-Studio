@@ -29,8 +29,7 @@ class GameVersionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createIndex()
-    {
+    public function createIndex() {
         $gameVersion = new GameVersion();
 
         return view('game_version.create_edit_index', ['gameVersion' => $gameVersion]);
@@ -41,12 +40,9 @@ class GameVersionController extends Controller
      * Create a new Game Version.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
-        //dd($request->all());
-
+    public function create(Request $request) {
         $user = Auth::user();
         $this->validate($request, [
             'name' => 'required|max:255',
@@ -63,7 +59,6 @@ class GameVersionController extends Controller
 
         session()->flash('flash_message_success', 'Game Version created!');
         return $this->showAllGameVersions();
-        //return redirect()->back();
 
     }
 
@@ -72,8 +67,7 @@ class GameVersionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showAllGameVersions()
-    {
+    public function showAllGameVersions() {
         $gameVersions = $this->gameVersionManager->getAllGameVersions();
 
         return view('game_version.list', ['gameVersions'=>$gameVersions]);
