@@ -6,7 +6,8 @@
             <input name="game_flavor_id" type="hidden" value="{{$gameFlavorId}}">
             <div class="panel">
                 <div class="panel-heading {{$index == 0 ? 'active' : ''}}">
-                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#panelBody_{{$index}}"><h3>{{$resourceCategory->description}}</h3></a>
+                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#panelBody_{{$index}}">
+                        <h3>{{$resourceCategory->description}}</h3></a>
                     <input name="resource_category_id" type="hidden" value="{{$resourceCategory->id}}">
                 </div><!--.panel-heading-->
                 <div id="panelBody_{{$index}}" class="panel-collapse collapse {{$index == 0 ? 'in' : ''}}">
@@ -25,15 +26,45 @@
                                     <tr>
                                         <td>{{$resource->default_text}}</td>
                                         <td>
-                                            @if($resource->file_path == null)
-                                                <div class="resourceRow">
-                                                    <div class="form-group">
-                                                        <input type="file" name="resources[{{$index}}][sound]">
-                                                        <p class="help-block">Maximum size: 3Mb.</p>
-                                                    </div><!--.form-group-->
-                                                </div><!--.col-md-9-->
+                                            @if($resource->file_path != null)
+                                                <div class="margin-bottom-10">
+                                                    <audio controls>
+                                                        <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
+                                                                type="audio/mpeg">
+                                                        <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
+                                                                type="audio/wav">
+                                                        Your browser does not support the audio element.
+                                                    </audio>
+                                                </div>
                                             @endif
-                                            <input name="resources[{{$index}}][id]" type="hidden" value="{{$resource->id}}">
+                                            {{--<div class="resourceRow">--}}
+                                            {{--<div class="form-group">--}}
+                                            {{--<input type="file" name="resources[{{$index}}][audio]">--}}
+                                            {{--<p class="help-block">Maximum size: 3Mb.</p>--}}
+                                            {{--</div><!--.form-group-->--}}
+                                            {{--</div><!--.col-md-9-->--}}
+                                            <div class="fileinput fileinput-new"
+                                                 data-provides="fileinput">
+                                            <span class="btn {{$resource->file_path == null ? 'btn-info' : 'btn-success'}} btn-file">
+                                                @if($resource->file_path == null)
+                                                    <span class="fileinput-new">Select file</span>
+
+                                                    <span class="fileinput-exists">Change</span>
+                                                @else
+                                                    <span class="fileinput-new">Update file</span>
+
+                                                    <span class="fileinput-exists">Change</span>
+                                                @endif
+                                                <input type="file" name="resources[{{$index}}][audio]">
+                                            </span>
+                                                <span class="fileinput-filename"></span>
+                                                @if($resource->file_path == null)
+                                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
+                                                       style="float: none">&times;</a>
+                                                @endif
+                                            </div>
+                                            <input name="resources[{{$index}}][id]" type="hidden"
+                                                   value="{{$resource->id}}">
                                         </td>
                                     </tr>
                                 @endforeach
