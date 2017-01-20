@@ -9,6 +9,8 @@ use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Http\UploadedFile;
 
+include_once 'functions.php';
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -147,6 +149,32 @@ class ResourceManager {
     private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $translation) {
         $existingResourceTranslation->description = $translation;
         $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
+    }
+
+    public function createOrUpdateResourceFiles($resourceInputs, $gameFlavorId) {
+        foreach ($resourceInputs as $resourceInput) {
+            if(isset($resourceInput['audio'])) {
+                $this->createOrUpdateResourceFile($resourceInput['audio'], $resourceInput['id'], $gameFlavorId);
+            }
+        }
+    }
+
+    private function createOrUpdateResourceFile(UploadedFile $audio, $resourceId, $gameFlavorId) {
+        $existingResourceFile = $this->resourceStorage->getFileForResource($resourceId, $gameFlavorId);
+        $resource = $this->resourceStorage->getResourceById($resourceId);
+        $pathToStoreResourceFile = 'data_packs/' . $gameFlavorId . '/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
+        if($existingResourceFile == null)
+            $this->createAndStoreResourceFile($audio, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
+        else
+            $this->updateResourceFile($audio, $existingResourceFile, $pathToStoreResourceFile);
+    }
+
+    private function updateResourceFile(UploadedFile $file, ResourceFile $existingResourceFile, $pathToStoreResourceFile) {
+        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
+        $file->storeAs($pathToStoreResourceFile, $filename);
+        //TODO wrap in function
+        $existingResourceFile->file_path = $pathToStoreResourceFile . $filename;
+        $this->resourceStorage->storeResourceFile($existingResourceFile);
     }
 
 }

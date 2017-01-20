@@ -54,6 +54,16 @@ class ResourceController extends Controller
 
     public function updateGameResourcesFiles(Request $request) {
         $input = $request->all();
-        dd($input);
+        //dd($input);
+        $resourceInputs = $request->resources;
+        $gameFlavorId = $request->game_flavor_id;
+        try {
+            $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId);
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            return redirect()->back();
+        }
+        session()->flash('flash_message_success', 'Resource files updated');
+        return redirect()->back();
     }
 }
