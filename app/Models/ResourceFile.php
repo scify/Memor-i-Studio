@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GameFlavorResourceFile extends Model
+class ResourceFile extends Model
 {
     use SoftDeletes;
     /**
@@ -13,7 +13,7 @@ class GameFlavorResourceFile extends Model
      *
      * @var string
      */
-    protected $table = 'game_flavor_resource_file';
+    protected $table = 'resource_file';
     /**
      * The attributes that are mass assignable.
      *

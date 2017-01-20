@@ -23,12 +23,14 @@ class ImgManager {
     public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
         //TODO: fix
         $soundPath = '';
-        return $this->resourceManager->createAndStoreNewResource($gameFlavorId, $soundPath);
+        return $this->resourceManager->createNewResource($gameFlavorId, $soundPath);
     }
 
-    public function uploadCardImg($gameFlavorId, $cardId, UploadedFile $img) {
+    public function uploadCardImg($gameFlavorId, UploadedFile $img) {
         $soundPath = 'data_packs/' . $gameFlavorId . '/img/card_images/';
-        return $this->resourceManager->createAndStoreNewCardResource($cardId, $img, $soundPath);
+        $newResourceId = $this->resourceManager->createNewResource('img/card_images/');
+        $this->resourceManager->createAndStoreResourceFile($img, $soundPath, $newResourceId, $gameFlavorId);
+        return $newResourceId;
     }
 
 }

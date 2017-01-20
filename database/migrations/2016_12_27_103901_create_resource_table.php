@@ -17,7 +17,7 @@ class CreateResourceTable extends Migration
             $table->increments('id');
             $table->integer('category_id')->unsigned()->nullable();
             $table->string('file_path', 500);
-            $table->string('default_text', 500);
+            $table->string('default_text', 500)->nullable();
             $table->foreign('category_id')->references('id')->on('resource_category');
             $table->timestamps();
             $table->softDeletes();

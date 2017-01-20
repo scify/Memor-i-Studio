@@ -18,7 +18,7 @@ class AddSoundToCardTable extends Migration
         });
 
         Schema::table('card', function ($table) {
-            $table->foreign('sound_id')->references('id')->on('card_resource');
+            $table->foreign('sound_id')->references('id')->on('resource');
         });
     }
 

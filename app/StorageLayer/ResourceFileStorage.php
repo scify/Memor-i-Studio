@@ -8,17 +8,17 @@
 
 namespace App\StorageLayer;
 
-use App\Models\GameFlavorResourceFile;
+use App\Models\ResourceFile;
 
 class ResourceFileStorage {
 
     /**
-     * Saves a @see GameFlavorResourceFile instance
+     * Saves a @see ResourceFile instance
      *
-     * @param GameFlavorResourceFile $resource
+     * @param ResourceFile $resource
      * @return null
      */
-    public function storeResource(GameFlavorResourceFile $resource) {
+    public function storeResource(ResourceFile $resource) {
         $newResource = $resource->save();
         if($newResource)
             return $resource->id;
@@ -26,6 +26,6 @@ class ResourceFileStorage {
     }
 
     public function getPathForGameFlavorResource($resourceId, $gameFlavorId) {
-        return GameFlavorResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
+        return ResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
     }
 }

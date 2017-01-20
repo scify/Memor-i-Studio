@@ -13,7 +13,7 @@ class CreateFlavorResourceFileTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_flavor_resource_file', function (Blueprint $table) {
+        Schema::create('resource_file', function (Blueprint $table) {
             $table->increments('id');
             $table->string('file_path', 500);
             $table->integer('resource_id')->unsigned();
@@ -32,6 +32,6 @@ class CreateFlavorResourceFileTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_flavor_resource_file');
+        Schema::dropIfExists('resource_file');
     }
 }

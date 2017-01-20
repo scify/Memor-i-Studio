@@ -8,8 +8,8 @@
 
 namespace App\StorageLayer;
 
-use App\Models\CardResource;
 use App\Models\Resource;
+use App\Models\ResourceFile;
 
 class ResourceStorage {
 
@@ -26,7 +26,7 @@ class ResourceStorage {
         return null;
     }
 
-    public function storeCardResource(CardResource $resource) {
+    public function storeResourceFile(ResourceFile $resource) {
         $newResource = $resource->save();
         if($newResource)
             return $resource->id;

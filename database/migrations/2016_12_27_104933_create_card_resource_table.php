@@ -13,14 +13,16 @@ class CreateCardResourceTable extends Migration
      */
     public function up()
     {
-        Schema::create('card_resource', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('card_id')->unsigned()->nullable();
-            $table->string('file_path', 500);
-            $table->foreign('card_id')->references('id')->on('card');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+//        Schema::create('dynamic_resource_file', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->integer('resource_id')->unsigned();
+//            $table->integer('card_id')->unsigned();
+//            $table->string('file_path', 500);
+//            $table->foreign('resource_id')->references('id')->on('resource');
+//            $table->foreign('card_id')->references('id')->on('card');
+//            $table->timestamps();
+//            $table->softDeletes();
+//        });
     }
 
     /**
@@ -30,6 +32,6 @@ class CreateCardResourceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card_resource');
+        Schema::dropIfExists('dynamic_resource_file');
     }
 }

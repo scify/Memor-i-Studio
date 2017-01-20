@@ -33,6 +33,10 @@ class Resource extends Model
         return $this->hasMany('App\Models\ResourceTranslation', 'resource_id', 'id');
     }
 
+    public function file() {
+        return $this->hasOne('App\Models\ResourceFile', 'resource_id', 'id');
+    }
+
     /***
      * https://laravel.com/docs/5.3/eloquent-mutators#accessors-and-mutators
      *

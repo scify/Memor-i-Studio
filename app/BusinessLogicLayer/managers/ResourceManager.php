@@ -1,9 +1,9 @@
 <?php
 namespace App\BusinessLogicLayer\managers;
 
-use App\Models\CardResource;
 use App\Models\Resource;
 use App\Models\ResourceTranslation;
+use App\Models\ResourceFile;
 use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
@@ -30,15 +30,12 @@ class ResourceManager {
     /**
      * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
      *
-     * @param UploadedFile $file the file to be stored (eg image or audio)
      * @param $pathToStore string the path to store the file
-     * @return Resource the newly created instance
+     * @return int the newly created instance id
      */
-    public function createAndStoreNewResource(UploadedFile $file, $pathToStore) {
-        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
+    public function createNewResource($pathToStore) {
         $resourceCategory = $this->resourceCategoryStorage->getResourceCategoryByPath($pathToStore);
 
-        $file->storeAs($pathToStore, $filename);
         $resource = new Resource();
         $resource->category_id = $resourceCategory->id;
 
@@ -48,19 +45,40 @@ class ResourceManager {
     /**
      * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
      *
-     * @param $cardId int the id of the card
      * @param UploadedFile $file the file to be stored (eg image or audio)
      * @param $pathToStore string the path to store the file
+     * @param $resourceId int the id if the @see Resource instance
+     * @param $gameFlavorId int the id of the game flavor this resource belongs
      * @return Resource the newly created instance
      */
-    public function createAndStoreNewCardResource($cardId, UploadedFile $file, $pathToStore) {
+    public function createAndStoreResourceFile(UploadedFile $file, $pathToStore, $resourceId, $gameFlavorId) {
         $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
-
         $file->storeAs($pathToStore, $filename);
-        $cardResource = new CardResource();
-        $cardResource->card_id = $cardId;
-        $cardResource->file_path = $pathToStore . $filename;
-        return $this->resourceStorage->storeCardResource($cardResource);
+
+        $resourceFile = new ResourceFile();
+        $resourceFile->file_path = $pathToStore . $filename;
+        $resourceFile->resource_id = $resourceId;
+        $resourceFile->game_flavor_id = $gameFlavorId;
+        return $this->resourceStorage->storeResourceFile($resourceFile);
+    }
+
+    /**
+     * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
+     *
+     * @param UploadedFile $file the file to be stored (eg image or audio)
+     * @param $pathToStore string the path to store the file
+     * @param $resourceId int the id if the @see Resource instance
+     * @return Resource the newly created instance
+     */
+    public function createAndStoreStaticResourceFile($gameFlavorId, UploadedFile $file, $pathToStore, $resourceId) {
+        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
+        $file->storeAs($pathToStore, $filename);
+
+        $staticResourceFile = new ResourceFile();
+        $staticResourceFile->file_path = $pathToStore . $filename;
+        $staticResourceFile->resource_id = $resourceId;
+        $staticResourceFile->game_flavor_id = $gameFlavorId;
+        return $this->resourceStorage->storeResource($staticResourceFile);
     }
 
     /**
