@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameFlavorManager;
-use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
 use Illuminate\Http\Request;
@@ -43,6 +42,12 @@ class ResourceController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Get view containing the resources for a given game flavor
+     *
+     * @param $gameFlavorId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getResourcesForGameFlavor($gameFlavorId) {
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
@@ -52,9 +57,13 @@ class ResourceController extends Controller
         return view('game_resource_category.list', ['resourceCategories' => $gameFlavorResources, 'gameFlavorId' => $gameFlavorId]);
     }
 
+    /**
+     * Method to update the files for a given set of resources ids
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateGameResourcesFiles(Request $request) {
-        $input = $request->all();
-        //dd($input);
         $resourceInputs = $request->resources;
         $gameFlavorId = $request->game_flavor_id;
         try {

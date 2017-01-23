@@ -12,6 +12,10 @@ use App\Models\Resource;
 use App\Models\ResourceFile;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class ResourceStorage
+ * @package App\StorageLayer
+ */
 class ResourceStorage {
 
     /**
@@ -27,6 +31,12 @@ class ResourceStorage {
         return null;
     }
 
+    /**
+     * Gets a @see Resource instance by id
+     *
+     * @param $id int the id of the resource
+     * @return mixed the instance if found, otherwise null
+     */
     public function getResourceById($id) {
         return Resource::find($id);
     }
@@ -55,6 +65,11 @@ class ResourceStorage {
         return ResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
     }
 
+    /**
+     * @param $gameFlavorId int the id of the game flavor
+     * @param $typeId int the resource category type (1 for static resources, 2 for dynamic resources)
+     * @return mixed set of results
+     */
     public function getResourcesForGameFlavorByResourceType($gameFlavorId, $typeId) {
         $resources = DB::table('resource')
             ->join('resource_category', 'resource.category_id', '=', 'resource_category.id')

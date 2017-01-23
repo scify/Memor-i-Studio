@@ -5,20 +5,15 @@ use App\Models\Resource;
 use App\Models\ResourceTranslation;
 use App\Models\ResourceFile;
 use App\StorageLayer\ResourceCategoryStorage;
-use App\StorageLayer\ResourceFileStorage;
 use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 include_once 'functions.php';
 
 /**
- * Created by IntelliJ IDEA.
- * User: pisaris
- * Date: 12/1/2017
- * Time: 4:42 μμ
+ * Handles the @see Resource instances and business logic methods
  */
 class ResourceManager {
 
@@ -140,6 +135,12 @@ class ResourceManager {
         $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
     }
 
+    /**
+     * For a set of resources (in a given array) creates or updates their files (if uploaded)
+     *
+     * @param $resourceInputs
+     * @param $gameFlavorId
+     */
     public function createOrUpdateResourceFiles($resourceInputs, $gameFlavorId) {
         foreach ($resourceInputs as $resourceInput) {
             if(isset($resourceInput['audio'])) {
@@ -148,6 +149,13 @@ class ResourceManager {
         }
     }
 
+    /**
+     * For a given resource, checks if it exists and creates or updates, accordingly
+     *
+     * @param UploadedFile $audio
+     * @param $resourceId
+     * @param $gameFlavorId
+     */
     private function createOrUpdateResourceFile(UploadedFile $audio, $resourceId, $gameFlavorId) {
         $existingResourceFile = $this->resourceStorage->getFileForResource($resourceId, $gameFlavorId);
         $resource = $this->resourceStorage->getResourceById($resourceId);
@@ -158,6 +166,13 @@ class ResourceManager {
             $this->updateResourceFile($audio, $existingResourceFile, $pathToStoreResourceFile);
     }
 
+    /**
+     * Uploads and updates a resource file (deletes the old one)
+     *
+     * @param UploadedFile $file
+     * @param ResourceFile $existingResourceFile
+     * @param $pathToStoreResourceFile
+     */
     private function updateResourceFile(UploadedFile $file, ResourceFile $existingResourceFile, $pathToStoreResourceFile) {
         $filename = $this->storeFileToPath($file, $pathToStoreResourceFile);
         //delete the old file
@@ -166,7 +181,13 @@ class ResourceManager {
         $this->resourceStorage->storeResourceFile($existingResourceFile);
     }
 
-    public function createResourcesFilesMapForStatic($gameFlavorId) {
+    /**
+     * Gets the static resources for a game flavor (the ones that the user has edited)
+     * Creates a map file containing the resource default file name and the uploaded file name
+     *
+     * @param $gameFlavorId int the id of the game flavor
+     */
+    public function createStaticResourcesMapFile($gameFlavorId) {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
         $pathToMapFile = 'data_packs/' . $gameFlavorId . '/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)

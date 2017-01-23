@@ -37,12 +37,6 @@
                                                     </audio>
                                                 </div>
                                             @endif
-                                            {{--<div class="resourceRow">--}}
-                                            {{--<div class="form-group">--}}
-                                            {{--<input type="file" name="resources[{{$index}}][audio]">--}}
-                                            {{--<p class="help-block">Maximum size: 3Mb.</p>--}}
-                                            {{--</div><!--.form-group-->--}}
-                                            {{--</div><!--.col-md-9-->--}}
                                             <div class="fileinput fileinput-new"
                                                  data-provides="fileinput">
                                             <span class="btn {{$resource->file_path == null ? 'btn-info' : 'btn-success'}} btn-file">

@@ -1,24 +1,22 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: pisaris
- * Date: 3/1/2017
- * Time: 10:46 πμ
- */
 
 namespace App\BusinessLogicLayer\managers;
-
 
 use App\Models\GameFlavor;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
-use App\StorageLayer\ResourceFileStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Contains the functionality, methods and handling logic for the @see GameFlavor class
+ *
+ * Class GameFlavorManager
+ * @package App\BusinessLogicLayer\managers
+ */
 class GameFlavorManager {
 
     private $gameFlavorStorage;
@@ -28,6 +26,12 @@ class GameFlavorManager {
         $this->gameFlavorStorage = new GameFlavorStorage();
     }
 
+    /**
+     * @param $gameFlavorId int id of the game flavor
+     * @param array $inputFields contain the game flavor parameters
+     * @param Request $request the request object
+     * @return GameFlavor the newly created instance
+     */
     public function saveGameFlavor($gameFlavorId, array $inputFields, Request $request) {
 
         if($gameFlavorId == null) {

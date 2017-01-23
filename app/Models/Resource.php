@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Represents the resource instance for a game
+ *
+ * Class Resource
+ * @package App\Models
+ */
 class Resource extends Model
 {
     use SoftDeletes;
