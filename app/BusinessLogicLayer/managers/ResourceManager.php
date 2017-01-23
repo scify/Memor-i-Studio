@@ -5,9 +5,12 @@ use App\Models\Resource;
 use App\Models\ResourceTranslation;
 use App\Models\ResourceFile;
 use App\StorageLayer\ResourceCategoryStorage;
+use App\StorageLayer\ResourceFileStorage;
 use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 include_once 'functions.php';
 
@@ -54,32 +57,13 @@ class ResourceManager {
      * @return Resource the newly created instance
      */
     public function createAndStoreResourceFile(UploadedFile $file, $pathToStore, $resourceId, $gameFlavorId) {
-        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
-        $file->storeAs($pathToStore, $filename);
+        $filename = $this->storeFileToPath($file, $pathToStore);
 
         $resourceFile = new ResourceFile();
         $resourceFile->file_path = $pathToStore . $filename;
         $resourceFile->resource_id = $resourceId;
         $resourceFile->game_flavor_id = $gameFlavorId;
         return $this->resourceStorage->storeResourceFile($resourceFile);
-    }
-
-    /**
-     * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
-     *
-     * @param $gameFlavorId int the id of the game flavor instance
-     * @param UploadedFile $file the file to be stored (eg image or audio)
-     * @param $pathToStore string the path to store the file
-     * @param $resourceId int the id if the @see Resource instance
-     * @return Resource the newly created instance
-     */
-    public function createAndStoreStaticResourceFile($gameFlavorId, UploadedFile $file, $pathToStore, $resourceId) {
-        $filename = $this->storeFileToPath($file, $pathToStore);
-        $staticResourceFile = new ResourceFile();
-        $staticResourceFile->file_path = $pathToStore . $filename;
-        $staticResourceFile->resource_id = $resourceId;
-        $staticResourceFile->game_flavor_id = $gameFlavorId;
-        return $this->resourceStorage->storeResource($staticResourceFile);
     }
 
     private function storeFileToPath(UploadedFile $file, $pathToStore) {
@@ -176,8 +160,22 @@ class ResourceManager {
 
     private function updateResourceFile(UploadedFile $file, ResourceFile $existingResourceFile, $pathToStoreResourceFile) {
         $filename = $this->storeFileToPath($file, $pathToStoreResourceFile);
+        //delete the old file
+        Storage::delete($existingResourceFile->file_path);
         $existingResourceFile->file_path = $pathToStoreResourceFile . $filename;
         $this->resourceStorage->storeResourceFile($existingResourceFile);
     }
 
+    public function createResourcesFilesMapForStatic($gameFlavorId) {
+        $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
+        $pathToMapFile = 'data_packs/' . $gameFlavorId . '/' . 'resources_map.properties';
+        //initialise file (will overwrite all contents)
+//        Storage::put($pathToMapFile, null);
+        foreach ($gameStaticResources as $gameStaticResource) {
+            $resourceFileNameNoPath = substr($gameStaticResource->name, strrpos($gameStaticResource->name, '/') + 1);
+            $resourceFileValueNoPath = substr($gameStaticResource->file_path, strrpos($gameStaticResource->file_path, '/') + 1);
+            Storage::append($pathToMapFile, $resourceFileNameNoPath . "=" . $resourceFileValueNoPath);
+        }
+
+    }
 }

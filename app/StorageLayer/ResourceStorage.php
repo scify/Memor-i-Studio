@@ -10,6 +10,7 @@ namespace App\StorageLayer;
 
 use App\Models\Resource;
 use App\Models\ResourceFile;
+use Illuminate\Support\Facades\DB;
 
 class ResourceStorage {
 
@@ -52,5 +53,15 @@ class ResourceStorage {
      */
     public function getFileForResource($resourceId, $gameFlavorId) {
         return ResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
+    }
+
+    public function getResourcesForGameFlavorByResourceType($gameFlavorId, $typeId) {
+        $resources = DB::table('resource')
+            ->join('resource_category', 'resource.category_id', '=', 'resource_category.id')
+            ->join('resource_file', 'resource.id', '=', 'resource_file.resource_id')
+            ->where('resource_category.type_id', '=', $typeId)
+            ->where('resource_file.game_flavor_id', '=', $gameFlavorId)
+            ->get();
+        return $resources;
     }
 }

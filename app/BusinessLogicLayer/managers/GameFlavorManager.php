@@ -43,20 +43,11 @@ class GameFlavorManager {
 
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
         }
-        //upload the cover image
-        //TODO: this should be done in resources page
-//        if($request->hasFile('cover_img')) {
-//            $gameFlavor['cover_img_id'] = $this->uploadCoverImageFile($gameFlavor->id, $request);
-//            if ($gameFlavor['cover_img_id'] == null)
-//                return null;
-//        }
-
         return $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
     public function getResourcesForGameFlavor($gameFlavor) {
         $resourceCategoryManager = new ResourceCategoryManager();
-        $resourceFileStorage = new ResourceFileStorage();
         $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
         foreach ($gameVersionResourceCategories as $category) {
 
@@ -70,11 +61,6 @@ class GameFlavorManager {
             }
         }
         return $gameVersionResourceCategories;
-    }
-
-    private function uploadCoverImageFile($gameVersionId, Request $request) {
-        $imgManager = new ImgManager();
-        return $imgManager->uploadGameFlavorCoverImg($gameVersionId, $request->file('cover_img'));
     }
 
     public function getGameFlavors() {
@@ -134,11 +120,12 @@ class GameFlavorManager {
     public function getGameFlavor($id) {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
-
         //if the game Version exists, check if the user has access
         if($gameFlavor != null) {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
         }
+//        $resourceManager = new ResourceManager();
+//        $resourceManager->createResourcesFilesMapForStatic($id);
 
         return $gameFlavor;
     }
@@ -237,7 +224,7 @@ class GameFlavorManager {
             array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
         }
         $filePath = storage_path() . '/app/packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json';
-        if(!File::exists($filePath)) {
+        if(File::exists($filePath)) {
             File::delete($filePath);
         }
 
