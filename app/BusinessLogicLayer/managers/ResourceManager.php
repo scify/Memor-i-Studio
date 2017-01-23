@@ -67,20 +67,25 @@ class ResourceManager {
     /**
      * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
      *
+     * @param $gameFlavorId int the id of the game flavor instance
      * @param UploadedFile $file the file to be stored (eg image or audio)
      * @param $pathToStore string the path to store the file
      * @param $resourceId int the id if the @see Resource instance
      * @return Resource the newly created instance
      */
     public function createAndStoreStaticResourceFile($gameFlavorId, UploadedFile $file, $pathToStore, $resourceId) {
-        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
-        $file->storeAs($pathToStore, $filename);
-
+        $filename = $this->storeFileToPath($file, $pathToStore);
         $staticResourceFile = new ResourceFile();
         $staticResourceFile->file_path = $pathToStore . $filename;
         $staticResourceFile->resource_id = $resourceId;
         $staticResourceFile->game_flavor_id = $gameFlavorId;
         return $this->resourceStorage->storeResource($staticResourceFile);
+    }
+
+    private function storeFileToPath(UploadedFile $file, $pathToStore) {
+        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
+        $file->storeAs($pathToStore, $filename);
+        return $filename;
     }
 
     /**
@@ -170,9 +175,7 @@ class ResourceManager {
     }
 
     private function updateResourceFile(UploadedFile $file, ResourceFile $existingResourceFile, $pathToStoreResourceFile) {
-        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
-        $file->storeAs($pathToStoreResourceFile, $filename);
-        //TODO wrap in function
+        $filename = $this->storeFileToPath($file, $pathToStoreResourceFile);
         $existingResourceFile->file_path = $pathToStoreResourceFile . $filename;
         $this->resourceStorage->storeResourceFile($existingResourceFile);
     }
