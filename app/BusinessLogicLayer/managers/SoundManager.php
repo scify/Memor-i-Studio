@@ -14,14 +14,15 @@ include_once 'functions.php';
 class SoundManager {
 
     private $resourceManager;
+    private $CARD_SOUND_CATEGORY = 'audios/card_sounds/';
 
     public function __construct() {
         $this->resourceManager = new ResourceManager();
     }
 
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
-        $soundPath = 'data_packs/' . $gameFlavorId . '/audios/card_sounds/';
-        $newResourceId = $this->resourceManager->createNewResource('audios/card_sounds/');
+        $soundPath = 'data_packs/' . $gameFlavorId . '/' . $this->CARD_SOUND_CATEGORY;
+        $newResourceId = $this->resourceManager->createNewResource($this->CARD_SOUND_CATEGORY);
         $this->resourceManager->createAndStoreResourceFile($sound, $soundPath, $newResourceId, $gameFlavorId);
         return $newResourceId;
     }

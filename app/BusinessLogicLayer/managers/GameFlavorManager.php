@@ -128,8 +128,9 @@ class GameFlavorManager {
         if($gameFlavor != null) {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
         }
+        //TODO: this should be done elsewhere
 //        $resourceManager = new ResourceManager();
-//        $resourceManager->createResourcesFilesMapForStatic($id);
+//        $resourceManager->createStaticResourcesMapFile($id);
 
         return $gameFlavor;
     }

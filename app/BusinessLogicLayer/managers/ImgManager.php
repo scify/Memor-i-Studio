@@ -15,6 +15,7 @@ include_once 'functions.php';
 class ImgManager {
 
     private $resourceManager;
+    private $CARD_IMAGE_CATEGORY = 'img/card_images/';
 
     public function __construct() {
         $this->resourceManager = new ResourceManager();
@@ -27,9 +28,9 @@ class ImgManager {
     }
 
     public function uploadCardImg($gameFlavorId, UploadedFile $img) {
-        $soundPath = 'data_packs/' . $gameFlavorId . '/img/card_images/';
-        $newResourceId = $this->resourceManager->createNewResource('img/card_images/');
-        $this->resourceManager->createAndStoreResourceFile($img, $soundPath, $newResourceId, $gameFlavorId);
+        $imgPath = 'data_packs/' . $gameFlavorId . '/' . $this->CARD_IMAGE_CATEGORY;
+        $newResourceId = $this->resourceManager->createNewResource($this->CARD_IMAGE_CATEGORY);
+        $this->resourceManager->createAndStoreResourceFile($img, $imgPath, $newResourceId, $gameFlavorId);
         return $newResourceId;
     }
 
