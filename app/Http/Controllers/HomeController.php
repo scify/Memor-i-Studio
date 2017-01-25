@@ -17,12 +17,15 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the contact form.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('home');
+    public function showContactForm() {
+        return view('contact');
+    }
+
+    public function sendContactEmail(Request $request) {
+        dd($request->all());
     }
 }

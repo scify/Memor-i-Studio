@@ -192,3 +192,14 @@ body {
 .accordion .panel-heading a:after {
   content: '\f124';
 }
+
+.centeredVertically {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+}
+
+.padding-30 {
+  padding: 30px !important;
+}
+
