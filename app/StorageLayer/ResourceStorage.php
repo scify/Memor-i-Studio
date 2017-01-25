@@ -42,6 +42,15 @@ class ResourceStorage {
     }
 
     /**
+     * Gets a @see Resource instance by id
+     * @return mixed the instance if found, otherwise null
+     * @internal param int $id the id of the resource
+     */
+    public function getResourceByCategoryId($resourceCateforyId) {
+        return Resource::where(['category_id' => $resourceCateforyId])->first();
+    }
+
+    /**
      * Saves a @see ResourceFile instance
      *
      * @param ResourceFile $resource

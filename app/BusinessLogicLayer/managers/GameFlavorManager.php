@@ -33,7 +33,7 @@ class GameFlavorManager {
      * @return GameFlavor the newly created instance
      */
     public function saveGameFlavor($gameFlavorId, array $inputFields, Request $request) {
-
+        $imgManager = new ImgManager();
         if($gameFlavorId == null) {
             //create new instance
             $inputFields['creator_id'] = Auth::user()->id;
@@ -41,13 +41,20 @@ class GameFlavorManager {
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
             $gameFlavor->game_version_id = $inputFields['game_version_id'];
             $gameFlavor->creator_id = $inputFields['creator_id'];
+
         } else {
             //edit existing
             $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
 
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
         }
-        return $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+        $newGameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+        if(isset($inputFields['cover_img'])) {
+            $gameFlavor->cover_img_id = $imgManager->uploadGameFlavorCoverImg($newGameFlavor->id, $inputFields['cover_img']);
+        }
+        $gameFlavor->save();
+
+        return $newGameFlavor;
     }
 
     public function getResourcesForGameFlavor($gameFlavor) {

@@ -8,6 +8,8 @@
 
 namespace App\BusinessLogicLayer\managers;
 
+use App\StorageLayer\ResourceCategoryStorage;
+use App\StorageLayer\ResourceStorage;
 use Illuminate\Http\UploadedFile;
 
 include_once 'functions.php';
@@ -16,15 +18,22 @@ class ImgManager {
 
     private $resourceManager;
     private $CARD_IMAGE_CATEGORY = 'img/card_images/';
+    private $GAME_FLAVOR_COVER_IMAGE_CATEGORY = 'img/game_cover/';
 
     public function __construct() {
         $this->resourceManager = new ResourceManager();
     }
 
     public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
-        //TODO: fix
-        $soundPath = '';
-        return $this->resourceManager->createNewResource($gameFlavorId, $soundPath);
+        $resourceCategoryStorage = new ResourceCategoryStorage();
+        $resourceStorage = new ResourceStorage();
+        $gameFlavorManager = new GameFlavorManager();
+
+        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+        $resourceCategory = $resourceCategoryStorage->getResourceCategoryByPathForGameVersion($this->GAME_FLAVOR_COVER_IMAGE_CATEGORY, $gameFlavor->game_version_id);
+        $resource = $resourceStorage->getResourceByCategoryId($resourceCategory->id);
+        $this->resourceManager->createOrUpdateResourceFile($coverImg, $resource->id, $gameFlavorId);
+        return $resource->id;
     }
 
     public function uploadCardImg($gameFlavorId, UploadedFile $img) {

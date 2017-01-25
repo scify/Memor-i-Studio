@@ -4,7 +4,7 @@
             @if($gameFlavor->cover_img_id == null)
                 <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{url('data/' . $gameFlavor->id . '/img/' . $gameFlavor->coverImg->imageCategory->category .  '/' . $gameFlavor->coverImg->file_path)}}">
+                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->coverImg->file->file_path])}}">
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>

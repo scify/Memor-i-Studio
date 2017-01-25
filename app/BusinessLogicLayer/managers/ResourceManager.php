@@ -152,18 +152,18 @@ class ResourceManager {
     /**
      * For a given resource, checks if it exists and creates or updates, accordingly
      *
-     * @param UploadedFile $audio
+     * @param UploadedFile $file
      * @param $resourceId
      * @param $gameFlavorId
      */
-    private function createOrUpdateResourceFile(UploadedFile $audio, $resourceId, $gameFlavorId) {
+    public function createOrUpdateResourceFile(UploadedFile $file, $resourceId, $gameFlavorId) {
         $existingResourceFile = $this->resourceStorage->getFileForResource($resourceId, $gameFlavorId);
         $resource = $this->resourceStorage->getResourceById($resourceId);
         $pathToStoreResourceFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
         if($existingResourceFile == null)
-            $this->createAndStoreResourceFile($audio, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
+            $this->createAndStoreResourceFile($file, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
         else
-            $this->updateResourceFile($audio, $existingResourceFile, $pathToStoreResourceFile);
+            $this->updateResourceFile($file, $existingResourceFile, $pathToStoreResourceFile);
     }
 
     /**
@@ -191,6 +191,7 @@ class ResourceManager {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
         $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)
+
         Storage::put($pathToMapFile, null);
         foreach ($gameStaticResources as $gameStaticResource) {
             $resourceFileNameNoFile = substr($gameStaticResource->name, 0, strripos($gameStaticResource->name, '/'));
