@@ -26,6 +26,12 @@ class HomeController extends Controller
     }
 
     public function sendContactEmail(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'subject' => 'required'
+        ]);
+
         dd($request->all());
     }
 }

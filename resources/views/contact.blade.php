@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="inputer floating-label">
                                 <div class="input-wrapper">
-                                    <input type="text" name="name" class="form-control" required>
+                                    <input type="text" name="name" class="form-control" required value="{{old('name')}}">
                                     <label for="name">Your name (required)</label>
                                 </div>
                             </div>
@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="inputer floating-label">
                                 <div class="input-wrapper">
-                                    <input type="email" name="email" class="form-control" required>
+                                    <input type="email" name="email" class="form-control" required value="{{old('email')}}">
                                     <label for="email">Your email address (required)</label>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="inputer floating-label">
                                 <div class="input-wrapper">
-                                    <input type="text" name="subject" class="form-control" required>
+                                    <textarea type="text" name="subject" class="form-control" required>{{old('subject')}}</textarea>
                                     <label for="subject">Subject (required)</label>
                                 </div>
                             </div>
