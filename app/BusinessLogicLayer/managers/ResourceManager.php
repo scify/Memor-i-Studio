@@ -159,7 +159,7 @@ class ResourceManager {
     private function createOrUpdateResourceFile(UploadedFile $audio, $resourceId, $gameFlavorId) {
         $existingResourceFile = $this->resourceStorage->getFileForResource($resourceId, $gameFlavorId);
         $resource = $this->resourceStorage->getResourceById($resourceId);
-        $pathToStoreResourceFile = 'data_packs/' . $gameFlavorId . '/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
+        $pathToStoreResourceFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
         if($existingResourceFile == null)
             $this->createAndStoreResourceFile($audio, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
         else
@@ -189,12 +189,12 @@ class ResourceManager {
      */
     public function createStaticResourcesMapFile($gameFlavorId) {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
-        $pathToMapFile = 'data_packs/' . $gameFlavorId . '/' . 'resources_map.properties';
+        $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)
         Storage::put($pathToMapFile, null);
         foreach ($gameStaticResources as $gameStaticResource) {
             $resourceFileNameNoFile = substr($gameStaticResource->name, 0, strripos($gameStaticResource->name, '/'));
-            $resourceFileNameNoPath = substr($gameStaticResource->name, strrpos($gameStaticResource->name, '/') + 1);
+//            $resourceFileNameNoPath = substr($gameStaticResource->name, strrpos($gameStaticResource->name, '/') + 1);
             $resourceFileValueNoPath = substr($gameStaticResource->file_path, strrpos($gameStaticResource->file_path, '/') + 1);
             Storage::append($pathToMapFile, $gameStaticResource->name . "=" . $resourceFileNameNoFile . '/' . $resourceFileValueNoPath);
         }

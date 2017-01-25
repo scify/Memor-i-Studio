@@ -7,6 +7,7 @@ use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
 use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
+use App\BusinessLogicLayer\managers\ResourceManager;
 use App\Models\GameFlavor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -178,12 +179,12 @@ class GameFlavorController extends Controller
     public function download($gameFlavorId) {
         //TODO: change
         try {
-            $jsonFile = $this->gameFlavorManager->createEquivalenceSetsJSONFile($gameFlavorId);
-            $this->gameFlavorManager->zipGameFlavor($gameFlavorId);
+            $this->gameFlavorManager->packageFlavor($gameFlavorId);
+
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
 
-        return $jsonFile;
+        return response()->download($this->gameFlavorManager->getGameFlavorZipFile($gameFlavorId));
     }
 }

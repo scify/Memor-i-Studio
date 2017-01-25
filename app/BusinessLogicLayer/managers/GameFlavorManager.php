@@ -228,7 +228,7 @@ class GameFlavorManager {
             }
             array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
         }
-        $filePath = storage_path() . '/app/packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json';
+        $filePath = storage_path() . '/app/data_packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json';
         if(File::exists($filePath)) {
             File::delete($filePath);
         }
@@ -244,7 +244,7 @@ class GameFlavorManager {
      * @param $gameFlavorId int the id of the @see GameFlavor
      */
     public function zipGameFlavor($gameFlavorId) {
-        $packDir = storage_path() . '/app/packs/' . $gameFlavorId;
+        $packDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/data_pack';
         $zipper = new Zipper();
         $zipFile = storage_path() . '/app/zips/' . 'memori_data_' . $gameFlavorId . '.zip';
         if(File::exists($zipFile)) {
@@ -252,5 +252,16 @@ class GameFlavorManager {
         }
         $zipper->make($zipFile)
             ->add($packDir);
+    }
+
+    public function packageFlavor($gameFlavorId) {
+        $resourceManager = new ResourceManager();
+        $resourceManager->createStaticResourcesMapFile($gameFlavorId);
+        $jsonFile = $this->createEquivalenceSetsJSONFile($gameFlavorId);
+        $this->zipGameFlavor($gameFlavorId);
+    }
+
+    public function getGameFlavorZipFile($gameFlavorId) {
+        return storage_path('app/zips/memori_data_' . $gameFlavorId . '.zip');
     }
 }

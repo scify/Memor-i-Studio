@@ -21,7 +21,7 @@ class SoundManager {
     }
 
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
-        $soundPath = 'data_packs/' . $gameFlavorId . '/' . $this->CARD_SOUND_CATEGORY;
+        $soundPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . $this->CARD_SOUND_CATEGORY;
         $newResourceId = $this->resourceManager->createNewResource($this->CARD_SOUND_CATEGORY);
         $this->resourceManager->createAndStoreResourceFile($sound, $soundPath, $newResourceId, $gameFlavorId);
         return $newResourceId;

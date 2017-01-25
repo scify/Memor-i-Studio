@@ -28,7 +28,7 @@ class ImgManager {
     }
 
     public function uploadCardImg($gameFlavorId, UploadedFile $img) {
-        $imgPath = 'data_packs/' . $gameFlavorId . '/' . $this->CARD_IMAGE_CATEGORY;
+        $imgPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . $this->CARD_IMAGE_CATEGORY;
         $newResourceId = $this->resourceManager->createNewResource($this->CARD_IMAGE_CATEGORY);
         $this->resourceManager->createAndStoreResourceFile($img, $imgPath, $newResourceId, $gameFlavorId);
         return $newResourceId;
