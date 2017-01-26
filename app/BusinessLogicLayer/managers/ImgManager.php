@@ -12,8 +12,10 @@ use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use Illuminate\Http\UploadedFile;
 
-include_once 'functions.php';
-
+/**
+ * Class ImgManager handles image resources, like Card images and game flavor images
+ * @package App\BusinessLogicLayer\managers
+ */
 class ImgManager {
 
     private $resourceManager;
@@ -24,6 +26,13 @@ class ImgManager {
         $this->resourceManager = new ResourceManager();
     }
 
+    /**
+     * Edits or creates a new resource for the game flavor cover image and stores the file.
+     *
+     * @param $gameFlavorId int the id of the game flavor
+     * @param UploadedFile $coverImg the image file uploaded
+     * @return int the id of the resource created
+     */
     public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
         $resourceCategoryStorage = new ResourceCategoryStorage();
         $resourceStorage = new ResourceStorage();
@@ -36,6 +45,13 @@ class ImgManager {
         return $resource->id;
     }
 
+    /**
+     * Creates a new resource for the card image and stores the file.
+     *
+     * @param $gameFlavorId int the id of the game flavor
+     * @param UploadedFile $img the image file uploaded
+     * @return int the id of the resource created
+     */
     public function uploadCardImg($gameFlavorId, UploadedFile $img) {
         $imgPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . $this->CARD_IMAGE_CATEGORY;
         $newResourceId = $this->resourceManager->createNewResource($this->CARD_IMAGE_CATEGORY);

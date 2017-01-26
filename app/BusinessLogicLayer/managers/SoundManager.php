@@ -8,9 +8,13 @@
 
 namespace App\BusinessLogicLayer\managers;
 
+use App\Models\Resource;
 use Illuminate\Http\UploadedFile;
-include_once 'functions.php';
 
+/**
+ * Class SoundManager handles the sound files of the dynamic resources (eg the card sounds)
+ * @package App\BusinessLogicLayer\managers
+ */
 class SoundManager {
 
     private $resourceManager;
@@ -20,6 +24,13 @@ class SoundManager {
         $this->resourceManager = new ResourceManager();
     }
 
+    /**
+     * Creates a new @see Resource for the card image and stores the file.
+     *
+     * @param $gameFlavorId int the id of the game flavor
+     * @param UploadedFile $sound the sound file uploaded
+     * @return int the id of the resource created
+     */
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
         $soundPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . $this->CARD_SOUND_CATEGORY;
         $newResourceId = $this->resourceManager->createNewResource($this->CARD_SOUND_CATEGORY);
