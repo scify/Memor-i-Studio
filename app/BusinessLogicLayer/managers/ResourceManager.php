@@ -80,7 +80,8 @@ class ResourceManager {
 
             $resourceCategory = $resourceCategoryManager->getResourceCategoryByNameForGameVersion($resourceCategoryName, $gameVersionId);
 
-            if($resourceCategory != null) {
+            //if resource category exists and it is not a dynamic resource category
+            if($resourceCategory != null && $resourceCategory->type_id != 2) {
                 $newResource = new Resource();
                 $newResource->category_id = $resourceCategory->id;
                 $newResource->name = $gameResourceFile;
