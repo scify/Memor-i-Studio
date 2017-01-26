@@ -48,7 +48,6 @@ class GameVersionManager {
         $resourceCategoriesManager = new ResourceCategoryManager();
         $resourcesManager = new ResourceManager();
         $resourceCategoriesManager->createResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $newGameVersion->id);
-        //TODO: clean resources
         $resourcesManager->createResourcesFromResourcesArray($this->gameResourcesFilesSchema, $newGameVersion->id);
 
         return $newGameVersion;
