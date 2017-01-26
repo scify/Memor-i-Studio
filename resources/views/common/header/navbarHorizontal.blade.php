@@ -5,7 +5,7 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-            <li class="{{ (Route::current()->getName() == 'createGameVersionIndex') ? 'active' : '' }}"><a href="#">About</a></li>
+            <li><a href="http://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien" target="_blank">About</a></li>
             <li class="{{ (Route::current()->getName() == 'showContactForm') ? 'active' : '' }}"><a href="{{route('showContactForm')}}">Contact</a></li>
         </ul>
         <div class="pull-right">
