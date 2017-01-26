@@ -162,7 +162,7 @@ class GameFlavorController extends Controller
             //TODO: redirect to error page
             return redirect()->back();
         }
-        session()->flash('flash_message_success', 'Game version published.');
+        session()->flash('flash_message_success', 'Game flavor published.');
         return redirect()->back();
     }
 
