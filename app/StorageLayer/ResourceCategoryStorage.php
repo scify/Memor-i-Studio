@@ -29,7 +29,7 @@ class ResourceCategoryStorage {
     }
 
     public function getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId) {
-        //we exlude the game cover image, because it is added on game flavor form
+        //we exclude the game cover image, because it is added on game flavor form
         return ResourceCategory::where(['game_version_id' =>$gameVersionId, 'type_id' => $resourceTypeId])->where('description', '<>', 'img/game_cover')->orderBy('order_id', 'asc')->get();
     }
 

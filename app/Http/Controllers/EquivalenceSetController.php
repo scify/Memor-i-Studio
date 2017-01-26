@@ -8,6 +8,10 @@ use App\BusinessLogicLayer\managers\GameFlavorManager;
 use Illuminate\Http\Request;
 use Javascript;
 
+/**
+ * Class EquivalenceSetController controller for requests regarding equivalence sets (sets of cards that are equivalent)
+ * @package App\Http\Controllers
+ */
 class EquivalenceSetController extends Controller
 {
     private $equivalenceSetManager;
