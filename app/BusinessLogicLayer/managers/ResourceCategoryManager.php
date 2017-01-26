@@ -19,6 +19,15 @@ class ResourceCategoryManager {
     private $resourceCategoryStorage;
     private $resourceCategoryTranslationStorage;
 
+    /**
+     * We can order each of the resource categories by add an integer tied to it's path.
+     * When the resource is created, it will have the ordering described here (or null of we do not describe an ordering
+     * for this resource category.
+     *
+     * Then, the resource categories will be presented to teh user ordered by this ordering.
+     *
+     * @var array
+     */
     private $resourceCategoryOrdering = array(
         'audios/game_instructions/' => 1,
         'audios/storyline_audios/' => 2,
