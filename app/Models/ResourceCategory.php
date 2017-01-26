@@ -20,7 +20,7 @@ class ResourceCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['path', 'description', 'game_version_id', 'type_id'];
+    protected $fillable = ['path', 'description', 'game_version_id', 'type_id', 'order_id'];
 
     /**
      * Get the @see GameVersion this resource category belongs to.

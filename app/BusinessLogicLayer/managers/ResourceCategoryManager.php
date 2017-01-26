@@ -18,6 +18,20 @@ class ResourceCategoryManager {
 
     private $resourceCategoryStorage;
     private $resourceCategoryTranslationStorage;
+
+    private $resourceCategoryOrdering = array(
+        'audios/game_instructions/' => 1,
+        'audios/storyline_audios/' => 2,
+        'audios/level_intro_sounds/' => 3,
+        'audios/fun_factor_sounds/' => 4,
+        'audios/end_level_starting_sounds/' => 5,
+        'audios/end_level_ending_sounds/' => 6,
+        'audios/level_name_sounds/' => 7,
+        'audios/miscellaneous/' => 9,
+        'audios/letters/' => 10,
+        'audios/numbers/' => 11,
+    );
+
     public function __construct() {
         $this->resourceCategoryStorage = new ResourceCategoryStorage();
         $this->resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
@@ -47,6 +61,8 @@ class ResourceCategoryManager {
         $resourceCategory->path = $categoryPath;
         $resourceCategory->game_version_id = $gameVersionId;
         $resourceCategory->description = trim($categoryPath, "/");
+        if(isset($this->resourceCategoryOrdering[$categoryPath]))
+            $resourceCategory->order_id = $this->resourceCategoryOrdering[$categoryPath];
         if($this->isResourceCategoryStatic($categoryPath))
             $resourceCategory->type_id = 1;
         else
