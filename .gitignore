@@ -51,3 +51,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+public/*.jar

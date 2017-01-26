@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://localhost/memoribackend/"
+    href="test.jnlp">
+    <information>
+        <title>Memor-i</title>
+        <vendor>SciFY</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.7+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="memori.jar"
+            main="true" />
+
+    </resources>
+    <application-desc main-class="org.scify.memori.Launcher">
+     </application-desc>
+     <update check="background"/>
+    <security>
+        <all-permissions/>
+    </security>
+</jnlp>
