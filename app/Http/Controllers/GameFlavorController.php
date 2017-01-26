@@ -70,7 +70,7 @@ class GameFlavorController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'cover_img' => 'image|max:5000'
+            'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png'
         ]);
 
         $input = $request->all();
@@ -123,7 +123,7 @@ class GameFlavorController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'cover_img' => 'image|max:5000'
+            'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png'
         ]);
 
         $input = $request->all();
