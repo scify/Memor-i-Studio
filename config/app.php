@@ -14,6 +14,8 @@ return [
 
     'name' => 'MemoriBackend',
 
+    'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

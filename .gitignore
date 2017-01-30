@@ -53,3 +53,4 @@ $RECYCLE.BIN/
 *.lnk
 public/*.jar
 public/memoristore
+public/sign_data_pack.sh

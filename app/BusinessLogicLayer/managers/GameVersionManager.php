@@ -97,8 +97,13 @@ class GameVersionManager {
      * @return string the path of the uploaded file
      */
     private function storeZipFile($id, UploadedFile $gameJarFile) {
-        $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'app.zip');
-        $gameJarFile->storeAs($this->gameJarStoragePath . $id . '/', 'app.zip');
+        $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
+        $gameJarFile->storeAs($this->gameJarStoragePath . $id . '/', 'memori.jar');
+        return $filePath;
+    }
+
+    public function getGameVersionZipFile($id) {
+        $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
         return $filePath;
     }
 

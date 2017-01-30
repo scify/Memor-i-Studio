@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?php header('Content-type: application/x-java-jnlp-file'); ?>
 <jnlp spec="1.0+" codebase="http://localhost/memoribackend/"
-    href="test.jnlp">
+    href="main.jnlp">
     <information>
         <title>Memor-i</title>
         <vendor>SciFY</vendor>
     </information>
     <resources>
         <!-- Application Resources -->
-        <j2se version="1.7+"
+        <java version="1.8+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="memori.jar"
-            main="true" />
-
+        <jar href="" main="true" />
+        <jar href=""/>
     </resources>
     <application-desc main-class="org.scify.memori.Launcher">
      </application-desc>
-     <update check="background"/>
+     <update check="background" policy="always"/>
     <security>
         <all-permissions/>
     </security>

@@ -5,11 +5,13 @@ namespace App\BusinessLogicLayer\managers;
 use App\Models\GameFlavor;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Chumper\Zipper\Zipper;
-use Illuminate\Support\Facades\Storage;
+
+include_once 'functions.php';
 
 /**
  * Contains the functionality, methods and handling logic for the @see GameFlavor class
@@ -136,8 +138,8 @@ class GameFlavorManager {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
         }
         //TODO: this should be done elsewhere
-        $resourceManager = new ResourceManager();
-        $resourceManager->createStaticResourcesMapFile($id);
+//        $resourceManager = new ResourceManager();
+//        $resourceManager->createStaticResourcesMapFile($id);
 
         return $gameFlavor;
     }
@@ -203,57 +205,14 @@ class GameFlavorManager {
     }
 
     /**
-     * Prepares the JSON file describing the equivalence sets
-     *
-     * @param $gameFlavorId int the id of the @see GameFlavor
-     * @return string
-     */
-    public function createEquivalenceSetsJSONFile($gameFlavorId) {
-        $equivalenceSetManager = new EquivalenceSetManager();
-        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
-        //dd($equivalenceSets);
-        $equivalence_card_sets = array();
-        $equivalence_card_sets['equivalence_card_sets'] = array();
-        foreach ($equivalenceSets as $equivalenceSet) {
-            $cards = array();
-
-            foreach ($equivalenceSet->cards as $card) {
-                $current_card = array();
-                $current_card['label'] = $card->label;
-                $current_card['category'] = $card->category;
-                $current_card['unique'] = $card->unique;
-                $current_card['sounds'] = array();
-                $current_card['images'] = array();
-                $current_card['description_sound'] = "";
-                $current_card['equivalenceCardSetHashCode'] = "";
-                array_push($current_card['sounds'], $card->sound->file_path);
-                if($card->image != null)
-                    array_push($current_card['images'], $card->image->file_path);
-                if($card->secondImage != null)
-                    array_push($current_card['images'], $card->secondImage->file_path);
-                array_push($cards, $current_card);
-            }
-            array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
-        }
-        $filePath = storage_path() . '/app/data_packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json';
-        if(File::exists($filePath)) {
-            File::delete($filePath);
-        }
-
-        Storage::put('packs/' . $gameFlavorId . '/json_DB/equivalence_card_sets.json', json_encode($equivalence_card_sets));
-
-        return json_encode($equivalence_card_sets);
-    }
-
-    /**
      * Zips a directory containing Game flavor data (images, sounds, etc) into a .zip file
      *
      * @param $gameFlavorId int the id of the @see GameFlavor
      */
-    public function zipGameFlavor($gameFlavorId) {
-        $packDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/data_pack';
+    public function zipGameFlavorDataPack($gameFlavorId) {
+        $packDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId;
         $zipper = new Zipper();
-        $zipFile = storage_path() . '/app/zips/' . 'memori_data_' . $gameFlavorId . '.zip';
+        $zipFile = storage_path() . '/app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar';
         if(File::exists($zipFile)) {
             File::delete($zipFile);
         }
@@ -261,14 +220,88 @@ class GameFlavorManager {
             ->add($packDir);
     }
 
-    public function packageFlavor($gameFlavorId) {
-        $resourceManager = new ResourceManager();
-        $resourceManager->createStaticResourcesMapFile($gameFlavorId);
-        $jsonFile = $this->createEquivalenceSetsJSONFile($gameFlavorId);
-        $this->zipGameFlavor($gameFlavorId);
+    public function getGameFlavorZipFile($gameFlavorId) {
+        return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
-    public function getGameFlavorZipFile($gameFlavorId) {
-        return storage_path('app/zips/memori_data_' . $gameFlavorId . '.zip');
+    public function packageFlavor($gameFlavorId) {
+        $resourceManager = new ResourceManager();
+        $equivalenceSetManager = new EquivalenceSetManager();
+        //create resources map file
+        $resourceManager->createStaticResourcesMapFile($gameFlavorId);
+        $resourceManager->createAdditionalPropertiesFile($gameFlavorId);
+        //create card .json file (for equivalent sets)
+        $equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
+        //compress the data pack directory into a .jar file
+        $this->zipGameFlavorDataPack($gameFlavorId);
+
+        //get the path
+        $packagePath = $this->getGameFlavorZipFile($gameFlavorId);
+        $filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed.jar ';
+
+        //we need to sign the created jar file
+        $output = $this->signDataPackJarFile($filePathToStore, $packagePath);
+
+        //copy the public jnlp file into the game flavor jnlp directory
+        $this->copyGameVersionJarFileToJnlpDir($gameFlavorId);
+        //add the jnlp file into the public directory (or storage directory)
+        $this->copyAndUpdateJnlpFileToDir($gameFlavorId);
+        return;
+    }
+
+    private function signDataPackJarFile($filePathToStore, $packagePath) {
+        $keyStorePass = config('app.KEYSTORE_PASS');
+        $old_path = getcwd();
+        chdir(public_path());
+        $command = './sign_data_pack.sh ' . $filePathToStore . ' ' . $packagePath . ' ' . $keyStorePass;
+        //dd($command);
+        $output = shell_exec($command);
+        chdir($old_path);
+        return $output;
+    }
+
+    private function copyGameVersionJarFileToJnlpDir($gameFlavorId) {
+        $gameVersionManager = new GameVersionManager();
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $destinationPath = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori.jar';
+        if ( ! File::copy($gameVersionManager->getGameVersionZipFile($gameFlavor->game_version_id), $destinationPath)) {
+            throw new \Exception("Couldn't copy version jar file");
+        }
+    }
+
+    private function copyAndUpdateJnlpFileToDir($gameFlavorId) {
+        $pathToJnlpFile = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/main_'. $gameFlavorId . '.jnlp';
+        if(File::exists($pathToJnlpFile)) {
+            File::delete($pathToJnlpFile);
+        }
+        if ( ! File::copy(public_path() . '/main.jnlp', $pathToJnlpFile)) {
+            throw new \Exception("Couldn't copy jnlp file");
+        }
+        $this->updateJnlpFile($gameFlavorId, $pathToJnlpFile);
+    }
+
+    public function getJnlpFileForGameFlavor($gameFlavorId) {
+        return storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/main_'. $gameFlavorId . '.jnlp';
+    }
+
+    private function updateJnlpFile($gameFlavorId, $pathToJnlpFile) {
+        $dom = new DOMDocument();
+        $dom->load($pathToJnlpFile);
+        $root = $dom->documentElement;
+
+        if ($root != null) {
+            $root->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/main_' . $gameFlavorId . '.jnlp');
+        }
+
+        $jarElements= $root->getElementsByTagName('jar');
+        if ($jarElements->length >= 1) {
+            $elementJarMain = $jarElements->item(0);
+            $elementJarMain->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori.jar');
+            //$elementJarMain->setAttribute('version', milliseconds());
+            $elementJarData = $jarElements->item(1);
+            $elementJarData->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori_data_signed.jar');
+            //$elementJarData->setAttribute('version', milliseconds());
+        }
+        $dom->save($pathToJnlpFile);
     }
 }

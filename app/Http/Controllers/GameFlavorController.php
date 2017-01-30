@@ -101,8 +101,7 @@ class GameFlavorController extends Controller
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $gameFlavor = $this->gameFlavorManager->getGameFlavorForEdit($id);
         if($gameFlavor == null) {
-            //TODO: redirect to 404 page
-            return redirect()->back();
+            return view('common.error_message', ['message' => 'Uncaught error while getting game flavor with id ' . $id]);
         }
         $gameVersionId = $gameFlavor->game_version_id;
         $languages = $this->languageManager->getAvailableLanguages();
@@ -149,8 +148,7 @@ class GameFlavorController extends Controller
 
         $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if(!$result) {
-            //TODO: redirect to 404 page
-            return redirect()->back();
+            return view('common.error_message', ['message' => 'Uncaught error while deleting game flavor.']);
         }
         session()->flash('flash_message_success', 'Game version deleted.');
         return redirect()->back();
@@ -159,8 +157,12 @@ class GameFlavorController extends Controller
     public function publish($id) {
         $result = $this->gameFlavorManager->toggleGameFlavorState($id);
         if(!$result) {
-            //TODO: redirect to error page
-            return redirect()->back();
+            return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
+        }
+        try {
+            $this->gameFlavorManager->packageFlavor($id);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', 'Game flavor published.');
         return redirect()->back();
@@ -169,22 +171,20 @@ class GameFlavorController extends Controller
     public function unPublish($id) {
         $result = $this->gameFlavorManager->toggleGameFlavorState($id);
         if(!$result) {
-            //TODO: redirect to error page
-            return redirect()->back();
+            return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
         }
         session()->flash('flash_message_success', 'Game version unpublished.');
         return redirect()->back();
     }
 
     public function download($gameFlavorId) {
-        //TODO: change
+        //TODO: change (return jnlp path)
         try {
-            $this->gameFlavorManager->packageFlavor($gameFlavorId);
+            $jnlpPath = $this->gameFlavorManager->getJnlpFileForGameFlavor($gameFlavorId);
 
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-
-        return response()->download($this->gameFlavorManager->getGameFlavorZipFile($gameFlavorId));
+        return response()->download($jnlpPath);
     }
 }
