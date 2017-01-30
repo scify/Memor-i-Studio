@@ -52,3 +52,4 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 public/*.jar
+public/memoristore
