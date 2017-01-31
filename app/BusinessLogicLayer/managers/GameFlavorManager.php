@@ -22,9 +22,10 @@ include_once 'functions.php';
 class GameFlavorManager {
 
     private $gameFlavorStorage;
+    //the string that will be used to name the final jnlp file
+    private $JNLP_FILE_PREFIX = "game";
 
     public function __construct() {
-        // initialize $userStorage
         $this->gameFlavorStorage = new GameFlavorStorage();
     }
 
@@ -137,9 +138,6 @@ class GameFlavorManager {
         if($gameFlavor != null) {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
         }
-        //TODO: this should be done elsewhere
-//        $resourceManager = new ResourceManager();
-//        $resourceManager->createStaticResourcesMapFile($id);
 
         return $gameFlavor;
     }
@@ -224,6 +222,18 @@ class GameFlavorManager {
         return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
+    /**
+     * Deletes the not signed .jar file that contains the data pack files
+     *
+     * @param $gameFlavorId int the id of the @see GameFlavor
+     */
+    public function deleteTemporaryFlavorPackZipFile($gameFlavorId) {
+        $file = $this->getGameFlavorZipFile($gameFlavorId);
+        if(File::exists($file)) {
+            File::delete($file);
+        }
+    }
+
     public function packageFlavor($gameFlavorId) {
         $resourceManager = new ResourceManager();
         $equivalenceSetManager = new EquivalenceSetManager();
@@ -232,76 +242,122 @@ class GameFlavorManager {
         $resourceManager->createAdditionalPropertiesFile($gameFlavorId);
         //create card .json file (for equivalent sets)
         $equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
-        //compress the data pack directory into a .jar file
+        //compress the data pack directory into a temporary .jar file (it will be deleted later, after we sign it)
         $this->zipGameFlavorDataPack($gameFlavorId);
-
+        //get a timestamp in order to name the generated jar files appropriately
+        $milliseconds = milliseconds();
         //get the path
         $packagePath = $this->getGameFlavorZipFile($gameFlavorId);
-        $filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed.jar ';
+        $filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed-' . $milliseconds . '.jar ';
 
         //we need to sign the created jar file
         $output = $this->signDataPackJarFile($filePathToStore, $packagePath);
 
+        //delete not-signed jar file
+        $this->deleteTemporaryFlavorPackZipFile($gameFlavorId);
+        //copy the jar file for the current game version into the jnlp directory and name it appropriately
+        $this->copyGameVersionJarFileToJnlpDir($gameFlavorId, $milliseconds);
         //copy the public jnlp file into the game flavor jnlp directory
-        $this->copyGameVersionJarFileToJnlpDir($gameFlavorId);
-        //add the jnlp file into the public directory (or storage directory)
-        $this->copyAndUpdateJnlpFileToDir($gameFlavorId);
+        $this->copyAndUpdateJnlpFileToDir($gameFlavorId, $milliseconds);
         return;
     }
 
+    /**
+     * Uses a .sh script located in public folder to sign the .jar file that contains the data pack resource files.
+     * Uses a config variable set in .env and read through config/app.php, aliased as KEYSTORE_PASS
+     *
+     * @param $filePathToStore string the path to store the generated signed file
+     * @param $packagePath string the path that the not-signed file is located
+     * @return string the output of the process that triggered the .sh file
+     */
     private function signDataPackJarFile($filePathToStore, $packagePath) {
         $keyStorePass = config('app.KEYSTORE_PASS');
         $old_path = getcwd();
         chdir(public_path());
         $command = './sign_data_pack.sh ' . $filePathToStore . ' ' . $packagePath . ' ' . $keyStorePass;
-        //dd($command);
         $output = shell_exec($command);
         chdir($old_path);
         return $output;
     }
 
-    private function copyGameVersionJarFileToJnlpDir($gameFlavorId) {
+    /**
+     * @param $gameFlavorId int the id of the @see GameFlavor
+     * @param $suffix string a random string that will be appended to the file name
+     * @throws \Exception if the .jar file cannot be copied to the destination path
+     */
+    private function copyGameVersionJarFileToJnlpDir($gameFlavorId, $suffix) {
         $gameVersionManager = new GameVersionManager();
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
-        $destinationPath = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori.jar';
+        $destinationPath = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori-'. $suffix . '.jar';
         if ( ! File::copy($gameVersionManager->getGameVersionZipFile($gameFlavor->game_version_id), $destinationPath)) {
             throw new \Exception("Couldn't copy version jar file");
         }
     }
 
-    private function copyAndUpdateJnlpFileToDir($gameFlavorId) {
-        $pathToJnlpFile = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/main_'. $gameFlavorId . '.jnlp';
+    /**
+     * Copies the main jnlp file to the destination path
+     * After the file is copied, we update it's contents to set the correct paths and name for the executable and data .jar files.
+     *
+     * @param $gameFlavorId int the id of the @see GameFlavor
+     * @param $suffix string a random string that will be appended to the file name
+     * @throws \Exception if the .jnlp file cannot be copied to the destination path
+     */
+    private function copyAndUpdateJnlpFileToDir($gameFlavorId, $suffix) {
+        $pathToJnlpFile = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/' . $this->JNLP_FILE_PREFIX . '_' . $gameFlavorId . '.jnlp';
         if(File::exists($pathToJnlpFile)) {
             File::delete($pathToJnlpFile);
         }
         if ( ! File::copy(public_path() . '/main.jnlp', $pathToJnlpFile)) {
             throw new \Exception("Couldn't copy jnlp file");
         }
-        $this->updateJnlpFile($gameFlavorId, $pathToJnlpFile);
+        $this->updateJnlpFile($gameFlavorId, $pathToJnlpFile, $suffix);
     }
 
+    /**
+     * Gets the path of the .jnlp file for a given game version
+     *
+     * @param $gameFlavorId int the game flavor id
+     * @return string the path
+     */
     public function getJnlpFileForGameFlavor($gameFlavorId) {
-        return storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/main_'. $gameFlavorId . '.jnlp';
+        return storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/' . $this->JNLP_FILE_PREFIX . '_' . $gameFlavorId . '.jnlp';
     }
 
-    private function updateJnlpFile($gameFlavorId, $pathToJnlpFile) {
+    /**
+     * Opens the jnlp file as xml and retrieves the attributes to set the jar file paths
+     *
+     * @param $gameFlavorId int the game flavor id
+     * @param $pathToJnlpFile string path to the jnlp file
+     * @param $suffix the string that was used to name tha jar files
+     */
+    private function updateJnlpFile($gameFlavorId, $pathToJnlpFile, $suffix) {
         $dom = new DOMDocument();
         $dom->load($pathToJnlpFile);
         $root = $dom->documentElement;
 
         if ($root != null) {
-            $root->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/main_' . $gameFlavorId . '.jnlp');
+            $root->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/' . $this->JNLP_FILE_PREFIX . '_' . $gameFlavorId . '.jnlp');
         }
 
         $jarElements= $root->getElementsByTagName('jar');
         if ($jarElements->length >= 1) {
             $elementJarMain = $jarElements->item(0);
-            $elementJarMain->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori.jar');
-            //$elementJarMain->setAttribute('version', milliseconds());
+            $elementJarMain->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori-' . $suffix . '.jar');
+//            $elementJarMain->setAttribute('version', $milliseconds);
             $elementJarData = $jarElements->item(1);
-            $elementJarData->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori_data_signed.jar');
-            //$elementJarData->setAttribute('version', milliseconds());
+            $elementJarData->setAttribute('href', 'resolveData/data_packs/jnlp/' . $gameFlavorId . '/memori_data_signed-' . $suffix . '.jar');
+//            $elementJarData->setAttribute('version', $milliseconds);
         }
         $dom->save($pathToJnlpFile);
+    }
+
+    /**
+     * Deletes the directory that was generated when packaging the game flavor
+     *
+     * @param $id int the game version id
+     */
+    public function clearJnlpDir($id) {
+        $pathToJnlpDir = storage_path() . '/app/data_packs/jnlp/'. $id;
+        File::deleteDirectory($pathToJnlpDir);
     }
 }

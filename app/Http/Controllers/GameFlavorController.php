@@ -170,6 +170,7 @@ class GameFlavorController extends Controller
 
     public function unPublish($id) {
         $result = $this->gameFlavorManager->toggleGameFlavorState($id);
+        $this->gameFlavorManager->clearJnlpDir($id);
         if(!$result) {
             return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
         }
