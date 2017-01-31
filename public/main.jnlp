@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?php header('Content-type: application/x-java-jnlp-file'); ?>
-<jnlp spec="1.0+" codebase="http://localhost/memoribackend/"
+<jnlp spec="1.0+" codebase="http://192.168.1.10/memoribackend/"
     href="main.jnlp">
     <information>
         <title>Memor-i</title>
