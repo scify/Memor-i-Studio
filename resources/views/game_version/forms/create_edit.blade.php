@@ -74,7 +74,10 @@
                         </div>
                         @if($gameVersion->id == null)
                             <div class="row">
-                                <div class="col-md-3">Version resources</div><!--.col-md-3-->
+                                <div class="col-md-3">
+                                    Version .jar file <a href="https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html">
+                                        <p class="signedJarMsg">(must be signed)</p></a>
+                                </div><!--.col-md-3-->
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         {{--<label for="exampleInputFile">File input</label>--}}
