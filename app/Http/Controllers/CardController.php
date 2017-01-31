@@ -30,7 +30,7 @@ class CardController extends Controller
     public function edit(Request $request) {
         //dd($request->all());
         $this->validate($request, [
-            'card.*.sound' => 'mimetypes:audio/mpeg,audio/x-wav'
+            'card.*.sound' => 'mimetypes:audio/mpeg|max:3000'
         ]);
 
         $input = $request->all();
