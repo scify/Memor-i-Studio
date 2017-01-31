@@ -114,6 +114,18 @@ To download and install all libraries and dependencies.
 This project uses [Elixir](https://laravel.com/docs/5.3/elixir) which is a tool built on [Gulp](http://gulpjs.com/),
 a popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and minification.
 
+## Converting audio files to mpr with CBR (constant bit rate)
+This project allows users to upload audio files. In order for the desktop application of Memor-i to operate correclty,
+these files need to me in .mp3 format and have a CBR (constant bit rate), not a VBR (variable bit rate). [See more](https://www.lifewire.com/difference-between-cbr-and-vbr-encoding-2438423)
+This project converts uploaded audio files appropriately, on the fly. For this to happen, we use [avconv](https://libav.org/avconv.html) library.
+To install this library in a Unix-based machine, check [this post](http://askubuntu.com/questions/391357/how-do-you-install-avconv-on-ubuntu-server-13-04).
+
+You can see and modify the command we use for coverting the files in ```public/convert_to_mp3.sh```.
+
+##About jnlp, .jar file signing process 
+This project uses [JNLP (Java Network Launch Protocol)](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html) for the game launches.
+This protocol requires for every .jar file used to be digitally signed. Please include a file that does the signing on your behalf, and store it in ```public/sign_data_pack.sh```. Also, you should put the keystore passowrd in .env file,
+aliased as KEYSTORE_PASS.
 
 ## Deploying
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}
