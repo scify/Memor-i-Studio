@@ -67,7 +67,7 @@ class ResourceController extends Controller
         $resourceInputs = $request->resources;
         $gameFlavorId = $request->game_flavor_id;
         $this->validate($request, [
-            'resources.*.audio' => 'mimetypes:audio/mpeg|max:4000'
+            'resources.*.audio' => 'mimetypes:audio/mpeg,audio/x-wav|max:4000'
         ]);
         try {
             $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId);

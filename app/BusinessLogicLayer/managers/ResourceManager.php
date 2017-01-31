@@ -8,6 +8,7 @@ use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 include_once 'functions.php';
@@ -62,9 +63,26 @@ class ResourceManager {
     }
 
     private function storeFileToPath(UploadedFile $file, $pathToStore) {
-        $filename = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
-        $file->storeAs($pathToStore, $filename);
-        return $filename;
+        $fileNamePrefix = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_';
+        $fileName = $fileNamePrefix . $file->getClientOriginalName();
+
+        $convertedFileName = $fileNamePrefix . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '.mp3';
+        //temporarily store the file in order to be able to convert it
+        $file->storeAs($pathToStore, $fileName);
+        $this->convertFileToMp3AndStore(storage_path('app/' . $pathToStore . $fileName), storage_path('app/' . $pathToStore . $convertedFileName));
+
+        //delete old temp file
+        Storage::delete($pathToStore . $fileName);
+        return $convertedFileName;
+    }
+
+    private function convertFileToMp3AndStore($filePath , $newFilePath) {
+        $old_path = getcwd();
+        chdir(public_path());
+        $command = './convert_file_to_mp3.sh ' . $filePath . ' ' . $newFilePath;
+        $output = shell_exec($command);
+        chdir($old_path);
+        return $output;
     }
 
     /**
