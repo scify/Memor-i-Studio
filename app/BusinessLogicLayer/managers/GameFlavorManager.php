@@ -244,11 +244,11 @@ class GameFlavorManager {
         $equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
         //compress the data pack directory into a temporary .jar file (it will be deleted later, after we sign it)
         $this->zipGameFlavorDataPack($gameFlavorId);
-        //get a timestamp in order to name the generated jar files appropriately
-        $milliseconds = milliseconds();
+        //get a timestamp as a random string in order to name the generated jar files appropriately
+        $randomSuffix = milliseconds();
         //get the path
         $packagePath = $this->getGameFlavorZipFile($gameFlavorId);
-        $filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed-' . $milliseconds . '.jar ';
+        $filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed-' . $randomSuffix . '.jar ';
 
         //we need to sign the created jar file
         $output = $this->signDataPackJarFile($filePathToStore, $packagePath);
@@ -256,9 +256,9 @@ class GameFlavorManager {
         //delete not-signed jar file
         $this->deleteTemporaryFlavorPackZipFile($gameFlavorId);
         //copy the jar file for the current game version into the jnlp directory and name it appropriately
-        $this->copyGameVersionJarFileToJnlpDir($gameFlavorId, $milliseconds);
+        $this->copyGameVersionJarFileToJnlpDir($gameFlavorId, $randomSuffix);
         //copy the public jnlp file into the game flavor jnlp directory
-        $this->copyAndUpdateJnlpFileToDir($gameFlavorId, $milliseconds);
+        $this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
         return;
     }
 
