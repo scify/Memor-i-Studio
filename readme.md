@@ -124,7 +124,7 @@ You can see and modify the command we use for coverting the files in ```public/c
 
 ##About jnlp, .jar file signing process 
 This project uses [JNLP (Java Network Launch Protocol)](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html) for the game launches.
-This protocol requires for every .jar file used to be digitally signed. Please include a file that does the signing on your behalf, and store it in ```public/sign_data_pack.sh```. Also, you should put the keystore passowrd in .env file,
+This protocol requires for every .jar file used to be digitally signed. Please take a look at the ```public/sign_data_pack.sh``` file that does the signing. (Note: a valid keystore file named memoristore should be used). Also, you should put the keystore passowrd in .env file,
 aliased as KEYSTORE_PASS.
 
 ## Deploying
@@ -141,4 +141,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
