@@ -289,7 +289,7 @@ class GameFlavorManager {
         $gameVersionManager = new GameVersionManager();
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $destinationPath = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori-'. $suffix . '.jar';
-        if ( ! File::copy($gameVersionManager->getGameVersionZipFile($gameFlavor->game_version_id), $destinationPath)) {
+        if ( ! File::copy($gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id), $destinationPath)) {
             throw new \Exception("Couldn't copy version jar file");
         }
     }

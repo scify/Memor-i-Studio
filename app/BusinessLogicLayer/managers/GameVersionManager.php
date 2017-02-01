@@ -102,7 +102,7 @@ class GameVersionManager {
         return $filePath;
     }
 
-    public function getGameVersionZipFile($id) {
+    public function getGameVersionJarFile($id) {
         $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
         return $filePath;
     }
