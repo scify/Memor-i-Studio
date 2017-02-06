@@ -102,6 +102,14 @@ To download and install all libraries and dependencies.
 This project uses [Elixir](https://laravel.com/docs/5.3/elixir) which is a tool built on [Gulp](http://gulpjs.com/),
 a popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and minification.
 
+To install gulp and gulp-cli (command line interface), please read [this](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md).
+
+Then, when in project root directory, run 
+```gulp --local```
+In order for the assets to compile. Also, by running
+```gulp watch --local```
+A watcher is set for when a file is changed to be compiled automatically.
+
 ## Converting audio files to mpr with CBR (constant bit rate)
 This project allows users to upload audio files. In order for the desktop application of Memor-i to operate correclty,
 these files need to me in .mp3 format and have a CBR (constant bit rate), not a VBR (variable bit rate). [See more](https://www.lifewire.com/difference-between-cbr-and-vbr-encoding-2438423)
