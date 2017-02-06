@@ -53,3 +53,5 @@ $RECYCLE.BIN/
 *.lnk
 public/*.jar
 public/memoristore
+.npmigonre
+npm-debug.log
