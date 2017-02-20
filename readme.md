@@ -118,10 +118,11 @@ To install this library in a Unix-based machine, check [this post](http://askubu
 
 You can see and modify the command we use for coverting the files in ```public/convert_to_mp3.sh```.
 
-##About jnlp, .jar file signing process 
-This project uses [JNLP (Java Network Launch Protocol)](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html) for the game launches.
-This protocol requires for every .jar file used to be digitally signed. Please take a look at the ```public/sign_data_pack.sh``` file that does the signing. (Note: a valid keystore file named memoristore should be used). Also, you should put the keystore passowrd in .env file,
-aliased as KEYSTORE_PASS.
+## Converting image files to .ico files
+This project includes special functionality to convert a game flavor cover image file into a .ico file, for usage when the game runs.
+In order to accomplish this, we use [ImageMagick tool](https://github.com/ImageMagick/ImageMagick/blob/master/LICENSE).
+ImageMagick can be installed like this:
+```apt-get install imagemagick```
 
 ## Deploying
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}
