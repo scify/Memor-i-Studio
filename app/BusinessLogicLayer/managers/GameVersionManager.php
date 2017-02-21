@@ -15,6 +15,7 @@ class GameVersionManager {
     private $fileStorage;
     private $coverImgStoragePath = 'game_versions/img/';
     private $gameJarStoragePath = 'game_versions/jar/';
+    private $gameExeStoragePath = 'game_versions/exe/';
     private $gameResourcesDirsSchema;
     private $gameResourcesFilesSchema;
 
@@ -104,6 +105,11 @@ class GameVersionManager {
 
     public function getGameVersionJarFile($id) {
         $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
+        return $filePath;
+    }
+
+    public function getGameVersionExeFile($id) {
+        $filePath = storage_path('app/' . $this->gameExeStoragePath . $id . '/' . 'memori.exe');
         return $filePath;
     }
 

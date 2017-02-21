@@ -66,14 +66,18 @@ class ResourceManager {
         $fileNamePrefix = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_';
         $fileName = $fileNamePrefix . $file->getClientOriginalName();
 
-        $convertedFileName = $fileNamePrefix . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '.mp3';
         //temporarily store the file in order to be able to convert it
         $file->storeAs($pathToStore, $fileName);
-        $this->convertFileToMp3AndStore(storage_path('app/' . $pathToStore . $fileName), storage_path('app/' . $pathToStore . $convertedFileName));
+        $mime = mime_content_type(storage_path('app/' . $pathToStore . $fileName));
+        if(strstr($mime, "audio/")) {
+            $convertedFileName = $fileNamePrefix . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_converted.mp3';
+            $this->convertFileToMp3AndStore(storage_path('app/' . $pathToStore . $fileName), storage_path('app/' . $pathToStore . $convertedFileName));
+            //delete old temp file
+            Storage::delete($pathToStore . $fileName);
+            return $convertedFileName;
+        }
 
-        //delete old temp file
-        Storage::delete($pathToStore . $fileName);
-        return $convertedFileName;
+        return $fileName;
     }
 
     private function convertFileToMp3AndStore($filePath , $newFilePath) {
@@ -174,15 +178,17 @@ class ResourceManager {
      * @param UploadedFile $file
      * @param $resourceId
      * @param $gameFlavorId
+     * @return mixed
      */
     public function createOrUpdateResourceFile(UploadedFile $file, $resourceId, $gameFlavorId) {
-        $existingResourceFile = $this->resourceStorage->getFileForResource($resourceId, $gameFlavorId);
+        $existingResourceFile = $this->resourceStorage->getFileForResourceForGameFlavor($resourceId, $gameFlavorId);
         $resource = $this->resourceStorage->getResourceById($resourceId);
-        $pathToStoreResourceFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
+        $pathToStoreResourceFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' .substr($resource->name, 0,strrpos($resource->name, '/')) . '/';
         if($existingResourceFile == null)
             $this->createAndStoreResourceFile($file, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
         else
             $this->updateResourceFile($file, $existingResourceFile, $pathToStoreResourceFile);
+        return $resource;
     }
 
     /**
@@ -208,7 +214,7 @@ class ResourceManager {
      */
     public function createStaticResourcesMapFile($gameFlavorId) {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
-        $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . 'resources_map.properties';
+        $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)
 
         Storage::put($pathToMapFile, null);
@@ -225,6 +231,6 @@ class ResourceManager {
     public function createAdditionalPropertiesFile($gameFlavorId) {
         $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'project_additional.properties';
         Storage::put($pathToPropsFile, null);
-        Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data_pack_' . $gameFlavorId);
+        Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
     }
 }

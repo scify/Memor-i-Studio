@@ -79,7 +79,7 @@ class EquivalenceSetManager {
             }
             array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
         }
-        $pathRelative = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId .'/json_DB/equivalence_cards_sets.json';
+        $pathRelative = 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/equivalence_cards_sets.json';
 
         $filePath = storage_path() . '/app/' . $pathRelative;
         if(File::exists($filePath)) {
