@@ -78,4 +78,15 @@ class GameFlavor extends Model
     {
         $this->attributes['accessed_by_user'] = $value;
     }
+
+    public function getCoverImgFilePathAttribute($value)
+    {
+        return $value;
+    }
+
+    public function setCoverImgFilePathAttribute($value)
+    {
+        $this->attributes['cover_img_file_path'] = $value;
+    }
+
 }
