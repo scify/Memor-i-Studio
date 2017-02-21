@@ -70,7 +70,8 @@ class ResourceController extends Controller
             'resources.*.audio' => 'mimetypes:audio/mpeg,audio/x-wav|max:4000'
         ]);
         try {
-            $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId);
+            $isAudio = true;
+            $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId, true);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();

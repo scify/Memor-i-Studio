@@ -64,7 +64,7 @@ class EquivalenceSetController extends Controller
             'card.*.game_flavor_id' => 'required',
             'card.*.image' => 'required|file|image|max:2000',
             'card.*.negative_image' => 'file|image|max:2000',
-            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg'
+            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav'
         ]);
 
         $input = $request->all();

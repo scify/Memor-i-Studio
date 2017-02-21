@@ -76,7 +76,7 @@ class GameFlavorController extends Controller
         $input = $request->all();
 
         try {
-            $newGameFlavor = $this->gameFlavorManager->saveGameFlavor(null, $input, $request);
+            $newGameFlavor = $this->gameFlavorManager->createGameFlavor(null, $input);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();
@@ -99,7 +99,7 @@ class GameFlavorController extends Controller
     public function editIndex($id)
     {
         $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameFlavor = $this->gameFlavorManager->getGameFlavorForEdit($id);
+        $gameFlavor = $this->gameFlavorManager->getGameFlavor($id);
         if($gameFlavor == null) {
             return view('common.error_message', ['message' => 'Uncaught error while getting game flavor with id ' . $id]);
         }
@@ -127,7 +127,7 @@ class GameFlavorController extends Controller
 
         $input = $request->all();
 
-        $newGameFlavor = $this->gameFlavorManager->saveGameFlavor($id, $input, $request);
+        $newGameFlavor = $this->gameFlavorManager->createGameFlavor($id, $input);
 
         if($newGameFlavor != null) {
             return redirect()->route('showAllGameFlavors')->with('flash_message_success', 'Successfully edited game "' . $newGameFlavor->name . '"');
@@ -170,7 +170,7 @@ class GameFlavorController extends Controller
 
     public function unPublish($id) {
         $result = $this->gameFlavorManager->toggleGameFlavorState($id);
-        $this->gameFlavorManager->clearJnlpDir($id);
+        //$this->gameFlavorManager->clearJnlpDir($id);
         if(!$result) {
             return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
         }
