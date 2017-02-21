@@ -8,6 +8,7 @@
 
 namespace App\BusinessLogicLayer\managers;
 
+use App\Models\GameFlavor;
 use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use Illuminate\Http\UploadedFile;
@@ -29,20 +30,19 @@ class ImgManager {
     /**
      * Edits or creates a new resource for the game flavor cover image and stores the file.
      *
-     * @param $gameFlavorId int the id of the game flavor
+     * @param GameFlavor $gameFlavor
      * @param UploadedFile $coverImg the image file uploaded
      * @return int the id of the resource created
+     * @internal param int $gameFlavorId the id of the game flavor
      */
-    public function uploadGameFlavorCoverImg($gameFlavorId, UploadedFile $coverImg) {
+    public function uploadGameFlavorCoverImg(GameFlavor $gameFlavor, UploadedFile $coverImg) {
         $resourceCategoryStorage = new ResourceCategoryStorage();
         $resourceStorage = new ResourceStorage();
-        $gameFlavorManager = new GameFlavorManager();
 
-        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
         $resourceCategory = $resourceCategoryStorage->getResourceCategoryByPathForGameVersion($this->GAME_FLAVOR_COVER_IMAGE_CATEGORY, $gameFlavor->game_version_id);
-        $resource = $resourceStorage->getResourceByCategoryId($resourceCategory->id);
-        $this->resourceManager->createOrUpdateResourceFile($coverImg, $resource->id, $gameFlavorId);
-        return $resource->id;
+        $resourceObj = $resourceStorage->getResourceByCategoryId($resourceCategory->id);
+        $resourceForGameFlavor = $this->resourceManager->createOrUpdateResourceFile($coverImg, $resourceObj->id, $gameFlavor->id);
+        return $resourceForGameFlavor->id;
     }
 
     /**
@@ -53,10 +53,19 @@ class ImgManager {
      * @return int the id of the resource created
      */
     public function uploadCardImg($gameFlavorId, UploadedFile $img) {
-        $imgPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data_pack_' . $gameFlavorId . '/' . $this->CARD_IMAGE_CATEGORY;
+        $imgPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . $this->CARD_IMAGE_CATEGORY;
         $newResourceId = $this->resourceManager->createNewResource($this->CARD_IMAGE_CATEGORY);
         $this->resourceManager->createAndStoreResourceFile($img, $imgPath, $newResourceId, $gameFlavorId);
         return $newResourceId;
+    }
+
+    public function covertImgToIco($path, $imgFileName, $icoFileName) {
+        $old_path = getcwd();
+        chdir($path);
+        $command = 'convert -resize x64 -background transparent ' . $imgFileName . ' ' . $icoFileName;
+        $output = shell_exec($command);
+        chdir($old_path);
+        return $output;
     }
 
 }
