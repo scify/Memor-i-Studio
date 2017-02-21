@@ -51,7 +51,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
-public/*.jar
+public/build_app/launch4j_application
 public/memoristore
 .npmigonre
 npm-debug.log
+*.jar
+*.exe
