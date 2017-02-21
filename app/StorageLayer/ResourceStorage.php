@@ -70,7 +70,7 @@ class ResourceStorage {
      * @param $gameFlavorId int the id of the game flavor
      * @return mixed the @see ResourceFile instance if found, null otherwise.
      */
-    public function getFileForResource($resourceId, $gameFlavorId) {
+    public function getFileForResourceForGameFlavor($resourceId, $gameFlavorId) {
         return ResourceFile::where(['resource_id' => $resourceId, 'game_flavor_id' => $gameFlavorId])->first();
     }
 
