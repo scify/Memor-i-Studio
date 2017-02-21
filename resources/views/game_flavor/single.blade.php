@@ -1,10 +1,10 @@
 <div class="card card-user card-clickable card-clickable-over-content gameFlavorItem">
     <div class="card-heading heading-full">
         <div class="user-image coverImgContainer">
-            @if($gameFlavor->cover_img_id == null)
+            @if($gameFlavor->cover_img_file_path == null)
                 <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->coverImg->file->file_path])}}">
+                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>

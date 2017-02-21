@@ -65,7 +65,7 @@
                                          style="max-height: 200px; min-height: 150px; min-width: 200px">
                                         @if($gameFlavor->cover_img_id != '')
                                             <img class="coverImg gameFlavorCoverImg"
-                                                 src="{{route('resolveDataPath', ['filePath' => $gameFlavor->coverImg->file->file_path])}}">
+                                                 src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
                                         @endif
                                     </div>
                                     <div>
