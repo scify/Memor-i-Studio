@@ -71,7 +71,7 @@
 
 .gameFlavorItem {
   .card-body {
-    height: 220px;
+    height: 175px;
   }
 
   .description {
@@ -175,9 +175,11 @@ body {
 }
 
 .equivalenceSet {
-
   padding: 15px;
-  //margin-right: 10px;
+
+  audio {
+    width:100%;
+  }
 }
 
 .resourcesTable {
