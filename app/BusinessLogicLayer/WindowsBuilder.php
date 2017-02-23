@@ -36,7 +36,9 @@ class WindowsBuilder {
         $this->copyLaunch4JBaseFileToDataPackDir($gameFlavor->id);
         $launch4JConfigFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavor->id);
         $this->updateLaunch4jFile($gameFlavorJarFile, $launch4JConfigFile, $gameFlavor);
-        $this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
+        //todo: licence file in .iss not working - the .exe is never built
+        //so for now we skip the step
+        //$this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
         $this->buildWindowsExecutable($gameFlavor->id);
         $this->buildWindowsExecutableInstaller($gameFlavor);
     }
@@ -146,7 +148,7 @@ class WindowsBuilder {
 
     private function prepareInnoSetupFileForGameFlavor($innoSetupConfFile, GameFlavor $gameFlavor) {
         if(!File::exists($innoSetupConfFile)) {
-            throw new \Exception("InnoSetup file for game flavor not found. Looked in: " . $innoSetupConfFile);
+            throw new \Exception("InnoSetup copy file for game flavor not found. Looked in: " . $innoSetupConfFile);
         }
         $gameName = greeklish($gameFlavor->name);
         $stringsToBeReplaced = array(
