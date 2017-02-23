@@ -21,7 +21,6 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=LICENSE.md
 OutputBaseFilename=memor-i-setup
 SetupIconFile=memori.ico
 Compression=lzma
