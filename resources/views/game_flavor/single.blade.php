@@ -51,7 +51,9 @@
                 @endif
             @endif
         </h3>
-        <p class="description">{{$gameFlavor->description}}</p>
+        <div class="description">{{$gameFlavor->description}}
+            <small><h6>Created by: {{$gameFlavor->creator->name}}</h6></small>
+        </div>
 
     </div><!--.card-body-->
 
