@@ -63,7 +63,7 @@
         </div>
         <div class="row example-row">
             <div class="col-md-6">
-                <div class="">{{$formTitle}} sound (must be .mp3 file with <a href="https://www.lifewire.com/difference-between-cbr-and-vbr-encoding-2438423"> Constant Bit Rate</a>)</div>
+                <div class="">{{$formTitle}} sound (.wav or .mp3 file)</a>)</div>
                 <div class="cardAudioVal margin-bottom-10"></div>
             </div>
             <div class="col-md-12">
