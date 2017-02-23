@@ -1,8 +1,6 @@
 console.log(process.argv[3]);
 
-if (process.argv[3] == '--local' || process.argv[2] == '--local') {
-    process.env.DISABLE_NOTIFIER = true;
-}
+process.env.DISABLE_NOTIFIER = true;
 
 var elixir = require('laravel-elixir');
 
