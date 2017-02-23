@@ -178,14 +178,40 @@ class GameFlavorController extends Controller
         return redirect()->back();
     }
 
-    public function download($gameFlavorId) {
-        //TODO: change (return jnlp path)
+
+    /**
+     * This method retrieves the setup exe file for the given game flavor and
+     * returns the file to be downloaded.
+     *
+     * @param $gameFlavorId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadWindows($gameFlavorId) {
         try {
-            $jnlpPath = $this->gameFlavorManager->getJnlpFileForGameFlavor($gameFlavorId);
+            $filePath = $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
 
         } catch (\Exception $e) {
-            return view('common.error_message', ['message' => $e->getMessage()]);
+            session()->flash('flash_message_failure', $e->getMessage());
+            return back();
         }
-        return response()->download($jnlpPath);
+        return response()->download($filePath);
+    }
+
+    /**
+     * This method retrieves the linux file for the given game flavor and
+     * returns the file to be downloaded.
+     *
+     * @param $gameFlavorId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadLinux($gameFlavorId) {
+        try {
+            $filePath = $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
+
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', $e->getMessage());
+            return back();
+        }
+        return response()->download($filePath);
     }
 }

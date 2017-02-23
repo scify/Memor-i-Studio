@@ -10,6 +10,7 @@ use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
 use App\StorageLayer\ResourceStorage;
 use DOMDocument;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -419,6 +420,30 @@ class GameFlavorManager {
         $imgManager = new ImgManager();
         $imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
 
+    }
+
+    /**
+     * This method retrieves the setup exe file for the given game flavor and
+     * returns the file to be downloaded.
+     *
+     * @param $gameFlavorId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws FileNotFoundException if the file is not found
+     */
+    public function getWindowsSetupFileForGameFlavor($gameFlavorId) {
+        $file = storage_path('app/data_packs/additional_pack_'. $gameFlavorId . '/Output/memor-i-setup.exe');
+        if(!File::exists($file)) {
+            throw new FileNotFoundException("The setup file for this game could not be found");
+        }
+        return $file;
+    }
+
+    public function getLinuxSetupFileForGameFlavor($gameFlavorId) {
+        $file = storage_path('app/data_packs/additional_pack_'. $gameFlavorId . '/memori.jar');
+        if(!File::exists($file)) {
+            throw new FileNotFoundException("The linux file for this game could not be found");
+        }
+        return $file;
     }
 
 
