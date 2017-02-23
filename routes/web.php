@@ -63,7 +63,8 @@ Route::group([ 'middleware' => 'auth' ], function () {
 Route::get('contact', 'HomeController@showContactForm')->name('showContactForm');
 Route::post('contact', 'HomeController@sendContactEmail')->name('sendContactEmail');
 Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
-Route::get('flavor/{id}/download', 'GameFlavorController@download')->name('downloadGameFlavor');
+Route::get('flavor/{id}/downloadWin', 'GameFlavorController@downloadWindows')->name('downloadGameFlavorWindows');
+Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->name('downloadGameFlavorLinux');
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
 
