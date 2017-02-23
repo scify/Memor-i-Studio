@@ -1,7 +1,7 @@
 @extends('common.layout')
 @section('content')
     <div class="row margin-bottom-30 padding-left-30">
-        <div class="col-md-6">
+        <div class="col-md-6 centeredVertically">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-title"><h4>Select Game version</h4></div>

@@ -83,7 +83,7 @@
                         <div class="submitBtnContainer">
                             {{--<button type="button" class="btn btn-flat-primary"><a class="cancelTourCreateBtn" href="{{ URL::route('home') }}">Cancel</a> </button>--}}
                             <button type="submit" id="gameFlavorSubmitBtn" class="btn btn-primary btn-ripple">
-                                {{($gameFlavor->id == null ? 'Create' : 'Edit')}}
+                                {{($gameFlavor->id == null ? 'Create' : 'Save')}}
                             </button>
 
                         </div>
