@@ -1,4 +1,4 @@
-@extends('common.layout')
+@extends('layouts.auth')
 
 <!-- Main Content -->
 @section('content')

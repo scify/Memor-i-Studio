@@ -1,4 +1,4 @@
-@extends('common.layout')
+@extends('layouts.app')
 @section('content')
     <div class="row margin-bottom-30">
         <div class="col-md-6">

@@ -1,4 +1,4 @@
-@extends('common.layout')
+@extends('layouts.app')
 @section('content')
     <div class="padding-left-30">
         <div class="panel">

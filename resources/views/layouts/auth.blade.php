@@ -2,14 +2,10 @@
 <html>
 <!-- Header -->
 @include('common.header.header')
-@if(Auth::check())
-    @include('common.header.navbarVertical')
-@endif
-@include('common.header.navbarHorizontal')
 <body class="page-header-fixed" data-url="{!! URL::to('/') !!}">
 <div class="content-wrapper">
     <!-- Main content -->
-    <section class="content">
+    <div class="">
         @if(session('flash_message_success'))
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -32,30 +28,10 @@
             </div>
         @endif
 
-        @if(isset($pageTitle))
-            <div class="page-header full-content margin-top-0">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h1> {{$pageTitle}} <small> {{ isset($pageSubTitle) ? $pageSubTitle : ''}} </small></h1>
-                    </div><!--.col-->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb">
-                            <li><a href="{{route('home')}}" class="active"><i class="ion-home"></i></a></li>
-                            <li><a href="#">{{$pageTitle}}</a></li>
-                        </ol>
-                    </div><!--.col-->
-                </div><!--.row-->
-            </div><!--.page-header-->
-        @endif
-
         @yield('content')
 
-    </section>
+    </div>
 </div>
-<!-- Footer -->
-@if(Auth::check())
-    @include('common.sidebar', ['user' => \Illuminate\Support\Facades\Auth::user()])
-@endif
 @include('common.footer')
 </body>
 </html>
