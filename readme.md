@@ -149,7 +149,7 @@ Also, the innosetup script will try to install Innosetup automatically. For this
 is present on your machine, and include the file path in the .env file:
 ```
 ...
-INNOSETUP_SETUP_FILE = /home/pisaris/Downloads/innosetup-5.5.9.exe
+INNOSETUP_SETUP_FILE = /home/testUser/Downloads/innosetup-5.5.9.exe
 ...
 ```
 
