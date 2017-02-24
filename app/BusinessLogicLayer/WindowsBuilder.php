@@ -138,7 +138,7 @@ class WindowsBuilder {
         $old_path = getcwd();
         chdir(public_path('build_app/innosetup'));
         $currentSystemUser = config('app.SYSTEM_USER');
-        $innoSetupFile = config('app.INNOSETUP_SETUP_FILE');
+        $innoSetupFile = config('app.INNOSETUP_INSTALLER_FILE');
         if($currentSystemUser == null || $innoSetupFile == null)
             throw new Exception("There is no system user or inno setup file path set in .env file, so the Innosetup script cannot be executed.");
         $command = './iscc.sh ' . $currentSystemUser . ' ' . $destinationFile . ' ' . $innoSetupFile;
