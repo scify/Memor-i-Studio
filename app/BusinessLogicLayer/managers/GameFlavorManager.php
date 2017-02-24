@@ -225,11 +225,11 @@ class GameFlavorManager {
     /**
      * Toggles the @see GameFlavor instance's published attribute
      *
-     * @param $gameVersionId int the id of the @see GameFlavor to be updated
+     * @param $gameFlavorId int the id of the @see GameFlavor to be updated
      * @return bool if the update process was successful or not
      */
-    public function toggleGameFlavorState($gameVersionId) {
-        $gameFlavor = $this->getGameFlavorForEdit($gameVersionId);
+    public function toggleGameFlavorState($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
         if($gameFlavor == null)
             return false;
         $gameFlavor->published = !$gameFlavor->published;
@@ -485,6 +485,7 @@ class GameFlavorManager {
         $newGameFlavor = $gameFlavor->replicate();
         $newGameFlavor->name .= '_copy';
         $newGameFlavor->creator_id = $userId;
+        $newGameFlavor->published = false;
         $newGameFlavor->save();
         return $newGameFlavor;
     }
