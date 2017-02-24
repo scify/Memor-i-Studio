@@ -88,8 +88,14 @@ composer update
 After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. 
 We achieve that by using [npm](http://blog.npmjs.org/post/85484771375/how-to-install-npm).
 Read [this](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server) link in order to understand how npm should be installed.
+In order for npm to run, we need to also install [Node.js](https://nodejs.org/en/)
+Usually, you can install npm and Node.js by running:
+```aidl
+apt-get install nodejs
+apt-get install npm
+```
 
-If you prefer installing npm through [homebrew](http://brew.sh/) or [linuxbrew](http://linuxbrew.sh/), read [this](http://blog.teamtreehouse.com/install-node-js-npm-linux).
+If you prefer installing npm and/or Node.js through [homebrew](http://brew.sh/) or [linuxbrew](http://linuxbrew.sh/), read [this](http://blog.teamtreehouse.com/install-node-js-npm-linux).
 
 So, when in project root directory, and after npm has been installed correctly, run
 ```
@@ -124,12 +130,15 @@ In order to accomplish this, we use [ImageMagick tool](https://github.com/ImageM
 ImageMagick can be installed like this:
 ```apt-get install imagemagick```
 
+##Building Windows executables for game flavors
+When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application uses
+[Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
+The launch4J application is included in ```public/build_app/launch4j``` as a standalone application. 
+Make sure you also install Innosetup on your server via [WINE for Linux](https://www.winehq.org/)
+
 ## Deploying
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
 ## License
 
