@@ -16,6 +16,8 @@ return [
 
     'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
 
+    'SYSTEM_USER' => env('SYSTEM_USER', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

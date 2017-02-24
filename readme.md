@@ -90,7 +90,7 @@ We achieve that by using [npm](http://blog.npmjs.org/post/85484771375/how-to-ins
 Read [this](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server) link in order to understand how npm should be installed.
 In order for npm to run, we need to also install [Node.js](https://nodejs.org/en/)
 Usually, you can install npm and Node.js by running:
-```aidl
+```
 apt-get install nodejs
 apt-get install npm
 ```
@@ -135,6 +135,16 @@ When an admin user publishes a game flavor, A .jar file is built for this game f
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
 The launch4J application is included in ```public/build_app/launch4j``` as a standalone application. 
 Make sure you also install Innosetup on your server via [WINE for Linux](https://www.winehq.org/)
+
+When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current system user.
+This user has to be set in .env file:
+```
+APP_LOG_LEVEL=debug
+APP_URL=http://localhost
+SYSTEM_USER=testUser
+...
+```
+And have write access to ```/home``` directory.
 
 ## Deploying
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}

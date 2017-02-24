@@ -6,6 +6,7 @@ use App\BusinessLogicLayer\managers\FileManager;
 use App\Models\GameFlavor;
 use DOMDocument;
 use Illuminate\Support\Facades\File;
+use League\Flysystem\Exception;
 
 include_once 'managers/functions.php';
 
@@ -136,7 +137,10 @@ class WindowsBuilder {
 
         $old_path = getcwd();
         chdir(public_path('build_app/innosetup'));
-        $command = './iscc.sh ' . $destinationFile;
+        $currentSystemUser = config('app.SYSTEM_USER');
+        if($currentSystemUser == null)
+            throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
+        $command = './iscc.sh ' . $currentSystemUser . ' ' . $destinationFile;
         $output = shell_exec($command);
         chdir($old_path);
         return $output;

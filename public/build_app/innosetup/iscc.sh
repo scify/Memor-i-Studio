@@ -6,9 +6,9 @@ echo
 echo After running the script:
 echo - Revert the X permissions by running "xhost -"
 # Main variables
-WINE_BASE_DIR="/home/pisaris/winebase/" # TODO: Check
-SOURCE_USER="pisaris" # TODO: Check
-INNOSETUP_EXE_PACKAGE="/home/pisaris/Downloads/innosetup-5.5.9.exe" # TODO: Check
+SOURCE_USER=$1 # TODO: Check
+WINE_BASE_DIR="/home/$SOURCE_USER/winebase/" # TODO: Check
+INNOSETUP_EXE_PACKAGE="/home/$SOURCE_USER/Downloads/innosetup-5.5.9.exe" # TODO: Check
 
 # Init wine
 . /home/$SOURCE_USER/.bashrc
@@ -26,7 +26,7 @@ if [ ! -f "$HOME/.wine/drive_c/Program\ Files\ \(x86\)/Inno\ Setup\ 5/ISCC.exe" 
 	echo "Install done."
 fi;
 
-SCRIPTNAME=$1
+SCRIPTNAME=$2
 INNO_BIN="Inno Setup 5/ISCC.exe"
 
 # Check if variable is set
