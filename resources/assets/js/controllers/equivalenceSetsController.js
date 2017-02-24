@@ -49,7 +49,7 @@ window.EquivalenceSetsController.prototype = function () {
             }
 
             if(card.soundObj.file_path != null && card.soundObj.file_path != '') {
-                $('.cardAudioVal').html(card.soundObj.file_path);
+                //$('.cardAudioVal').html(card.soundObj.file_path);
             }
             $("#cardSubmitBtn").html("Edit");
 

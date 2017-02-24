@@ -146,5 +146,23 @@ class CardManager {
         return $cards;
     }
 
+    public function cloneCardsForEquivalenceSet(EquivalenceSet $equivalenceSet, EquivalenceSet $newEquivalenceSet, $gameFlavorId, $newGameFlavorId) {
+        foreach ($equivalenceSet->cards as $card) {
+            $newCard = $card->replicate();
+            $newCard->equivalence_set_id = $newEquivalenceSet->id;
+            $newCard->save();
+            $resourceManager = new ResourceManager();
+            $newImageResource = $resourceManager->cloneResource($card->image, $gameFlavorId, $newGameFlavorId);
+            $newCard->image_id = $newImageResource->id;
+            if($card->secondImage != null) {
+                $newSecondImageResource = $resourceManager->cloneResource($card->secondImage, $gameFlavorId, $newGameFlavorId);
+                $newCard->negative_image_id = $newSecondImageResource->id;
+            }
+            $newSoundResource = $resourceManager->cloneResource($card->sound, $gameFlavorId, $newGameFlavorId);
+            $newCard->sound_id = $newSoundResource->id;
+            $newCard->save();
+        }
+    }
+
 
 }

@@ -233,4 +233,33 @@ class ResourceManager {
         Storage::put($pathToPropsFile, null);
         Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
     }
+
+    public function cloneResource(Resource $resource, $oldGameFlavorId, $newGameFlavorId) {
+        $newResource = $resource->replicate();
+        $newResource->save();
+        //if the resource has a file associated with it, clone the resource file instance
+        $resourceFile = $this->getFileForResourceForGameFlavor($resource, $oldGameFlavorId);
+
+        if($resourceFile != null) {
+            $this->cloneResourceFile($newResource, $resourceFile, $newGameFlavorId);
+        }
+
+        return $newResource;
+    }
+
+    public function cloneResourceFile(Resource $newResource, ResourceFile $resourceFile, $newGameFlavorId) {
+        $newResourceFile = $resourceFile->replicate();
+        $newResourceFile->game_flavor_id = $newGameFlavorId;
+        $newResourceFile->resource_id = $newResource->id;
+        //replace the additional_pack_* in the file_path string
+        $filePath = $newResourceFile->file_path;
+        $oldGameFlavorId = $resourceFile->game_flavor_id;
+        $newFilePath = str_replace('additional_pack_' . $oldGameFlavorId . '/', 'additional_pack_' . $newGameFlavorId . '/', $filePath);
+        $newResourceFile->file_path = $newFilePath;
+        $newResourceFile->save();
+    }
+
+    public function getFileForResourceForGameFlavor(Resource $resource, $gameFlavorId) {
+        return $this->resourceStorage->getFileForResourceForGameFlavor($resource->id, $gameFlavorId);
+    }
 }

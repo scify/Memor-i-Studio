@@ -90,4 +90,15 @@ class EquivalenceSetManager {
 
         return json_encode($equivalence_card_sets);
     }
+
+    public function cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavorId, $newGameFlavorId) {
+        $equivalenceSetsForGameFlavor = $this->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        foreach ($equivalenceSetsForGameFlavor as $equivalenceSet) {
+            $newEquivalenceSet = $equivalenceSet->replicate();
+            $newEquivalenceSet->flavor_id = $newGameFlavorId;
+            $newEquivalenceSet->save();
+            $cardManager = new CardManager();
+            $cardManager->cloneCardsForEquivalenceSet($equivalenceSet, $newEquivalenceSet, $gameFlavorId, $newGameFlavorId);
+        }
+    }
 }

@@ -214,4 +214,22 @@ class GameFlavorController extends Controller
         }
         return response()->download($filePath);
     }
+
+    /**
+     * This method clones a given game flavor for the currently logged in user.
+     *
+     * @param $gameFlavorId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function cloneGameFlavorAndFiles($gameFlavorId) {
+        try {
+            $this->gameFlavorManager->cloneGameFlavorAndFiles($gameFlavorId);
+
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', $e->getMessage());
+            return back();
+        }
+        session()->flash('flash_message_success', 'Game flavor cloned.');
+        return redirect()->back();
+    }
 }

@@ -71,7 +71,7 @@ class ResourceController extends Controller
         ]);
         try {
             $isAudio = true;
-            $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId, true);
+            $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();

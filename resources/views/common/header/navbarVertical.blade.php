@@ -35,7 +35,7 @@
         <div class="starting-point">
             <span></span>
         </div><!--.starting-point-->
-        <div class="logo">PLEASURE</div><!--.logo-->
+        <div class="logo">Memor-i Studio</div><!--.logo-->
     </div><!--.overlay-->
 
     <div class="overlay-secondary"></div><!--.overlay-secondary-->

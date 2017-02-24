@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Chumper\Zipper\Zipper;
+use League\Flysystem\Exception;
 
 include_once 'functions.php';
 
@@ -70,8 +71,9 @@ class GameFlavorManager {
             $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
             if (isset($inputFields['cover_img'])) {
                 $gameFlavor->cover_img_id = $imgManager->uploadGameFlavorCoverImg($gameFlavor, $inputFields['cover_img']);
-                $resourceStorage = new ResourceStorage();
-                $this->convertGameFlavorCoverImgToIcon($resourceStorage->getFileForResourceForGameFlavor($gameFlavor->coverImg->id, $gameFlavor->id));
+                $resourceManager = new ResourceManager();
+                $gameFlavorImgCoverFile = $resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
+                $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
             }
             $gameFlavor->save();
         });
@@ -81,13 +83,16 @@ class GameFlavorManager {
 
     public function getResourcesForGameFlavor($gameFlavor) {
         $resourceCategoryManager = new ResourceCategoryManager();
+        $resourceManager = new ResourceManager();
         $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
         foreach ($gameVersionResourceCategories as $category) {
 
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
-                if($resource->file != null) {
-                    $resource->file_path = $resource->file->file_path;
+
+                $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+                if($resourceFile != null) {
+                    $resource->file_path = $resourceFile->file_path;
                 } else {
                     $resource->file_path = null;
                 }
@@ -124,9 +129,10 @@ class GameFlavorManager {
     private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor) {
         $resource = $gameFlavor->coverImg;
         if($resource != null) {
-            $resourceStorage = new ResourceStorage();
-            $resourceFile = $resourceStorage->getFileForResourceForGameFlavor($resource->id, $gameFlavor->id);
-            return $resourceFile->file_path;
+            $resourceManager = new ResourceManager();
+            $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+            if($resourceFile != null)
+                return $resourceFile->file_path;
         }
         return null;
     }
@@ -156,7 +162,9 @@ class GameFlavorManager {
      * Gets a game flavor
      *
      * @param $id . the id of game version
-     * @return GameFlavor desired {@see GameFlavor} object
+     * @return GameFlavor desired <a href='psi_element://GameFlavor'>GameFlavor</a> object
+     * object
+     * @throws Exception if no game flavor found by the given id
      */
     public function getGameFlavor($id) {
         $user = Auth::user();
@@ -165,6 +173,8 @@ class GameFlavorManager {
         if($gameFlavor != null) {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
             $gameFlavor->cover_img_file_path = $this->getGameFlavorCoverImgFilePath($gameFlavor);
+        } else {
+            throw new Exception("Game flavor not found");
         }
 
         return $gameFlavor;
@@ -249,17 +259,17 @@ class GameFlavorManager {
         return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
-    /**
-     * Deletes the not signed .jar file that contains the data pack files
-     *
-     * @param $gameFlavorId int the id of the @see GameFlavor
-     */
-    public function deleteTemporaryFlavorPackZipFile($gameFlavorId) {
-        $file = $this->getGameFlavorZipFile($gameFlavorId);
-        if(File::exists($file)) {
-            File::delete($file);
-        }
-    }
+//    /**
+//     * Deletes the not signed .jar file that contains the data pack files
+//     *
+//     * @param $gameFlavorId int the id of the @see GameFlavor
+//     */
+//    public function deleteTemporaryFlavorPackZipFile($gameFlavorId) {
+//        $file = $this->getGameFlavorZipFile($gameFlavorId);
+//        if(File::exists($file)) {
+//            File::delete($file);
+//        }
+//    }
 
     public function packageFlavor($gameFlavorId) {
         $resourceManager = new ResourceManager();
@@ -444,6 +454,52 @@ class GameFlavorManager {
             throw new FileNotFoundException("The linux file for this game could not be found");
         }
         return $file;
+    }
+
+    /**
+     * This method retrieves a game flavor by its id and clones it.
+     * By cloning, we mean the copy of both the DB tables that are associated with the flavor
+     * (such as equivalence sets, cards, resources) as well as the data pack files that are associated
+     * with the game flavor
+     *
+     * @param $gameFlavorId
+     */
+    public function cloneGameFlavorAndFiles($gameFlavorId) {
+        $user = Auth::user();
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
+        DB::transaction(function () use ($user, $gameFlavor) {
+            $resourceManager = new ResourceManager();
+            $newGameFlavor = $this->cloneGameFlavor($user->id, $gameFlavor);
+            $coverImgFile = $resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
+            $resourceManager->cloneResourceFile($gameFlavor->coverImg, $coverImgFile, $newGameFlavor->id);
+
+            $this->cloneDataPackFiles($gameFlavor, $newGameFlavor);
+            $equivalenceSetManager = new EquivalenceSetManager();
+            //todo search for transaction lock
+            $equivalenceSetManager->cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavor->id, $newGameFlavor->id);
+        });
+
+    }
+
+    public function cloneGameFlavor($userId, GameFlavor $gameFlavor) {
+        $newGameFlavor = $gameFlavor->replicate();
+        $newGameFlavor->name .= '_copy';
+        $newGameFlavor->creator_id = $userId;
+        $newGameFlavor->save();
+        return $newGameFlavor;
+    }
+
+    private function cloneDataPackFiles(GameFlavor $gameFlavor, GameFlavor $newGameFlavor) {
+        $sourceDir = $this->getDataPackDir($gameFlavor->id);
+        $destinationDir = $this->getDataPackDir($newGameFlavor->id);
+
+        $success = File::copyDirectory($sourceDir, $destinationDir);
+        if(!$success)
+            throw new Exception("Error while copying data pack files");
+    }
+
+    public function getDataPackDir($gameFlavorId) {
+        return storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/data');
     }
 
 
