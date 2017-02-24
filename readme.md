@@ -132,7 +132,7 @@ ImageMagick can be installed like this:
 
 ##Building Windows executables for game flavors
 When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application uses
-[Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
+[Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: 5.5.9). 
 The launch4J application is included in ```public/build_app/launch4j``` as a standalone application. 
 Make sure you also install Wine on your server via [WINE for Linux](https://www.winehq.org/)
 
