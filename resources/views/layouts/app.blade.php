@@ -8,8 +8,17 @@
 @include('common.header.navbarHorizontal')
 <body class="page-header-fixed" data-url="{!! URL::to('/') !!}">
 <div class="content-wrapper">
+    <section class="content-header">
+        <h3 style="float: left;"> {{isset($page_title) ? $page_title:''}} <span id="feedback-header"></span></h3>
+        <div class="row example-row">
+            <div class="col-md-9" style="float: right; padding-top: 10px;">
+                <div class="loading-bar indeterminate margin-top-10" id="globalLoader" hidden></div>
+            </div><!--.col-->
+        </div><!--.row-->
+    </section>
+
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="padding: 0px !important;">
         @if(session('flash_message_success'))
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -32,29 +41,13 @@
             </div>
         @endif
 
-        @if(isset($pageTitle))
-            <div class="page-header full-content margin-top-0">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h1> {{$pageTitle}} <small> {{ isset($pageSubTitle) ? $pageSubTitle : ''}} </small></h1>
-                    </div><!--.col-->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb">
-                            <li><a href="{{route('home')}}" class="active"><i class="ion-home"></i></a></li>
-                            <li><a href="#">{{$pageTitle}}</a></li>
-                        </ol>
-                    </div><!--.col-->
-                </div><!--.row-->
-            </div><!--.page-header-->
-        @endif
-
         @yield('content')
 
     </section>
 </div>
 <!-- Footer -->
 @if(Auth::check())
-    @include('common.sidebar', ['user' => \Illuminate\Support\Facades\Auth::user()])
+    @include('common.sidebar')
 @endif
 @include('common.footer')
 </body>
