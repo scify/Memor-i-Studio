@@ -134,7 +134,7 @@ ImageMagick can be installed like this:
 When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application uses
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
 The launch4J application is included in ```public/build_app/launch4j``` as a standalone application. 
-Make sure you also install Innosetup on your server via [WINE for Linux](https://www.winehq.org/)
+Make sure you also install Wine on your server via [WINE for Linux](https://www.winehq.org/)
 
 When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current system user.
 This user has to be set in .env file:
@@ -144,6 +144,15 @@ APP_URL=http://localhost
 SYSTEM_USER=testUser
 ...
 ```
+
+Also, the innosetup script will try to install Innosetup automatically. For this to happen, you have to make sure that the innosetup setup file
+is present on your machine, and include the file path in the .env file:
+```
+...
+INNOSETUP_SETUP_FILE = /home/pisaris/Downloads/innosetup-5.5.9.exe
+...
+```
+
 And have write access to ```/home``` directory.
 
 ## Deploying

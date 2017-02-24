@@ -17,6 +17,7 @@ return [
     'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
 
     'SYSTEM_USER' => env('SYSTEM_USER', null),
+    'INNOSETUP_SETUP_FILE' => env('INNOSETUP_SETUP_FILE', null),
 
     /*
     |--------------------------------------------------------------------------

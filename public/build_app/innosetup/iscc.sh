@@ -6,9 +6,9 @@ echo
 echo After running the script:
 echo - Revert the X permissions by running "xhost -"
 # Main variables
-SOURCE_USER=$1 # TODO: Check
-WINE_BASE_DIR="/home/$SOURCE_USER/winebase/" # TODO: Check
-INNOSETUP_EXE_PACKAGE="/home/$SOURCE_USER/Downloads/innosetup-5.5.9.exe" # TODO: Check
+SOURCE_USER=$1
+WINE_BASE_DIR="/home/$SOURCE_USER/winebase/"
+INNOSETUP_EXE_PACKAGE=$3
 
 # Init wine
 . /home/$SOURCE_USER/.bashrc
