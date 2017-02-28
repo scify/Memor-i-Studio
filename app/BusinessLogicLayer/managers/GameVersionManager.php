@@ -89,6 +89,9 @@ class GameVersionManager {
         if (isset($input['cover_img'])) {
             $gameVersionToBeUpdated->cover_img_path = $this->fileStorage->storeFile($input['cover_img'], $this->coverImgStoragePath);
         }
+        if (isset($input['gameResPack'])) {
+            $zipFilePath = $this->storeZipFile($id, $input['gameResPack']);
+        }
         return $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
     }
 

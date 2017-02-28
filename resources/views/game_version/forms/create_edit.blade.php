@@ -72,21 +72,19 @@
                                 </div>
                             </div><!--.col-md-9-->
                         </div>
-                        @if($gameVersion->id == null)
-                            <div class="row">
-                                <div class="col-md-3">
-                                    Version .jar file <a href="https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html">
-                                        <p class="signedJarMsg">(must be signed)</p></a>
-                                </div><!--.col-md-3-->
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        {{--<label for="exampleInputFile">File input</label>--}}
-                                        <input type="file" id="gameResPack" name="gameResPack">
-                                        <p class="help-block">Upload the game .jar or .zip file.</p>
-                                    </div><!--.form-group-->
-                                </div><!--.col-md-9-->
-                            </div>
-                        @endif
+                        <div class="row">
+                            <div class="col-md-3">
+                                Version .jar file <a href="https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html">
+                                    <p class="signedJarMsg">(must be signed)</p></a>
+                            </div><!--.col-md-3-->
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    {{--<label for="exampleInputFile">File input</label>--}}
+                                    <input type="file" id="gameResPack" name="gameResPack">
+                                    <p class="help-block">Upload the game .jar or .zip file.</p>
+                                </div><!--.form-group-->
+                            </div><!--.col-md-9-->
+                        </div>
                         <div class="submitBtnContainer">
                             {{--<button type="button" class="btn btn-flat-primary"><a class="cancelTourCreateBtn" href="{{ URL::route('home') }}">Cancel</a> </button>--}}
                             <button type="submit" id="gameVersionSubmitBtn" class="btn btn-primary btn-ripple">
