@@ -143,6 +143,10 @@ class WindowsBuilder {
             throw new Exception("There is no system user or inno setup file path set in .env file, so the Innosetup script cannot be executed.");
         $command = './iscc.sh ' . $currentSystemUser . ' ' . $destinationFile . ' ' . $innoSetupFile;
         $output = shell_exec($command);
+
+        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
+        File::put($file, $output);
+
         chdir($old_path);
         return $output;
     }
