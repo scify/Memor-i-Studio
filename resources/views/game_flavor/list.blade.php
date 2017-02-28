@@ -10,3 +10,10 @@
         </div>
     </div>
 @endsection
+@section('additionalFooter')
+    <script>
+        $(function() {
+            $("[id^=tooltipWindows-]").tooltip();
+        });
+    </script>
+@endsection

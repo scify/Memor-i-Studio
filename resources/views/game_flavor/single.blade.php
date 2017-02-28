@@ -65,9 +65,10 @@
         @if($gameFlavor->published)
             <h6 class="margin-bottom-1">Download the game:</h6>
             <ul class="justified-list">
-                <li><a href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-windows" aria-hidden="true"></i> Windows</button></a></li>
-                <li><a href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-linux" aria-hidden="true"></i> Linux</button></a></li>
+                <li><a id = "tooltipWindows-{{$gameFlavor->id}}" title = "Run the installer .exe file to install the game" href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-windows" aria-hidden="true"></i> Windows</button></a></li>
+                <li><a id = "tooltipWindows-{{$gameFlavor->id}}" title = "Right click -> Open with -> Oracle Java 8" href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-linux" aria-hidden="true"></i> Linux</button></a></li>
             </ul>
+
 
         @else
             <small class="pull-left"><h6>This game will be available for downloading when it is published by an admin.</h6></small>
