@@ -134,7 +134,7 @@ class ResourceCategoryManager {
             foreach ($currCatResources as $resource) {
                 $translationForResource = $resourceTranslationStorage->getTranslationForResource($resource->id, $langId);
                 if($translationForResource != null) {
-                    $resource->default_name = $translationForResource->resource_name;
+                    $resource->default_text = $translationForResource->resource_name;
                     $resource->default_description = $translationForResource->resource_description;
                 }
             }
