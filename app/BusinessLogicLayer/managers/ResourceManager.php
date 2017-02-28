@@ -153,12 +153,15 @@ class ResourceManager {
      * Updates the description of the resource translation
      *
      * @param ResourceTranslation $existingResourceTranslation the resource transation instance
-     * @param $translation string the translation message
+     * @param $resourceNameTranslation string the string fot the resource name translation
+     * @param $resourceDescriptionTranslation string the string fot the resource description translation
      */
-    private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceDescriptionTranslation, $resourceDescriptionTranslation) {
-        $existingResourceTranslation->resource_name = $resourceDescriptionTranslation;
-        $existingResourceTranslation->resource_description = $resourceDescriptionTranslation;
-        $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
+    private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceNameTranslation, $resourceDescriptionTranslation) {
+        if($resourceNameTranslation != null || $resourceDescriptionTranslation) {
+            $existingResourceTranslation->resource_name = $resourceNameTranslation;
+            $existingResourceTranslation->resource_description = $resourceDescriptionTranslation;
+            $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
+        }
     }
 
     /**
