@@ -62,7 +62,11 @@
 }
 
 .gameFlavorItem {
-  height: 480px;
+  height: 500px;
+
+  .installJavaMsg {
+    font-size: smaller;
+  }
 }
 
 .gameFlavorCoverImg {

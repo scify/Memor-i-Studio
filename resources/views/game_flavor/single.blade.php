@@ -68,8 +68,7 @@
                 <li><a id = "tooltipWindows-{{$gameFlavor->id}}" title = "Run the installer .exe file to install the game" href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-windows" aria-hidden="true"></i> Windows</button></a></li>
                 <li><a id = "tooltipWindows-{{$gameFlavor->id}}" title = "Right click -> Open with -> Oracle Java 8" href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-linux" aria-hidden="true"></i> Linux</button></a></li>
             </ul>
-
-
+            <h6 class="installJavaMsg">In order to play the game, you need <a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java</a> installed.</h6>
         @else
             <small class="pull-left"><h6>This game will be available for downloading when it is published by an admin.</h6></small>
         @endif

@@ -108,7 +108,7 @@ class ResourceManager {
                 $newResource->category_id = $resourceCategory->id;
                 $newResource->name = $gameResourceFile;
                 $newResource->default_text = $gameResourceFile;
-                $newResource->default_description = $gameResourceFile;
+                $newResource->default_descriptiondsdsdsf = $gameResourceFile;
                 $this->resourceStorage->storeResource($newResource);
             }
         }
