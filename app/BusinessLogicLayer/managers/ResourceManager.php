@@ -156,6 +156,7 @@ class ResourceManager {
      * @param $translation string the translation message
      */
     private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceDescriptionTranslation, $resourceDescriptionTranslation) {
+        dd($existingResourceTranslation);
         $existingResourceTranslation->resource_name = $resourceDescriptionTranslation;
         $existingResourceTranslation->resource_description = $resourceDescriptionTranslation;
         $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
