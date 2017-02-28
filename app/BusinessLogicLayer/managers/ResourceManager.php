@@ -108,7 +108,7 @@ class ResourceManager {
                 $newResource->category_id = $resourceCategory->id;
                 $newResource->name = $gameResourceFile;
                 $newResource->default_text = $gameResourceFile;
-                $newResource->default_descriptiondsdsdsf = $gameResourceFile;
+                $newResource->default_description = $gameResourceFile;
                 $this->resourceStorage->storeResource($newResource);
             }
         }
@@ -156,7 +156,6 @@ class ResourceManager {
      * @param $translation string the translation message
      */
     private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceDescriptionTranslation, $resourceDescriptionTranslation) {
-        dd($existingResourceTranslation);
         $existingResourceTranslation->resource_name = $resourceDescriptionTranslation;
         $existingResourceTranslation->resource_description = $resourceDescriptionTranslation;
         $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
