@@ -15,7 +15,7 @@ class CreateResourceTranslationTable extends Migration
     {
         Schema::create('resource_translation', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 500);
+            $table->string('resource_name', 500);
             $table->integer('lang_id')->unsigned();
             $table->foreign('lang_id')->references('id')->on('language');
             $table->integer('resource_id')->unsigned();

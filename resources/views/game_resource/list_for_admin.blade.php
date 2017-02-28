@@ -17,15 +17,19 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Display text</th>
+                                <th>Display description</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($resources as $index=>$resource)
                                 <tr>
-                                    <td>{{$resource->name}}</td>
+                                    <td class="col-md-3">{{$resource->name}}</td>
                                     <td>
                                         <input name="resources[{{$index}}][translation]" class="width-percent-100" value="{{$resource->default_text}}">
                                         <input name="resources[{{$index}}][id]" type="hidden" value="{{$resource->id}}">
+                                    </td>
+                                    <td>
+                                        <input name="resources[{{$index}}][description_translation]" class="width-percent-100" value="{{$resource->default_description}}">
                                     </td>
                                 </tr>
                             @endforeach

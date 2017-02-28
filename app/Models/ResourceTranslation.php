@@ -19,7 +19,7 @@ class ResourceTranslation extends Model
      *
      * @var array
      */
-    protected $fillable = ['description', 'lang_id', 'resource_id'];
+    protected $fillable = ['resource_name', 'resource_description', 'lang_id', 'resource_id'];
 
     /**
      * Get the @see Resource this translation belongs to.

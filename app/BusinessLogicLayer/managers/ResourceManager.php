@@ -108,6 +108,7 @@ class ResourceManager {
                 $newResource->category_id = $resourceCategory->id;
                 $newResource->name = $gameResourceFile;
                 $newResource->default_text = $gameResourceFile;
+                $newResource->default_description = $gameResourceFile;
                 $this->resourceStorage->storeResource($newResource);
             }
         }
@@ -124,10 +125,10 @@ class ResourceManager {
             $existingResourceTranslation = $this->resourceTranslationStorage->getTranslationForResource($resource['id'], $langId);
             if($existingResourceTranslation == null) {
                 //create  new resource translation
-                $this->createNewTranslationForResource($resource['translation'], $resource['id'], $langId);
+                $this->createNewTranslationForResource($resource['translation'], $resource['description_translation'], $resource['id'], $langId);
             } else {
                 //update the existing translation
-                $this->updateTranslationForResource($existingResourceTranslation, $resource['translation']);
+                $this->updateTranslationForResource($existingResourceTranslation, $resource['translation'], $resource['description_translation']);
             }
         }
     }
@@ -135,13 +136,14 @@ class ResourceManager {
     /**
      * Creates a new @see ResourceTranslation instance
      *
-     * @param $translation string the translation message
+     * @param $resourceNameTranslation string the translation message
      * @param $resourceId int the resource id
      * @param $langId int the language id
      */
-    private function createNewTranslationForResource($translation, $resourceId, $langId) {
+    private function createNewTranslationForResource($resourceNameTranslation, $resourceDescriptionTranslation,  $resourceId, $langId) {
         $resourceTranslation = new ResourceTranslation();
-        $resourceTranslation->description = $translation;
+        $resourceTranslation->resource_name = $resourceNameTranslation;
+        $resourceTranslation->resource_description = $resourceDescriptionTranslation;
         $resourceTranslation->resource_id = $resourceId;
         $resourceTranslation->lang_id = $langId;
         $this->resourceTranslationStorage->saveResourceTranslation($resourceTranslation);
@@ -153,8 +155,9 @@ class ResourceManager {
      * @param ResourceTranslation $existingResourceTranslation the resource transation instance
      * @param $translation string the translation message
      */
-    private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $translation) {
-        $existingResourceTranslation->description = $translation;
+    private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceDescriptionTranslation, $resourceDescriptionTranslation) {
+        $existingResourceTranslation->resource_name = $resourceDescriptionTranslation;
+        $existingResourceTranslation->resource_description = $resourceDescriptionTranslation;
         $this->resourceTranslationStorage->saveResourceTranslation($existingResourceTranslation);
     }
 
