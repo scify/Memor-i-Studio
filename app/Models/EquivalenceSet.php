@@ -19,7 +19,7 @@ class EquivalenceSet extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'flavor_id'];
+    protected $fillable = ['name', 'flavor_id', 'description_sound_id', 'description_sound_probability'];
 
     /**
      * Get the first image for the card.
@@ -35,5 +35,13 @@ class EquivalenceSet extends Model
     public function gameFlavor()
     {
         return $this->hasOne('App\Models\GameFlavor', 'flavor_id', 'id');
+    }
+
+    /**
+     * Get the description sound for the equivalence set.
+     */
+    public function descriptionSound()
+    {
+        return $this->hasOne('App\Models\Resource', 'id', 'description_sound_id');
     }
 }
