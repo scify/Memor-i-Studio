@@ -19,19 +19,29 @@ include_once 'functions.php';
 class EquivalenceSetManager {
 
     private $equivalenceSetStorage;
+    private $soundManager;
 
     public function __construct() {
         $this->equivalenceSetStorage = new EquivalentSetStorage();
+        $this->soundManager = new SoundManager();
     }
 
     public function getEquivalenceSetsForGameFlavor($gameFlavorId) {
         return $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
     }
 
-    public function createEquivalenceSet($gameFlavorId) {
+    public function createEquivalenceSet($gameFlavorId, array $input) {
         $newEquivalenceSet = new EquivalenceSet();
         $newEquivalenceSet->name = generateRandomString();
         $newEquivalenceSet->flavor_id = $gameFlavorId;
+        if(isset($input['equivalence_set_description_sound'])) {
+            if ($input['equivalence_set_description_sound'] != null) {
+                $newEquivalenceSet->description_sound_id = $this->soundManager->uploadEquivalenceSetDescriptionSound($gameFlavorId, $input['equivalence_set_description_sound']);
+                if(isset($input['equivalence_set_description_sound_probability'])) {
+                    $newEquivalenceSet->description_sound_probability = $input['equivalence_set_description_sound_probability'];
+                }
+            }
+        }
         return $this->equivalenceSetStorage->saveEquivalenceSet($newEquivalenceSet);
     }
 
@@ -100,5 +110,24 @@ class EquivalenceSetManager {
             $cardManager = new CardManager();
             $cardManager->cloneCardsForEquivalenceSet($equivalenceSet, $newEquivalenceSet, $gameFlavorId, $newGameFlavorId);
         }
+    }
+
+    public function editEquivalenceSet($equivalenceSetId, array $input) {
+        $equivalenceSet = $this->getEquivalenceSet($equivalenceSetId);
+        if(isset($input['equivalence_set_description_sound'])) {
+            if ($input['equivalence_set_description_sound'] != null) {
+                $equivalenceSet->description_sound_id = $this->soundManager->uploadEquivalenceSetDescriptionSound($equivalenceSet->flavor_id, $input['equivalence_set_description_sound']);
+            }
+        }
+        if(isset($input['equivalence_set_description_sound_probability'])) {
+            if ($input['equivalence_set_description_sound_probability'] != null) {
+                $equivalenceSet->description_sound_probability = $input['equivalence_set_description_sound_probability'];
+            }
+        }
+        return $this->equivalenceSetStorage->saveEquivalenceSet($equivalenceSet);
+    }
+
+    private function getEquivalenceSet($equivalenceSetId) {
+        return $this->equivalenceSetStorage->getEquivalenceSetById($equivalenceSetId);
     }
 }

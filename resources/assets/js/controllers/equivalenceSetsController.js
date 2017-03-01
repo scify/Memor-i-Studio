@@ -14,6 +14,15 @@ window.EquivalenceSetsController.prototype = function () {
                 $('#deleteEquivalenceSetModal .submitLink').attr("href", "equivalenceSet/delete?id=" + setId);
             });
         },
+        editEquivalenceSetBtnHandler = function () {
+            $(".editSetBtn").on("click", function (e) {
+                e.stopPropagation();
+                var setId = $(this).attr("data-equivalenceSetId");
+                console.log(setId);
+                $('#editEquivalenceSetModal').modal('toggle');
+                $('#editEquivalenceSetModal #equivalenceSetId').val(setId);
+            });
+        },
         editCardBtnHandler = function (cards, editCardRoute) {
             $(".editCardBtn").on("click", function (e) {
                 e.stopPropagation();
@@ -73,6 +82,7 @@ window.EquivalenceSetsController.prototype = function () {
             console.log(instance.cards);
             console.log("here");
             deleteEquivalenceSetBtnHandler();
+            editEquivalenceSetBtnHandler();
             editCardBtnHandler(instance.cards, instance.editCardRoute);
             modalCloseHandler(instance);
         };

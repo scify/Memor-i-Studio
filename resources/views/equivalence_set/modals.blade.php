@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
+                <button type="button" class="btn btn-flat-primary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -38,12 +38,14 @@
                 </div>
                 <div class="modal-body">
                     @include('card.forms.create_edit', ['formTitle' => 'Card', 'formNum' => 1])
+                    <hr>
+                    @include('equivalence_set.forms.create_edit')
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cardSubmitBtn" class="pull-left btn btn-primary btn-ripple">
                         Create
                     </button>
-                    <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-flat-primary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </form>
@@ -73,12 +75,14 @@
                             @include('card.forms.create_edit', ['formTitle' => 'Equivalent card', 'formNum' => 2])
                         </div><!--.tab-pane-->
                     </div>
+                    <hr>
+                    @include('equivalence_set.forms.create_edit')
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cardSubmitBtnAdvanced" class="pull-left btn btn-primary btn-ripple">
                         Create
                     </button>
-                    <button type="button" class="btn btn-flat-primary" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-flat-primary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </form>
@@ -98,5 +102,29 @@
                 <a href="" class="btn btn-flat btn-primary btn-danger submitLink">Delete</a>
             </div>
         </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->
+<div class="modal scale fade" id="editEquivalenceSetModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="memoriForm" method="POST"
+              action="{{route('editEquivalenceSet')}}"
+              enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit equivalence set</h4>
+                </div>
+                <div class="modal-body">
+                    @include('equivalence_set.forms.create_edit')
+                    <input type="hidden" value="" id="equivalenceSetId" name="equivalence_set_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="pull-left btn btn-primary btn-ripple">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-flat-primary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div><!--.modal-content-->
+        </form>
     </div><!--.modal-dialog-->
 </div><!--.modal-->

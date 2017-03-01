@@ -27,4 +27,8 @@ class EquivalentSetStorage {
     public function deleteSet($id) {
         EquivalenceSet::find($id)->delete();
     }
+
+    public function getEquivalenceSetById($id) {
+        return EquivalenceSet::find($id);
+    }
 }

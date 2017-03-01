@@ -18,7 +18,11 @@ use Illuminate\Http\UploadedFile;
 class SoundManager {
 
     private $resourceManager;
-    private $CARD_SOUND_CATEGORY = 'audios/card_sounds/';
+    private $CARD_SOUND_PATH = 'audios/card_sounds/';
+    // The equivalence set description sound must be stored in the directory card_description_sounds
+    // because in the game application it is refer to as "card description sound" and not "equivalence set description sound"
+    // So it it expected to appear in this specific folder.
+    private $EQUIVALENCE_SET_DESCRIPTION_SOUND_PATH = 'audios/card_description_sounds/';
 
     public function __construct() {
         $this->resourceManager = new ResourceManager();
@@ -32,8 +36,23 @@ class SoundManager {
      * @return int the id of the resource created
      */
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
-        $soundPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . $this->CARD_SOUND_CATEGORY;
-        $newResourceId = $this->resourceManager->createNewResource($this->CARD_SOUND_CATEGORY);
+        return $this->createNewResourceAndUploadFile($gameFlavorId, $sound, $this->CARD_SOUND_PATH);
+    }
+
+    /**
+     * Creates a new @see Resource for the equivalence set description sound and stores the file.
+     *
+     * @param $gameFlavorId int the id of the game flavor
+     * @param UploadedFile $sound the sound file uploaded
+     * @return int the id of the resource created
+     */
+    public function uploadEquivalenceSetDescriptionSound($gameFlavorId, UploadedFile $sound) {
+        return $this->createNewResourceAndUploadFile($gameFlavorId, $sound, $this->EQUIVALENCE_SET_DESCRIPTION_SOUND_PATH);
+    }
+
+    private function createNewResourceAndUploadFile($gameFlavorId, UploadedFile $sound, $pathToStore) {
+        $soundPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . $pathToStore;
+        $newResourceId = $this->resourceManager->createNewResource($pathToStore);
         $this->resourceManager->createAndStoreResourceFile($sound, $soundPath, $newResourceId, $gameFlavorId);
         return $newResourceId;
     }

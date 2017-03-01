@@ -6,6 +6,11 @@
                 <button class="btn btn-primary btn-ripple deleteSetBtn" data-equivalenceSetId="{{$equivalenceSet->id}}">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
+                <div style="float: right">
+                    <button class="btn btn-primary btn-ripple editSetBtn" data-equivalenceSetId="{{$equivalenceSet->id}}">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         @endif
         <div class="cardList">

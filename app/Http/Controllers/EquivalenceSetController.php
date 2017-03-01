@@ -72,7 +72,7 @@ class EquivalenceSetController extends Controller
 
         //TODO: discuss try catch with alex
         try {
-            $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId);
+            $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
             $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
@@ -80,6 +80,31 @@ class EquivalenceSetController extends Controller
         }
 
         session()->flash('flash_message_success', 'Game cards created!');
+        return redirect()->back();
+    }
+
+    /**
+     * Edits an equivalence set
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function edit(Request $request) {
+        $this->validate($request, [
+            'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
+        ]);
+
+        $input = $request->all();
+        $equivalenceSetId = $input['equivalence_set_id'];
+
+        try {
+            $equivalenceSet = $this->equivalenceSetManager->editEquivalenceSet($equivalenceSetId, $input);
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            return redirect()->back();
+        }
+
+        session()->flash('flash_message_success', 'Set updated!');
         return redirect()->back();
     }
 

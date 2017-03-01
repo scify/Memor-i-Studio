@@ -56,7 +56,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
     //Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
     Route::get('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
-
+    Route::post('equivalenceSet/edit', 'EquivalenceSetController@edit')->name('editEquivalenceSet');
     //Card routes
     Route::post('card/edit', 'CardController@edit')->name('editCard');
 
