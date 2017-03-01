@@ -82,9 +82,7 @@ class CardManager {
         $newCard->equivalence_set_id = $equivalenceSetId;
         $newCard->category = $category;
 
-
-
-        $newCard =  $this->cardStorage->saveCard($newCard);
+        $newCard = $this->cardStorage->saveCard($newCard);
         $newCard->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['image']);
         $newCard->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $input['sound']);
         if(isset($input['negative_image'])) {
