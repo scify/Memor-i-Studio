@@ -142,6 +142,7 @@ class CardManager {
             }
         }
         return $cards;
+
     }
 
     public function cloneCardsForEquivalenceSet(EquivalenceSet $equivalenceSet, EquivalenceSet $newEquivalenceSet, $gameFlavorId, $newGameFlavorId) {
