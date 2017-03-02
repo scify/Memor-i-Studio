@@ -27,7 +27,13 @@ class EquivalenceSetManager {
     }
 
     public function getEquivalenceSetsForGameFlavor($gameFlavorId) {
-        return $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        $equivalenceSets =  $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        foreach ($equivalenceSets as $equivalenceSet) {
+            if($equivalenceSet->descriptionSound != null) {
+                $equivalenceSet->descriptionSoundPath = url('resolveData/' . $equivalenceSet->descriptionSound->file->file_path);
+            }
+        }
+        return $equivalenceSets;
     }
 
     public function createEquivalenceSet($gameFlavorId, array $input) {
@@ -72,6 +78,11 @@ class EquivalenceSetManager {
                 $current_card['images'] = array();
                 $current_card['description_sound'] = "";
                 $current_card['equivalenceCardSetHashCode'] = "";
+                if($equivalenceSet->descriptionSound != null) {
+                    $fileName = substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
+                    $current_card['description_sound'] = $fileName;
+                    $current_card['description_sound_probability'] = $equivalenceSet->description_sound_probability;
+                }
                 if($card->sound != null) {
                     $fileName = substr($card->sound->file->file_path, strrpos($card->sound->file->file_path, '/') + 1);
                     array_push($current_card['sounds'], $fileName);
