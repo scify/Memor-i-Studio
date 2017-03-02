@@ -64,7 +64,9 @@ class EquivalenceSetController extends Controller
             'card.*.game_flavor_id' => 'required',
             'card.*.image' => 'required|file|image|max:2000',
             'card.*.negative_image' => 'file|image|max:2000',
-            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav'
+            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
+            'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
+            'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
         ]);
 
         $input = $request->all();
@@ -91,6 +93,7 @@ class EquivalenceSetController extends Controller
      */
     public function edit(Request $request) {
         $this->validate($request, [
+            'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
         ]);
 
