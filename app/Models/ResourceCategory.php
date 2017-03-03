@@ -35,7 +35,8 @@ class ResourceCategory extends Model
      */
     public function resources()
     {
-        return $this->hasMany('App\Models\Resource', 'category_id', 'id')->orderBy('name');
+        return $this->hasMany('App\Models\Resource', 'category_id', 'id')
+            ->orderBy(\DB::raw('-`order_id`'), 'desc');
     }
 
     /**

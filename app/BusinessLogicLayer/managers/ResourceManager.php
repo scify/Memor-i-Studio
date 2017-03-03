@@ -28,6 +28,36 @@ class ResourceManager {
         $this->resourceTranslationStorage = new ResourceTranslationStorage();
     }
 
+    private $resourceOrdering = array(
+        'audios/game_instructions/1_tutorial_intro_step_1.mp3' => 1,
+        'audios/game_instructions/2_tutorial_intro_step_2.mp3' => 2,
+        'audios/game_instructions/3_press_right.mp3' => 3,
+        'audios/game_instructions/4_press_right_until_end.mp3' => 4,
+        'audios/game_instructions/5_tutorial_invalid_movement.mp3' => 5,
+        'audios/game_instructions/6_press_left.mp3' => 6,
+        'audios/game_instructions/7_please_press_down.mp3' => 7,
+        'audios/game_instructions/8_doors_explanation.mp3' => 8,
+        'audios/game_instructions/9_flip_explanation.mp3' => 9,
+        'audios/game_instructions/10_correct_pair_explanation.mp3' => 10,
+        'audios/game_instructions/11_wrong_pair.mp3' => 11,
+        'audios/game_instructions/12_doors_closing_explanation.mp3' => 12,
+        'audios/game_instructions/13_tutorial_ending.mp3' => 13,
+        'audios/game_instructions/14_help_instructions.mp3' => 14,
+        'audios/game_instructions/15_help_explanation_row.mp3' => 15,
+        'audios/game_instructions/16_help_explanation_column.mp3' => 16,
+        'audios/game_instructions/17_level_ending_universal.mp3' => 17,
+        'audios/game_instructions/18_replay_or_exit.mp3' => 18,
+        'audios/storyline_audios/storyLine1.mp3' => 19,
+        'audios/storyline_audios/storyLine2.mp3' => 20,
+        'audios/storyline_audios/storyLine3.mp3' => 21,
+        'audios/storyline_audios/storyLine4.mp3' => 22,
+        'audios/storyline_audios/storyLine5.mp3' => 23,
+        'audios/storyline_audios/storyLine6.mp3' => 24,
+        'audios/storyline_audios/storyLine7.mp3' => 25,
+        'audios/storyline_audios/storyLine8.mp3' => 26,
+        'audios/storyline_audios/storyLine9.mp3' => 27,
+    );
+
     /**
      * Given an @see UploadedFile, stores the file and creates a new @see Resource instance
      *
@@ -110,6 +140,9 @@ class ResourceManager {
                 $newResource->name = $gameResourceFile;
                 $newResource->default_text = $gameResourceFile;
                 $newResource->default_description = $gameResourceFile;
+                if(isset($this->resourceOrdering[$gameResourceFile])) {
+                    $newResource->order_id = $this->resourceOrdering[$gameResourceFile];
+                }
                 $this->resourceStorage->storeResource($newResource);
             }
         }

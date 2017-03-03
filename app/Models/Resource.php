@@ -25,7 +25,7 @@ class Resource extends Model
      *
      * @var array
      */
-    protected $fillable = ['category_id', 'name', 'default_text'];
+    protected $fillable = ['category_id', 'name', 'default_text', 'order_id'];
 
     public function resourceCategory() {
         return $this->hasOne('App\Models\ResourceCategory', 'id', 'category_id');
