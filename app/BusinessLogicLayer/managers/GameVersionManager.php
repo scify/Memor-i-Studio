@@ -54,6 +54,17 @@ class GameVersionManager {
         return $newGameVersion;
     }
 
+    public function getResourcesForGameVersion(GameVersion $gameVersion) {
+        $resourceCategoriesForGameVersion = $gameVersion->resourceCategories;
+        $resources = new Collection();
+        foreach ($resourceCategoriesForGameVersion as $resourceCategory) {
+            foreach ($resourceCategory->resources as $resource) {
+                $resources->add($resource);
+            }
+        }
+        return $resources;
+    }
+
     /**
      * Fetches all the @see GameVersion instances
      *
@@ -81,7 +92,7 @@ class GameVersionManager {
      * @param array $input the input parameters
      * @return GameVersion the newly updated game version instance
      */
-    public function updateGameVersion($id, array $input) {
+    public function editGameVersion($id, array $input) {
         $gameVersionToBeUpdated = $this->getGameVersion($id);
         $gameVersionToBeUpdated->name = $input['name'];
         $gameVersionToBeUpdated->version_code = $input['version_code'];
@@ -92,7 +103,10 @@ class GameVersionManager {
         if (isset($input['gameResPack'])) {
             $zipFilePath = $this->storeZipFile($id, $input['gameResPack']);
         }
-        return $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
+        $editedGameVersion =  $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
+        $resourceManager = new ResourceManager();
+        $resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
+        return $editedGameVersion;
     }
 
     /**

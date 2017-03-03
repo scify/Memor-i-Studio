@@ -26,6 +26,11 @@ class ResourceManager {
         $this->resourceStorage = new ResourceStorage();
         $this->resourceCategoryStorage = new ResourceCategoryStorage();
         $this->resourceTranslationStorage = new ResourceTranslationStorage();
+
+        //add number audio files to array
+        for($i = 1 ; $i <= 60 ; $i++) {
+            $this->resourceOrdering['audios/numbers/' . $i . '.mp3'] = $i;
+        }
     }
 
     private $resourceOrdering = array(
@@ -47,16 +52,49 @@ class ResourceManager {
         'audios/game_instructions/16_help_explanation_column.mp3' => 16,
         'audios/game_instructions/17_level_ending_universal.mp3' => 17,
         'audios/game_instructions/18_replay_or_exit.mp3' => 18,
-        'audios/storyline_audios/storyLine1.mp3' => 19,
-        'audios/storyline_audios/storyLine2.mp3' => 20,
-        'audios/storyline_audios/storyLine3.mp3' => 21,
-        'audios/storyline_audios/storyLine4.mp3' => 22,
-        'audios/storyline_audios/storyLine5.mp3' => 23,
-        'audios/storyline_audios/storyLine6.mp3' => 24,
-        'audios/storyline_audios/storyLine7.mp3' => 25,
-        'audios/storyline_audios/storyLine8.mp3' => 26,
-        'audios/storyline_audios/storyLine9.mp3' => 27,
+        'audios/storyline_audios/storyLine1.mp3' => 1,
+        'audios/storyline_audios/storyLine2.mp3' => 2,
+        'audios/storyline_audios/storyLine3.mp3' => 3,
+        'audios/storyline_audios/storyLine4.mp3' => 4,
+        'audios/storyline_audios/storyLine5.mp3' => 5,
+        'audios/storyline_audios/storyLine6.mp3' => 6,
+        'audios/storyline_audios/storyLine7.mp3' => 7,
+        'audios/storyline_audios/storyLine8.mp3' => 8,
+        'audios/storyline_audios/storyLine9.mp3' => 9,
+        'audios/level_intro_sounds/level1.mp3' => 1,
+        'audios/level_intro_sounds/level2.mp3' => 2,
+        'audios/level_intro_sounds/level3.mp3' => 3,
+        'audios/level_intro_sounds/level4.mp3' => 4,
+        'audios/level_intro_sounds/level5.mp3' => 5,
+        'audios/level_intro_sounds/level6.mp3' => 6,
+        'audios/level_intro_sounds/level7.mp3' => 7,
+        'audios/level_intro_sounds/level8.mp3' => 8,
+        'audios/level_name_sounds/level1.mp3' => 1,
+        'audios/level_name_sounds/level2.mp3' => 2,
+        'audios/level_name_sounds/level3.mp3' => 3,
+        'audios/level_name_sounds/level4.mp3' => 4,
+        'audios/level_name_sounds/level5.mp3' => 5,
+        'audios/level_name_sounds/level6.mp3' => 6,
+        'audios/level_name_sounds/level7.mp3' => 7,
+        'audios/level_name_sounds/level8.mp3' => 8,
+        'audios/letters/1.mp3' => 1,
+        'audios/letters/2.mp3' => 2,
+        'audios/letters/3.mp3' => 3,
+        'audios/letters/4.mp3' => 4,
+        'audios/letters/5.mp3' => 5,
+        'audios/letters/6.mp3' => 6,
+        'audios/letters/7.mp3' => 7,
+        'audios/letters/8.mp3' => 8,
     );
+
+    public function updateResourceOrdering($resourcesArray) {
+        foreach ($resourcesArray as $resource) {
+            if(isset($this->resourceOrdering[$resource->name])) {
+                $resource->order_id = $this->resourceOrdering[$resource->name];
+            }
+            $this->resourceStorage->storeResource($resource);
+        }
+    }
 
     /**
      * Given an @see UploadedFile, stores the file and creates a new @see Resource instance

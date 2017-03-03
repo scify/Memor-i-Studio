@@ -102,7 +102,7 @@ class GameVersionController extends Controller
         $input = $request->all();
 
         try {
-            $editedGameVersion = $this->gameVersionManager->updateGameVersion($id, $input);
+            $editedGameVersion = $this->gameVersionManager->editGameVersion($id, $input);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back()->withInput($request->input());
