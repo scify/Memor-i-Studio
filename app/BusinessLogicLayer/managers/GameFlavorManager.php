@@ -92,7 +92,11 @@ class GameFlavorManager {
                 if($resourceFile != null) {
                     $resource->file_path = $resourceFile->file_path;
                 } else {
-                    $resource->file_path = 'game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name;
+                    if(File::exists(storage_path('app/game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name))) {
+                        $resource->file_path = 'game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name;
+                    } else {
+                        $resource->file_path = null;
+                    }
                 }
             }
         }
