@@ -17,8 +17,8 @@
                             <table class="table-bordered table-striped table-condensed resourcesTable">
                                 <thead>
                                 <tr>
-                                    <th>Hint</th>
-                                    <th>Display text</th>
+                                    <th>Audio file description</th>
+                                    <th>Upload your audio</th>
                                 </tr>
                                 </thead>
                                 <tbody>
