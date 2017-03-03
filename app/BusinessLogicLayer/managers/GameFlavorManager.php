@@ -4,14 +4,11 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\BusinessLogicLayer\WindowsBuilder;
 use App\Models\GameFlavor;
-use App\Models\Resource;
+use App\Models\GameVersion;
 use App\Models\ResourceFile;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
-use App\StorageLayer\ResourceStorage;
-use DOMDocument;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -84,6 +81,7 @@ class GameFlavorManager {
     public function getResourcesForGameFlavor($gameFlavor) {
         $resourceCategoryManager = new ResourceCategoryManager();
         $resourceManager = new ResourceManager();
+        $gameVersionManager = new GameVersionManager();
         $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
         foreach ($gameVersionResourceCategories as $category) {
 
@@ -94,7 +92,7 @@ class GameFlavorManager {
                 if($resourceFile != null) {
                     $resource->file_path = $resourceFile->file_path;
                 } else {
-                    $resource->file_path = null;
+                    $resource->file_path = 'game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name;
                 }
             }
         }

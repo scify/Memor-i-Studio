@@ -6,8 +6,10 @@ use App\Models\GameVersion;
 use App\Models\User;
 use App\StorageLayer\FileStorage;
 use App\StorageLayer\GameVersionStorage;
+use Chumper\Zipper\Zipper;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 
 class GameVersionManager {
 
@@ -46,6 +48,7 @@ class GameVersionManager {
         $newGameVersion = $this->gameVersionStorage->storeGameVersion($newGameVersion);
         $zipFilePath = $this->storeZipFile($newGameVersion->id, $input['gameResPack']);
         $this->extractResourceDirectoriesFromZipFile($zipFilePath);
+        $this->extractFilesFromZipFile($zipFilePath, $newGameVersion->id);
         $resourceCategoriesManager = new ResourceCategoryManager();
         $resourcesManager = new ResourceManager();
         $resourceCategoriesManager->createResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $newGameVersion->id);
@@ -102,6 +105,8 @@ class GameVersionManager {
         }
         if (isset($input['gameResPack'])) {
             $zipFilePath = $this->storeZipFile($id, $input['gameResPack']);
+            $this->deleteGameVersionDataDirectory($id);
+            $this->extractFilesFromZipFile($zipFilePath, $id);
         }
         $editedGameVersion =  $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
         $resourceManager = new ResourceManager();
@@ -146,6 +151,20 @@ class GameVersionManager {
             }
             zip_close($zip);
         }
+    }
+
+    private function extractFilesFromZipFile($zipFilePath, $gameVersionId) {
+        $zipper = new Zipper();
+        $result = File::makeDirectory($this->getPathForGameVersionDataFiles($gameVersionId), 0777, true);
+        $zipper->make($zipFilePath)->folder('scify_pack')->extractTo(storage_path('app/game_versions/data/' . $gameVersionId));
+    }
+
+    private function getPathForGameVersionDataFiles($gameVersionId) {
+        return storage_path('app/game_versions/data/' . $gameVersionId);
+    }
+
+    private function deleteGameVersionDataDirectory($gameVersionId) {
+        $success = File::deleteDirectory($this->getPathForGameVersionDataFiles($gameVersionId));
     }
 
     /**
