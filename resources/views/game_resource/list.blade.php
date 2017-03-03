@@ -24,7 +24,7 @@
                                 <tbody>
                                 @foreach($resources as $index=>$resource)
                                     <tr>
-                                        <td>{{$resource->default_text}} <div class="margin-top-5"><h6>{{$resource->default_description}}</h6></div></td>
+                                        <td class="col-md-10">{{$resource->default_text}} <div class="margin-top-5"><h6>{{$resource->default_description}}</h6></div></td>
                                         <td>
                                             @if($resource->file_path != null)
                                                 <div class="margin-bottom-10">
