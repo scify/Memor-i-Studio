@@ -62,8 +62,8 @@ class EquivalenceSetController extends Controller
         //The validation messages are defined in resources/lang/en/validation.php
         $this->validate($request, [
             'card.*.game_flavor_id' => 'required',
-            'card.*.image' => 'required|file|image|max:2000',
-            'card.*.negative_image' => 'file|image|max:2000',
+            'card.*.image' => 'required|file|image|max:2000|mimes:jpeg,jpg,png,gif',
+            'card.*.negative_image' => 'file|image|max:2000|mimes:jpeg,jpg,png,gif',
             'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
