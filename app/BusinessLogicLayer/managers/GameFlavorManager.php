@@ -78,16 +78,13 @@ class GameFlavorManager {
 
     }
 
-    public function getResourcesForGameFlavor($gameFlavor) {
+    public function getResourceCategoriesForGameFlavor($gameFlavor) {
         $resourceCategoryManager = new ResourceCategoryManager();
         $resourceManager = new ResourceManager();
-        $gameVersionManager = new GameVersionManager();
         $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
         foreach ($gameVersionResourceCategories as $category) {
-
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
-
                 $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
                 if($resourceFile != null) {
                     $resource->file_path = $resourceFile->file_path;
@@ -476,8 +473,8 @@ class GameFlavorManager {
             $resourceManager->cloneResourceFile($gameFlavor->coverImg, $coverImgFile, $newGameFlavor->id);
 
             $this->cloneDataPackFiles($gameFlavor, $newGameFlavor);
+            $this->cloneDataPackResourceFileRows($gameFlavor, $newGameFlavor);
             $equivalenceSetManager = new EquivalenceSetManager();
-            //todo search for transaction lock
             $equivalenceSetManager->cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavor->id, $newGameFlavor->id);
         });
 
@@ -499,6 +496,20 @@ class GameFlavorManager {
         $success = File::copyDirectory($sourceDir, $destinationDir);
         if(!$success)
             throw new Exception("Error while copying data pack files");
+    }
+
+    private function cloneDataPackResourceFileRows(GameFlavor $gameFlavor, GameFlavor $newGameFlavor) {
+        $resourceCategoriesForGameFlavor = $this->getResourceCategoriesForGameFlavor($gameFlavor);
+        $resourceManager = new ResourceManager();
+        foreach ($resourceCategoriesForGameFlavor as $category) {
+            $currCatResources = $category->resources;
+            foreach ($currCatResources as $resource) {
+                $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+                if($resourceFile != null) {
+                    $resourceManager->cloneResourceFile($resource, $resourceFile, $newGameFlavor->id);
+                }
+            }
+        }
     }
 
     public function getDataPackDir($gameFlavorId) {
