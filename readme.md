@@ -145,19 +145,12 @@ SYSTEM_USER=testUser
 ...
 ```
 
-Also, the innosetup script will try to install Innosetup automatically. For this to happen, you have to make sure that the innosetup setup file
-is present on your machine, and include the file path in the .env file:
-```
-...
-INNOSETUP_INSTALLER_FILE = /home/testUser/Downloads/innosetup-5.5.9.exe
-...
-```
-
 And have write access to ```/home``` directory.
 
 #Installing wine
 - Setup a user where wine will be installed (non-system user), e.g. project_memori
 - Run isccBaseSetup.sh in a shell allowing X server connections (Use e.g. ssh -X project_memori@myserver.gr to get such a shell)
+example: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
 - Change the owner of the user's .wine subdirectory to www-data (e.g. chown -R www-data /home/project_memori/.wine/)
 - The user www-data can now run the iscc.sh script with the following arguments to package project_memori: the user name (eg project_memori)
 and the .iss script file path of the game flavor
