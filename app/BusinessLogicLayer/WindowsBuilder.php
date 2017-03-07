@@ -4,6 +4,7 @@ namespace App\BusinessLogicLayer;
 
 use App\BusinessLogicLayer\managers\FileManager;
 use App\Models\GameFlavor;
+use Carbon\Carbon;
 use DOMDocument;
 use Illuminate\Support\Facades\File;
 use League\Flysystem\Exception;
@@ -144,7 +145,8 @@ class WindowsBuilder {
         $output = shell_exec($command);
 
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
-        File::put($file, $output);
+        File::put($file, "Date: " . Carbon::now()->toDateTimeString() . "/n");
+        File::append($file, $output);
 
         chdir($old_path);
         return $output;
