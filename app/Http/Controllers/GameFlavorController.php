@@ -155,12 +155,12 @@ class GameFlavorController extends Controller
     }
 
     public function publish($id) {
-        $result = $this->gameFlavorManager->toggleGameFlavorState($id);
-        if(!$result) {
-            return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
-        }
         try {
             $this->gameFlavorManager->packageFlavor($id);
+            $result = $this->gameFlavorManager->toggleGameFlavorState($id);
+            if(!$result) {
+                return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
+            }
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
