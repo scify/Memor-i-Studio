@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo Before running the script:
 echo - Make sure you have run "isccBaseSetup.sh" as the non-www-data user
-echo "- Make sure the WINE_BASE_DIR has the www-data (as an owner) with full access"
+echo "- Make sure the WINEPREFIX has the www-data (as an owner) with full access"
 # Main variables
 SOURCE_USER=$1
 export WINEPREFIX="/home/$SOURCE_USER/.wine/"

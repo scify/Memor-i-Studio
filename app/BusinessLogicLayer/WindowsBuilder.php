@@ -137,6 +137,7 @@ class WindowsBuilder {
         $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
 
         $old_path = getcwd();
+        set_time_limit(1000);
         chdir(public_path('build_app/innosetup'));
         $currentSystemUser = config('app.SYSTEM_USER');
         if($currentSystemUser == null)
