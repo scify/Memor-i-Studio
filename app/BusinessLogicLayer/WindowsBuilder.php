@@ -145,7 +145,8 @@ class WindowsBuilder {
         $output = shell_exec($command);
 
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
-        File::put($file, "Date: " . Carbon::now()->toDateTimeString() . "\n");
+        File::put($file, "Date: " . Carbon::now()->toDateTimeString() . "\n\n");
+        File::append($file, "\n\n Executed command: " . public_path('build_app/innosetup') . " " . $command . " \n\n Output: \n\n");
         File::append($file, $output);
 
         chdir($old_path);
