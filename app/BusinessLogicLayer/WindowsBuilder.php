@@ -119,15 +119,13 @@ class WindowsBuilder {
      */
     public function buildWindowsExecutable($gameFlavorId) {
         $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/launch4j-config.xml';
-        //TODO:remove
-        $old_path = getcwd();
-        //TODO:remove
-        //chdir(public_path('build_app/launch4j'));
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
         $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $file . ' 2>&1 ';
+        //empty log file
+        File::put($file, "");
         $output = shell_exec($command);
-        //TODO:remove
-        //chdir($old_path);
+        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+        File::append($file, "\nExecuted command: \n" . $command . " \n");
         return $output;
     }
 
@@ -144,6 +142,8 @@ class WindowsBuilder {
         if($currentSystemUser == null)
             throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
+        //empty log file
+        File::put($file, "");
         $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
         shell_exec($command);
 
