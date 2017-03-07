@@ -155,6 +155,13 @@ INNOSETUP_INSTALLER_FILE = /home/testUser/Downloads/innosetup-5.5.9.exe
 
 And have write access to ```/home``` directory.
 
+#Installing wine
+- Setup a user where wine will be installed (non-system user), e.g. project_memori
+- Run isccBaseSetup.sh in a shell allowing X server connections (Use e.g. ssh -X project_memori@myserver.gr to get such a shell)
+- Change the owner of the user's .wine subdirectory to www-data (e.g. chown -R www-data /home/project_memori/.wine/)
+- The user www-data can now run the iscc.sh script with the following arguments to package project_memori: the user name (eg project_memori)
+and the .iss script file path of the game flavor
+
 ## Deploying
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and navigate to http://localhost/{yourLinkName}
 
