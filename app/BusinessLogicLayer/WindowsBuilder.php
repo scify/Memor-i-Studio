@@ -119,12 +119,15 @@ class WindowsBuilder {
      */
     public function buildWindowsExecutable($gameFlavorId) {
         $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/launch4j-config.xml';
-
+        //TODO:remove
         $old_path = getcwd();
-        chdir(public_path('build_app/launch4j'));
-        $command = './build_win_exe.sh ' . $launch4JConfigFile;
+        //TODO:remove
+        //chdir(public_path('build_app/launch4j'));
+        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
+        $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $file . ' 2>&1 ';
         $output = shell_exec($command);
-        chdir($old_path);
+        //TODO:remove
+        //chdir($old_path);
         return $output;
     }
 
