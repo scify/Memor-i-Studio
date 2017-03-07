@@ -145,8 +145,8 @@ class WindowsBuilder {
         shell_exec($command);
 
 
-        File::append($file, "Date: " . Carbon::now()->toDateTimeString() . "\n\n");
-        File::append($file, "\n\n Executed command: \n" . $command . " \n\n Output: \n\n");
+        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+        File::append($file, "\nExecuted command: \n" . $command . " \n");
         //File::append($file, $output);
 
         return;
