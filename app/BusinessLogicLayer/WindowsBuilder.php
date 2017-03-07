@@ -144,10 +144,8 @@ class WindowsBuilder {
         $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file;
         shell_exec($command);
 
-
         File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
         File::append($file, "\nExecuted command: \n" . $command . " \n");
-        //File::append($file, $output);
 
         return;
     }
