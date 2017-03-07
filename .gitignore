@@ -55,5 +55,5 @@ public/build_app/launch4j_application
 public/memoristore
 .npmigonre
 npm-debug.log
-*.jar
+storage/*.jar
 *.exe
