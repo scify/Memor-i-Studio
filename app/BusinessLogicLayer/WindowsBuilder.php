@@ -130,18 +130,18 @@ class WindowsBuilder {
 
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor) {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_FILE;
-        $destinationFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
+        $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
 
-        $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $destinationFile);
+        $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
-        $this->prepareInnoSetupFileForGameFlavor($destinationFile, $gameFlavor);
+        $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
 
         $old_path = getcwd();
         chdir(public_path('build_app/innosetup'));
         $currentSystemUser = config('app.SYSTEM_USER');
         if($currentSystemUser == null)
             throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
-        $command = './iscc.sh ' . $currentSystemUser . ' ' . $destinationFile;
+        $command = './iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile;
         $output = shell_exec($command);
 
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
