@@ -136,21 +136,18 @@ class WindowsBuilder {
 
         $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
 
-        $old_path = getcwd();
         set_time_limit(1000);
-        chdir(public_path('build_app/innosetup'));
         $currentSystemUser = config('app.SYSTEM_USER');
         if($currentSystemUser == null)
             throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
-        $command = './iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile;
+        $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile;
         $output = shell_exec($command);
 
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
         File::put($file, "Date: " . Carbon::now()->toDateTimeString() . "\n\n");
-        File::append($file, "\n\n Executed command: " . public_path('build_app/innosetup') . " " . $command . " \n\n Output: \n\n");
+        File::append($file, "\n\n Executed command: \n" . $command . " \n\n Output: \n\n");
         File::append($file, $output);
 
-        chdir($old_path);
         return $output;
     }
 
