@@ -246,4 +246,10 @@ class GameFlavorController extends Controller
         session()->flash('flash_message_success', 'Game flavor submitted for approval.');
         return redirect()->back();
     }
+
+    public function showGameFlavorsSubmittedForApproval() {
+        $gameFlavors = $this->gameFlavorManager->getGameFlavorsSubmittedForApproval();
+
+        return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
+    }
 }

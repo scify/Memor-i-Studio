@@ -53,4 +53,10 @@ class GameFlavorStorage {
     public function deleteGameFlavor(GameFlavor $gameFlavor) {
         $gameFlavor->delete();
     }
+
+    public function gatGameFlavorsBySubmittedState($submittedState) {
+        return GameFlavor::where([
+            ['submitted_for_approval', '=', $submittedState],
+        ])->get()->sortByDesc("created_at");
+    }
 }

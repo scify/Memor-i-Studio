@@ -9,12 +9,15 @@
                 <li class="{{ (Route::current()->getName() == 'showAllGameVersions') ? 'open' : '' }}">
                     <a href="{{ route('showAllGameVersions') }}"><i class="fa fa-th-list" aria-hidden="true"></i> All Game Versions </a>
                 </li>
+                <li class="{{ (Route::current()->getName() == 'showGameFlavorsSubmittedForApproval') ? 'open' : '' }}">
+                    <a href="{{ route('showGameFlavorsSubmittedForApproval') }}"><i class="fa fa-th-list" aria-hidden="true"></i> Games submitted for approval </a>
+                </li>
             @endif
             <li class="{{ (Route::current()->getName() == 'showGameVersionSelectionForm') ? 'open' : '' }}">
-                <a href="{{ route('showGameVersionSelectionForm') }}"><i class="fa fa-plus" aria-hidden="true"></i> Create new flavor </a>
+                <a href="{{ route('showGameVersionSelectionForm') }}"><i class="fa fa-plus" aria-hidden="true"></i> Create new game </a>
             </li>
             <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'open' : '' }}">
-                <a href="{{ route('showAllGameFlavors') }}"><i class="fa fa-list" aria-hidden="true"></i> All Game Flavors </a>
+                <a href="{{ route('showAllGameFlavors') }}"><i class="fa fa-list" aria-hidden="true"></i> All Games </a>
             </li>
         </ul>
     </div>

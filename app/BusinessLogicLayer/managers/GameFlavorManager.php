@@ -62,6 +62,7 @@ class GameFlavorManager {
             $gameFlavor = $this->getGameFlavor($gameFlavorId);
 
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
+            $this->markGameFlavorAsSubmittedForApproval($gameFlavor->id);
         }
         DB::transaction(function() use($gameFlavor, $inputFields) {
             $imgManager = new ImgManager();
@@ -440,6 +441,10 @@ class GameFlavorManager {
         $gameFlavor = $this->getGameFlavor($id);
         $gameFlavor->submitted_for_approval = true;
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+    }
+
+    public function getGameFlavorsSubmittedForApproval() {
+        return $this->gameFlavorStorage->gatGameFlavorsBySubmittedState(true);
     }
 
 
