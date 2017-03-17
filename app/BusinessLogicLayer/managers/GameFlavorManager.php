@@ -258,18 +258,6 @@ class GameFlavorManager {
         return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
-//    /**
-//     * Deletes the not signed .jar file that contains the data pack files
-//     *
-//     * @param $gameFlavorId int the id of the @see GameFlavor
-//     */
-//    public function deleteTemporaryFlavorPackZipFile($gameFlavorId) {
-//        $file = $this->getGameFlavorZipFile($gameFlavorId);
-//        if(File::exists($file)) {
-//            File::delete($file);
-//        }
-//    }
-
     public function packageFlavor($gameFlavorId) {
         $resourceManager = new ResourceManager();
         $equivalenceSetManager = new EquivalenceSetManager();
