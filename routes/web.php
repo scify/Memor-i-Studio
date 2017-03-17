@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
-Route::get('home', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
+Route::get('/', 'HomeController@showHomePage')->name('showHomePage');
+Route::get('showAllGameFlavors', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
 
 Route::group([ 'middleware' => 'auth' ], function () {
 

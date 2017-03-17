@@ -24,11 +24,11 @@
                 </div>
                 <div class="col-md-3">
                     @if($gameFlavor->submitted_for_approval)
-                        <a href="#" id="gameVersionLangSubmitBtn" class="disabled btn btn-success btn-ripple padding-15">
+                        <a href="#" class="disabled btn btn-success btn-ripple padding-15">
                             Submitted for approval
                         </a>
                     @else
-                        <a href="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}" id="gameVersionLangSubmitBtn" class="btn btn-success btn-ripple padding-15">
+                        <a href="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}" class="btn btn-success btn-ripple padding-15">
                             Submit game for approval
                         </a>
                     @endif
