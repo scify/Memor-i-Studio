@@ -7,7 +7,7 @@
             </a>
         </div><!--.col-md-6-->
         <div class="col-md-6 text-align-center">
-            <a href="{{route('showAllGameFlavors')}}" class="btn btn-success btn-ripple ">
+            <a href="{{route('showAllGameFlavors')}}" class="btn btn-primary btn-ripple ">
                 <h1>See all Games</h1>
             </a>
         </div><!--.col-md-6-->
