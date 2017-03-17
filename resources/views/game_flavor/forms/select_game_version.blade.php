@@ -11,7 +11,7 @@
                           action="{{route('createGameFlavorIndex')}}"
                           enctype="multipart/form-data">
                         <div class="row">
-                            <div class="col-md-3">Game version</div><!--.col-md-3-->
+                            <div class="col-md-3">Game Type</div><!--.col-md-3-->
                             <div class="col-md-6">
                                 <select class="selecter width-percent-80" name="game_version_id">
                                     @foreach($gameVersions as $gameVersion)

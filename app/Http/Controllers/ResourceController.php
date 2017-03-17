@@ -50,7 +50,7 @@ class ResourceController extends Controller
      */
     public function getResourcesForGameFlavor($gameFlavorId) {
         $gameFlavorManager = new GameFlavorManager();
-        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
+        $gameFlavor = $gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
 
         $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor);
 

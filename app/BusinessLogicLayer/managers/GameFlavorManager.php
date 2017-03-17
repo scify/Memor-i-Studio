@@ -59,7 +59,7 @@ class GameFlavorManager {
 
         } else {
             //edit existing
-            $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
+            $gameFlavor = $this->getGameFlavor($gameFlavorId);
 
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
         }
@@ -144,7 +144,7 @@ class GameFlavorManager {
      * @param $id . the id of game version
      * @return GameFlavor desired {@see GameFlavor} object, or null if the user has no access to this object
      */
-    public function getGameFlavorForEdit($id) {
+    public function getGameFlavor($id) {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
 
@@ -165,7 +165,7 @@ class GameFlavorManager {
      * object
      * @throws Exception if no game flavor found by the given id
      */
-    public function getGameFlavor($id) {
+    public function getGameFlavorViewModel($id) {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         //if the game Version exists, check if the user has access
@@ -189,14 +189,12 @@ class GameFlavorManager {
         return $gameFlavor;
     }
 
-
-
     /**
      * @param $gameFlavorId. The id of the game version to be deleted
      * @return bool. True if the game version was deleted successfully, false if the user has no access
      */
     public function deleteGameFlavor($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
         if($gameFlavor == null)
             return false;
         $this->gameFlavorStorage->deleteGameFlavor($gameFlavor);
@@ -227,8 +225,8 @@ class GameFlavorManager {
      * @param $gameFlavorId int the id of the @see GameFlavor to be updated
      * @return bool if the update process was successful or not
      */
-    public function toggleGameFlavorState($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavorForEdit($gameFlavorId);
+    public function toggleGameFlavorPublishedState($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
         if($gameFlavor == null)
             return false;
         $gameFlavor->published = !$gameFlavor->published;
@@ -287,7 +285,7 @@ class GameFlavorManager {
         //$this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
         $windowsBuilder = new WindowsBuilder();
 
-        $windowsBuilder->buildGameFlavorForWindows($this->getGameFlavor($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
+        $windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
 
         return;
     }
@@ -316,7 +314,7 @@ class GameFlavorManager {
      */
     private function copyGameVersionJarFileToDataPackDir($gameFlavorId) {
         $gameVersionManager = new GameVersionManager();
-        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         $sourceFile = $gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
         $destinationFile = storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/memori.jar';
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
@@ -425,6 +423,23 @@ class GameFlavorManager {
 
     public function getDataPackDir($gameFlavorId) {
         return storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/data');
+    }
+
+    /**
+     * Marks this gam flavor to have a null game_status_id to indicate that it is not in the
+     * "games to be approved or disapproved" list.
+     * @param $id int the game flavor id
+     */
+    public function markGameFlavorAsNotSubmittedForApproval($id) {
+        $gameFlavor = $this->getGameFlavor($id);
+        $gameFlavor->submitted_for_approval = false;
+        $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+    }
+
+    public function markGameFlavorAsSubmittedForApproval($id) {
+        $gameFlavor = $this->getGameFlavor($id);
+        $gameFlavor->submitted_for_approval = true;
+        $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
 

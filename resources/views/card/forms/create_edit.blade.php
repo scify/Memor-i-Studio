@@ -8,7 +8,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">{{$formTitle}} image</div><!--.col-md-6-->
-                <div class="col-md-6">{{$formTitle}} negative image</div><!--.col-md-6-->
+                <div class="col-md-6">{{$formTitle}} negative image <h6>To help people with low vision (optional)</h6></div><!--.col-md-6-->
             </div>
 
             <div class="col-md-6">

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
     <div>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-        <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
-    </ol>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+            <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
+        </ol>
     </div>
     @if($gameFlavor->accessed_by_user)
         @if(count($equivalenceSets) == 0)
@@ -16,8 +16,23 @@
                 <strong>This game flavor contains only one card set!</strong> In order to proceed, add at least one card set more.
             </div>
         @else
-            <div class="alert alert-info noFloatAlert">
-                Click <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">here</a> to proceed to game sounds
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="alert alert-info noFloatAlert">
+                        Click <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">here</a> to proceed to game sounds (optional)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @if($gameFlavor->submitted_for_approval)
+                        <a href="#" id="gameVersionLangSubmitBtn" class="disabled btn btn-success btn-ripple padding-15">
+                            Submitted for approval
+                        </a>
+                    @else
+                        <a href="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}" id="gameVersionLangSubmitBtn" class="btn btn-success btn-ripple padding-15">
+                            Submit game for approval
+                        </a>
+                    @endif
+                </div><!--.col-md-9-->
             </div>
         @endif
     @endif

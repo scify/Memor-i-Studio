@@ -99,7 +99,7 @@ class GameFlavorController extends Controller
     public function editIndex($id)
     {
         $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameFlavor = $this->gameFlavorManager->getGameFlavor($id);
+        $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
         if($gameFlavor == null) {
             return view('common.error_message', ['message' => 'Uncaught error while getting game flavor with id ' . $id]);
         }
@@ -157,7 +157,8 @@ class GameFlavorController extends Controller
     public function publish($id) {
         try {
             $this->gameFlavorManager->packageFlavor($id);
-            $result = $this->gameFlavorManager->toggleGameFlavorState($id);
+            $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
+            $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
             if(!$result) {
                 return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
             }
@@ -169,7 +170,8 @@ class GameFlavorController extends Controller
     }
 
     public function unPublish($id) {
-        $result = $this->gameFlavorManager->toggleGameFlavorState($id);
+        $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
+        $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
         //$this->gameFlavorManager->clearJnlpDir($id);
         if(!$result) {
             return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
@@ -230,6 +232,18 @@ class GameFlavorController extends Controller
             return back();
         }
         session()->flash('flash_message_success', 'Game flavor cloned.');
+        return redirect()->back();
+    }
+
+    public function submitGameFlavorForApproval($gameFlavorId) {
+        try {
+            $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
+
+        } catch (\Exception $e) {
+            session()->flash('flash_message_failure', $e->getMessage());
+            return back();
+        }
+        session()->flash('flash_message_success', 'Game flavor submitted for approval.');
         return redirect()->back();
     }
 }
