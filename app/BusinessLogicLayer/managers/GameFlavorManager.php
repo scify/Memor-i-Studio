@@ -9,6 +9,7 @@ use App\Models\ResourceFile;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -444,7 +445,12 @@ class GameFlavorManager {
     }
 
     public function getGameFlavorsSubmittedForApproval() {
-        return $this->gameFlavorStorage->gatGameFlavorsBySubmittedState(true);
+        $gameFlavorViewModels = new Collection();
+        $gameFlavors = $this->gameFlavorStorage->gatGameFlavorsBySubmittedState(true);
+        foreach ($gameFlavors as $gameFlavor) {
+            $gameFlavorViewModels->add($this->getGameFlavorViewModel($gameFlavor->id));
+        }
+        return $gameFlavorViewModels;
     }
 
 
