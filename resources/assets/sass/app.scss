@@ -15,6 +15,12 @@
   text-align: right;
 }
 
+.descriptionSoundContainer {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: lightgray;
+}
+
 .padding-15 {
   padding: 15px;
 }
@@ -187,6 +193,7 @@ body {
 .descriptionSoundProbability {
     color: #fff;
     margin-top: 5px;
+  font-size: medium;
 }
 
 /* Small Devices, Tablets */

@@ -27,8 +27,8 @@
     </div>
 </div><!--.modal-->
 <div class="modal fade full-height" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="simpleCardForm" class="memoriForm height100x100" method="POST"
+    <div class="modal-dialog" style="width: 50%">
+        <form id="simpleCardForm" class=" height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
@@ -38,7 +38,6 @@
                 </div>
                 <div class="modal-body">
                     @include('card.forms.create_edit', ['formTitle' => 'Card', 'formNum' => 1])
-                    <hr>
                     @include('equivalence_set.forms.create_edit')
                 </div>
                 <div class="modal-footer">
@@ -53,8 +52,8 @@
     </div>
 </div><!--.modal-->
 <div class="modal scale full-height fade" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="memoriForm height100x100" method="POST"
+    <div class="modal-dialog" style="width: 60%">
+        <form class=" height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
             <div class="modal-content">
@@ -75,7 +74,6 @@
                             @include('card.forms.create_edit', ['formTitle' => 'Equivalent card', 'formNum' => 2])
                         </div><!--.tab-pane-->
                     </div>
-                    <hr>
                     @include('equivalence_set.forms.create_edit')
                 </div>
                 <div class="modal-footer">
@@ -106,7 +104,7 @@
 </div><!--.modal-->
 <div class="modal scale fade" id="editEquivalenceSetModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="memoriForm" method="POST"
+        <form class="" method="POST"
               action="{{route('editEquivalenceSet')}}"
               enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
