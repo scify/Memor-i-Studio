@@ -162,3 +162,7 @@ You can run either  ```php artisan serve``` or set up a symbolic link to ```/pat
 ## License
 
 This project is open-sourced software licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+Memor-i studio has been created by [Science For You (SciFY)](http://www.scify.org), a Greek not-for-profit organization.
+
+The Memor-i studio project has been funded by [Public Benefit Foundation John S. Latsis](http://www.latsis-foundation.org/eng)
