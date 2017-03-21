@@ -12,7 +12,7 @@
             </a>
         </div><!--.col-md-6-->
     </div>
-    <div class="row">
+    <div class="row homePageRow">
         <div class="col-md-12 centeredVertically text-align-center padding-15">
             <div class="card card-video card-player-blue">
 
@@ -25,16 +25,16 @@
                             {{--src="https://www.youtube.com/embed/We2iD21V9WI">--}}
                     {{--</iframe>--}}
                     <ul class="list">
-                        <li>Βρες δωρεάν παιχνίδια Memor-i</li>
-                        <li>Σχεδίασε το δικό σου παιχνίδι Memor-i, χωρίς γνώσεις προγραμματισμού!</li>
-                        <li>Διασκέδαση και μάθηση για τυφλούς αλλά και βλέποντες</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Βρες δωρεάν παιχνίδια Memor-i</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Σχεδίασε το δικό σου παιχνίδι Memor-i, χωρίς γνώσεις προγραμματισμού!</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Διασκέδαση και μάθηση για τυφλούς αλλά και βλέποντες</li>
                     </ul>
                 </div><!--.card-body-->
 
             </div><!--.card-->
         </div><!--.col-md-6-->
     </div>
-    <div class="row">
+    <div class="row homePageRow">
         <div class="col-md-12 centeredVertically text-align-center padding-15">
             <div class="card card-video card-player-blue">
 
@@ -48,9 +48,9 @@
                             {{--src="https://www.youtube.com/embed/We2iD21V9WI">--}}
                     {{--</iframe>--}}
                     <ul class="list">
-                        <li>Find free Memor-i games</li>
-                        <li>Create your own Memor-i game without programming knowledge!</li>
-                        <li>Learn and have fun whether you’re blind or not</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Find free Memor-i games</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Create your own Memor-i game without programming knowledge!</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Learn and have fun whether you’re blind or not</li>
                     </ul>
                 </div><!--.card-body-->
 
