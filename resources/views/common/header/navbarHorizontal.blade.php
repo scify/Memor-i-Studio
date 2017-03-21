@@ -4,8 +4,8 @@
             <a class="navbar-brand" href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Memor-i Studio</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a href="{{url('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i> All Games</a></li>
-            <li><a href="http://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien" target="_blank">About</a></li>
+            <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i> All Games</a></li>
+            <li class="{{ (Route::current()->getName() == 'showAboutPage') ? 'active' : '' }}"><a href="{{route('showAboutPage')}}">About</a></li>
             <li class="{{ (Route::current()->getName() == 'showContactForm') ? 'active' : '' }}"><a href="{{route('showContactForm')}}">Contact</a></li>
         </ul>
         <div class="pull-right">

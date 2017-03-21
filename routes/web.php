@@ -22,7 +22,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@showHomePage')->name('showHomePage');
 Route::get('home', 'HomeController@showHomePage')->name('showHomePage');
-Route::get('showAllGameFlavors', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
+Route::get('about', 'HomeController@showAboutPage')->name('showAboutPage');
+Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
 
 Route::group([ 'middleware' => 'auth' ], function () {
 

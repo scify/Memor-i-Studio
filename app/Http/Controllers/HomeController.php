@@ -19,6 +19,10 @@ class HomeController extends Controller
         return view('contact');
     }
 
+    public function showAboutPage() {
+        return view('about');
+    }
+
     public function sendContactEmail(Request $request) {
         $this->validate($request, [
             'name' => 'required|max:255',
