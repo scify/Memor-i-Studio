@@ -121,7 +121,7 @@ class CardManager {
      */
     public function getCardsForGameFlavor($gameFlavorId) {
         $equivalenceSetManager = new EquivalenceSetManager();
-        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
 
         $cards = array();
         foreach ($equivalenceSets as $equivalenceSet) {
