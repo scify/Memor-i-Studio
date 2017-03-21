@@ -6,7 +6,7 @@
                 <div class="card card-video card-player-blue">
 
                     <div class="card-heading padding-top-20">
-                        <h4>Οδηγίες </h4>
+                        <h4>Οδηγίες</h4>
                     </div>
 
                     <div class="card-body">
@@ -21,7 +21,7 @@
             <div class="col-md-6 centeredVertically text-align-center padding-15">
                 <div class="card card-video card-player-blue">
                     <div class="card-heading padding-top-20">
-                        <h4>Instuctions</h4>
+                        <h4>Instructions</h4>
 
                     </div>
                     <div class="card-body">
