@@ -83,7 +83,7 @@ class GameFlavorManager {
     public function getResourceCategoriesForGameFlavor($gameFlavor) {
         $resourceCategoryManager = new ResourceCategoryManager();
         $resourceManager = new ResourceManager();
-        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->lang_id);
+        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->interface_lang_id);
         foreach ($gameVersionResourceCategories as $category) {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
