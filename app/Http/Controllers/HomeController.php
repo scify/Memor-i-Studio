@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BusinessLogicLayer\managers\MailManager;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -29,8 +30,14 @@ class HomeController extends Controller
             'email' => 'required|email',
             'subject' => 'required'
         ]);
-
-        dd($request->all());
+        $input = $request->all();
+        $mailManager = new MailManager();
+        $mailManager->sendEmailToSpecificEmail('email.contact_us',
+            ['senderEmail' => $input['email'], 'senderMailBody' => $input['subject']],
+            'Memor-i Studio Contact form message', 'paulisaris@gmail.com'
+        );
+        session()->flash('flash_message_success', 'Thank you for contacting us');
+        return redirect()->back();
     }
 
     public function testEmail() {
