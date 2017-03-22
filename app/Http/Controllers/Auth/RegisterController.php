@@ -70,7 +70,7 @@ class RegisterController extends Controller
         ]);
 
         $mailManager = new MailManager();
-        $mailManager->sendEmail('email.registration', [], 'Welcome to Memor-i Studio!');
+        $mailManager->sendEmailToSpecificEmail('email.registration', [], 'Welcome to Memor-i Studio!', $data['email']);
 
         return $newUser;
     }
