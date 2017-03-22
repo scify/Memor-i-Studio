@@ -34,7 +34,7 @@ class HomeController extends Controller
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.contact_us',
             ['senderEmail' => $input['email'], 'senderMailBody' => $input['subject']],
-            'Memor-i Studio Contact form message', 'paulisaris@gmail.com'
+            'Memor-i Studio Contact form message', 'info@scify.org'
         );
         session()->flash('flash_message_success', 'Thank you for contacting us');
         return redirect()->back();
