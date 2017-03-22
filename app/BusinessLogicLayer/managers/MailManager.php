@@ -2,9 +2,9 @@
 
 namespace App\BusinessLogicLayer\managers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
 
 class MailManager
 {
@@ -21,7 +21,7 @@ class MailManager
 
     public function sendEmail($viewName, $parameters, $subject) {
         Mail::send($viewName, $parameters, function($message) use ($subject) {
-            $message->to(\Auth::user()->email)->subject($subject);
+            $message->to(Auth::user()->email)->subject($subject);
         });
     }
 
