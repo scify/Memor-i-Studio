@@ -25,6 +25,8 @@ Route::get('home', 'HomeController@showHomePage')->name('showHomePage');
 Route::get('about', 'HomeController@showAboutPage')->name('showAboutPage');
 Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
 
+Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
+
 Route::group([ 'middleware' => 'auth' ], function () {
 
     //Game Version routes

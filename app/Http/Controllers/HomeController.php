@@ -32,4 +32,8 @@ class HomeController extends Controller
 
         dd($request->all());
     }
+
+    public function testEmail() {
+        return view('email.registration');
+    }
 }
