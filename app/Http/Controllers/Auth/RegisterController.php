@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\BusinessLogicLayer\managers\MailManager;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -62,10 +63,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $newUser = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $mailManager = new MailManager();
+        $mailManager->sendEmail('email.registration', [], 'Welcome to Memor-i Studio!');
+
+        return $newUser;
     }
 }
