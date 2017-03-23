@@ -187,6 +187,10 @@ class GameFlavorManager {
         $gameFlavor->description = $gameFlavorFields['description'];
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
         $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
+        if(isset($gameFlavorFields['allow_clone']))
+            $gameFlavor->allow_clone = true;
+        else
+            $gameFlavor->allow_clone = false;
 
         return $gameFlavor;
     }

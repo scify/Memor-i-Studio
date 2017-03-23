@@ -126,7 +126,6 @@ class GameFlavorController extends Controller
         ]);
 
         $input = $request->all();
-
         $newGameFlavor = $this->gameFlavorManager->createGameFlavor($id, $input);
 
         if($newGameFlavor != null) {

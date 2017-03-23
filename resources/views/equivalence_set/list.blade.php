@@ -17,12 +17,12 @@
             </div>
         @else
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <div class="alert alert-info noFloatAlert">
                         Click <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">here</a> to proceed to game sounds (optional)
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     @if($gameFlavor->submitted_for_approval)
                         <a href="#" class="disabled btn btn-success btn-ripple padding-15">
                             Submitted for approval
@@ -30,17 +30,9 @@
                     @else
                         <form method="GET" action="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <div class="col-md-6">
-                                <label style="text-align: right">
-                                    <input type="checkbox" name="terms" required>
-                                    I accept the <a href="http://www.scify.gr/site/en/">terms & conditions</a>
-                                </label>
-                            </div>
-                            <div class="col-md-6">
                             <button type="submit" class="btn btn-success btn-ripple padding-15">
-                                Submit game for approval
+                                Submit game
                             </button>
-                            </div>
                         </form>
                     @endif
                 </div><!--.col-md-9-->

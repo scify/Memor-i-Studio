@@ -80,6 +80,18 @@
                                 </div>
                             </div><!--.col-md-9-->
                         </div>
+                        <div class="row">
+                            <label>
+                                <input type="checkbox" name="allow_clone" {{$gameFlavor['allow_clone'] == true ? 'checked' : ''}}>
+                                I allow this game to be clonable</a>
+                            </label>
+                        </div>
+                        <div class="row margin-top-10">
+                            <label>
+                                <input type="checkbox" name="terms" required>
+                                I accept the <a href="http://www.scify.gr/site/en/">terms & conditions</a>
+                            </label>
+                        </div>
                         <div class="submitBtnContainer">
                             {{--<button type="button" class="btn btn-flat-primary"><a class="cancelTourCreateBtn" href="{{ URL::route('home') }}">Cancel</a> </button>--}}
                             <button type="submit" id="gameFlavorSubmitBtn" class="btn btn-primary btn-ripple">

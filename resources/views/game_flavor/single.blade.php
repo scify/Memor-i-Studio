@@ -7,7 +7,7 @@
             @else
                 <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
-            @if($user != null)
+            @if($user != null && $gameFlavor->allow_clone)
                 <a class="cloneBtn btn btn-green btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i class="fa fa-files-o" aria-hidden="true"></i> Clone</a>
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
