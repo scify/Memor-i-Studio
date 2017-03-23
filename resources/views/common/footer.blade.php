@@ -11,6 +11,11 @@
                 $(".alert-dismissable").alert('close');
             });
         }, 3000);
+
+        $("input[type='checkbox'], input[type='radio']").iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
     });
 </script>
 

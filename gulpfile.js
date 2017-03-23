@@ -23,7 +23,7 @@ elixir(function(mix) {
         // 'node_modules/bxslider/dist/jquery.bxslider.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/datatables/media/css/jquery.dataTables.min.css',
-        'node_modules/icheck/skins/square/blue.css'
+        'node_modules/icheck/skins/flat/_all.css'
     ], 'public/css/vendors.css', './');
 
     var fontDirectories = {
@@ -34,6 +34,16 @@ elixir(function(mix) {
 
     for (var directory in fontDirectories) {
         mix.copy(directory, fontDirectories[directory]);
+    }
+
+    var files = {
+        'node_modules/icheck/skins/flat/*.png': 'public/build/css',
+        'node_modules/chosen-js/*.png': 'public/build/css',
+        'resources/assets/pleasure-admin-panel/img/*.png' : 'public/build/css'
+    };
+
+    for (var file in files) {
+        mix.copy(file, files[file]);
     }
 
     mix.scripts([
@@ -57,7 +67,7 @@ elixir(function(mix) {
         'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
         'node_modules/sweetalert/dist/sweetalert.min.js',
         'node_modules/datatables/media/js/jquery.dataTables.min.js',
-        // 'node_modules/icheck/icheck.min.js',
+        'node_modules/icheck/icheck.min.js',
         'resources/assets/pleasure-admin-panel/js/sliders.js',
         'resources/assets/pleasure-admin-panel/js/layout.js',
         'resources/assets/pleasure-admin-panel/js/pleasure.js'
