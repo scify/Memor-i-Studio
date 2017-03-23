@@ -457,5 +457,11 @@ class GameFlavorManager {
         return $gameFlavorViewModels;
     }
 
+    public function sendEmailForGameSubmission($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $mailManager = new MailManager();
+        $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission', ['gameFlavor' => $gameFlavor], 'New Game submission', 'paulisaris@gmail.com');
+    }
+
 
 }

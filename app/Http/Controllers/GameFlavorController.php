@@ -237,6 +237,7 @@ class GameFlavorController extends Controller
     public function submitGameFlavorForApproval($gameFlavorId) {
         try {
             $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
+            $this->gameFlavorManager->sendEmailForGameSubmission($gameFlavorId);
 
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
