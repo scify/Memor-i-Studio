@@ -243,7 +243,7 @@ class GameFlavorController extends Controller
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
-        session()->flash('flash_message_success', 'Game flavor submitted for approval.');
+        session()->flash('flash_message_success', 'Game submitted for approval.');
         return redirect()->back();
     }
 
