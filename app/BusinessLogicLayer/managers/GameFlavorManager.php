@@ -463,5 +463,11 @@ class GameFlavorManager {
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission', ['gameFlavor' => $gameFlavor], 'New Game submission', 'paulisaris@gmail.com');
     }
 
+    public function sendCongratulationsEmailToGameCreator($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $mailManager = new MailManager();
+        $mailManager->sendEmailToSpecificEmail('email.game_flavor_approved', ['gameFlavor' => $gameFlavor], 'Game approved!', $gameFlavor->creator->email);
+    }
+
 
 }

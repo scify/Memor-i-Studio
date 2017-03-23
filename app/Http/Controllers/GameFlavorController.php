@@ -158,6 +158,7 @@ class GameFlavorController extends Controller
             $this->gameFlavorManager->packageFlavor($id);
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
+            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($id);
             if(!$result) {
                 return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
             }
