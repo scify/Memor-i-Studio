@@ -1,5 +1,5 @@
 <div class="modal fade full-height" id="cardOptions" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 42%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Select Card association</h4>
@@ -9,13 +9,17 @@
                     <div class="col-md-6 cardAssociationBtnContainer">
                         <button class="btn btn-primary btn-ripple cardAssociationBtn" data-toggle="modal"
                                 data-target="#cardSimpleModal" data-dismiss="modal">
-                            Simple
+                            Identical cards
+                            <br>
+                            <p style="font-size:x-large">e.g. Cat - Cat</p>
                         </button>
                     </div>
                     <div class="col-md-6 cardAssociationBtnContainer">
                         <button class="btn btn-primary btn-ripple cardAssociationBtn" data-toggle="modal"
                                 data-target="#cardAdvancedModal" data-dismiss="modal">
-                            Advanced
+                            Associated cards
+                            <br>
+                            <p style="font-size:x-large">e.g. Paris - Cat</p>
                         </button>
                     </div>
                 </div>
