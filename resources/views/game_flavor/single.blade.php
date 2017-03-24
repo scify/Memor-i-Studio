@@ -21,17 +21,23 @@
 
                 <div class="layered-content bg-green">
                     <div class="overflow-content">
-                        <ul class="borderless">
-
-                            <li><a href="{{url('gameFlavor/edit', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
-                            <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
-                            @if($user->isAdmin())
-                                @if(!$gameFlavor->published)
-                                    <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
-                                @else
-                                    <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
+                        <ul class="borderless row">
+                            <div class="col-md-6">
+                                <li><a href="{{url('gameFlavor/edit', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                                <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
+                                @if($user->isAdmin())
+                                    @if(!$gameFlavor->published)
+                                        <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
+                                    @else
+                                        <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
+                                    @endif
                                 @endif
-                            @endif
+                            </div>
+                            <div class="col-md-6">
+                                @if($user->isAdmin())
+                                    <li><a href="{{url('gameFlavor/build', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i> Build</a></li>
+                                @endif
+                            </div>
                         </ul>
                     </div><!--.overflow-content-->
                     <div class="clickable-close-button">

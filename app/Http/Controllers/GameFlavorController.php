@@ -155,7 +155,6 @@ class GameFlavorController extends Controller
 
     public function publish($id) {
         try {
-            $this->gameFlavorManager->packageFlavor($id);
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($id);
@@ -238,8 +237,8 @@ class GameFlavorController extends Controller
     public function submitGameFlavorForApproval($gameFlavorId) {
         try {
             $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
-            $this->gameFlavorManager->sendEmailForGameSubmission($gameFlavorId);
-
+            $this->gameFlavorManager->sendEmailForGameSubmissionToAdmin($gameFlavorId);
+            $this->gameFlavorManager->sendEmailForGameSubmissionToCreator($gameFlavorId);
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
@@ -252,5 +251,15 @@ class GameFlavorController extends Controller
         $gameFlavors = $this->gameFlavorManager->getGameFlavorsSubmittedForApproval();
 
         return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
+    }
+
+    public function buildExecutables($gameFlavorId) {
+        try {
+            $this->gameFlavorManager->packageFlavor($gameFlavorId);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
+        }
+        session()->flash('flash_message_success', 'Game flavor executables built.');
+        return redirect()->back();
     }
 }
