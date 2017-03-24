@@ -1,5 +1,5 @@
 <div class="modal fade full-height" id="cardOptions" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="width: 42%">
+    <div class="modal-dialog" style="width: 50%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Select Card association</h4>
@@ -19,7 +19,7 @@
                                 data-target="#cardAdvancedModal" data-dismiss="modal">
                             Associated cards
                             <br>
-                            <p style="font-size:x-large">e.g. Paris - Cat</p>
+                            <p style="font-size:x-large">e.g. Paris - France</p>
                         </button>
                     </div>
                 </div>
