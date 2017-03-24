@@ -11,8 +11,8 @@
                 <a class="dropdown-toggle" data-toggle="dropdown">Help
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="https://docs.google.com/document/d/1irOmObgn9ZwEqmwn3uXNvQTJmgt1YiMqFx5Tzp-l_Oo/edit#">English</a></li>
-                    <li><a href="https://docs.google.com/document/d/1whAITueSBuaX9Gd0VY85X0cv5CWQ6CwkjbZULoBxugs/edit#">Greek</a></li>
+                    <li><a target="_blank" href="https://docs.google.com/document/d/1irOmObgn9ZwEqmwn3uXNvQTJmgt1YiMqFx5Tzp-l_Oo/edit#">English</a></li>
+                    <li><a target="_blank" href="https://docs.google.com/document/d/1whAITueSBuaX9Gd0VY85X0cv5CWQ6CwkjbZULoBxugs/edit#">Greek</a></li>
                 </ul>
             </li>
         </ul>
