@@ -460,13 +460,13 @@ class GameFlavorManager {
     public function sendEmailForGameSubmissionToAdmin($gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $mailManager = new MailManager();
-        $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission', ['gameFlavor' => $gameFlavor], 'New Game submission: "' . $gameFlavor->name . '"', 'paulisaris@gmail.com');
+        $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission_admin', ['gameFlavor' => $gameFlavor], 'New Game submission: "' . $gameFlavor->name . '"', 'paulisaris@gmail.com');
     }
 
     public function sendEmailForGameSubmissionToCreator($gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $mailManager = new MailManager();
-        $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission', ['gameFlavor' => $gameFlavor], 'Thanks for submitting your game: "' . $gameFlavor->name . '"', $gameFlavor->creator->email);
+        $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission_creator', ['gameFlavor' => $gameFlavor], 'Thanks for submitting your game: "' . $gameFlavor->name . '"', $gameFlavor->creator->email);
     }
 
     public function sendCongratulationsEmailToGameCreator($gameFlavorId) {
