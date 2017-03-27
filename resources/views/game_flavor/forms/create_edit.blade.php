@@ -90,6 +90,14 @@
                         </div>
                         <div class="row margin-top-10">
                             <div class="icheckbox">
+                                <label>
+                                    <input type="checkbox" name="files_usage" required>
+                                    I confirm that I have the right to use the image and audio files I uploaded
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row margin-top-10">
+                            <div class="icheckbox">
                             <label>
                                 <input type="checkbox" name="terms" required>
                                 I accept the <a href="http://www.scify.gr/site/en/">terms & conditions</a>
