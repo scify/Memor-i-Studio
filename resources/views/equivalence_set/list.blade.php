@@ -25,7 +25,7 @@
                 <div class="col-md-3">
                     @if($gameFlavor->submitted_for_approval)
                         <a href="#" class="disabled btn btn-success btn-ripple padding-15">
-                            Submitted for approval
+                            Submitted
                         </a>
                     @else
                         <form method="GET" action="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}">
