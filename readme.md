@@ -168,5 +168,5 @@ Memor-i studio has been created by [Science For You (SciFY)](http://www.scify.or
 The Memor-i studio project has been funded by [Public Benefit Foundation John S. Latsis](http://www.latsis-foundation.org/eng)
 <br>
 <p align="center">
-<img src="https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/latsis_logo.jpg" width="300">
+<img src="https://raw.githubusercontent.com/scify/memori-online-games-repository/master/public/assets/img/latsis_logo.jpg" width="300">
 </p>
