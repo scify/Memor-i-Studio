@@ -107,14 +107,14 @@
     </div><!--.modal-dialog-->
 </div><!--.modal-->
 <div class="modal scale fade" id="editEquivalenceSetModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 65%">
         <form class="" method="POST"
               action="{{route('editEquivalenceSet')}}"
               enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit equivalence set</h4>
+                    <h4 class="modal-title">Edit card set</h4>
                 </div>
                 <div class="modal-body">
                     @include('equivalence_set.forms.create_edit')
