@@ -3,8 +3,8 @@
     <div class="row example-row">
         <div class="col-md-6">
             <div class="form-group">
-                What informative sound will the player listen when they finds the pair
-                <br>(after the success "clapping" sound)?
+                What informative sound will the player listen when they find the pair
+                <br>(after the default success "clapping" sound)?
                 <input type="file" name="equivalence_set_description_sound" class="margin-top-5">
                 <p class="help-block">Maximum size: 3Mb.</p>
             </div><!--.form-group-->
