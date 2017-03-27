@@ -166,3 +166,7 @@ This project is open-sourced software licensed under the [Apache License, Versio
 Memor-i studio has been created by [Science For You (SciFY)](http://www.scify.org), a Greek not-for-profit organization.
 
 The Memor-i studio project has been funded by [Public Benefit Foundation John S. Latsis](http://www.latsis-foundation.org/eng)
+<br>
+<p align="center">
+<img src="https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/latsis_logo.jpg" width="300">
+</p>
