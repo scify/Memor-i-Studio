@@ -82,26 +82,26 @@
                         </div>
                         <div class="row">
                             <div class="icheckbox">
-                            <label>
-                                <input type="checkbox" name="allow_clone" {{$gameFlavor['allow_clone'] == true ? 'checked' : ''}}>
-                                I allow this game to be clonable</a>
-                            </label>
-                            </div>
-                        </div>
-                        <div class="row margin-top-10">
-                            <div class="icheckbox">
                                 <label>
                                     <input type="checkbox" name="files_usage" required>
-                                    I confirm that I have the right to use the image and audio files I uploaded
+                                    I confirm that I have the rights to use the files I uploaded
                                 </label>
                             </div>
                         </div>
                         <div class="row margin-top-10">
                             <div class="icheckbox">
-                            <label>
-                                <input type="checkbox" name="terms" required>
-                                I accept the <a href="http://www.scify.gr/site/en/">terms & conditions</a>
-                            </label>
+                                <label>
+                                    <input type="checkbox" name="terms" required>
+                                    I accept the terms & conditions (<a href="https://docs.google.com/document/d/1aWYOtHhs-0HlbwJU0Oa6ODskbDIgTDuupeLMrvbV210/edit#">English</a>, <a href="https://docs.google.com/document/d/1JVA3pMhdB2N3ScxzjKhlxjWnmBacrtamp3zGIkiLz5A/edit#heading=h.p1izbjl48qks">Greek</a>)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row margin-top-10">
+                            <div class="icheckbox">
+                                <label>
+                                    <input type="checkbox" name="allow_clone" {{$gameFlavor['allow_clone'] == true ? 'checked' : ''}}>
+                                    I allow others to use (clone) this game for building new games
+                                </label>
                             </div>
                         </div>
                         <div class="submitBtnContainer">
