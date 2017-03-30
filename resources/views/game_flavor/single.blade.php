@@ -63,6 +63,7 @@
         </h3>
         <div class="description">{{$gameFlavor->description}}
             <small><h6>Created by: {{$gameFlavor->creator->name}}</h6></small>
+            <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">Copyright link</a></h6>
         </div>
 
     </div><!--.card-body-->
