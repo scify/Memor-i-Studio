@@ -63,7 +63,9 @@
         </h3>
         <div class="description">{{$gameFlavor->description}}
             <small><h6>Created by: {{$gameFlavor->creator->name}}</h6></small>
-            <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">Copyright link</a></h6>
+            @if($gameFlavor->copyright_link != null)
+                <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">Copyright link</a></h6>
+            @endif
         </div>
 
     </div><!--.card-body-->

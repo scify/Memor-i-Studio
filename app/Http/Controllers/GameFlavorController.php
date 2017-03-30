@@ -70,7 +70,10 @@ class GameFlavorController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png'
+            'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
+            'copyright_link' => 'url',
+            'terms' => 'required',
+            'files_usage' => 'required'
         ]);
 
         $input = $request->all();
