@@ -22,6 +22,7 @@
                         <span class="fileinput-new">Select image</span>
                         <span class="fileinput-exists">Change</span>
                         <input type="file" name="card[{{$formNum}}][image]"></span>
+                        <small><p class="help-block">Suggested dimensions: 400 pixels (width), 600 pixels (height).</p></small>
                     </div>
                 </div>
             </div><!--.col-md-9-->
@@ -37,6 +38,7 @@
                         <span class="fileinput-new">Select image</span>
                         <span class="fileinput-exists">Change</span>
                         <input type="file" name="card[{{$formNum}}][negative_image]"></span>
+                        <small><p class="help-block">Suggested dimensions: 400 pixels (width), 600 pixels (height).</p></small>
                     </div>
                 </div>
             </div><!--.col-md-9-->
@@ -49,7 +51,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <input type="file" name="card[{{$formNum}}][sound]">
-                    <p class="help-block">Maximum size: 3Mb.</p>
+                    <small><p class="help-block">Maximum size: 3Mb.</p></small>
                 </div><!--.form-group-->
             </div><!--.col-md-9-->
         </div><!--.row-->
