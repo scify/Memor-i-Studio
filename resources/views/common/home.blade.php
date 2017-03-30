@@ -62,6 +62,8 @@
         </div><!--.col-md-6-->
     </div>
     <div class="col-md-3 margin-bottom-20">
-        <img class="col-md-5"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
+        <a href="http://www.scify.gr/site/en/">
+            <img class="col-md-5"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
+        </a>
     </div>
 @endsection

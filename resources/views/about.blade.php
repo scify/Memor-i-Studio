@@ -63,10 +63,14 @@
                     For more information, click <a href="http://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>
                     <div class="row margin-top-30">
                         <div class="col-md-6 text-align-center">
-                            <img class="col-md-5 centeredVertically"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
+                            <a href="http://www.scify.gr/site/en/">
+                                <img class="col-md-5 centeredVertically"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
+                            </a>
                         </div>
                         <div class="col-md-6 text-align-center">
-                            <img class="col-md-6 margin-top-20 centeredVertically" src="{{asset("/assets/img/latsis_logo.jpg")}}" alt="Latsis Logo Image">
+                            <a href="http://www.latsis-foundation.org/eng">
+                                <img class="col-md-6 margin-top-20 centeredVertically" src="{{asset("/assets/img/latsis_logo.jpg")}}" alt="Latsis Logo Image">
+                            </a>
                         </div>
                     </div>
                 </div>
