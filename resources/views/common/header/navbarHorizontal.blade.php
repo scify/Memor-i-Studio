@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Memor-i Studio</a>
+            <a class="navbar-brand" href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Memor-i Studio  <span>(beta)</span></a>
         </div>
         <ul class="nav navbar-nav">
             <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i> All Games</a></li>

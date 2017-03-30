@@ -61,9 +61,13 @@
                     The Memor-i studio project has been funded by <a href="http://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a>
 
                     For more information, click <a href="http://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>
-
-                    <div style="text-align: center">
-                        <img class="col-md-3 centeredVertically" src="{{asset("/assets/img/latsis_logo.jpg")}}" alt="Latsis Logo Image">
+                    <div class="row margin-top-30">
+                        <div class="col-md-6 text-align-center">
+                            <img class="col-md-5 centeredVertically"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
+                        </div>
+                        <div class="col-md-6 text-align-center">
+                            <img class="col-md-6 margin-top-20 centeredVertically" src="{{asset("/assets/img/latsis_logo.jpg")}}" alt="Latsis Logo Image">
+                        </div>
                     </div>
                 </div>
             </div>
