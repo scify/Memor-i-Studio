@@ -20,7 +20,8 @@ class GameFlavor extends Model
      * @var array
      */
     protected $fillable = ['name', 'lang_id', 'interface_lang_id', 'description',
-        'creator_id', 'cover_img_id', 'game_version_id', 'submitted_for_approval', 'allow_clone'];
+        'creator_id', 'cover_img_id', 'game_version_id', 'submitted_for_approval',
+        'allow_clone', 'copyright_link'];
 
     /**
      * Get the Equivalence Sets for the card.
