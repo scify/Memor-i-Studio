@@ -20,7 +20,7 @@
                                         <input name="name" type="text"
                                                class="maxlength maxlength-position form-control" maxlength="50"
                                                placeholder="Game title"
-                                               value="{{ old('name') != '' ? old('name') : $gameFlavor['name']}}">
+                                               value="{{ old('name') != '' ? old('name') : $gameFlavor['name']}}" required>
                                     </div>
                                 </div>
                             </div>
@@ -81,6 +81,19 @@
                             </div><!--.col-md-9-->
                         </div>
                         <div class="row">
+                            <div class="form-group">
+                                <div class="inputer">
+                                    Copyright link
+                                    <div class="input-wrapper">
+                                        <input name="copyright_link" type="url"
+                                               class="form-control"
+                                               placeholder="Link to the copyright information about this game"
+                                               value="{{ old('copyright_link') != '' ? old('copyright_link') : $gameFlavor['copyright_link']}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-10">
                             <div class="icheckbox">
                                 <label>
                                     <input type="checkbox" name="files_usage" required>
