@@ -12,6 +12,6 @@
         name: {{$gameFlavor->creator->name}}
         <br>
         <br>
-        Click <a href="http://staging-memori.scify.org/games"> here</a> to check and publish this game flavor.
+        Click <a href="http://memoristudio.scify.org/games"> here</a> to check and publish this game flavor.
     </p>
 @stop

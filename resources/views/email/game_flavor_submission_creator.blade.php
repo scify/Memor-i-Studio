@@ -7,8 +7,8 @@
         What follows next:
         <br>
         An admin will prepare your game for downloading. Once the game is ready, you will be notified vie e-mail and
-        be able to download it from <a href="http://staging-memori.scify.org/games"> here.</a>
+        be able to download it from <a href="http://memoristudio.scify.org/games"> here.</a>
         <br>
-        If you have any further inquiries, please <a href="http://staging-memori.scify.org/contact"> contact us.</a>
+        If you have any further inquiries, please <a href="http://memoristudio.scify.org/contact"> contact us.</a>
     </p>
 @stop
