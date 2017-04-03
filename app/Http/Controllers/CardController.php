@@ -30,9 +30,9 @@ class CardController extends Controller
     public function edit(Request $request) {
         //dd($request->all());
         $this->validate($request, [
-            'card.*.image' => 'required|file|image|max:2000|mimes:jpeg,jpg,png,gif',
+            'card.*.image' => 'file|image|max:2000|mimes:jpeg,jpg,png,gif',
             'card.*.negative_image' => 'file|image|max:2000|mimes:jpeg,jpg,png,gif',
-            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
+            'card.*.sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
         ]);
 
         $input = $request->all();
