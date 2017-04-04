@@ -80,10 +80,10 @@ class GameFlavorManager {
 
     }
 
-    public function getResourceCategoriesForGameFlavor($gameFlavor) {
+    public function getResourceCategoriesForGameFlavor($gameFlavor, $langId) {
         $resourceCategoryManager = new ResourceCategoryManager();
         $resourceManager = new ResourceManager();
-        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $gameFlavor->interface_lang_id);
+        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $langId);
         foreach ($gameVersionResourceCategories as $category) {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
@@ -186,7 +186,9 @@ class GameFlavorManager {
         $gameFlavor->name = $gameFlavorFields['name'];
         $gameFlavor->description = $gameFlavorFields['description'];
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
-        $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
+//        $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
+        $gameVersionLanguageManager = new GameVersionLanguageManager();
+        $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->id;
         $gameFlavor->copyright_link = $gameFlavorFields['copyright_link'];
         if(isset($gameFlavorFields['allow_clone']))
             $gameFlavor->allow_clone = true;
@@ -415,7 +417,7 @@ class GameFlavorManager {
     }
 
     private function cloneDataPackResourceFileRows(GameFlavor $gameFlavor, GameFlavor $newGameFlavor) {
-        $resourceCategoriesForGameFlavor = $this->getResourceCategoriesForGameFlavor($gameFlavor);
+        $resourceCategoriesForGameFlavor = $this->getResourceCategoriesForGameFlavor($gameFlavor, $gameFlavor->interface_lang_id);
         $resourceManager = new ResourceManager();
         foreach ($resourceCategoriesForGameFlavor as $category) {
             $currCatResources = $category->resources;

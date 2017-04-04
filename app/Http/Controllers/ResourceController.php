@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
 use Illuminate\Http\Request;
@@ -45,16 +46,31 @@ class ResourceController extends Controller
     /**
      * Get view containing the resources for a given game flavor
      *
+     * @param Request $request
      * @param $gameFlavorId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getResourcesForGameFlavor($gameFlavorId) {
+    public function getResourcesForGameFlavor(Request $request, $gameFlavorId) {
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
+        $input = $request->all();
 
-        $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor);
+        $interfaceLangId = $gameFlavor->interface_lang_id;
 
-        return view('game_resource_category.list', ['resourceCategories' => $gameFlavorResources, 'interface_lang_id' =>$gameFlavor->interface_lang_id, 'gameFlavorId' => $gameFlavorId]);
+        if(isset($input['interface_lang_id'])) {
+            $interfaceLangId = $input['interface_lang_id'];
+
+        }
+
+        $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
+        $gameVersionLanguageManager = new GameVersionLanguageManager();
+        $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
+        return view('game_resource_category.list',
+            ['resourceCategories' => $gameFlavorResources,
+                'interface_lang_id' => $interfaceLangId,
+                'gameFlavor' => $gameFlavor,
+                'gameFlavorId' => $gameFlavorId,
+                'interfaceLanguages' => $interfaceLanguages]);
     }
 
     /**

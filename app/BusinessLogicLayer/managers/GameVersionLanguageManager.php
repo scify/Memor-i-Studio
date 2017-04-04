@@ -30,6 +30,10 @@ class GameVersionLanguageManager {
         return $languages;
     }
 
+    public function getFirstLanguageAvailableForGameVersion($gameVersionId) {
+        return $this->gameVersionLanguageStorage->getFirstLanguageAvailableForGameVersion($gameVersionId);
+    }
+
     /**
      * Checks if a given game version has a specified language
      *

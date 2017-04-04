@@ -24,4 +24,8 @@ class GameVersionLanguageStorage {
     public function storeGameVersionLanguage($gameVersionLanguage) {
         $gameVersionLanguage->save();
     }
+
+    public function getFirstLanguageAvailableForGameVersion($gameVersionId) {
+        return GameVersionLanguage::where(['game_version_id' => $gameVersionId])->first();
+    }
 }
