@@ -43,7 +43,7 @@
     </div>
     <div class="">
         <div class="col-md-6 padding-left-30">
-            <form id="gameFlavor-handling-form" class="memoriForm" method="POST"
+            <form id="gameFlavor-handling-form" class="memoriForm" method="GET"
                   action="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}"
                   enctype="multipart/form-data">
                 <input type="hidden" name="game_version_id" value="{{$gameFlavor->game_version_id}}">
