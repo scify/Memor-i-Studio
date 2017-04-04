@@ -188,7 +188,7 @@ class GameFlavorManager {
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
 //        $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
         $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->id;
+        $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->lang_id;
         $gameFlavor->copyright_link = $gameFlavorFields['copyright_link'];
         if(isset($gameFlavorFields['allow_clone']))
             $gameFlavor->allow_clone = true;
