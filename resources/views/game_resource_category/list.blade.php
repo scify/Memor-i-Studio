@@ -46,7 +46,6 @@
             <form id="gameFlavor-handling-form" class="memoriForm" method="GET"
                   action="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}"
                   enctype="multipart/form-data">
-                <input type="hidden" name="game_version_id" value="{{$gameFlavor->game_version_id}}">
                 <div class="panelContainer">
                     <div class="panel">
                         <div class="panel-heading">
