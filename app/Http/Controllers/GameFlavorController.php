@@ -267,7 +267,7 @@ class GameFlavorController extends Controller
             $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
-            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
+            //$this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
