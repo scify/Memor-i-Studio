@@ -68,6 +68,8 @@ Route::group([ 'middleware' => 'auth' ], function () {
     //Card routes
     Route::post('card/edit', 'CardController@edit')->name('editCard');
 
+    Route::get('gameFlavors/userReports', 'GameFlavorReportController@showAllGameFlavorReports')->name('showAllGameFlavorReports');
+
 });
 Route::get('contact', 'HomeController@showContactForm')->name('showContactForm');
 Route::post('contact', 'HomeController@sendContactEmail')->name('sendContactEmail');

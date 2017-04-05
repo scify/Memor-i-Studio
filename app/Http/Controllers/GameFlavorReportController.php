@@ -23,7 +23,8 @@ class GameFlavorReportController extends Controller
      */
     public function showAllGameFlavorReports()
     {
-        //
+        $gameFlavorReports = $this->gameFlavorReportManager->getAllGameFlavorReports();
+        return view('game_flavor_report.list_all', ['gameFlavorReports'=>$gameFlavorReports]);
     }
 
     /**

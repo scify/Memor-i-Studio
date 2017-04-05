@@ -19,6 +19,11 @@
             <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'open' : '' }}">
                 <a href="{{ route('showAllGameFlavors') }}"><i class="fa fa-list" aria-hidden="true"></i> All Games </a>
             </li>
+            @if(\Illuminate\Support\Facades\Auth::user()->isAdmin())
+                <li class="{{ (Route::current()->getName() == 'showAllGameFlavorReports') ? 'open' : '' }}">
+                    <a href="{{ route('showAllGameFlavorReports') }}"><i class="fa fa-exclamation" aria-hidden="true"></i> User Reports </a>
+                </li>
+            @endif
         </ul>
     </div>
     <!--.menu-layer-->
