@@ -478,5 +478,11 @@ class GameFlavorManager {
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_approved', ['gameFlavor' => $gameFlavor], 'Game "' . $gameFlavor->name . '" approved!', $gameFlavor->creator->email);
     }
 
+    public function markGameFlavorAsBuilt($gameFlavorId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor->is_built = true;
+        $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+    }
+
 
 }
