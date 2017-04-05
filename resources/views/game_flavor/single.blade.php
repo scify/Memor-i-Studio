@@ -10,6 +10,17 @@
             @if($user != null && $gameFlavor->allow_clone)
                 <a class="cloneBtn btn btn-green btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i class="fa fa-files-o" aria-hidden="true"></i> Clone</a>
             @endif
+            @if($gameFlavor->accessed_by_user && $gameFlavor->is_built)
+                @if(!$gameFlavor->published)
+                    <a class="cloneBtn btn btn-green btn-ripple" href="{{route('publishGameFlavor', $gameFlavor->id)}}">
+                        <i class="fa fa-globe" aria-hidden="true"></i> Make public
+                    </a>
+                @else
+                    <a class="cloneBtn btn btn-danger btn-ripple" href="{{route('unPublishGameFlavor', $gameFlavor->id)}}">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i> Make private
+                    </a>
+                @endif
+            @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>
         @if($user != null)
@@ -31,6 +42,11 @@
                                     @else
                                         <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
                                     @endif
+                                @endif
+                                @if(!$gameFlavor->published && $gameFlavor->is_built)
+                                    <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-globe" aria-hidden="true"></i> Make public</a></li>
+                                @else
+                                    <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-eye-slash" aria-hidden="true"></i> Make private</a></li>
                                 @endif
                             </div>
                             <div class="col-md-6">
@@ -54,9 +70,9 @@
             @if($user != null)
                 @if($user->isAdmin())
                     @if(!$gameFlavor->published)
-                        <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: orangered" title="This game is not published yet."></i>
+                        <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: orangered" title="This game is not publicly available."></i>
                     @else
-                        <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: forestgreen" title="Published game."></i>
+                        <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: forestgreen" title="Publicly available game."></i>
                     @endif
                 @endif
             @endif
@@ -71,7 +87,7 @@
     </div><!--.card-body-->
 
     <div class="card-footer">
-        @if($gameFlavor->published)
+        @if($gameFlavor->published || (!$gameFlavor->published && $gameFlavor->is_built))
             <h6 class="margin-bottom-1">Download the game:</h6>
             <ul class="justified-list">
                 <li><a id = "tooltipWindows-{{$gameFlavor->id}}" title = "Run the installer .exe file to install the game" href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}"><button class="btn btn-xs btn-flat" style="color: #337ab7"><i class="fa fa-windows" aria-hidden="true"></i> Windows</button></a></li>

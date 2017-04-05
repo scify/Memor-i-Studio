@@ -161,7 +161,7 @@ class GameFlavorController extends Controller
         try {
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
-            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($id);
+
             if(!$result) {
                 return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
             }
@@ -260,6 +260,14 @@ class GameFlavorController extends Controller
     public function buildExecutables($gameFlavorId) {
         try {
             $this->gameFlavorManager->packageFlavor($gameFlavorId);
+            $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
+            //try to get setup files for windows and linux executables.
+            //if an executable is not found, then an exception will be thrown
+            //and the congratulations email will not be sent to the creator.
+            $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
+            $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
+            $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
+            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
