@@ -14,11 +14,12 @@ class GameFlavorReportManager {
     }
 
     public function createGameFlavorReport(array $inputFields) {
-        $inputFields['user_id'] = Auth::user()->id;
+
         $gameFlavorReport = new GameFlavorReport;
+        $gameFlavorReport->user_id = Auth::user()->id;
         $gameFlavorReport = $this->assignValuesToGameFlavorReport($gameFlavorReport, $inputFields);
-        $gameFlavorReport->game_version_id = $inputFields['game_version_id'];
-        $gameFlavorReport->user_id = $inputFields['creator_id'];
+        $gameFlavorReport->game_flavor_id = $inputFields['game_flavor_id'];
+
         $this->gameFlavorReportStorage->storeGameFlavorReport($gameFlavorReport);
     }
 

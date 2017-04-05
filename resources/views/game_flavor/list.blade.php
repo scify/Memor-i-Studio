@@ -15,11 +15,14 @@
         </div>
 
     </div>
+    @include('game_flavor_report.modals')
 @endsection
 @section('additionalFooter')
     <script>
         $(function() {
             $("[id^=tooltipWindows-]").tooltip();
+            var gameFlavorController = new GameFlavorsController();
+            gameFlavorController.init();
         });
     </script>
 @endsection

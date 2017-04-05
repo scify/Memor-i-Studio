@@ -22,7 +22,7 @@
                 @endif
             @else
                 @if($user != null)
-                    <a class="cloneBtn btn btn-danger btn-ripple" style="top:75px;" href="javascript: void(0)">
+                    <a data-gameFlavorId="{{$gameFlavor->id}}" class="reportGameFlavorBtn cloneBtn btn btn-danger btn-ripple" style="top:75px;" href="javascript: void(0)">
                         <i class="fa fa-exclamation" aria-hidden="true"></i> Report
                     </a>
                 @endif

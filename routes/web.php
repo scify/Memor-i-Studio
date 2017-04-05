@@ -51,7 +51,7 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('gameFlavor/{id}/submitForApproval', 'GameFlavorController@submitGameFlavorForApproval')->name('submitGameFlavorForApproval');
     Route::get('gameFlavor/delete/{id}', 'GameFlavorController@delete')->name('deleteGameFlavor');
     Route::get('gameFlavor/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
-    Route::get('gameFlavor/{id}/report', 'GameFlavorReportController@createGameFlavorReport')->name('reportGameFlavor');
+    Route::post('gameFlavor/report', 'GameFlavorReportController@createGameFlavorReport')->name('reportGameFlavor');
     Route::get('gameFlavor/unpublish/{id}', 'GameFlavorController@unPublish')->name('unPublishGameFlavor');
     Route::get('gameFlavor/build/{id}', 'GameFlavorController@buildExecutables')->name('buildGameFlavorExecutables');
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
