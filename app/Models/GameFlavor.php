@@ -31,6 +31,13 @@ class GameFlavor extends Model
     }
 
     /**
+     * Get the Equivalence Sets for the card.
+     */
+    public function reports() {
+        return $this->hasMany('App\Models\GameFlavorReport');
+    }
+
+    /**
      * Get the images for the card.
      */
     public function sounds() {

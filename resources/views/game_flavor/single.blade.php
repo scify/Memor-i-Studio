@@ -20,6 +20,12 @@
                         <i class="fa fa-eye-slash" aria-hidden="true"></i> Make private
                     </a>
                 @endif
+            @else
+                @if($user != null)
+                    <a class="cloneBtn btn btn-danger btn-ripple" style="top:75px;" href="javascript: void(0)">
+                        <i class="fa fa-exclamation" aria-hidden="true"></i> Report
+                    </a>
+                @endif
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>
