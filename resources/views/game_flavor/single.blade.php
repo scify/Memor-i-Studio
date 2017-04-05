@@ -12,11 +12,11 @@
             @endif
             @if($gameFlavor->accessed_by_user && $gameFlavor->is_built)
                 @if(!$gameFlavor->published)
-                    <a class="cloneBtn btn btn-green btn-ripple" href="{{route('publishGameFlavor', $gameFlavor->id)}}">
+                    <a class="cloneBtn btn btn-green btn-ripple" style="top:45px;" href="{{route('publishGameFlavor', $gameFlavor->id)}}">
                         <i class="fa fa-globe" aria-hidden="true"></i> Make public
                     </a>
                 @else
-                    <a class="cloneBtn btn btn-danger btn-ripple" href="{{route('unPublishGameFlavor', $gameFlavor->id)}}">
+                    <a class="cloneBtn btn btn-danger btn-ripple" style="top:45px;" href="{{route('unPublishGameFlavor', $gameFlavor->id)}}">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i> Make private
                     </a>
                 @endif
