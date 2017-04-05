@@ -43,10 +43,12 @@
                                         <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-ban" aria-hidden="true"></i> Unpublish</a></li>
                                     @endif
                                 @endif
-                                @if(!$gameFlavor->published && $gameFlavor->is_built)
-                                    <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-globe" aria-hidden="true"></i> Make public</a></li>
-                                @else
-                                    <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-eye-slash" aria-hidden="true"></i> Make private</a></li>
+                                @if($gameFlavor->is_built)
+                                    @if(!$gameFlavor->published)
+                                        <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-globe" aria-hidden="true"></i> Make public</a></li>
+                                    @else
+                                        <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-eye-slash" aria-hidden="true"></i> Make private</a></li>
+                                    @endif
                                 @endif
                             </div>
                             <div class="col-md-6">
