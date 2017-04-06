@@ -8,7 +8,7 @@
         @if($gameFlavor->is_built)
             <div class="col-md-3">
                 <div class="col-md-5">
-                    <a id="tooltipWindows-{{$gameFlavor->id}}"
+                    <a id="tooltip-{{$gameFlavor->id}}"
                        title = "Run the installer .exe file to install the game"
                        href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}">
                         <button class="btn btn-primary btn-ripple">
@@ -17,8 +17,8 @@
                     </a>
                 </div>
                 <div class="col-md-5">
-                    <a id="tooltipWindows-{{$gameFlavor->id}}"
-                       title = "Run the installer .exe file to install the game"
+                    <a id="tooltip-{{$gameFlavor->id}}"
+                       title = "Right click -> Open with -> Oracle Java 8"
                        href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}">
                         <button class="btn btn-primary btn-ripple">
                             <i class="fa fa-linux" aria-hidden="true"></i> Linux
@@ -81,7 +81,7 @@
 @section('additionalFooter')
     <script>
         $(function() {
-
+            $("[id^=tooltip-]").tooltip();
             var controller = new window.EquivalenceSetsController(cards, editCardRoute);
             controller.init();
         });
