@@ -85,7 +85,7 @@
             @endif
             <h6>Created by: {{$gameFlavor->creator->name}}</h6>
 
-            @if($loggedInUser != null && $gameFlavor->creator_id == $loggedInUser->id && $gameFlavor->published)
+            @if($loggedInUser != null && $gameFlavor->creator_id != $loggedInUser->id && $gameFlavor->published)
                 <h6><a data-gameFlavorId="{{$gameFlavor->id}}" class="reportGameFlavorBtn " style="top:75px;" href="javascript: void(0)">
                     <i class="fa fa-exclamation" aria-hidden="true"></i> Report
                     </a></h6>
