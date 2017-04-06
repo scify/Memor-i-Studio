@@ -1,10 +1,32 @@
 @extends('layouts.app')
 @section('content')
-    <div>
-        <ol class="breadcrumb">
+    <div class="row">
+        <ol class="breadcrumb col-md-6">
             <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
         </ol>
+        @if($gameFlavor->is_built)
+            <div class="col-md-3">
+                <div class="col-md-5">
+                    <a id="tooltipWindows-{{$gameFlavor->id}}"
+                       title = "Run the installer .exe file to install the game"
+                       href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}">
+                        <button class="btn btn-primary btn-ripple">
+                            <i class="fa fa-windows" aria-hidden="true"></i> Windows
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-5">
+                    <a id="tooltipWindows-{{$gameFlavor->id}}"
+                       title = "Run the installer .exe file to install the game"
+                       href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}">
+                        <button class="btn btn-primary btn-ripple">
+                            <i class="fa fa-linux" aria-hidden="true"></i> Linux
+                        </button>
+                    </a>
+                </div>
+            </div>
+        @endif
     </div>
     @if($gameFlavor->accessed_by_user)
         @if(count($equivalenceSets) == 0)
