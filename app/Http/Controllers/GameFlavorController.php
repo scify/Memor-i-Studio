@@ -266,8 +266,8 @@ class GameFlavorController extends Controller
             //try to get setup files for windows and linux executables.
             //if an executable is not found, then an exception will be thrown
             //and the congratulations email will not be sent to the creator.
-            //$this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
-            //$this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
+            $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
+            $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
         } catch (\Exception $e) {
