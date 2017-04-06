@@ -7,7 +7,7 @@
             @else
                 <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
-            @if($user != null && $gameFlavor->allow_clone)
+            @if($loggedInUser != null && $gameFlavor->allow_clone)
                 <a class="cloneBtn btn btn-green btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i class="fa fa-files-o" aria-hidden="true"></i> Clone</a>
             @endif
             @if($gameFlavor->accessed_by_user && $gameFlavor->is_built)
@@ -20,16 +20,10 @@
                         <i class="fa fa-eye-slash" aria-hidden="true"></i> Make private
                     </a>
                 @endif
-            @else
-                @if($user != null)
-                    <a data-gameFlavorId="{{$gameFlavor->id}}" class="reportGameFlavorBtn cloneBtn btn btn-danger btn-ripple" style="top:75px;" href="javascript: void(0)">
-                        <i class="fa fa-exclamation" aria-hidden="true"></i> Report
-                    </a>
-                @endif
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>
-        @if($user != null)
+        @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)
                 <div class="clickable-button">
                     <div class="layer bg-green"></div>
@@ -42,7 +36,7 @@
                             <div class="col-md-6">
                                 <li><a href="{{url('gameFlavor/edit', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
                                 <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a></li>
-                                @if($user->isAdmin())
+                                @if($loggedInUser->isAdmin())
                                     @if(!$gameFlavor->published)
                                         <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-check" aria-hidden="true"></i> Publish</a></li>
                                     @else
@@ -58,7 +52,7 @@
                                 @endif
                             </div>
                             <div class="col-md-6">
-                                @if($user->isAdmin())
+                                @if($loggedInUser->isAdmin())
                                     <li><a href="{{url('gameFlavor/build', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i> Build</a></li>
                                 @endif
                             </div>
@@ -75,20 +69,26 @@
     <div class="card-body">
         <h3>
         <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
-            @if($user != null)
-                @if($user->isAdmin())
+            @if($loggedInUser != null)
+              @if($loggedInUser->isAdmin())
                     @if(!$gameFlavor->published)
-                        <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: orangered" title="This game is not publicly available."></i>
+                        <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: #f44336" title="This game is not publicly available."></i>
                     @else
-                        <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: forestgreen" title="Publicly available game."></i>
+                        <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: #4caf50" title="Publicly available game."></i>
                     @endif
                 @endif
             @endif
         </h3>
         <div class="description">{{$gameFlavor->description}}
-            <small><h6>Created by: {{$gameFlavor->creator->name}}</h6></small>
             @if($gameFlavor->copyright_link != null)
                 <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">Copyright link</a></h6>
+            @endif
+            <h6>Created by: {{$gameFlavor->creator->name}}</h6>
+
+            @if($loggedInUser != null && $gameFlavor->creator_id == $loggedInUser->id)
+                <h6><a data-gameFlavorId="{{$gameFlavor->id}}" class="reportGameFlavorBtn " style="top:75px;" href="javascript: void(0)">
+                    <i class="fa fa-exclamation" aria-hidden="true"></i> Report
+                    </a></h6>
             @endif
         </div>
 

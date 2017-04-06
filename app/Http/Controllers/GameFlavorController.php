@@ -10,6 +10,7 @@ use App\BusinessLogicLayer\managers\LanguageManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
 use App\Models\GameFlavor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -56,8 +57,9 @@ class GameFlavorController extends Controller
      */
     public function showAllGameFlavors() {
         $gameFlavors = $this->gameFlavorManager->getGameFlavors();
-
-        return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
+        $loggedInUser = Auth::user();
+        return view('game_flavor.list',
+            ['gameFlavors'=>$gameFlavors, 'loggedInUser' => $loggedInUser]);
     }
 
     /**

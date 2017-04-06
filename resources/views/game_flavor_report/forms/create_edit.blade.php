@@ -23,10 +23,10 @@
                             </div>
                         </div>
                         <div class="submitBtnContainer">
-                            {{--<button type="button" class="btn btn-flat-primary"><a class="cancelTourCreateBtn" href="{{ URL::route('home') }}">Cancel</a> </button>--}}
                             <button type="submit" id="gameFlavorSubmitBtn" class="btn btn-primary btn-ripple">
                                 Submit
                             </button>
+                            <button type="button" class="btn btn-default btn-ripple" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>

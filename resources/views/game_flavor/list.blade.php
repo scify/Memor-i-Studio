@@ -4,7 +4,7 @@
         <div class="col-md-12">
             @foreach($gameFlavors as $gameFlavor)
                 <div class="col-md-4">
-                    @include('game_flavor.single', ['gameFlavor' => $gameFlavor, 'user' => \Illuminate\Support\Facades\Auth::user()])
+                    @include('game_flavor.single', ['gameFlavor' => $gameFlavor])
                 </div>
             @endforeach
             <div class="col-md-4 text-align-center memoriActionBtns margin-bottom-50">
