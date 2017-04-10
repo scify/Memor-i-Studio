@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Report Game as inappropriate</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: none">
                 @include('game_flavor_report.forms.create_edit')
             </div>
         </div><!--.modal-content-->
