@@ -9,7 +9,35 @@
             </div><!--.panel-heading-->
             <div class="panel-body">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="row example-row">
+                <div class="row">
+                    <div class="requiredExpl"><span class="required">*</span> = required</div>
+                    <div class="form-group">
+                        <div class="inputer">
+                            Your name <span class="required">*</span>
+                            <div class="input-wrapper">
+                                <input name="name" type="text"
+                                       class="maxlength maxlength-position form-control" maxlength="50"
+                                       placeholder="Your name"
+                                       value="{{$loggedInUser != null ? $loggedInUser->name : ''}}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="requiredExpl"><span class="required">*</span> = required</div>
+                    <div class="form-group">
+                        <div class="inputer">
+                            Your email <span class="required">*</span>
+                            <div class="input-wrapper">
+                                <input name="name" type="email"
+                                       class="maxlength maxlength-position form-control" maxlength="50"
+                                       placeholder="Your email"
+                                       value="{{$loggedInUser != null ? $loggedInUser->email : ''}}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         <div class="row">
                             Why this game should be reported?

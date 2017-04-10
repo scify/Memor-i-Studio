@@ -16,7 +16,9 @@ class GameFlavorReportManager {
     public function createGameFlavorReport(array $inputFields) {
 
         $gameFlavorReport = new GameFlavorReport;
-        $gameFlavorReport->user_id = Auth::user()->id;
+        $loggedInUser = Auth::user();
+        if($loggedInUser != null)
+            $gameFlavorReport->user_id = Auth::user()->id;
         $gameFlavorReport = $this->assignValuesToGameFlavorReport($gameFlavorReport, $inputFields);
         $gameFlavorReport->game_flavor_id = $inputFields['game_flavor_id'];
 
@@ -26,6 +28,10 @@ class GameFlavorReportManager {
     private function assignValuesToGameFlavorReport(GameFlavorReport $gameFlavorReport, $gameFlavorReportFields) {
         $gameFlavorReport->game_flavor_id = $gameFlavorReportFields['game_flavor_id'];
         $gameFlavorReport->user_comment = $gameFlavorReportFields['user_comment'];
+        if(isset($gameFlavorReportFields['user_name']))
+            $gameFlavorReport->user_comment = $gameFlavorReportFields['user_name'];
+        if(isset($gameFlavorReportFields['user_email']))
+            $gameFlavorReport->user_comment = $gameFlavorReportFields['user_email'];
         return $gameFlavorReport;
     }
 

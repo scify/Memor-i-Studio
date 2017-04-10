@@ -27,8 +27,13 @@
                                 <td>{{$gameFlavorReport->gameFlavor->name}}</td>
                                 <td>{{$gameFlavorReport->gameFlavor->creator->name}}</td>
                                 <td>{{$gameFlavorReport->gameFlavor->creator->email}}</td>
-                                <td>{{$gameFlavorReport->user->name}}</td>
-                                <td>{{$gameFlavorReport->user->email}}</td>
+                                @if($gameFlavorReport->user_id != null)
+                                    <td>{{$gameFlavorReport->user->name}}</td>
+                                    <td>{{$gameFlavorReport->user->email}}</td>
+                                @else
+                                    <td>{{$gameFlavorReport->user_name}}</td>
+                                    <td>{{$gameFlavorReport->user_email}}</td>
+                                @endif
                                 <td>{{$gameFlavorReport->user_comment}}</td>
                                 <td>{{$gameFlavorReport->created_at}}</td>
                             @endforeach
