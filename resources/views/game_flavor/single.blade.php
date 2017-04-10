@@ -83,7 +83,13 @@
             @if($gameFlavor->copyright_link != null)
                 <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">Copyright link</a></h6>
             @endif
-            <h6>Created by: {{$gameFlavor->creator->name}}</h6>
+            <h6>Created by: {{$gameFlavor->creator->name}}
+                @if($loggedInUser != null)
+                    @if($loggedInUser->isAdmin())
+                         ({{$gameFlavor->creator->email}})
+                    @endif
+                @endif
+            </h6>
 
             @if($loggedInUser == null)
                 <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
