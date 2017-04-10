@@ -28,7 +28,7 @@ class AddNameEmailToGameFlavorReportTable extends Migration
     public function down()
     {
         Schema::table('game_flavor_report', function (Blueprint $table) {
-            $table->integer('user_id')->nullable(false)->change();
+            $table->integer('user_id')->nullable(false)->unsigned()->change();
             $table->dropColumn(['user_name', 'user_email']);
         });
     }
