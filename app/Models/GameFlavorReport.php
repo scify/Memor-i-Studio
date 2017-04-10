@@ -19,7 +19,7 @@ class GameFlavorReport extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'game_flavor_id', 'user_comment'];
+    protected $fillable = ['user_id', 'game_flavor_id', 'user_comment', 'user_name', 'user_email'];
 
     /**
      * Get the @see Resource this translation belongs to.
