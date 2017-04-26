@@ -5,12 +5,9 @@
             <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
         </ol>
-        {{--@if($gameFlavor->is_built)--}}
-            {{--<div class="col-md-3">--}}
-                {{--<button class="btn btn-primary btn-ripple" data-toggle="modal" data-target="#downloadLinksModal">Download</button>--}}
-            {{--</div>--}}
-        {{--@endif--}}
-        <button class="margin-left-20 btn btn-primary btn-ripple" data-toggle="modal" data-target="#downloadLinksModal">Download</button>
+        @if($gameFlavor->is_built)
+            <button class="margin-left-20 btn btn-primary btn-ripple" data-toggle="modal" data-target="#downloadLinksModal">Download</button>
+        @endif
     </div>
     @if($gameFlavor->accessed_by_user)
         @if(count($equivalenceSets) == 0)
