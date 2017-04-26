@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
+        <div class="col-md-12 centerMessage" style="text-align: center">
+             Download games <i class="fa fa-download" aria-hidden="true"></i>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>  Put your headphones on <i class="fa fa-headphones" aria-hidden="true"></i>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>  Play! <i class="fa fa-gamepad" aria-hidden="true"></i>
+        </div>
         <div class="col-md-12">
             @foreach($gameFlavors as $gameFlavor)
                 <div class="col-md-4">

@@ -277,3 +277,20 @@ body {
 .instructionsContainer .card-body {
   font-size: medium;
 }
+
+.centerMessage {
+  text-align: center;
+  font-size: 220%;
+  color: #888;
+  margin-bottom: 40px;
+
+  i {
+
+  }
+
+  .fa-arrow-right {
+    color: black;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
