@@ -1,32 +1,16 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row">
+    <div class="">
         <ol class="breadcrumb col-md-6">
             <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
         </ol>
-        @if($gameFlavor->is_built)
-            <div class="col-md-3">
-                <div class="col-md-5">
-                    <a id="tooltip-{{$gameFlavor->id}}"
-                       title = "Run the installer .exe file to install the game"
-                       href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}">
-                        <button class="btn btn-primary btn-ripple">
-                            <i class="fa fa-windows" aria-hidden="true"></i> Windows
-                        </button>
-                    </a>
-                </div>
-                <div class="col-md-5">
-                    <a id="tooltip-{{$gameFlavor->id}}"
-                       title = "Right click -> Open with -> Oracle Java 8"
-                       href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}">
-                        <button class="btn btn-primary btn-ripple">
-                            <i class="fa fa-linux" aria-hidden="true"></i> Linux
-                        </button>
-                    </a>
-                </div>
-            </div>
-        @endif
+        {{--@if($gameFlavor->is_built)--}}
+            {{--<div class="col-md-3">--}}
+                {{--<button class="btn btn-primary btn-ripple" data-toggle="modal" data-target="#downloadLinksModal">Download</button>--}}
+            {{--</div>--}}
+        {{--@endif--}}
+        <button class="margin-left-20 btn btn-primary btn-ripple" data-toggle="modal" data-target="#downloadLinksModal">Download</button>
     </div>
     @if($gameFlavor->accessed_by_user)
         @if(count($equivalenceSets) == 0)
@@ -76,6 +60,44 @@
             @endforeach
         </div>
     </div>
+    <div class="modal scale fade" id="downloadLinksModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Download Games</h4>
+                </div>
+                <div class="modal-body" style="height: 200px;">
+                    <div class="row downloadBtnContainer">
+                        <ul class="margin-bottom-30">
+                            <li style="text-align: left">For Windows, run the installer .exe file to install the game.</li>
+                            <li style="text-align: left">For Linux, right click the .jar file -> Open with -> Oracle Java 8</li>
+                        </ul>
+                        <div class="col-md-6">
+                            <a id="tooltip-{{$gameFlavor->id}}"
+                               title = "Run the installer .exe file to install the game"
+                               href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}">
+                                <button class="downloadBtn btn btn-primary btn-ripple">
+                                    <i class="fa fa-windows" aria-hidden="true"></i> Windows
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a id="tooltip-{{$gameFlavor->id}}"
+                               title = "Right click -> Open with -> Oracle Java 8"
+                               href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}">
+                                <button class="downloadBtn btn btn-primary btn-ripple">
+                                    <i class="fa fa-linux" aria-hidden="true"></i> Linux
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!--.modal-content-->
+        </div><!--.modal-dialog-->
+    </div><!--.modal-->
     @include('equivalence_set.modals')
 @endsection
 @section('additionalFooter')

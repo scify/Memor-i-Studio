@@ -294,3 +294,20 @@ body {
     margin-right: 20px;
   }
 }
+
+.downloadBtn {
+  width: 70%;
+  height: 70px;
+  font-size: x-large;
+}
+
+.downloadBtnContainer {
+  position: absolute;
+  bottom: 25px;
+  width: 90%;
+  text-align: center;
+
+  a {
+    height: 70px;
+  }
+}
