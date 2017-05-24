@@ -101,7 +101,7 @@ window.EquivalenceSetsController.prototype = function () {
                     hitType: 'event',
                     eventCategory: 'Games',
                     eventAction: 'download',
-                    eventLabel: 'Windows | game id: ' + gameFlavorId
+                    eventLabel: 'Linux | game id: ' + gameFlavorId
                 });
                 window.location = this.href;
             });
