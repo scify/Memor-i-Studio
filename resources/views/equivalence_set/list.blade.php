@@ -70,7 +70,7 @@
                             <li style="text-align: left">For Linux, right click the .jar file -> Open with -> Oracle Java 8</li>
                         </ul>
                         <div class="col-md-6">
-                            <a id="tooltip-{{$gameFlavor->id}}"
+                            <a data-gameFlavorId="{{$gameFlavor->id}}" class="downloadBtnWindows" id="tooltip-{{$gameFlavor->id}}"
                                title = "Run the installer .exe file to install the game"
                                href="{{route('downloadGameFlavorWindows', $gameFlavor->id)}}">
                                 <button class="downloadBtn btn btn-primary btn-ripple">
@@ -79,7 +79,7 @@
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <a id="tooltip-{{$gameFlavor->id}}"
+                            <a data-gameFlavorId="{{$gameFlavor->id}}" class="downloadBtnLinux" id="tooltip-{{$gameFlavor->id}}"
                                title = "Right click -> Open with -> Oracle Java 8"
                                href="{{route('downloadGameFlavorLinux', $gameFlavor->id)}}">
                                 <button class="downloadBtn btn btn-primary btn-ripple">

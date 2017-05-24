@@ -77,6 +77,35 @@ window.EquivalenceSetsController.prototype = function () {
                 console.log("form cleared");
             })
         },
+        downloadBtnHandler = function () {
+            console.log("downloadBtnHandler");
+            $("body").on("click", ".downloadBtnWindows", function (e) {
+                e.preventDefault();
+                var gameFlavorId = $(this).attr("data-gameFlavorId");
+
+
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Games',
+                    eventAction: 'download',
+                    eventLabel: 'Windows | game id: ' + gameFlavorId
+                });
+                window.location = this.href;
+            });
+
+            $("body").on("click", ".downloadBtnLinux", function (e) {
+                e.preventDefault();
+                var gameFlavorId = $(this).attr("data-gameFlavorId");
+
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Games',
+                    eventAction: 'download',
+                    eventLabel: 'Windows | game id: ' + gameFlavorId
+                });
+                window.location = this.href;
+            });
+        },
         init = function () {
             var instance = this;
             console.log(instance.cards);
@@ -85,6 +114,7 @@ window.EquivalenceSetsController.prototype = function () {
             editEquivalenceSetBtnHandler();
             editCardBtnHandler(instance.cards, instance.editCardRoute);
             modalCloseHandler(instance);
+            downloadBtnHandler();
         };
     return {
         init: init
