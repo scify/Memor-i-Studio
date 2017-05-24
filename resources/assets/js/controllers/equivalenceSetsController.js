@@ -78,11 +78,11 @@ window.EquivalenceSetsController.prototype = function () {
             })
         },
         downloadBtnHandler = function () {
-            console.log("downloadBtnHandler");
+
             $("body").on("click", ".downloadBtnWindows", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
-
+                console.log(gameFlavorId);
 
                 ga('send', {
                     hitType: 'event',
@@ -96,7 +96,7 @@ window.EquivalenceSetsController.prototype = function () {
             $("body").on("click", ".downloadBtnLinux", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
-
+                console.log(gameFlavorId);
                 ga('send', {
                     hitType: 'event',
                     eventCategory: 'Games',
