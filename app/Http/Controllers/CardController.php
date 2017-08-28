@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BusinessLogicLayer\managers\CardManager;
 use App\Models\Card;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class CardController handles the requests tied to the @see Card class
@@ -51,5 +52,23 @@ class CardController extends Controller
         session()->flash('flash_message_success', 'Game card edited');
         return redirect()->back();
     }
+
+    public function storeUserAction(Request $request) {
+        $input = $request->all();
+        Storage::disk('local')->put('file.txt', $input['actions']);
+        return '{"actions":' . $input['actions'] . '}';
+    }
+
+    public function test() {
+        $contents = Storage::get('file.txt');
+        $move = '{"actions":' . $contents . '}';
+        return $move;
+    }
+
+    public function testPost(Request $request) {
+        $input = $request->all();
+        dd($input);
+    }
+
 
 }
