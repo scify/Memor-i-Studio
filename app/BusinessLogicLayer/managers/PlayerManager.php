@@ -14,7 +14,7 @@ use App\Models\Player;
 use App\StorageLayer\PlayerStorage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Mockery\Exception;
+
 
 class PlayerManager {
 
@@ -34,17 +34,8 @@ class PlayerManager {
         return $players;
     }
 
-    public function getGameRequestsForPlayer(array $input) {
-        $playerId = $input['player_id'];
-        $player = $this->playerStorage->getPlayerById($playerId);
-        if(!$player)
-            return new ApiOperationResponse(2, 'player_not_found', "");
-        $this->markPlayerAsActive($player);
-        // TODO search for game requests for player
-        return new ApiOperationResponse(1, 'new_request', $player->user_name);
-    }
 
-    private function markPlayerAsActive(Player $player) {
+    public function markPlayerAsActive(Player $player) {
         $player->last_seen_online =  Carbon::now()->toDateTimeString();
         $this->playerStorage->savePlayer($player);
     }
@@ -82,6 +73,10 @@ class PlayerManager {
 
     private function getPlayerByUserName($username) {
         return $this->playerStorage->getPlayerByUserName($username)->first();
+    }
+
+    public function getPlayerById($playerId) {
+        return $this->playerStorage->getPlayerById($playerId);
     }
 
 }

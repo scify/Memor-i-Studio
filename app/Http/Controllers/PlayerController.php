@@ -22,11 +22,6 @@ class PlayerController extends Controller
         return json_encode($this->playerManager->getOnlinePlayers($input));
     }
 
-    public function getGameRequestsForPlayer(Request $request) {
-        $input = $request->all();
-        return json_encode($this->playerManager->getGameRequestsForPlayer($input));
-    }
-
     public function registerNewPlayer(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',

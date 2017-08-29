@@ -31,10 +31,12 @@ Route::get('storeUserAction', 'CardController@storeUserAction')->name('storeUser
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('players/online', 'PlayerController@getOnlinePlayersExcept')->name('getOnlinePlayersExcept');
-    Route::get('games/request', 'PlayerController@getGameRequestsForPlayer')->name('getGameRequestsForPlayer');
+    Route::get('player/requests', 'GameRequestController@getGameRequestsForPlayer')->name('getGameRequestsForPlayer');
 
     Route::post('player/register', 'PlayerController@registerNewPlayer')->name('registerNewPlayer');
     Route::post('player/login', 'PlayerController@logInPlayer')->name('logInPlayer');
+
+    Route::post('gameRequest/initiate', 'GameRequestController@initiateGameRequest')->name('initiateGameRequest');
 });
 
 Route::group([ 'middleware' => 'auth' ], function () {

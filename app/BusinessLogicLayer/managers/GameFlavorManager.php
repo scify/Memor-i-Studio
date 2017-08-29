@@ -484,5 +484,9 @@ class GameFlavorManager {
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
+    public function getFlavorIdFromToken($gameFlavorToken) {
+        throw new \Exception("not supported");
+    }
+
 
 }
