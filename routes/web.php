@@ -30,7 +30,11 @@ Route::get('test', 'CardController@test')->name('test');
 Route::get('storeUserAction', 'CardController@storeUserAction')->name('storeUserAction');
 
 Route::group(['prefix' => 'api'], function () {
-    Route::post('username', 'CardController@storeUserAction')->name('storeUserAction');
+    Route::get('players/online', 'PlayerController@getOnlinePlayersExcept')->name('getOnlinePlayersExcept');
+    Route::get('games/request', 'PlayerController@getGameRequestsForPlayer')->name('getGameRequestsForPlayer');
+
+    Route::post('player/register', 'PlayerController@registerNewPlayer')->name('registerNewPlayer');
+    Route::post('player/login', 'PlayerController@logInPlayer')->name('logInPlayer');
 });
 
 Route::group([ 'middleware' => 'auth' ], function () {
