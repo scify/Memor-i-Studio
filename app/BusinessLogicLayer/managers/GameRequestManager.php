@@ -43,7 +43,7 @@ class GameRequestManager {
     public function initiateGameRequest(array $input) {
         try {
             $gameFlavorManager = new GameFlavorManager();
-            $gameFlavorId = $gameFlavorManager->getFlavorIdFromToken($input['game_flavor_token']);
+            $gameFlavorId = $gameFlavorManager->getFlavorIdFromIdentifier($input['game_flavor_identifier']);
             $newGameRequest = $this->create($input['player_initiator_id'], $input['player_opponent_id'], $gameFlavorId);
             return new ApiOperationResponse(1, 'game_request_created', $newGameRequest->id);
         } catch (Exception $e) {

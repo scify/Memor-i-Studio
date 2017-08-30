@@ -4,7 +4,6 @@ namespace App\BusinessLogicLayer\managers;
 
 use App\BusinessLogicLayer\WindowsBuilder;
 use App\Models\GameFlavor;
-use App\Models\GameVersion;
 use App\Models\ResourceFile;
 use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
@@ -57,7 +56,6 @@ class GameFlavorManager {
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
             $gameFlavor->game_version_id = $inputFields['game_version_id'];
             $gameFlavor->creator_id = $inputFields['creator_id'];
-
         } else {
             //edit existing
             $gameFlavor = $this->getGameFlavor($gameFlavorId);
@@ -67,7 +65,10 @@ class GameFlavorManager {
         }
         DB::transaction(function() use($gameFlavor, $inputFields) {
             $imgManager = new ImgManager();
+            if(!$gameFlavor->game_identifier)
+                $gameFlavor->game_identifier = $this->createIdentifierForGameFlavor($gameFlavor);
             $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
+
             if (isset($inputFields['cover_img'])) {
                 $gameFlavor->cover_img_id = $imgManager->uploadGameFlavorCoverImg($gameFlavor, $inputFields['cover_img']);
                 $resourceManager = new ResourceManager();
@@ -78,6 +79,10 @@ class GameFlavorManager {
         });
         return $gameFlavor;
 
+    }
+
+    private function createIdentifierForGameFlavor(GameFlavor $gameFlavor) {
+        return greeklish($gameFlavor->name);
     }
 
     public function getResourceCategoriesForGameFlavor($gameFlavor, $langId) {
@@ -186,7 +191,6 @@ class GameFlavorManager {
         $gameFlavor->name = $gameFlavorFields['name'];
         $gameFlavor->description = $gameFlavorFields['description'];
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
-//        $gameFlavor->interface_lang_id = $gameFlavorFields['interface_lang_id'];
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->lang_id;
         $gameFlavor->copyright_link = $gameFlavorFields['copyright_link'];
