@@ -26,7 +26,8 @@ class GameRequestController {
         $validator = Validator::make($request->all(), [
             'player_initiator_id' => 'required',
             'player_opponent_id' => 'required',
-            'game_flavor_token' => 'required',
+            'game_identifier' => 'required',
+            'game_level_id' => 'required',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());

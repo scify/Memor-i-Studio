@@ -470,8 +470,12 @@ class GameFlavorManager {
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
-    public function getFlavorIdFromIdentifier($gameFlavorToken) {
-        throw new \Exception("not supported");
+    public function getFlavorIdFromIdentifier($gameFlavorIdentifier) {
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+        if($gameFlavor)
+            return $gameFlavor->id;
+        else
+            throw new \Exception("Game Flavor not found. Identifier: " . $gameFlavorIdentifier);
     }
 
 

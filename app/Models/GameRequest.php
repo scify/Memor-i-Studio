@@ -19,7 +19,7 @@ class GameRequest extends Model
      *
      * @var array
      */
-    protected $fillable = ['status_id', 'player_initiator_id', 'player_opponent_id', 'game_flavor_id'];
+    protected $fillable = ['status_id', 'player_initiator_id', 'player_opponent_id', 'game_flavor_id', 'game_level_id'];
 
 
     public function initiator()

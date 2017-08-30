@@ -35,6 +35,13 @@ class GameFlavorStorage {
         return GameFlavor::find($id);
     }
 
+    public function getGameFlavorByGameIdentifier($gameIdentifier) {
+        return GameFlavor::where([
+            ['game_identifier', $gameIdentifier]
+        ])->get()->first();
+
+    }
+
     public function getGameFlavorsByPublishedStateByUser($state, $userId) {
         return GameFlavor::where([
             ['published', '=', $state],

@@ -43,19 +43,20 @@ class GameRequestManager {
     public function initiateGameRequest(array $input) {
         try {
             $gameFlavorManager = new GameFlavorManager();
-            $gameFlavorId = $gameFlavorManager->getFlavorIdFromIdentifier($input['game_flavor_identifier']);
-            $newGameRequest = $this->create($input['player_initiator_id'], $input['player_opponent_id'], $gameFlavorId);
-            return new ApiOperationResponse(1, 'game_request_created', $newGameRequest->id);
+            $gameFlavorId = $gameFlavorManager->getFlavorIdFromIdentifier($input['game_identifier']);
+            $newGameRequest = $this->create($input['player_initiator_id'], $input['player_opponent_id'], $gameFlavorId, $input['game_level_id']);
+            return new ApiOperationResponse(1, 'game_request_created', ["game_request_id" => $newGameRequest->id]);
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
         }
     }
 
-    private function create($playerInitiatorId, $playerOpponentId, $gameFlavorId) {
+    private function create($playerInitiatorId, $playerOpponentId, $gameFlavorId, $gameLevelId) {
         $gameRequest = new GameRequest([
             'player_initiator_id' => $playerInitiatorId,
             'player_opponent_id' => $playerOpponentId,
             'game_flavor_id' => $gameFlavorId,
+            'game_level_id' => $gameLevelId,
             'status_id' => GameRequestStatus::REQUEST_SENT
         ]);
 
