@@ -299,24 +299,6 @@ class GameFlavorManager {
         return;
     }
 
-//    /**
-//     * Uses a .sh script located in public folder to sign the .jar file that contains the data pack resource files.
-//     * Uses a config variable set in .env and read through config/app.php, aliased as KEYSTORE_PASS
-//     *
-//     * @param $filePathToStore string the path to store the generated signed file
-//     * @param $packagePath string the path that the not-signed file is located
-//     * @return string the output of the process that triggered the .sh file
-//     */
-//    private function signDataPackJarFile($filePathToStore, $packagePath) {
-//        $keyStorePass = config('app.KEYSTORE_PASS');
-//        $old_path = getcwd();
-//        chdir(public_path());
-//        $command = './sign_data_pack.sh ' . $filePathToStore . ' ' . $packagePath . ' ' . $keyStorePass;
-//        $output = shell_exec($command);
-//        chdir($old_path);
-//        return $output;
-//    }
-
     /**
      * @param $gameFlavorId int the id of the @see GameFlavor
      * @throws \Exception if the .jar file cannot be copied to the destination path
@@ -484,7 +466,7 @@ class GameFlavorManager {
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
-    public function getFlavorIdFromToken($gameFlavorToken) {
+    public function getFlavorIdFromIdentifier($gameFlavorToken) {
         throw new \Exception("not supported");
     }
 
