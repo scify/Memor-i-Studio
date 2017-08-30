@@ -51,6 +51,25 @@ class GameRequestManager {
         }
     }
 
+    public function getReplyForGameRequest(array $input) {
+        try {
+            $gameRequest = $this->getGameRequest($input['game_request_id']);
+            // if status is still 'sent', then there has been no reply yet, so return appropriate code
+            if($gameRequest->status_id == GameRequestStatus::REQUEST_SENT) {
+                return new ApiOperationResponse(4, 'not_replied', '');
+            } else {
+                if($gameRequest->status_id == GameRequestStatus::ACCEPTED_BY_OPPONENT) {
+                    return new ApiOperationResponse(1, 'accepted', 'accepted by opponent');
+                } else if($gameRequest->status_id == GameRequestStatus::REJECTED_BY_OPPONENT) {
+                    return new ApiOperationResponse(1, 'rejected', 'rejected by opponent');
+                }
+            }
+            // else, send response with game request status
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
     private function create($playerInitiatorId, $playerOpponentId, $gameFlavorId, $gameLevelId) {
         $gameRequest = new GameRequest([
             'player_initiator_id' => $playerInitiatorId,

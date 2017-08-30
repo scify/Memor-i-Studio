@@ -37,6 +37,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('player/login', 'PlayerController@logInPlayer')->name('logInPlayer');
 
     Route::post('gameRequest/initiate', 'GameRequestController@initiateGameRequest')->name('initiateGameRequest');
+    Route::get('gameRequest/reply', 'GameRequestController@getReplyForGameRequest')->name('getReplyForGameRequest');
 });
 
 Route::group([ 'middleware' => 'auth' ], function () {
