@@ -31,9 +31,11 @@ class GameRequestManager {
             return new ApiOperationResponse(2, 'player_not_found', "");
         $playerManager->markPlayerAsActive($player);
         $gameRequest = $this->gameRequestStorage->getGameRequestsForOpponent($playerId)->first();
-        $initiatorUserName = $gameRequest->initiator->user_name;
-        if($gameRequest)
+
+        if($gameRequest) {
+            $initiatorUserName = $gameRequest->initiator->user_name;
             return new ApiOperationResponse(1, 'new_request', ["game_request_id" => $gameRequest->id, "initiator_user_name" => $initiatorUserName]);
+        }
         return new ApiOperationResponse(1, 'no_requests', null);
     }
 
