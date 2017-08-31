@@ -19,7 +19,7 @@ class GameRequestStorage {
     }
 
     public function getGameRequestById($gameRequestId) {
-        return GameRequest::findOrFail($gameRequestId);
+        return GameRequest::find($gameRequestId);
     }
 
     public function getGameRequestsForOpponent($playerOpponentId) {

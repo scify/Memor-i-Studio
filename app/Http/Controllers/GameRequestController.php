@@ -83,4 +83,18 @@ class GameRequestController {
         return json_encode($response);
     }
 
+    public function replyToGameRequest(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'accepted' => 'required',
+            'game_request_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->gameRequestManager->replyToGameRequest($input);
+        }
+        return json_encode($response);
+    }
+
 }

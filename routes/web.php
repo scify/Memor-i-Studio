@@ -40,6 +40,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('gameRequest/reply', 'GameRequestController@getReplyForGameRequest')->name('getReplyForGameRequest');
     Route::post('gameRequest/shuffledCards', 'GameRequestController@setShuffledCardsForGame')->name('setShuffledCardsForGame');
     Route::get('gameRequest/shuffledCards', 'GameRequestController@getShuffledCardsForGame')->name('getShuffledCardsForGame');
+
+    Route::post('gameRequest/reply', 'GameRequestController@replyToGameRequest')->name('replyToGameRequest');
 });
 
 Route::group([ 'middleware' => 'auth' ], function () {

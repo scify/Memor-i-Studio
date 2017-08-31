@@ -36,11 +36,14 @@ class GameRequestManager {
             $initiatorUserName = $gameRequest->initiator->user_name;
             return new ApiOperationResponse(1, 'new_request', ["game_request_id" => $gameRequest->id, "initiator_user_name" => $initiatorUserName]);
         }
-        return new ApiOperationResponse(1, 'no_requests', null);
+        return null;
     }
 
     private function getGameRequest($gameRequestId) {
-        return $this->gameRequestStorage->getGameRequestById($gameRequestId);
+        $gameRequest = $this->gameRequestStorage->getGameRequestById($gameRequestId);
+        if($gameRequest)
+            return $gameRequest;
+        throw new Exception("Game request with id: " . $gameRequestId . " not found!");
     }
 
     public function initiateGameRequest(array $input) {
@@ -108,5 +111,29 @@ class GameRequestManager {
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
         }
+    }
+
+    public function replyToGameRequest(array $input) {
+        try {
+            $replyStr = $input['accepted'];
+            $gameRequestId = $input['game_request_id'];
+            $gameRequest = $this->getGameRequest($gameRequestId);
+            if($replyStr == 'true') {
+                return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::ACCEPTED_BY_OPPONENT);
+            }
+            else if($replyStr == 'false') {
+                return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::REJECTED_BY_OPPONENT);
+            }
+            else
+                return new ApiOperationResponse(2, 'error_wrong_parameters', 'The reply parameter was neither "true" or "false');
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    private function updateGameRequestStatusAndGetResponse(GameRequest $gameRequest, $status) {
+        $gameRequest->status_id = $status;
+        $this->gameRequestStorage->saveGameRequest($gameRequest);
+        return new ApiOperationResponse(1, 'success', 'Game request status updated');
     }
 }
