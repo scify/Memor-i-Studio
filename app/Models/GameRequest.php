@@ -25,12 +25,12 @@ class GameRequest extends Model
 
     public function initiator()
     {
-        return $this->belongsTo('App\Models\User', 'player_initiator_id', 'id');
+        return $this->hasOne('App\Models\Player', 'id','player_initiator_id');
     }
 
     public function opponent()
     {
-        return $this->belongsTo('App\Models\User', 'player_opponent_id', 'id');
+        return $this->hasOne('App\Models\Player', 'id','player_opponent_id' );
     }
 
     public function gameFlavor() {

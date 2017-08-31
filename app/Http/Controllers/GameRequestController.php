@@ -56,4 +56,31 @@ class GameRequestController {
         return json_encode($this->gameRequestManager->getGameRequestsForPlayer($input));
     }
 
+    public function setShuffledCardsForGame(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'shuffled_cards' => 'required',
+            'game_request_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->gameRequestManager->setShuffledCardsForGame($input);
+        }
+        return json_encode($response);
+    }
+
+    public function getShuffledCardsForGame(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'game_request_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->gameRequestManager->getShuffledCardsForGame($input);
+        }
+        return json_encode($response);
+    }
+
 }

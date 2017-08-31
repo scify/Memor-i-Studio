@@ -31,8 +31,9 @@ class GameRequestManager {
             return new ApiOperationResponse(2, 'player_not_found', "");
         $playerManager->markPlayerAsActive($player);
         $gameRequest = $this->gameRequestStorage->getGameRequestsForOpponent($playerId)->first();
+        $initiatorUserName = $gameRequest->initiator->user_name;
         if($gameRequest)
-            return new ApiOperationResponse(1, 'new_request', $gameRequest);
+            return new ApiOperationResponse(1, 'new_request', ["game_request_id" => $gameRequest->id, "initiator_user_name" => $initiatorUserName]);
         return new ApiOperationResponse(1, 'no_requests', null);
     }
 
@@ -80,5 +81,30 @@ class GameRequestManager {
         ]);
 
         return $this->gameRequestStorage->saveGameRequest($gameRequest);
+    }
+
+    public function setShuffledCardsForGame(array $input) {
+        try {
+            $gameRequest = $this->getGameRequest($input['game_request_id']);
+            $gameRequest->shuffled_cards = $input['shuffled_cards'];
+            $gameRequest = $this->gameRequestStorage->saveGameRequest($gameRequest);
+            return new ApiOperationResponse(1, 'success', '');
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    public function getShuffledCardsForGame(array $input) {
+        try {
+            $gameRequest = $this->getGameRequest($input['game_request_id']);
+            if($gameRequest->shuffled_cards) {
+                return new ApiOperationResponse(1, 'success', json_decode($gameRequest->shuffled_cards));
+            } else {
+                return new ApiOperationResponse(4, 'no_cards', '');
+            }
+
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
     }
 }
