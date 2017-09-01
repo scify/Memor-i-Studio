@@ -9,6 +9,7 @@
 namespace App\StorageLayer;
 
 
+use App\BusinessLogicLayer\GameRequestStatus;
 use App\Models\GameRequest;
 
 class GameRequestStorage {
@@ -24,7 +25,8 @@ class GameRequestStorage {
 
     public function getGameRequestsForOpponent($playerOpponentId) {
         return GameRequest::where([
-            ['player_opponent_id', $playerOpponentId]
+            ['player_opponent_id', $playerOpponentId],
+            ['status_id', GameRequestStatus::REQUEST_SENT]
         ])->get();
     }
 
