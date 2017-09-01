@@ -42,4 +42,22 @@ class GameMovementManager {
 
         return $this->gameMovementStorage->saveGameMovement($gameMovement);
     }
+
+    public function getLatestOpponentGameMovement($input) {
+        try {
+            $gameRequestManager = new GameRequestManager();
+            $gameRequest = $gameRequestManager->getGameRequest($input['game_request_id']);
+            $gameMovement = $this->gameMovementStorage->getLatestGameMovementOfPlayer($gameRequest->id, $input['opponent_id'], $input['last_timestamp']);
+            if($gameMovement) {
+                $gameMovement->delete();
+                return new ApiOperationResponse(1, 'new_movement', ["game_movement_json" => json_decode($gameMovement->movement_json)]);
+            }
+            else
+                return new ApiOperationResponse(4, 'no_movement', "");
+
+
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
 }

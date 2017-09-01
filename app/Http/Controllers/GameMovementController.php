@@ -37,4 +37,19 @@ class GameMovementController {
         }
         return json_encode($response);
     }
+
+    public function getLatestOpponentGameMovement(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'opponent_id' => 'required',
+            'game_request_id' => 'required',
+            'last_timestamp' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->gameMovementManager->getLatestOpponentGameMovement($input);
+        }
+        return json_encode($response);
+    }
 }

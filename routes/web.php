@@ -43,6 +43,7 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::post('gameRequest/reply', 'GameRequestController@replyToGameRequest')->name('replyToGameRequest');
     Route::post('gameMovement/create', 'GameMovementController@createGameMovement')->name('createGameMovement');
+    Route::post('gameMovement/latest', 'GameMovementController@getLatestOpponentGameMovement')->name('getLatestOpponentGameMovement');
 });
 
 Route::group([ 'middleware' => 'auth' ], function () {
