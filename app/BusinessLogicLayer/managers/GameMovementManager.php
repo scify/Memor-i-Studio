@@ -50,7 +50,11 @@ class GameMovementManager {
             $gameMovement = $this->gameMovementStorage->getLatestGameMovementOfPlayer($gameRequest->id, $input['opponent_id'], $input['last_timestamp']);
             if($gameMovement) {
                 $gameMovement->delete();
-                return new ApiOperationResponse(1, 'new_movement', ["game_movement_json" => json_decode($gameMovement->movement_json)]);
+                return new ApiOperationResponse(1, 'new_movement',
+                    [
+                        "game_movement_json" => json_decode($gameMovement->movement_json),
+                        "timestamp" => $gameMovement->timestamp
+                    ]);
             }
             else
                 return new ApiOperationResponse(4, 'no_movement', "");
