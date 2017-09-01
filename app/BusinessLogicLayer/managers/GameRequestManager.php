@@ -39,7 +39,7 @@ class GameRequestManager {
         return null;
     }
 
-    private function getGameRequest($gameRequestId) {
+    public function getGameRequest($gameRequestId) {
         $gameRequest = $this->gameRequestStorage->getGameRequestById($gameRequestId);
         if($gameRequest)
             return $gameRequest;
