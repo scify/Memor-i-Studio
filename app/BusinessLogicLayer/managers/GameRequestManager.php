@@ -34,7 +34,13 @@ class GameRequestManager {
 
         if($gameRequest) {
             $initiatorUserName = $gameRequest->initiator->user_name;
-            return new ApiOperationResponse(1, 'new_request', ["game_request_id" => $gameRequest->id, "initiator_user_name" => $initiatorUserName]);
+            $initiatorId = $gameRequest->initiator->id;
+            return new ApiOperationResponse(1, 'new_request',
+                [
+                    "game_request_id" => $gameRequest->id,
+                    "initiator_user_name" => $initiatorUserName,
+                    "initiator_id" => $initiatorId
+                ]);
         }
         return null;
     }
