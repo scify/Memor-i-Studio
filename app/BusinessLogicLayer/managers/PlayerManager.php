@@ -36,7 +36,17 @@ class PlayerManager {
 
 
     public function markPlayerAsActive(Player $player) {
-        $player->last_seen_online =  Carbon::now()->toDateTimeString();
+        $player->last_seen_online = Carbon::now()->toDateTimeString();
+        $this->playerStorage->savePlayer($player);
+    }
+
+    public function markPlayerAsInGame(Player $player) {
+        $player->in_game = true;
+        $this->playerStorage->savePlayer($player);
+    }
+
+    public function markPlayerAsNotInGame(Player $player) {
+        $player->in_game = false;
         $this->playerStorage->savePlayer($player);
     }
 
@@ -62,6 +72,7 @@ class PlayerManager {
         if($this->playerWithUserNameExists($username)) {
             $player = $this->getPlayerByUserName($username);
             if (Hash::check($password, $player->password)) {
+                $this->markPlayerAsActive($player);
                 return new ApiOperationResponse(1, 'player_found', ["player_id" => $player->id]);
             } else {
                 return new ApiOperationResponse(2, 'player_not_found', "");
@@ -79,4 +90,41 @@ class PlayerManager {
         return $this->playerStorage->getPlayerById($playerId);
     }
 
+    public function getPlayerAvailability(array $input) {
+        $playerUserName = $input['user_name'];
+        if($this->playerWithUserNameExists($playerUserName)) {
+            $player = $this->getPlayerByUserName($playerUserName);
+            if($this->isPlayerAvailable($player)) {
+                return new ApiOperationResponse(1, 'player_available', ["player_id" => $player->id]);
+            } else {
+                return new ApiOperationResponse(1, 'player_not_available', "");
+            }
+        } else {
+            return new ApiOperationResponse(4, 'player_not_found', "");
+        }
+    }
+
+    public function isPlayerAvailable(Player $player) {
+        if($player->in_game)
+            return false;
+        $playerLastSeenOnlineMargin = strtotime("-10 minutes");
+
+        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online)){
+            return false;
+        }
+        return true;
+    }
+
+    public function markPlayerActive($input) {
+        $playerId = $input['player_id'];
+        $player = $this->getPlayerById($playerId);
+        if(!$player)
+            return new ApiOperationResponse(2, 'player_not_found', "");
+        try {
+            $this->markPlayerAsActive($player);
+            return new ApiOperationResponse(1, 'game_marked_active', "");
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
 }

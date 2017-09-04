@@ -99,6 +99,25 @@ class GameRequestManager {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             $gameRequest->shuffled_cards = $input['shuffled_cards'];
             $gameRequest = $this->gameRequestStorage->saveGameRequest($gameRequest);
+            $playerManager = new PlayerManager();
+            $initiatorPlayer = $gameRequest->initiator;
+            $opponentPlayer = $gameRequest->opponent;
+            $playerManager->markPlayerAsInGame($initiatorPlayer);
+            $playerManager->markPlayerAsInGame($opponentPlayer);
+            return new ApiOperationResponse(1, 'success', '');
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    public function setGameEnded(array $input) {
+        try {
+            $gameRequest = $this->getGameRequest($input['game_request_id']);
+            $initiatorPlayer = $gameRequest->initiator;
+            $opponentPlayer = $gameRequest->opponent;
+            $playerManager = new PlayerManager();
+            $playerManager->markPlayerAsNotInGame($initiatorPlayer);
+            $playerManager->markPlayerAsNotInGame($opponentPlayer);
             return new ApiOperationResponse(1, 'success', '');
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());

@@ -33,6 +33,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('players/online', 'PlayerController@getOnlinePlayersExcept')->name('getOnlinePlayersExcept');
     Route::get('player/requests', 'GameRequestController@getGameRequestsForPlayer')->name('getGameRequestsForPlayer');
 
+    Route::get('player/availability', 'PlayerController@getPlayerAvailability')->name('getPlayerAvailability');
+    Route::post('player/markActive', 'PlayerController@markPlayerActive')->name('markPlayerActive');
+
     Route::post('player/register', 'PlayerController@registerNewPlayer')->name('registerNewPlayer');
     Route::post('player/login', 'PlayerController@logInPlayer')->name('logInPlayer');
 

@@ -97,4 +97,17 @@ class GameRequestController {
         return json_encode($response);
     }
 
+    public function setGameEnded(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'game_request_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->gameRequestManager->setGameEnded($input);
+        }
+        return json_encode($response);
+    }
+
 }

@@ -49,4 +49,30 @@ class PlayerController extends Controller
         }
         return json_encode($response);
     }
+
+    public function getPlayerAvailability(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_name' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->playerManager->getPlayerAvailability($input);
+        }
+        return json_encode($response);
+    }
+
+    public function markPlayerActive(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'player_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->playerManager->markPlayerActive($input);
+        }
+        return json_encode($response);
+    }
 }
