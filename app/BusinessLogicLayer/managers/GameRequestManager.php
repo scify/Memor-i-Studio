@@ -39,7 +39,8 @@ class GameRequestManager {
                 [
                     "game_request_id" => $gameRequest->id,
                     "initiator_user_name" => $initiatorUserName,
-                    "initiator_id" => $initiatorId
+                    "initiator_id" => $initiatorId,
+                    "game_level_id" => $gameRequest->game_level_id
                 ]);
         }
         return null;

@@ -105,9 +105,9 @@ class PlayerManager {
     }
 
     public function isPlayerAvailable(Player $player) {
-        if($player->in_game)
-            return false;
-        $playerLastSeenOnlineMargin = strtotime("-10 minutes");
+//        if($player->in_game)
+//            return false;
+        $playerLastSeenOnlineMargin = strtotime("-5 minutes");
 
         if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online)){
             return false;
