@@ -43,7 +43,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('gameRequest/reply', 'GameRequestController@getReplyForGameRequest')->name('getReplyForGameRequest');
     Route::post('gameRequest/shuffledCards', 'GameRequestController@setShuffledCardsForGame')->name('setShuffledCardsForGame');
     Route::get('gameRequest/shuffledCards', 'GameRequestController@getShuffledCardsForGame')->name('getShuffledCardsForGame');
-
+    Route::post('gameRequest/end', 'GameRequestController@endGameRequest')->name('endGameRequest');
     Route::post('gameRequest/reply', 'GameRequestController@replyToGameRequest')->name('replyToGameRequest');
     Route::post('gameMovement/create', 'GameMovementController@createGameMovement')->name('createGameMovement');
     Route::post('gameMovement/latest', 'GameMovementController@getLatestOpponentGameMovement')->name('getLatestOpponentGameMovement');

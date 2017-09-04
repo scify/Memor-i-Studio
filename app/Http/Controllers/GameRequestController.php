@@ -97,7 +97,7 @@ class GameRequestController {
         return json_encode($response);
     }
 
-    public function setGameEnded(Request $request) {
+    public function endGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
             'game_request_id' => 'required'
         ]);
