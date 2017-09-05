@@ -26,6 +26,7 @@ class PlayerController extends Controller
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',
             'password' => 'required|min:4',
+            'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
@@ -40,6 +41,7 @@ class PlayerController extends Controller
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',
             'password' => 'required|min:4',
+            'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
@@ -52,13 +54,14 @@ class PlayerController extends Controller
 
     public function getPlayerAvailability(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_name' => 'required'
+            'user_name' => 'required',
+            'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
-            $response = $this->playerManager->getPlayerAvailability($input);
+            $response = $this->playerManager->getPlayerAvailabilityForGameFlavor($input);
         }
         return json_encode($response);
     }

@@ -164,6 +164,18 @@ class GameFlavorManager {
         return null;
     }
 
+    public function getGameFlavorByGameIdentifier($gameFlavorIdentifier) {
+        $user = Auth::user();
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+
+        //if the game Version exists, check if the user has access
+        if(!$gameFlavor) {
+                throw new \Exception("Game flavor not found. Identifier queried: " . $gameFlavorIdentifier);
+        }
+
+        return $gameFlavor;
+    }
+
     /**
      * Gets a game flavor
      *

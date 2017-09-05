@@ -23,7 +23,7 @@ class Player extends Model implements AuthenticatableContract{
      * @var array
      */
     protected $fillable = [
-        'user_name', 'app_id', 'last_seen_online', 'in_game', 'password'
+        'user_name', 'app_id', 'last_seen_online', 'in_game', 'password', 'game_flavor_playing'
     ];
 
 }

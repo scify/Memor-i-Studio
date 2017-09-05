@@ -10,6 +10,7 @@ namespace App\BusinessLogicLayer\managers;
 
 
 use App\Models\api\ApiOperationResponse;
+use App\Models\GameFlavor;
 use App\Models\Player;
 use App\StorageLayer\PlayerStorage;
 use Carbon\Carbon;
@@ -53,33 +54,54 @@ class PlayerManager {
     public function registerNewPlayer(array $input) {
         $username = $input['user_name'];
         $password = $input['password'];
-        if($this->playerWithUserNameExists($username)) {
-            return new ApiOperationResponse(2, "user_name_taken", "");
-        } else {
-            $newPlayer = new Player([
-                'user_name' => $username,
-                'password' => Hash::make($password)
-            ]);
-            $newPlayer = $this->playerStorage->savePlayer($newPlayer);
-            $this->markPlayerAsActive($newPlayer);
-            return new ApiOperationResponse(1, 'player_created', ["player_id" => $newPlayer->id]);
+        $gameFlavorPackIdentifier = $input['game_flavor_pack_identifier'];
+        try {
+            if($this->playerWithUserNameExists($username)) {
+                return new ApiOperationResponse(2, "user_name_taken", "");
+            } else {
+                $newPlayer = new Player([
+                    'user_name' => $username,
+                    'password' => Hash::make($password)
+                ]);
+                $newPlayer = $this->playerStorage->savePlayer($newPlayer);
+                $this->markPlayerAsActive($newPlayer);
+                $this->makePlayerOnlineForGameFlavor($newPlayer, $gameFlavorPackIdentifier);
+                return new ApiOperationResponse(1, 'player_created', ["player_id" => $newPlayer->id]);
+            }
         }
+        catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    private function makePlayerOnlineForGameFlavor(Player $player, $gameFlavorPackIdentifier) {
+        $gameFlavorManager = new GameFlavorManager();
+        $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
+        $player->game_flavor_playing = $gameFlavor->id;
+        $this->playerStorage->savePlayer($player);
     }
 
     public function logInPlayer($input) {
         $username = $input['user_name'];
         $password = $input['password'];
-        if($this->playerWithUserNameExists($username)) {
-            $player = $this->getPlayerByUserName($username);
-            if (Hash::check($password, $player->password)) {
-                $this->markPlayerAsActive($player);
-                return new ApiOperationResponse(1, 'player_found', ["player_id" => $player->id]);
+        $gameFlavorPackIdentifier = $input['game_flavor_pack_identifier'];
+        try {
+            if ($this->playerWithUserNameExists($username)) {
+                $player = $this->getPlayerByUserName($username);
+                if (Hash::check($password, $player->password)) {
+                    $this->markPlayerAsActive($player);
+                    $this->makePlayerOnlineForGameFlavor($player, $gameFlavorPackIdentifier);
+                    return new ApiOperationResponse(1, 'player_found', ["player_id" => $player->id]);
+                } else {
+                    return new ApiOperationResponse(2, 'player_not_found', "");
+                }
             } else {
                 return new ApiOperationResponse(2, 'player_not_found', "");
             }
-        } else {
-            return new ApiOperationResponse(2, 'player_not_found', "");
         }
+        catch (Exception $e) {
+                return new ApiOperationResponse(2, 'error', $e->getMessage());
+            }
     }
 
     private function getPlayerByUserName($username) {
@@ -90,26 +112,31 @@ class PlayerManager {
         return $this->playerStorage->getPlayerById($playerId);
     }
 
-    public function getPlayerAvailability(array $input) {
+    public function getPlayerAvailabilityForGameFlavor(array $input) {
         $playerUserName = $input['user_name'];
-        if($this->playerWithUserNameExists($playerUserName)) {
-            $player = $this->getPlayerByUserName($playerUserName);
-            if($this->isPlayerAvailable($player)) {
-                return new ApiOperationResponse(1, 'player_available', ["player_id" => $player->id]);
+        $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
+        $gameFlavorManager = new GameFlavorManager();
+        try {
+            $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+            if($this->playerWithUserNameExists($playerUserName)) {
+                $player = $this->getPlayerByUserName($playerUserName);
+                if($this->isPlayerAvailableForGameFlavor($player, $gameFlavor)) {
+                    return new ApiOperationResponse(1, 'player_available', ["player_id" => $player->id]);
+                } else {
+                    return new ApiOperationResponse(1, 'player_not_available', "");
+                }
             } else {
-                return new ApiOperationResponse(1, 'player_not_available', "");
+                return new ApiOperationResponse(4, 'player_not_found', "");
             }
-        } else {
-            return new ApiOperationResponse(4, 'player_not_found', "");
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
         }
     }
 
-    public function isPlayerAvailable(Player $player) {
-//        if($player->in_game)
-//            return false;
+    public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
         $playerLastSeenOnlineMargin = strtotime("-5 minutes");
 
-        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online)){
+        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online) || $player->game_flavor_playing != $gameFlavor->id){
             return false;
         }
         return true;
