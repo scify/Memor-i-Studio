@@ -119,7 +119,21 @@ class GameRequestManager {
             $playerManager = new PlayerManager();
             $playerManager->markPlayerAsNotInGame($initiatorPlayer);
             $playerManager->markPlayerAsNotInGame($opponentPlayer);
-            return new ApiOperationResponse(1, 'success', '');
+            return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::COMPLETED);
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    public function setGameCanceled(array $input) {
+        try {
+            $gameRequest = $this->getGameRequest($input['game_request_id']);
+            $initiatorPlayer = $gameRequest->initiator;
+            $opponentPlayer = $gameRequest->opponent;
+            $playerManager = new PlayerManager();
+            $playerManager->markPlayerAsNotInGame($initiatorPlayer);
+            $playerManager->markPlayerAsNotInGame($opponentPlayer);
+            return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::CANCELED);
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
         }

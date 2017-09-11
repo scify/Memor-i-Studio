@@ -16,4 +16,5 @@ abstract class GameRequestStatus
     const REJECTED_BY_OPPONENT = 3;
     const IN_PROGRESS = 4;
     const COMPLETED = 5;
+    const CANCELED = 6;
 }
