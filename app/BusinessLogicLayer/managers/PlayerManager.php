@@ -133,10 +133,28 @@ class PlayerManager {
         }
     }
 
+    public function getRandomPlayer(array $input) {
+        $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
+        $playerId = $input['player_id'];
+        $gameFlavorManager = new GameFlavorManager();
+        try {
+            $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+            $players = $this->playerStorage->getOnlinePlayersForGameFlavorExcept($gameFlavor->id, $playerId);
+            if($players->isNotEmpty()) {
+                $randomPlayer = $players->random();
+                return new ApiOperationResponse(1, 'player_found', ["player_id" => $randomPlayer->id]);
+            } else {
+                return new ApiOperationResponse(4, 'player_not_found', "");
+            }
+        } catch (Exception $e) {
+            return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
         $playerLastSeenOnlineMargin = strtotime("-5 minutes");
 
-        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online) || $player->game_flavor_playing != $gameFlavor->id){
+        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online) || $player->game_flavor_playing != $gameFlavor->id || !$player->in_game){
             return false;
         }
         return true;

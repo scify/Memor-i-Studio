@@ -66,6 +66,20 @@ class PlayerController extends Controller
         return json_encode($response);
     }
 
+    public function getRandomPlayer(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'player_id' => 'required',
+            'game_flavor_pack_identifier' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->playerManager->getRandomPlayer($input);
+        }
+        return json_encode($response);
+    }
+
     public function markPlayerActive(Request $request) {
         $validator = Validator::make($request->all(), [
             'player_id' => 'required'

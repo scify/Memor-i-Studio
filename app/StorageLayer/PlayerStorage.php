@@ -38,11 +38,23 @@ class PlayerStorage {
 
     public function getOnlinePlayersExcept($playerId) {
         $date = new DateTime;
-        $date->modify('-5 days');
+        $date->modify('-2 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
         return Player::where([
             ['last_seen_online', '>=', $formatted_date],
             ['in_game', false],
+            ['id', '<>' , $playerId]
+        ])->get();
+    }
+
+    public function getOnlinePlayersForGameFlavorExcept($gameFlavorId, $playerId) {
+        $date = new DateTime;
+        $date->modify('-2 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        return Player::where([
+            ['last_seen_online', '>=', $formatted_date],
+            ['in_game', false],
+            ['game_flavor_playing', $gameFlavorId],
             ['id', '<>' , $playerId]
         ])->get();
     }
