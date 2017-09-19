@@ -93,10 +93,10 @@ class PlayerManager {
                     $this->makePlayerOnlineForGameFlavor($player, $gameFlavorPackIdentifier);
                     return new ApiOperationResponse(1, 'player_found', ["player_id" => $player->id]);
                 } else {
-                    return new ApiOperationResponse(2, 'player_not_found', "");
+                    return new ApiOperationResponse(4, 'player_not_found', "");
                 }
             } else {
-                return new ApiOperationResponse(2, 'player_not_found', "");
+                return new ApiOperationResponse(4, 'player_not_found', "");
             }
         }
         catch (Exception $e) {
