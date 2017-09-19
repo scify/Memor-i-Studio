@@ -14,6 +14,7 @@ use App\Models\GameFlavor;
 use App\Models\Player;
 use App\StorageLayer\PlayerStorage;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -152,9 +153,12 @@ class PlayerManager {
     }
 
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
-        $playerLastSeenOnlineMargin = strtotime("-5 minutes");
+        $lastSeenOnline = new DateTime($player->last_seen_online);
 
-        if ($playerLastSeenOnlineMargin > strtotime($player->last_seen_online) || $player->game_flavor_playing != $gameFlavor->id || !$player->in_game){
+        $minutes = new DateTime("5 minutes ago");
+        $newDateTime = $minutes->format("Y-m-d H:i:s");
+        $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
+        if ($newDateTime > $lastSeenDate || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
             return false;
         }
         return true;
