@@ -171,6 +171,8 @@ class PlayerManager {
             return new ApiOperationResponse(2, 'player_not_found', "");
         try {
             $this->markPlayerAsActive($player);
+            if($player->in_game)
+                $this->markPlayerAsNotInGame($player);
             return new ApiOperationResponse(1, 'game_marked_active', "");
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
