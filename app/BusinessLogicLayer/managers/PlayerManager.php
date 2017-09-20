@@ -59,7 +59,6 @@ class PlayerManager {
         try {
             $gameFlavorManager = new GameFlavorManager();
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
-            dd($gameFlavor);
             if($this->playerWithUserNameExists($username)) {
                 return new ApiOperationResponse(2, "user_name_taken", "");
             } else {
