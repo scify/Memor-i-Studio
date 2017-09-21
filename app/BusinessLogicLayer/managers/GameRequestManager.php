@@ -12,6 +12,7 @@ namespace App\BusinessLogicLayer\managers;
 use App\BusinessLogicLayer\GameRequestStatus;
 use App\Models\api\ApiOperationResponse;
 use App\Models\GameRequest;
+use App\Models\Player;
 use App\StorageLayer\GameRequestStorage;
 use Exception;
 
@@ -171,9 +172,13 @@ class GameRequestManager {
         }
     }
 
-    private function updateGameRequestStatusAndGetResponse(GameRequest $gameRequest, $status) {
+    public function updateGameRequestStatusAndGetResponse(GameRequest $gameRequest, $status) {
         $gameRequest->status_id = $status;
         $this->gameRequestStorage->saveGameRequest($gameRequest);
         return new ApiOperationResponse(1, 'success', 'Game request status updated');
+    }
+
+    public function getOpenRequestsForPlayer(Player $player) {
+        return $this->gameRequestStorage->getGameRequestsForOpponent($player->id);
     }
 }

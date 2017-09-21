@@ -9,6 +9,7 @@
 namespace App\BusinessLogicLayer\managers;
 
 
+use App\BusinessLogicLayer\GameRequestStatus;
 use App\Models\api\ApiOperationResponse;
 use App\Models\GameFlavor;
 use App\Models\Player;
@@ -173,11 +174,21 @@ class PlayerManager {
             return new ApiOperationResponse(2, 'player_not_found', "");
         try {
             $this->markPlayerAsActive($player);
-            if($player->in_game)
+            if($player->in_game) {
                 $this->markPlayerAsNotInGame($player);
+            }
+            $this->closeAllOpenRequestsForPlayer($player);
             return new ApiOperationResponse(1, 'game_marked_active', "");
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    private function closeAllOpenRequestsForPlayer(Player $player) {
+        $gameRequestManager = new GameRequestManager();
+        $openRequests = $gameRequestManager->getOpenRequestsForPlayer($player);
+        foreach ($openRequests as $openRequest) {
+            $gameRequestManager->updateGameRequestStatusAndGetResponse($openRequest, GameRequestStatus::CANCELED);
         }
     }
 }
