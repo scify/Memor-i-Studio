@@ -12,8 +12,8 @@
                           enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-3">Game Type</div><!--.col-md-3-->
-                            <div class="col-md-6">
-                                <select class="selecter width-percent-80" name="game_version_id">
+                            <div class="col-md-9">
+                                <select class="selecter width-percent-100" name="game_version_id">
                                     @foreach($gameVersions as $gameVersion)
                                         <option value="{{$gameVersion->id}}">{{$gameVersion->name}} {{$gameVersion->version_code}}</option>
                                     @endforeach
