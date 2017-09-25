@@ -260,11 +260,13 @@ class GameFlavorController extends Controller
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {
-        return $this->buildExecutables($gameFlavorId, false);
+        $this->buildExecutables($gameFlavorId, false);
+        return redirect()->back();
     }
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
-        return $this->buildExecutables($gameFlavorId, true);
+        $this->buildExecutables($gameFlavorId, true);
+        return redirect()->back();
     }
 
     public function buildExecutables($gameFlavorId, $shouldCongratulateCreator) {
@@ -283,6 +285,5 @@ class GameFlavorController extends Controller
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', 'Game flavor executables built.');
-        return redirect()->back();
     }
 }
