@@ -260,16 +260,27 @@ class GameFlavorController extends Controller
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {
-        $this->buildExecutables($gameFlavorId, false);
+        try {
+            $this->buildExecutables($gameFlavorId);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
+        }
+        session()->flash('flash_message_success', 'Game flavor executables built.');
         return redirect()->back();
     }
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
-        $this->buildExecutables($gameFlavorId, true);
+        try {
+            $this->buildExecutables($gameFlavorId);
+            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
+        }
+        session()->flash('flash_message_success', 'Game flavor executables built.');
         return redirect()->back();
     }
 
-    public function buildExecutables($gameFlavorId, $shouldCongratulateCreator) {
+    public function buildExecutables($gameFlavorId) {
         try {
             $this->gameFlavorManager->packageFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
@@ -279,11 +290,11 @@ class GameFlavorController extends Controller
             $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
-            if($shouldCongratulateCreator)
-                $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
+
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', 'Game flavor executables built.');
+        return redirect()->back();
     }
 }
