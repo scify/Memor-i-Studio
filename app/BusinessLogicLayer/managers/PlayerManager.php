@@ -158,7 +158,7 @@ class PlayerManager {
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
         $lastSeenOnline = new DateTime($player->last_seen_online);
 
-        $minutes = new DateTime("2 minutes ago");
+        $minutes = new DateTime("60 seconds ago");
         $newDateTime = $minutes->format("Y-m-d H:i:s");
         $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
         if ($newDateTime > $lastSeenDate || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
