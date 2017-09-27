@@ -55,7 +55,8 @@ class PlayerController extends Controller
     public function getPlayerAvailability(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',
-            'game_flavor_pack_identifier' => 'required'
+            'game_flavor_pack_identifier' => 'required',
+            'player_initiator_id' => 'required'
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());

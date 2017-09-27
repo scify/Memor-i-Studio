@@ -14,6 +14,7 @@ use App\Models\api\ApiOperationResponse;
 use App\Models\GameRequest;
 use App\Models\Player;
 use App\StorageLayer\GameRequestStorage;
+use DateTime;
 use Exception;
 
 class GameRequestManager {
@@ -55,13 +56,40 @@ class GameRequestManager {
     }
 
     public function initiateGameRequest(array $input) {
+        $gameFlavorManager = new GameFlavorManager();
+        $playerManager = new PlayerManager();
         try {
-            $gameFlavorManager = new GameFlavorManager();
+            $initiatorPlayer = $playerManager->getPlayerById($input['player_initiator_id']);
+            $opponentPlayer = $playerManager->getPlayerById($input['player_opponent_id']);
+
             $gameFlavorId = $gameFlavorManager->getFlavorIdFromIdentifier($input['game_identifier']);
-            $newGameRequest = $this->create($input['player_initiator_id'], $input['player_opponent_id'], $gameFlavorId, $input['game_level_id']);
+            // check if there is a request from the opponent player that is pending, was initiated less than 30 seconds ago
+            // if there is , return appropriate code message
+            $newGameRequest = $this->create($initiatorPlayer->id, $opponentPlayer->id, $gameFlavorId, $input['game_level_id']);
             return new ApiOperationResponse(1, 'game_request_created', ["game_request_id" => $newGameRequest->id]);
+
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
+        }
+    }
+
+    public function playersAlreadyHaveOpenRequest($initiatorPlayerId, $opponentPlayerId) {
+        $date = new DateTime("30 seconds ago");
+        $gameRequests = $this->gameRequestStorage->getGameRequestsNewerThan($initiatorPlayerId, $opponentPlayerId, $date);
+        return !$gameRequests->isEmpty();
+    }
+
+    public function playerExistsAsOpponentInAnotherRequest($opponentPlayerId) {
+        $date = new DateTime("30 seconds ago");
+        $gameRequests = $this->gameRequestStorage->getGameRequestsForOpponentNewerThan($opponentPlayerId, $date);
+        return !$gameRequests->isEmpty();
+    }
+
+    public function deleteOldGameRequests($initiatorPlayerId) {
+        $date = new DateTime("10 seconds ago");
+        $gameRequests = $this->gameRequestStorage->getGameRequestsForInitiatorOlderThan($initiatorPlayerId, $date);
+        foreach ($gameRequests as $gameRequest) {
+            $gameRequest->delete();
         }
     }
 

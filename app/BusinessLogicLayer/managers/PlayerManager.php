@@ -17,7 +17,7 @@ use App\StorageLayer\PlayerStorage;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
-
+use Exception;
 
 class PlayerManager {
 
@@ -113,21 +113,31 @@ class PlayerManager {
     }
 
     public function getPlayerById($playerId) {
-        return $this->playerStorage->getPlayerById($playerId);
+        $player = $this->playerStorage->getPlayerById($playerId);
+        if(!$player)
+            throw new Exception("player with id: " . $playerId . " not found.");
+        return $player;
     }
 
     public function getPlayerAvailabilityForGameFlavor(array $input) {
         $playerUserName = $input['user_name'];
         $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
+        $initiatorPlayer = $this->getPlayerById($input['player_initiator_id']);
+        $gameRequestManager = new GameRequestManager();
         $gameFlavorManager = new GameFlavorManager();
         try {
+            $gameRequestManager->deleteOldGameRequests($initiatorPlayer->id);
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
             if($this->playerWithUserNameExists($playerUserName)) {
-                $player = $this->getPlayerByUserName($playerUserName);
-                if($this->isPlayerAvailableForGameFlavor($player, $gameFlavor)) {
-                    return new ApiOperationResponse(1, 'player_available', ["player_id" => $player->id]);
+                $opponentPlayer = $this->getPlayerByUserName($playerUserName);
+                if($gameRequestManager->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
+                    return new ApiOperationResponse(5, 'game_request_exists', "");
                 } else {
-                    return new ApiOperationResponse(1, 'player_not_available', "");
+                    if ($this->isPlayerAvailableForGameFlavor($opponentPlayer, $gameFlavor)) {
+                        return new ApiOperationResponse(1, 'player_available', ["player_id" => $opponentPlayer->id]);
+                    } else {
+                        return new ApiOperationResponse(1, 'player_not_available', "");
+                    }
                 }
             } else {
                 return new ApiOperationResponse(4, 'player_not_found', "");
@@ -141,8 +151,14 @@ class PlayerManager {
         $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
         $playerId = $input['player_id'];
         $gameFlavorManager = new GameFlavorManager();
+        $gameRequestManager = new GameRequestManager();
         try {
+            $player = $this->getPlayerById($playerId);
+            $gameRequestManager->deleteOldGameRequests($player->id);
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+            if($gameRequestManager->playerExistsAsOpponentInAnotherRequest($player->id)) {
+                return new ApiOperationResponse(5, 'game_request_exists', "");
+            }
             $players = $this->playerStorage->getOnlinePlayersForGameFlavorExcept($gameFlavor->id, $playerId);
             if($players->isNotEmpty()) {
                 $randomPlayer = $players->random();
@@ -158,7 +174,7 @@ class PlayerManager {
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
         $lastSeenOnline = new DateTime($player->last_seen_online);
 
-        $minutes = new DateTime("60 seconds ago");
+        $minutes = new DateTime("10 seconds ago");
         $newDateTime = $minutes->format("Y-m-d H:i:s");
         $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
         if ($newDateTime > $lastSeenDate || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
@@ -177,7 +193,6 @@ class PlayerManager {
             if($player->in_game) {
                 $this->markPlayerAsNotInGame($player);
             }
-            //$this->closeAllOpenRequestsForPlayer($player);
             return new ApiOperationResponse(1, 'game_marked_active', "");
         } catch (Exception $e) {
             return new ApiOperationResponse(2, 'error', $e->getMessage());
