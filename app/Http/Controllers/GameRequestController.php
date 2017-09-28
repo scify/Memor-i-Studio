@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameRequestManager;
 use App\Models\api\ApiOperationResponse;
+use App\Utils\ServerResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,7 +31,7 @@ class GameRequestController {
             'game_level_id' => 'required',
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->initiateGameRequest($input);
@@ -43,7 +44,7 @@ class GameRequestController {
             'game_request_id' => 'required',
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->getReplyForGameRequest($input);
@@ -62,7 +63,7 @@ class GameRequestController {
             'game_request_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->setShuffledCardsForGame($input);
@@ -75,7 +76,7 @@ class GameRequestController {
             'game_request_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->getShuffledCardsForGame($input);
@@ -89,7 +90,7 @@ class GameRequestController {
             'game_request_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->replyToGameRequest($input);
@@ -102,7 +103,7 @@ class GameRequestController {
             'game_request_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->setGameEnded($input);
@@ -115,7 +116,7 @@ class GameRequestController {
             'game_request_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameRequestManager->setGameCanceled($input);

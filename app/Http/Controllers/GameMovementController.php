@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameMovementManager;
 use App\Models\api\ApiOperationResponse;
+use App\Utils\ServerResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,7 +31,7 @@ class GameMovementController {
             'timestamp' => 'required',
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameMovementManager->createGameMovement($input);
@@ -45,7 +46,7 @@ class GameMovementController {
             'last_timestamp' => 'required',
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->gameMovementManager->getLatestOpponentGameMovement($input);

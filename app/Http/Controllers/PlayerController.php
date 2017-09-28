@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\PlayerManager;
 use App\Models\api\ApiOperationResponse;
+use App\Utils\ServerResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +30,7 @@ class PlayerController extends Controller
             'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->playerManager->registerNewPlayer($input);
@@ -44,7 +45,7 @@ class PlayerController extends Controller
             'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->playerManager->logInPlayer($input);
@@ -59,7 +60,7 @@ class PlayerController extends Controller
             'player_initiator_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->playerManager->getPlayerAvailabilityForGameFlavor($input);
@@ -73,7 +74,7 @@ class PlayerController extends Controller
             'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->playerManager->getRandomPlayer($input);
@@ -86,7 +87,7 @@ class PlayerController extends Controller
             'player_id' => 'required'
         ]);
         if ($validator->fails()) {
-            $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
             $response = $this->playerManager->markPlayerOnline($input);
