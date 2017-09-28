@@ -201,11 +201,22 @@ class PlayerManager {
         return true;
     }
 
-    public function markPlayerOnline($input) {
+    public function setPlayerOnline($input) {
         $playerId = $input['player_id'];
         try {
             $player = $this->getPlayerById($playerId);
             $this->markPlayerAsOnline($player);
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_marked_active', "");
+        } catch (Exception $e) {
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
+        }
+    }
+
+    public function setPlayerAsNotInGame($input) {
+        $playerId = $input['player_id'];
+        try {
+            $player = $this->getPlayerById($playerId);
+            $this->markPlayerAsNotInGame($player);
             return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_marked_active', "");
         } catch (Exception $e) {
             return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());

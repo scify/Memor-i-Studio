@@ -53,6 +53,19 @@ class PlayerController extends Controller
         return json_encode($response);
     }
 
+    public function setPlayerNotInGame(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'player_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
+        } else {
+            $input = $request->all();
+            $response = $this->playerManager->setPlayerAsNotInGame($input);
+        }
+        return json_encode($response);
+    }
+
     public function getPlayerAvailability(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',
@@ -82,7 +95,7 @@ class PlayerController extends Controller
         return json_encode($response);
     }
 
-    public function markPlayerActive(Request $request) {
+    public function setPlayerOnline(Request $request) {
         $validator = Validator::make($request->all(), [
             'player_id' => 'required'
         ]);
@@ -90,7 +103,7 @@ class PlayerController extends Controller
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
-            $response = $this->playerManager->markPlayerOnline($input);
+            $response = $this->playerManager->setPlayerOnline($input);
         }
         return json_encode($response);
     }
