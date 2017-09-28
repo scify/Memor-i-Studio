@@ -55,7 +55,6 @@ class CardManager {
                 throw new Exception('Card creation failed');
             }
         }
-        //TODO: discuss with ggianna
         if(count($input['card']) == 1) {
             $newCard = $this->createNewCard($gameFlavorId, $cardLabel, $input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
             if ($newCard == null) {

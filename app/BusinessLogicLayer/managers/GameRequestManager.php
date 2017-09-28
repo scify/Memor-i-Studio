@@ -31,7 +31,7 @@ class GameRequestManager {
         $player = $playerManager->getPlayerById($playerId);
         if(!$player)
             return new ApiOperationResponse(2, 'player_not_found', "");
-        $playerManager->markPlayerAsActive($player);
+        $playerManager->markPlayerAsOnline($player);
         $gameRequest = $this->gameRequestStorage->getGameRequestsForOpponent($playerId)->first();
 
         if($gameRequest) {

@@ -38,7 +38,7 @@ class WindowsBuilder {
         $this->copyLaunch4JBaseFileToDataPackDir($gameFlavor->id);
         $launch4JConfigFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavor->id);
         $this->updateLaunch4jFile($gameFlavorJarFile, $launch4JConfigFile, $gameFlavor);
-        //todo: licence file in .iss not working - the .exe is never built
+        //notice: licence file in .iss not working - the .exe is never built if we add it
         //so for now we skip the step
         //$this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
         $this->buildWindowsExecutable($gameFlavor->id);

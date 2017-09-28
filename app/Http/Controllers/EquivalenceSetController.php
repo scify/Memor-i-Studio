@@ -72,7 +72,6 @@ class EquivalenceSetController extends Controller
         $input = $request->all();
         $gameFlavorId = $input['card'][1]['game_flavor_id'];
 
-        //TODO: discuss try catch with alex
         try {
             $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
             $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);

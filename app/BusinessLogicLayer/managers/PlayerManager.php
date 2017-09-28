@@ -14,6 +14,7 @@ use App\Models\api\ApiOperationResponse;
 use App\Models\GameFlavor;
 use App\Models\Player;
 use App\StorageLayer\PlayerStorage;
+use App\Utils\ServerResponses;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
@@ -38,7 +39,7 @@ class PlayerManager {
     }
 
 
-    public function markPlayerAsActive(Player $player) {
+    public function markPlayerAsOnline(Player $player) {
         $player->last_seen_online = Carbon::now()->toDateTimeString();
         $this->playerStorage->savePlayer($player);
     }
@@ -61,20 +62,20 @@ class PlayerManager {
             $gameFlavorManager = new GameFlavorManager();
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
             if($this->playerWithUserNameExists($username)) {
-                return new ApiOperationResponse(2, "user_name_taken", "");
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, "user_name_taken", "");
             } else {
                 $newPlayer = new Player([
                     'user_name' => $username,
                     'password' => Hash::make($password)
                 ]);
                 $newPlayer = $this->playerStorage->savePlayer($newPlayer);
-                $this->markPlayerAsActive($newPlayer);
+                $this->markPlayerAsOnline($newPlayer);
                 $this->makePlayerOnlineForGameFlavor($newPlayer, $gameFlavorPackIdentifier);
-                return new ApiOperationResponse(1, 'player_created', ["player_id" => $newPlayer->id]);
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_created', ["player_id" => $newPlayer->id]);
             }
         }
         catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -93,18 +94,19 @@ class PlayerManager {
             if ($this->playerWithUserNameExists($username)) {
                 $player = $this->getPlayerByUserName($username);
                 if (Hash::check($password, $player->password)) {
-                    $this->markPlayerAsActive($player);
+                    $this->markPlayerAsOnline($player);
+                    $this->markPlayerAsNotInGame($player);
                     $this->makePlayerOnlineForGameFlavor($player, $gameFlavorPackIdentifier);
-                    return new ApiOperationResponse(1, 'player_found', ["player_id" => $player->id]);
+                    return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_found', ["player_id" => $player->id]);
                 } else {
-                    return new ApiOperationResponse(4, 'player_not_found', "");
+                    return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'player_not_found', "");
                 }
             } else {
-                return new ApiOperationResponse(4, 'player_not_found', "");
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'player_not_found', "");
             }
         }
         catch (Exception $e) {
-                return new ApiOperationResponse(2, 'error', $e->getMessage());
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
             }
     }
 
@@ -131,19 +133,19 @@ class PlayerManager {
             if($this->playerWithUserNameExists($playerUserName)) {
                 $opponentPlayer = $this->getPlayerByUserName($playerUserName);
                 if($gameRequestManager->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
-                    return new ApiOperationResponse(5, 'game_request_exists', "");
+                    return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', "");
                 } else {
                     if ($this->isPlayerAvailableForGameFlavor($opponentPlayer, $gameFlavor)) {
-                        return new ApiOperationResponse(1, 'player_available', ["player_id" => $opponentPlayer->id]);
+                        return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_available', ["player_id" => $opponentPlayer->id]);
                     } else {
-                        return new ApiOperationResponse(1, 'player_not_available', "");
+                        return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_not_available', "");
                     }
                 }
             } else {
-                return new ApiOperationResponse(4, 'player_not_found', "");
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'player_not_found', "");
             }
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -157,45 +159,47 @@ class PlayerManager {
             $gameRequestManager->deleteOldGameRequests($player->id);
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
             if($gameRequestManager->playerExistsAsOpponentInAnotherRequest($player->id)) {
-                return new ApiOperationResponse(5, 'game_request_exists', "");
+                return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', "");
             }
             $players = $this->playerStorage->getOnlinePlayersForGameFlavorExcept($gameFlavor->id, $playerId);
             if($players->isNotEmpty()) {
                 $randomPlayer = $players->random();
-                return new ApiOperationResponse(1, 'player_found', ["player_id" => $randomPlayer->id]);
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_found', ["player_id" => $randomPlayer->id]);
             } else {
-                return new ApiOperationResponse(4, 'player_not_found', "");
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'player_not_found', "");
             }
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
-        $lastSeenOnline = new DateTime($player->last_seen_online);
-
-        $minutes = new DateTime("10 seconds ago");
-        $newDateTime = $minutes->format("Y-m-d H:i:s");
-        $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
-        if ($newDateTime > $lastSeenDate || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
+        if (!$this->isPlayerOnline($player) || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
             return false;
         }
         return true;
     }
 
-    public function markPlayerActive($input) {
+    public function isPlayerOnline(Player $player) {
+        $lastSeenOnline = new DateTime($player->last_seen_online);
+
+        $minutes = new DateTime("10 seconds ago");
+        $newDateTime = $minutes->format("Y-m-d H:i:s");
+        $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
+        if ($newDateTime > $lastSeenDate){
+            return false;
+        }
+        return true;
+    }
+
+    public function markPlayerOnline($input) {
         $playerId = $input['player_id'];
-        $player = $this->getPlayerById($playerId);
-        if(!$player)
-            return new ApiOperationResponse(2, 'player_not_found', "");
         try {
-            $this->markPlayerAsActive($player);
-            if($player->in_game) {
-                $this->markPlayerAsNotInGame($player);
-            }
-            return new ApiOperationResponse(1, 'game_marked_active', "");
+            $player = $this->getPlayerById($playerId);
+            $this->markPlayerAsOnline($player);
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_marked_active', "");
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 

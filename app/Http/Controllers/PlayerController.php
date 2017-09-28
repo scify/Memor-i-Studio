@@ -25,7 +25,7 @@ class PlayerController extends Controller
     public function registerNewPlayer(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required',
-            'password' => 'required|min:4',
+            'password' => 'required|min:2',
             'game_flavor_pack_identifier' => 'required'
         ]);
         if ($validator->fails()) {
@@ -89,7 +89,7 @@ class PlayerController extends Controller
             $response = new ApiOperationResponse(3, 'validation_failed', $validator->messages());
         } else {
             $input = $request->all();
-            $response = $this->playerManager->markPlayerActive($input);
+            $response = $this->playerManager->markPlayerOnline($input);
         }
         return json_encode($response);
     }
