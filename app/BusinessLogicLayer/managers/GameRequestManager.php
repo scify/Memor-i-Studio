@@ -14,6 +14,7 @@ use App\Models\api\ApiOperationResponse;
 use App\Models\GameRequest;
 use App\Models\Player;
 use App\StorageLayer\GameRequestStorage;
+use App\Utils\ServerResponses;
 use DateTime;
 use Exception;
 
@@ -30,14 +31,14 @@ class GameRequestManager {
         $playerManager = new PlayerManager();
         $player = $playerManager->getPlayerById($playerId);
         if(!$player)
-            return new ApiOperationResponse(2, 'player_not_found', "");
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'player_not_found', "");
         $playerManager->markPlayerAsOnline($player);
         $gameRequest = $this->gameRequestStorage->getGameRequestsForOpponent($playerId)->first();
 
         if($gameRequest) {
             $initiatorUserName = $gameRequest->initiator->user_name;
             $initiatorId = $gameRequest->initiator->id;
-            return new ApiOperationResponse(1, 'new_request',
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_request',
                 [
                     "game_request_id" => $gameRequest->id,
                     "initiator_user_name" => $initiatorUserName,
@@ -66,10 +67,10 @@ class GameRequestManager {
             // check if there is a request from the opponent player that is pending, was initiated less than 30 seconds ago
             // if there is , return appropriate code message
             $newGameRequest = $this->create($initiatorPlayer->id, $opponentPlayer->id, $gameFlavorId, $input['game_level_id']);
-            return new ApiOperationResponse(1, 'game_request_created', ["game_request_id" => $newGameRequest->id]);
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_request_created', ["game_request_id" => $newGameRequest->id]);
 
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -98,17 +99,17 @@ class GameRequestManager {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             // if status is still 'sent', then there has been no reply yet, so return appropriate code
             if($gameRequest->status_id == GameRequestStatus::REQUEST_SENT) {
-                return new ApiOperationResponse(4, 'not_replied', '');
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'not_replied', '');
             } else {
                 if($gameRequest->status_id == GameRequestStatus::ACCEPTED_BY_OPPONENT) {
-                    return new ApiOperationResponse(1, 'accepted', 'accepted by opponent');
+                    return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'accepted', 'accepted by opponent');
                 } else if($gameRequest->status_id == GameRequestStatus::REJECTED_BY_OPPONENT) {
-                    return new ApiOperationResponse(1, 'rejected', 'rejected by opponent');
+                    return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'rejected', 'rejected by opponent');
                 }
             }
             // else, send response with game request status
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -134,9 +135,9 @@ class GameRequestManager {
             $opponentPlayer = $gameRequest->opponent;
             $playerManager->markPlayerAsInGame($initiatorPlayer);
             $playerManager->markPlayerAsInGame($opponentPlayer);
-            return new ApiOperationResponse(1, 'success', '');
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'success', '');
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -150,7 +151,7 @@ class GameRequestManager {
             $playerManager->markPlayerAsNotInGame($opponentPlayer);
             return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::COMPLETED);
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -164,7 +165,7 @@ class GameRequestManager {
             $playerManager->markPlayerAsNotInGame($opponentPlayer);
             return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::CANCELED);
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -172,13 +173,13 @@ class GameRequestManager {
         try {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             if($gameRequest->shuffled_cards) {
-                return new ApiOperationResponse(1, 'success', json_decode($gameRequest->shuffled_cards));
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'success', json_decode($gameRequest->shuffled_cards));
             } else {
-                return new ApiOperationResponse(4, 'no_cards', '');
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'no_cards', '');
             }
 
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
@@ -194,16 +195,16 @@ class GameRequestManager {
                 return $this->updateGameRequestStatusAndGetResponse($gameRequest, GameRequestStatus::REJECTED_BY_OPPONENT);
             }
             else
-                return new ApiOperationResponse(2, 'error_wrong_parameters', 'The reply parameter was neither "true" or "false');
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error_wrong_parameters', 'The reply parameter was neither "true" or "false');
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
     public function updateGameRequestStatusAndGetResponse(GameRequest $gameRequest, $status) {
         $gameRequest->status_id = $status;
         $this->gameRequestStorage->saveGameRequest($gameRequest);
-        return new ApiOperationResponse(1, 'success', 'Game request status updated');
+        return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'success', 'Game request status updated');
     }
 
     public function getOpenRequestsForPlayer(Player $player) {

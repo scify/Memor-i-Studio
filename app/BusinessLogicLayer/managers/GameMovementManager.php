@@ -27,9 +27,9 @@ class GameMovementManager {
             $gameRequestManager = new GameRequestManager();
             $gameRequest = $gameRequestManager->getGameRequest($input['game_request_id']);
             $newGameMovement = $this->create($input['player_id'], $input['movement_json'], $gameRequest->id, $input['timestamp']);
-            return new ApiOperationResponse(1, 'game_movement_created', ["game_movement_id" => $newGameMovement->id]);
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_movement_created', ["game_movement_id" => $newGameMovement->id]);
         } catch (Exception $e) {
-            return new ApiOperationResponse(2, 'error', $e->getMessage());
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
     }
 
