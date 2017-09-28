@@ -136,7 +136,12 @@ class PlayerManager {
                     return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', "");
                 } else {
                     if ($this->isPlayerAvailableForGameFlavor($opponentPlayer, $gameFlavor)) {
-                        return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_available', ["player_id" => $opponentPlayer->id]);
+                        if($this->isPlayerInGame($opponentPlayer)) {
+                            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_in_game', ["player_id" => $opponentPlayer->id]);
+                        } else {
+                            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_available', ["player_id" => $opponentPlayer->id]);
+                        }
+
                     } else {
                         return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'player_not_available', "");
                     }
@@ -174,10 +179,14 @@ class PlayerManager {
     }
 
     public function isPlayerAvailableForGameFlavor(Player $player, GameFlavor $gameFlavor) {
-        if (!$this->isPlayerOnline($player) || $player->game_flavor_playing != $gameFlavor->id || $player->in_game){
+        if (!$this->isPlayerOnline($player) || $player->game_flavor_playing != $gameFlavor->id){
             return false;
         }
         return true;
+    }
+
+    public function isPlayerInGame(Player $player) {
+        return $player->in_game;
     }
 
     public function isPlayerOnline(Player $player) {
