@@ -58,6 +58,7 @@ class PlayerManager {
         $username = $input['user_name'];
         $password = $input['password'];
         $gameFlavorPackIdentifier = $input['game_flavor_pack_identifier'];
+        dd($gameFlavorPackIdentifier);
         try {
             $gameFlavorManager = new GameFlavorManager();
             $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
