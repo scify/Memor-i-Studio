@@ -49,7 +49,7 @@ class GameMovementManager {
             $playerManager = new PlayerManager();
             $gameRequestManager = new GameRequestManager();
             $gameRequest = $gameRequestManager->getGameRequest($input['game_request_id']);
-            $opponent = $gameRequest->opponent;
+            $opponent = $playerManager->getPlayerById($input['opponent_id']);
             if(!$playerManager->isPlayerOnline($opponent))
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
 
