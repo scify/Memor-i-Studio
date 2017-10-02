@@ -96,7 +96,11 @@ class GameRequestManager {
 
     public function getReplyForGameRequest(array $input) {
         try {
+            $playerManager = new PlayerManager();
             $gameRequest = $this->getGameRequest($input['game_request_id']);
+            $opponent = $playerManager->getPlayerById($input['opponent_id']);
+            if(!$playerManager->isPlayerOnline($opponent))
+                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
             // if status is still 'sent', then there has been no reply yet, so return appropriate code
             if($gameRequest->status_id == GameRequestStatus::REQUEST_SENT) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'not_replied', '');
@@ -171,7 +175,11 @@ class GameRequestManager {
 
     public function getShuffledCardsForGame(array $input) {
         try {
+            $playerManager = new PlayerManager();
             $gameRequest = $this->getGameRequest($input['game_request_id']);
+            $opponent = $playerManager->getPlayerById($input['opponent_id']);
+            if(!$playerManager->isPlayerOnline($opponent))
+                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
             if($gameRequest->shuffled_cards) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'success', json_decode($gameRequest->shuffled_cards));
             } else {
