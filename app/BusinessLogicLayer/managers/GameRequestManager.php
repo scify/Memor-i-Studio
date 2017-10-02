@@ -36,15 +36,18 @@ class GameRequestManager {
         $gameRequest = $this->gameRequestStorage->getGameRequestsForOpponent($playerId)->first();
 
         if($gameRequest) {
-            $initiatorUserName = $gameRequest->initiator->user_name;
-            $initiatorId = $gameRequest->initiator->id;
-            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_request',
-                [
-                    "game_request_id" => $gameRequest->id,
-                    "initiator_user_name" => $initiatorUserName,
-                    "initiator_id" => $initiatorId,
-                    "game_level_id" => $gameRequest->game_level_id
-                ]);
+            $date = new DateTime("60 seconds ago");
+            if($gameRequest->updated_at >= $date) {
+                $initiatorUserName = $gameRequest->initiator->user_name;
+                $initiatorId = $gameRequest->initiator->id;
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_request',
+                    [
+                        "game_request_id" => $gameRequest->id,
+                        "initiator_user_name" => $initiatorUserName,
+                        "initiator_id" => $initiatorId,
+                        "game_level_id" => $gameRequest->game_level_id
+                    ]);
+            }
         }
         return null;
     }
