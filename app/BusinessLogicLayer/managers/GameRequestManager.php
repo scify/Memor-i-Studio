@@ -181,8 +181,8 @@ class GameRequestManager {
             $playerManager = new PlayerManager();
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             $opponent = $playerManager->getPlayerById($input['opponent_id']);
-            if(!$playerManager->isPlayerOnline($opponent))
-                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
+//            if(!$playerManager->isPlayerOnline($opponent))
+//                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
             if($gameRequest->shuffled_cards) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'success', json_decode($gameRequest->shuffled_cards));
             } else {
