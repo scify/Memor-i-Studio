@@ -192,7 +192,7 @@ class PlayerManager {
     public function isPlayerOnline(Player $player) {
         $lastSeenOnline = new DateTime($player->last_seen_online);
 
-        $minutes = new DateTime("10 seconds ago");
+        $minutes = new DateTime("20 seconds ago");
         $newDateTime = $minutes->format("Y-m-d H:i:s");
         $lastSeenDate = $lastSeenOnline->format("Y-m-d H:i:s");
         if ($newDateTime > $lastSeenDate){
