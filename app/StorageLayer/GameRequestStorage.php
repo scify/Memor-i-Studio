@@ -27,14 +27,14 @@ class GameRequestStorage {
         return GameRequest::where([
             ['player_opponent_id', $playerOpponentId],
             ['status_id', GameRequestStatus::REQUEST_SENT]
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameRequestsForInitiatorOlderThan($initiatorPlayerId, $date) {
         return GameRequest::where([
             ['updated_at', '<=', $date],
             ['player_initiator_id', $initiatorPlayerId]
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameRequestsNewerThan($initiatorPlayerId, $opponentPlayerId, $date) {
@@ -43,7 +43,7 @@ class GameRequestStorage {
             ['player_initiator_id', $initiatorPlayerId],
             ['player_opponent_id', $opponentPlayerId],
             ['status_id', GameRequestStatus::REQUEST_SENT]
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameRequestsForOpponentNewerThan($opponentPlayerId, $date) {
@@ -51,7 +51,7 @@ class GameRequestStorage {
             ['updated_at', '>=', $date],
             ['player_opponent_id', $opponentPlayerId],
             ['status_id', GameRequestStatus::REQUEST_SENT]
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
     }
 
 }

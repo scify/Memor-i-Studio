@@ -37,7 +37,7 @@ class GameRequestManager {
 
         if($gameRequest) {
             $date = new DateTime("60 seconds ago");
-            if($gameRequest->updated_at >= $date) {
+            if($gameRequest->created_at >= $date) {
                 $initiatorUserName = $gameRequest->initiator->user_name;
                 $initiatorId = $gameRequest->initiator->id;
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_request',
