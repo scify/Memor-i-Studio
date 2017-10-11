@@ -53,7 +53,7 @@ class GameMovementManager {
             if(!$playerManager->isPlayerOnline($opponent))
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
 
-            $gameMovement = $this->gameMovementStorage->getLatestGameMovementOfPlayer($gameRequest->id, $input['opponent_id'], $input['last_timestamp']);
+            $gameMovement = $this->gameMovementStorage->getNextGameMovementOfPlayer($gameRequest->id, $input['opponent_id'], $input['last_timestamp']);
             if($gameMovement) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_movement',
                     [
@@ -63,7 +63,6 @@ class GameMovementManager {
             }
             else
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'no_movement', "");
-
 
         } catch (Exception $e) {
             return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());

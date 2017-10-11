@@ -23,7 +23,7 @@ class GameMovementStorage {
         ])->orderBy('timestamp', 'desc')->first();
     }
 
-    public function getLatestGameMovementOfPlayer($gameRequestId, $opponentId, $lastTimestamp) {
+    public function getNextGameMovementOfPlayer($gameRequestId, $opponentId, $lastTimestamp) {
         return GameMovement::where([
             ['game_request_id', $gameRequestId],
             ['player_id', $opponentId],

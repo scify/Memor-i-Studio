@@ -149,6 +149,7 @@ class GameRequestManager {
     }
 
     public function setGameEnded(array $input) {
+        // TODO clean tables associated with game request (game movements)
         try {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             $initiatorPlayer = $gameRequest->initiator;
@@ -163,6 +164,7 @@ class GameRequestManager {
     }
 
     public function setGameCanceled(array $input) {
+        // TODO clean tables associated with game request (game movements)
         try {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
             $initiatorPlayer = $gameRequest->initiator;
