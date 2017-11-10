@@ -55,6 +55,7 @@
                                 @if($loggedInUser->isAdmin())
                                     <li><a href="{{url('gameFlavor/buildTest', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i> Test Build</a></li>
                                     <li><a href="{{url('gameFlavor/build', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i> Build</a></li>
+                                    <li><a href="{{url('gameFlavor/changeVersionIndex', $gameFlavor->id)}}" class="btn btn-flat btn-ripple"><i class="fa fa-wrench" aria-hidden="true"></i> Change Version</a></li>
                                 @endif
                             </div>
                         </ul>

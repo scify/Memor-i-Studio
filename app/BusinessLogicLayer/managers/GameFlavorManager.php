@@ -81,6 +81,18 @@ class GameFlavorManager {
 
     }
 
+    public function assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameVersionManager = new GameVersionManager();
+        $gameVersion = $gameVersionManager->getGameVersion($gameVersionId);
+
+        if(!$gameFlavor || !$gameVersion)
+            throw new \Exception("ERROR game flavor id: " . $gameFlavorId . " or game version id: " . $gameVersionId . " do not exist");
+        $gameFlavor->game_version_id = $gameVersion->id;
+        $gameFlavor->save();
+        return $gameFlavor;
+    }
+
     private function createIdentifierForGameFlavor(GameFlavor $gameFlavor) {
         return greeklish($gameFlavor->name);
     }

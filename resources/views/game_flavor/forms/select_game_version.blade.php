@@ -8,7 +8,7 @@
                 </div><!--.panel-heading-->
                 <div class="panel-body">
                     <form id="gameVersion-handling-form" class="memoriForm" method="GET"
-                          action="{{route('createGameFlavorIndex')}}"
+                          action="{{isset($gameFlavor) ? route('changeGameVersion', $gameFlavor->id) : route('createGameFlavorIndex')}}"
                           enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-2">Game Type</div><!--.col-md-3-->

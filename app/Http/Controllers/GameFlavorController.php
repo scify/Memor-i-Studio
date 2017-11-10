@@ -297,4 +297,21 @@ class GameFlavorController extends Controller
         session()->flash('flash_message_success', 'Game flavor executables built.');
         return redirect()->back();
     }
+
+    public function assignGameFlavorToGameVersion($gameFlavorId, Request $request) {
+        $gameVersionId = $request['game_version_id'];
+        try {
+            $this->gameFlavorManager->assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId);
+        } catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
+        }
+        session()->flash('flash_message_success', 'Game flavor updated.');
+        return redirect()->back();
+    }
+
+    public function changeGameVersionIndex($gameFlavorId) {
+        $gameFlavor= $this->gameFlavorManager->getGameFlavor($gameFlavorId);
+        $gameVersions = $this->gameVersionManager->getAllGameVersions();
+        return view('game_flavor.forms.select_game_version', ['gameVersions' => $gameVersions, 'gameFlavor' => $gameFlavor]);
+    }
 }

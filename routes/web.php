@@ -79,6 +79,8 @@ Route::group([ 'middleware' => 'auth' ], function () {
     Route::get('gameFlavor/unpublish/{id}', 'GameFlavorController@unPublish')->name('unPublishGameFlavor');
     Route::get('gameFlavor/buildTest/{id}', 'GameFlavorController@buildExecutablesForTesting')->name('buildGameFlavorExecutablesForTesting');
     Route::get('gameFlavor/build/{id}', 'GameFlavorController@buildExecutablesAndCongratulate')->name('buildGameFlavorExecutables');
+    Route::get('gameFlavor/changeVersionIndex/{id}', 'GameFlavorController@changeGameVersionIndex')->name('changeGameVersionIndex');
+    Route::get('gameFlavor/changeVersion/{id}', 'GameFlavorController@assignGameFlavorToGameVersion')->name('changeGameVersion');
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
     Route::get('gameFlavors/submittedForApproval', 'GameFlavorController@showGameFlavorsSubmittedForApproval')->name('showGameFlavorsSubmittedForApproval');
 
