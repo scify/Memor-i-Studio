@@ -17,6 +17,8 @@
                         <li><i class="fa fa-check" aria-hidden="true"></i> download games for free</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> create new Memor-i games with new sounds and images</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> create variants ('clones') of a game and enrich it with additional images and sounds.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> securely play against the computer.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> securely play online with other players or even with your friends.</li>
                     </ul>
                     <b>Who can use Memor-i Studio</b>
                     <br>
@@ -40,11 +42,12 @@
                         <li><i class="fa fa-check" aria-hidden="true"></i> κατεβάσετε παιχνίδια δωρεάν</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> δημιουργήσετε νέα παιχνίδια Memor-i με καινούριους ήχους και εικόνες.</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> να δημιουργήσετε παραλλαγές (‘κλώνους’) ενός παιχνιδιού και να το εμπλουτίσετε με επιπλέον εικόνες και ήχους.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> να παίξετε με ασφάλεια εναντίον του υπολογιστή.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> να παίξετε Online με ασφάλεια με άλλους παίκτες ή ακόμα και με τους φίλους σας.</li>
                     </ul>
                     <b>Σε ποιους απευθύνεται</b>
                     <br>
                     Τα παιχνίδια που μπορείτε να δημιουργήσετε μέσω της πλατφόρμας απευθύνονται σε ανθρώπους με τυφλότητα (ηχητικό αρχείο), σε ανθρώπους με προβλήματα όρασης (ασπρόμαυρη εικόνα) καθώς και σε βλέποντες (έγχρωμη εικόνα).
-
                 </div>
             </div>
         </div>
