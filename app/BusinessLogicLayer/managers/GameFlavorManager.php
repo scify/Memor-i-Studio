@@ -410,6 +410,7 @@ class GameFlavorManager {
         $newGameFlavor->name .= '_copy';
         $newGameFlavor->creator_id = $userId;
         $newGameFlavor->published = false;
+        $newGameFlavor->game_identifier .= '_copy' . $this->generateRandomString(5);
         $newGameFlavor->save();
         return $newGameFlavor;
     }
@@ -499,5 +500,14 @@ class GameFlavorManager {
             throw new \Exception("Game Flavor not found. Identifier: " . $gameFlavorIdentifier);
     }
 
+    public function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 
 }
