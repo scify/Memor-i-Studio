@@ -22,6 +22,9 @@
                 @endif
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
+            @if($gameFlavor->gameVersion->online)
+                    <img class="onlineImg" src="{{asset('assets/img/online-game.png')}}">
+            @endif
         </div>
         @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)
