@@ -41,6 +41,11 @@ class GameVersionManager {
         $newGameVersion->version_code = $input['version_code'];
         $newGameVersion->description = $input['description'];
         $newGameVersion->creator_id = $user->id;
+        if(isset($input['online']))
+            $newGameVersion->online = true;
+        else
+            $newGameVersion->online = false;
+
         if (isset($input['cover_img'])) {
             $newGameVersion->cover_img_path = $this->fileStorage->storeFile($input['cover_img'], $this->coverImgStoragePath);
         }
@@ -100,6 +105,10 @@ class GameVersionManager {
         $gameVersionToBeUpdated->name = $input['name'];
         $gameVersionToBeUpdated->version_code = $input['version_code'];
         $gameVersionToBeUpdated->description = $input['description'];
+        if(isset($input['online']))
+            $gameVersionToBeUpdated->online = true;
+        else
+            $gameVersionToBeUpdated->online = false;
         if (isset($input['cover_img'])) {
             $gameVersionToBeUpdated->cover_img_path = $this->fileStorage->storeFile($input['cover_img'], $this->coverImgStoragePath);
         }

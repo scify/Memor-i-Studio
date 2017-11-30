@@ -72,6 +72,14 @@
                                 </div>
                             </div><!--.col-md-9-->
                         </div>
+                        <div class="row margin-top-10">
+                            <div class="icheckbox">
+                                <label>
+                                    <input type="checkbox" name="online" {{$gameVersion['online'] == true ? 'checked' : ''}}>
+                                    This game has online functionality
+                                </label>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 Version .jar file <a href="https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html">
