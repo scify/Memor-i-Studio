@@ -22,9 +22,6 @@
                 @endif
             @endif
             <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
-            @if($gameFlavor->gameVersion->online)
-                    <img class="onlineImg" src="{{asset('assets/img/online-game.png')}}">
-            @endif
         </div>
         @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)
@@ -71,7 +68,7 @@
         @endif
     </div><!--.card-heading-->
 
-    <div class="card-body">
+    <div class="card-body padding-bottom-10">
         <h3>
         <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
             @if($loggedInUser != null)
@@ -110,7 +107,11 @@
                 </h6>
             @endif
         </div>
-
+        <div class="extraInfo">
+            @if($gameFlavor->gameVersion->online)
+                Player V Player Online supported <i class="fa fa-check" aria-hidden="true"></i>
+            @endif
+        </div>
     </div><!--.card-body-->
 
     <div class="card-footer">

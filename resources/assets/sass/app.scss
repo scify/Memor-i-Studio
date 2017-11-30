@@ -26,9 +26,6 @@
 
 .onlineImg {
   height: 40px;
-  float: right;
-  margin-top: 41px;
-  margin-right: 5px;
 }
 
 .aboutLink {
@@ -280,12 +277,12 @@ body {
   padding: 30px !important;
 }
 
-.homePageRow .fa-check {
+.fa-check {
   color: #5cb85c;
 }
 
-.aboutPageRow .fa-check {
-  color: #5cb85c;
+.extraInfo {
+  font-size: 77%;
 }
 
 .instructionsContainer .card-body {
