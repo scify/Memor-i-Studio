@@ -93,24 +93,30 @@
                 @endif
             </h6>
 
-            @if($loggedInUser == null)
-                <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
-                       class="reportGameFlavorBtn"
-                       style="top:75px;" href="javascript: void(0)">Report
-                    </a>
-                </h6>
-            @elseif($loggedInUser != null && $gameFlavor->creator_id != $loggedInUser->id && $gameFlavor->published)
-                <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
-                       class="reportGameFlavorBtn"
-                       style="top:75px;" href="javascript: void(0)">Report
-                    </a>
-                </h6>
-            @endif
         </div>
-        <div class="extraInfo">
-            @if($gameFlavor->gameVersion->online)
-                Player V Player Online supported <i class="fa fa-check" aria-hidden="true"></i>
-            @endif
+        <div class="extraInfo row">
+            <div class="col-md-6">
+                @if($gameFlavor->gameVersion->online)
+                    <div class="item-left"> Player V Player Online supported <i class="fa fa-check" aria-hidden="true"></i></div>
+                @endif
+            </div>
+            <div class="col-md-6">
+                <div class="item-right">
+                    @if($loggedInUser == null)
+                        <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
+                               class="reportGameFlavorBtn"
+                               style="top:75px;" href="javascript: void(0)">Report
+                            </a>
+                        </h6>
+                    @else
+                        <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
+                               class="reportGameFlavorBtn"
+                               style="top:75px;" href="javascript: void(0)">Report
+                            </a>
+                        </h6>
+                    @endif
+                </div>
+            </div>
         </div>
     </div><!--.card-body-->
 
