@@ -69,7 +69,7 @@
     </div><!--.card-heading-->
 
     <div class="card-body padding-bottom-10">
-        <h3>
+        <h3 class="margin-bottom-5">
         <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
             @if($loggedInUser != null)
               @if($loggedInUser->isAdmin())

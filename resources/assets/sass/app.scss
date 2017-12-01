@@ -120,8 +120,9 @@
   }
 
   .description {
-    height: 55%;
+    height: auto;
     overflow: auto;
+    max-height: 130px;
   }
 
   .langImg {
@@ -283,6 +284,7 @@ body {
 
 .extraInfo {
   font-size: 77%;
+  margin-top: 10px;
 }
 
 .instructionsContainer .card-body {
