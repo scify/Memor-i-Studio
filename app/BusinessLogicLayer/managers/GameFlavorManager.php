@@ -341,7 +341,7 @@ class GameFlavorManager {
     private function addDataPackIntoJar($gameFlavorId) {
         $old_path = getcwd();
         chdir(storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId);
-        $command = 'zip -ur memori.jar project_additional.properties data/*';
+        $command = 'zip -ur memori.jar project_additional.properties data_' . $gameFlavorId . '/*';
         $output = shell_exec($command);
         chdir($old_path);
         return $output;
