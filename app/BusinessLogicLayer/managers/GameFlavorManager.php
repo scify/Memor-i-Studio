@@ -156,12 +156,12 @@ class GameFlavorManager {
     }
 
 
-
     /**
      * Gets a Flavor if the user has access rights
      *
      * @param $id . the id of game version
      * @return GameFlavor desired {@see GameFlavor} object, or null if the user has no access to this object
+     * @throws \Exception if a game flavor is not found
      */
     public function getGameFlavor($id) {
         $user = Auth::user();
@@ -171,6 +171,8 @@ class GameFlavorManager {
         if($gameFlavor != null) {
             if ($this->isGameFlavorAccessedByUser($gameFlavor, $user))
                 return $gameFlavor;
+        } else {
+            throw new \Exception("Game flavor not found. Id queried: " . $id);
         }
 
         return null;
