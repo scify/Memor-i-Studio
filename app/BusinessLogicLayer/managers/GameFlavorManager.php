@@ -341,6 +341,8 @@ class GameFlavorManager {
     private function addDataPackIntoJar($gameFlavorId) {
         $old_path = getcwd();
         chdir(storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId);
+        $existingAdditionalPropertiesFile = shell_exec('unzip -p memori.jar project_additional.properties');
+        dd($existingAdditionalPropertiesFile);
         $command = 'zip -ur memori.jar project_additional.properties data_' . $gameFlavorId . '/*';
         $output = shell_exec($command);
         chdir($old_path);
@@ -412,7 +414,7 @@ class GameFlavorManager {
         $newGameFlavor->name .= '_copy';
         $newGameFlavor->creator_id = $userId;
         $newGameFlavor->published = false;
-        $newGameFlavor->game_identifier .= '_copy' . $this->generateRandomString(5);
+        $newGameFlavor->game_identifier .= $this->generateRandomString(3);
         $newGameFlavor->save();
         return $newGameFlavor;
     }
