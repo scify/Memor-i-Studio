@@ -321,7 +321,7 @@ class GameFlavorManager {
             $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
             $this->addDataPackIntoJar($gameFlavorId);
         } catch (\Exception $e) {
-            throw $e;
+            dd($e);
         }
         //copy the public jnlp file into the game flavor jnlp directory
         //$this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
@@ -357,7 +357,7 @@ class GameFlavorManager {
         }
         $command = 'zip -ur memori.jar project_additional.properties data/*';
         $output = shell_exec($command);
-        dd($output);
+
         chdir($old_path);
         return $output;
     }
