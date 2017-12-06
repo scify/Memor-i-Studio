@@ -104,9 +104,11 @@ class GameFlavorController extends Controller
     public function editIndex($id)
     {
         $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
-        if($gameFlavor == null) {
-            return view('common.error_message', ['message' => 'Uncaught error while getting game flavor with id ' . $id]);
+        try {
+            $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
+        }
+        catch (\Exception $e) {
+            return view('common.error_message', ['message' => $e->getMessage()]);
         }
         $gameVersionId = $gameFlavor->game_version_id;
         $languages = $this->languageManager->getAvailableLanguages();
