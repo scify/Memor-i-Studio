@@ -63,7 +63,7 @@ class ResourceController extends Controller
         }
 
         $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
-        dd($gameFlavorResources);
+        
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
         return view('game_resource_category.list',
