@@ -103,7 +103,6 @@ class GameFlavorController extends Controller
      */
     public function editIndex($id)
     {
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
         try {
             $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
         }

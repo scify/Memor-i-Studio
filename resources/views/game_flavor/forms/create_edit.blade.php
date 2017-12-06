@@ -72,7 +72,7 @@
 										<span class="btn btn-default btn-file">
                                             <span class="fileinput-new">Select image</span>
                                             <span class="fileinput-exists">Change</span>
-                                            <input type="file" name="cover_img"></span>
+                                            <input type="file" name="cover_img" {{$gameFlavor->cover_img_id == '' ? 'required' : ''}}></span>
                                         <a href="#"
                                            class="btn btn-default {{($gameFlavor->cover_img_id == null ? 'fileinput-new' : 'fileinput-exists')}}"
                                            data-dismiss="fileinput">Remove</a>
