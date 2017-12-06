@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Chumper\Zipper\Zipper;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Exception;
 
 include_once 'functions.php';
@@ -315,8 +316,13 @@ class GameFlavorManager {
         //delete not-signed jar file
         //$this->deleteTemporaryFlavorPackZipFile($gameFlavorId);
         //copy the jar file for the current game version into the jnlp directory and name it appropriately
-        $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
-        $this->addDataPackIntoJar($gameFlavorId);
+
+        try {
+            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
+            $this->addDataPackIntoJar($gameFlavorId);
+        } catch (\Exception $e) {
+            throw $e;
+        }
         //copy the public jnlp file into the game flavor jnlp directory
         //$this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
         $windowsBuilder = new WindowsBuilder();
@@ -341,12 +347,42 @@ class GameFlavorManager {
     private function addDataPackIntoJar($gameFlavorId) {
         $old_path = getcwd();
         chdir(storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId);
-        $existingAdditionalPropertiesFile = shell_exec('unzip -p memori.jar project_additional.properties');
-        dd($existingAdditionalPropertiesFile);
-        $command = 'zip -ur memori.jar project_additional.properties data_' . $gameFlavorId . '/*';
+        // if the game version .jar is already a game flavor build, there is already a project_additional.properties
+        // inside the .jar file. We need to get this file and append it's contents to the project_additional.properties
+        // file for this game flavor.
+        // then we delete the project_additional.properties file and we add the newly created one
+        $existingAdditionalPropertiesFileContents = shell_exec('unzip -p memori.jar project_additional.properties');
+        if($existingAdditionalPropertiesFileContents) {
+            $this->replaceAdditionalPropertiesFileForGameFlavor($gameFlavorId, $existingAdditionalPropertiesFileContents);
+        }
+        $command = 'zip -ur memori.jar project_additional.properties data/*';
         $output = shell_exec($command);
         chdir($old_path);
         return $output;
+    }
+
+    private function replaceAdditionalPropertiesFileForGameFlavor($gameFlavorId, $existingAdditionalPropertiesFileContents) {
+        $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'project_additional.properties';
+        foreach(preg_split("/((\r?\n)|(\r\n?))/", $existingAdditionalPropertiesFileContents) as $line){
+            if($line) {
+                $arr = explode("=", $line, 2);
+                $propertyName = $arr[0];
+                if(!$this->propertyExistsInPropertiesFile($propertyName, $pathToPropsFile)) {
+                    Storage::append($pathToPropsFile, $line);
+                }
+            }
+        }
+    }
+
+    private function propertyExistsInPropertiesFile($property, $pathToPropsFile) {
+        $contents = Storage::get($pathToPropsFile);
+        foreach(preg_split("/((\r?\n)|(\r\n?))/", $contents) as $line){
+            $arr = explode("=", $line, 2);
+            $propertyName = $arr[0];
+            if($propertyName == $property)
+                return true;
+        }
+        return false;
     }
 
     private function convertGameFlavorCoverImgToIcon(ResourceFile $coverImgFile) {

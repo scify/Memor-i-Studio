@@ -308,7 +308,7 @@ class ResourceManager {
     public function createAdditionalPropertiesFile($gameFlavorId) {
         $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'project_additional.properties';
         Storage::put($pathToPropsFile, null);
-        Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data_' . $gameFlavorId);
+        Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
         Storage::append($pathToPropsFile, "GAME_IDENTIFIER=" . $gameFlavor->game_identifier);
