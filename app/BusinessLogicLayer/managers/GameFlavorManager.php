@@ -357,6 +357,7 @@ class GameFlavorManager {
         }
         $command = 'zip -ur memori.jar project_additional.properties data/*';
         $output = shell_exec($command);
+        dd($output);
         chdir($old_path);
         return $output;
     }
