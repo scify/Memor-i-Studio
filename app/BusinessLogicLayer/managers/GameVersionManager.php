@@ -9,6 +9,7 @@ use App\StorageLayer\GameVersionStorage;
 use Chumper\Zipper\Zipper;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class GameVersionManager {
@@ -115,13 +116,24 @@ class GameVersionManager {
         if (isset($input['gameResPack'])) {
             $zipFilePath = $this->storeZipFile($id, $input['gameResPack']);
             $this->deleteGameVersionDataDirectory($id);
+            $this->extractResourceDirectoriesFromZipFile($zipFilePath);
             $this->extractFilesFromZipFile($zipFilePath, $id);
         }
         $editedGameVersion =  $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
-        $resourceManager = new ResourceManager();
-        $resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
+
+        DB::transaction(function() use($editedGameVersion, $input) {
+            $resourceCategoriesManager = new ResourceCategoryManager();
+            $resourceManager = new ResourceManager();
+            if (isset($input['gameResPack'])) {
+                $resourceCategoriesManager->editResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $editedGameVersion->id);
+                $resourceManager->editResourcesFromResourcesArray($this->gameResourcesFilesSchema, $editedGameVersion->id);
+            }
+            $resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
+        });
         return $editedGameVersion;
     }
+
+
 
     /**
      * @param $id int the @see GameVersion id

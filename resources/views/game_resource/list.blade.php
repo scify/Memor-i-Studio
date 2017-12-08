@@ -23,44 +23,46 @@
                                 </thead>
                                 <tbody>
                                 @foreach($resources as $index=>$resource)
-                                    <tr>
-                                        <td class="col-md-9">{{$resource->default_text}} <div class="margin-top-5"><h6>{{$resource->default_description}}</h6></div></td>
-                                        <td>
-                                            @if($resource->file_path != null)
-                                                <div class="margin-bottom-10">
-                                                    <audio controls>
-                                                        <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
-                                                                type="audio/mpeg">
-                                                        <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
-                                                                type="audio/wav">
-                                                        Your browser does not support the audio element.
-                                                    </audio>
+                                    @if($resource->file_path)
+                                        <tr>
+                                            <td class="col-md-9">{{$resource->default_text}} <div class="margin-top-5"><h6>{{$resource->default_description}}</h6></div></td>
+                                            <td>
+                                                @if($resource->file_path != null)
+                                                    <div class="margin-bottom-10">
+                                                        <audio controls>
+                                                            <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
+                                                                    type="audio/mpeg">
+                                                            <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
+                                                                    type="audio/wav">
+                                                            Your browser does not support the audio element.
+                                                        </audio>
+                                                    </div>
+                                                @endif
+                                                <div class="fileinput fileinput-new"
+                                                     data-provides="fileinput">
+                                                <span class="btn {{$resource->file_path == null ? 'btn-info' : 'btn-success'}} btn-file">
+                                                    @if($resource->file_path == null)
+                                                        <span class="fileinput-new">Select file</span>
+
+                                                        <span class="fileinput-exists">Change</span>
+                                                    @else
+                                                        <span class="fileinput-new">Update file</span>
+
+                                                        <span class="fileinput-exists">Change</span>
+                                                    @endif
+                                                    <input type="file" name="resources[{{$index}}][audio]">
+                                                </span>
+                                                    <span class="fileinput-filename"></span>
+                                                    @if($resource->file_path == null)
+                                                        <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
+                                                           style="float: none">&times;</a>
+                                                    @endif
                                                 </div>
-                                            @endif
-                                            <div class="fileinput fileinput-new"
-                                                 data-provides="fileinput">
-                                            <span class="btn {{$resource->file_path == null ? 'btn-info' : 'btn-success'}} btn-file">
-                                                @if($resource->file_path == null)
-                                                    <span class="fileinput-new">Select file</span>
-
-                                                    <span class="fileinput-exists">Change</span>
-                                                @else
-                                                    <span class="fileinput-new">Update file</span>
-
-                                                    <span class="fileinput-exists">Change</span>
-                                                @endif
-                                                <input type="file" name="resources[{{$index}}][audio]">
-                                            </span>
-                                                <span class="fileinput-filename"></span>
-                                                @if($resource->file_path == null)
-                                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
-                                                       style="float: none">&times;</a>
-                                                @endif
-                                            </div>
-                                            <input name="resources[{{$index}}][id]" type="hidden"
-                                                   value="{{$resource->id}}">
-                                        </td>
-                                    </tr>
+                                                <input name="resources[{{$index}}][id]" type="hidden"
+                                                       value="{{$resource->id}}">
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>

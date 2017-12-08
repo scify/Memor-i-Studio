@@ -58,6 +58,26 @@ class ResourceCategoryManager {
         }
     }
 
+    public function editResourceCategoriesFromResourcesArray(array $newResourceCategories, $gameVersionId) {
+        $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId, true);
+        $resourceCategoryPaths = array();
+        foreach ($gameVersionResourceCategories as $gameVersionResourceCategory) {
+
+            array_push($resourceCategoryPaths, $gameVersionResourceCategory->path);
+        }
+        // delete any resource categories that font exist in the new .jar file
+        foreach ($gameVersionResourceCategories as $gameVersionResourceCategory) {
+            if(!in_array($gameVersionResourceCategory->path, $newResourceCategories))
+                $gameVersionResourceCategory->delete();
+        }
+
+        // create new resource category for any new path that is not in the old resource categories schema
+        foreach ($newResourceCategories as $newResourceCategoryPath) {
+            if(!in_array($newResourceCategoryPath, $resourceCategoryPaths) && $newResourceCategoryPath !== 'img/game_cover/')
+                $this->createNewResourceCategory($newResourceCategoryPath, $gameVersionId);
+        }
+    }
+
     /**
      * Given a category path and a @see GameVersion id, create a new @see ResourceCategory instance
      *

@@ -173,17 +173,47 @@ class ResourceManager {
 
             //if resource category exists and it is not a dynamic resource category
             if($resourceCategory != null && $resourceCategory->type_id != 2) {
-                $newResource = new Resource();
-                $newResource->category_id = $resourceCategory->id;
-                $newResource->name = $gameResourceFile;
-                $newResource->default_text = $gameResourceFile;
-                $newResource->default_description = $gameResourceFile;
-                if(isset($this->resourceOrdering[$gameResourceFile])) {
-                    $newResource->order_id = $this->resourceOrdering[$gameResourceFile];
-                }
-                $this->resourceStorage->storeResource($newResource);
+                $this->createNewResourceForCategory($resourceCategory, $gameResourceFile);
             }
         }
+    }
+
+    /**
+     * Given an array with the resource file names, edit corresponding resources
+     *
+     * @param $gameResourcesFilesSchema array containing resource file names (full resource path)
+     * @param $gameVersionId int the game version id
+     */
+    public function editResourcesFromResourcesArray($gameResourcesFilesSchema, $gameVersionId) {
+        $resourceCategoryManager = new ResourceCategoryManager();
+
+        foreach ($gameResourcesFilesSchema as $gameResourceFile =>$resourceCategoryName) {
+            $resourceCategory = $resourceCategoryManager->getResourceCategoryByNameForGameVersion($resourceCategoryName, $gameVersionId);
+            //if resource category exists and it is not a dynamic resource category
+            if($resourceCategory) {
+                $existingResource = $this->getResourceByNameForCategory($gameResourceFile, $resourceCategory);
+                if (!$existingResource && $resourceCategory->type_id != 2) {
+                    $this->createNewResourceForCategory($resourceCategory, $gameResourceFile);
+                }
+            }
+        }
+    }
+
+
+    private function getResourceByNameForCategory($gameResourceFilePath, $resourceCategory) {
+        return $this->resourceStorage->getReourceByNameForCategory($gameResourceFilePath, $resourceCategory->id);
+    }
+
+    private function createNewResourceForCategory($resourceCategory, $gameResourceFile) {
+        $newResource = new Resource();
+        $newResource->category_id = $resourceCategory->id;
+        $newResource->name = $gameResourceFile;
+        $newResource->default_text = $gameResourceFile;
+        $newResource->default_description = $gameResourceFile;
+        if(isset($this->resourceOrdering[$gameResourceFile])) {
+            $newResource->order_id = $this->resourceOrdering[$gameResourceFile];
+        }
+        $this->resourceStorage->storeResource($newResource);
     }
 
     /**

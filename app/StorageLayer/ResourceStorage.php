@@ -91,5 +91,9 @@ class ResourceStorage {
         return $resources;
     }
 
+    public function getReourceByNameForCategory($gameResourceFilePath, $categoryId) {
+        return Resource::where(['category_id' => $categoryId, 'name' => $gameResourceFilePath])->first();
+    }
+
 
 }
