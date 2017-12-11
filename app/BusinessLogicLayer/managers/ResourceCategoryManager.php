@@ -73,7 +73,7 @@ class ResourceCategoryManager {
 
         // create new resource category for any new path that is not in the old resource categories schema
         foreach ($newResourceCategories as $newResourceCategoryPath) {
-            if(!in_array($newResourceCategoryPath, $resourceCategoryPaths) && $newResourceCategoryPath !== 'img/game_cover/')
+            if(!in_array($newResourceCategoryPath, $resourceCategoryPaths))
                 $this->createNewResourceCategory($newResourceCategoryPath, $gameVersionId);
         }
     }

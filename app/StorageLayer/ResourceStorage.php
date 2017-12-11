@@ -46,8 +46,8 @@ class ResourceStorage {
      * @return mixed the instance if found, otherwise null
      * @internal param int $id the id of the resource
      */
-    public function getResourceByCategoryId($resourceCateforyId) {
-        return Resource::where(['category_id' => $resourceCateforyId])->first();
+    public function getResourceByCategoryId($resourceCategoryId) {
+        return Resource::where(['category_id' => $resourceCategoryId])->first();
     }
 
     /**
