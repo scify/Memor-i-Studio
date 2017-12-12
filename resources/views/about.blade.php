@@ -41,9 +41,9 @@
                     <ul class="list margin-bottom-20 margin-top-20">
                         <li><i class="fa fa-check" aria-hidden="true"></i> κατεβάσετε παιχνίδια δωρεάν</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> δημιουργήσετε νέα παιχνίδια Memor-i με καινούριους ήχους και εικόνες.</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> να δημιουργήσετε παραλλαγές (‘κλώνους’) ενός παιχνιδιού και να το εμπλουτίσετε με επιπλέον εικόνες και ήχους.</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> να παίξετε με ασφάλεια εναντίον του υπολογιστή.</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> να παίξετε Online με ασφάλεια με άλλους παίκτες ή ακόμα και με τους φίλους σας.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> δημιουργήσετε παραλλαγές (‘κλώνους’) ενός παιχνιδιού και να το εμπλουτίσετε με επιπλέον εικόνες και ήχους.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> παίξετε με ασφάλεια εναντίον του υπολογιστή.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> παίξετε Online με ασφάλεια με άλλους παίκτες ή ακόμα και με τους φίλους σας.</li>
                     </ul>
                     <b>Σε ποιους απευθύνεται</b>
                     <br>
