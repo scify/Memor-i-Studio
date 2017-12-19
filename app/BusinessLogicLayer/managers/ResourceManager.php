@@ -344,7 +344,9 @@ class ResourceManager {
         // we need to set up the game text resources language.
         // the game supports greek and english texts
         // default is greek, so if the lang_id of the game flavor is set to 2, we update it to be english.
-        if($gameFlavor->lang_id === 2) {
+        if($gameFlavor->lang_id === 1) {
+            Storage::append($pathToPropsFile, "APP_LANG=" . 'el');
+        } else {
             Storage::append($pathToPropsFile, "APP_LANG=" . 'en');
         }
         Storage::append($pathToPropsFile, "GAME_IDENTIFIER=" . $gameFlavor->game_identifier);
