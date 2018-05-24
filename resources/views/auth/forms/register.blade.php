@@ -87,6 +87,11 @@
                 </div>
             </div>
         </form>
+        <div class="privacyText">
+            The information you are about to fill in will only be used only by SciFY to use the Platform.
+            For any request or comment please contact <a href="mailto:info@scify.org">info@scify.org</a>.
+            By signing up, you agree with the <a href="https://docs.google.com/document/d/1O3iRjWAtG5vbJRsWHcZT6EhdvAhVbFymqHZqh1GRvjM">terms of use</a> and <a href="https://docs.google.com/document/d/1bGs2mYKGG6LH1Yy6Ewl_mqs5URVNIxdkUHqILGnY0to/">privacy policy</a>.
+        </div>
     </div>
     <div class="panel-footer footer-light text-dark">
         <ul class="justified-list">
