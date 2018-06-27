@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="">
-        <ol class="breadcrumb col-md-6">
+        <ol class="breadcrumb col-md-12">
             <li class="breadcrumb-item"><a href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
