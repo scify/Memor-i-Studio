@@ -30,8 +30,8 @@
         </div>
     </div>
 </div><!--.modal-->
-<div class="modal fade full-height" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="width: 50%">
+<div class="modal fade full-height bigModal" id="cardSimpleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
         <form id="simpleCardForm" class=" height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">
@@ -55,8 +55,8 @@
 
     </div>
 </div><!--.modal-->
-<div class="modal scale full-height fade" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="width: 60%">
+<div class="modal scale full-height fade bigModal" id="cardAdvancedModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
         <form class=" height100x100" method="POST"
               action="{{route('createEquivalenceSet')}}"
               enctype="multipart/form-data">

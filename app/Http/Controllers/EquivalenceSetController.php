@@ -64,8 +64,8 @@ class EquivalenceSetController extends Controller
             'card.*.game_flavor_id' => 'required',
             'card.*.image' => 'required|file|image|max:2000|mimes:jpeg,jpg,png,gif',
             'card.*.negative_image' => 'file|image|max:2000|mimes:jpeg,jpg,png,gif',
-            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
-            'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
+            'card.*.sound' => 'required|file|max:3000|mimetypes:audio/mpeg,audio/x-wav,audio/wav,audio/ogg,audio/mp4',
+            'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav,audio/wav,audio/ogg,audio/mp4',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
         ]);
 

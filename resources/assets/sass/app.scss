@@ -62,7 +62,7 @@
 }
 
 .breadcrumb {
-  //float: left;
+  float: none;
   max-width: 35%;
 }
 
@@ -336,4 +336,18 @@ body {
 .privacyText {
   font-size: small;
   color: grey;
+}
+
+.bigModal {
+  .modal-dialog {
+    width: 50%
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .bigModal {
+    .modal-dialog {
+      width: 90%;
+    }
+  }
 }
