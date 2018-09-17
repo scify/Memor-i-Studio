@@ -256,8 +256,8 @@ class GameFlavorController extends Controller
 
     public function showGameFlavorsSubmittedForApproval() {
         $gameFlavors = $this->gameFlavorManager->getGameFlavorsSubmittedForApproval();
-
-        return view('game_flavor.list', ['gameFlavors'=>$gameFlavors]);
+        $loggedInUser = Auth::user();
+        return view('game_flavor.list', ['gameFlavors'=>$gameFlavors, 'loggedInUser' => $loggedInUser]);
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {

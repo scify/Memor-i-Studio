@@ -9,7 +9,7 @@
         <div class="col-md-12">
             @foreach($gameFlavors as $gameFlavor)
                 <div class="col-md-4">
-                    @include('game_flavor.single', ['gameFlavor' => $gameFlavor])
+                    @include('game_flavor.single', ['gameFlavor' => $gameFlavor, 'loggedInUser' => $loggedInUser])
                 </div>
             @endforeach
             <div class="col-md-4 text-align-center memoriActionBtns margin-bottom-50">
