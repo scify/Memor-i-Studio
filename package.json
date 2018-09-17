@@ -24,7 +24,7 @@
     "jquery-knob": "^1.2.11",
     "jquery-ui-dist": "^1.12.1",
     "laravel-elixir": "^6.0.0-14",
-    "laravel-elixir-vue-2": "^0.2.0",
+    "laravel-elixir-vue-2": "^0.3.0",
     "laravel-elixir-webpack-official": "^1.0.2",
     "lodash": "^4.16.2",
     "modernizr": "^3.3.1",
