@@ -5,9 +5,9 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=7.0.0",
         "doctrine/dbal": "^2.5",
-        "laravel/framework": "5.4.*"
+        "laravel/framework": "5.5.*"
     },
     "require-dev": {
         "chumper/zipper": "1.0.x",
@@ -15,9 +15,10 @@
         "laracasts/generators": "^1.1",
         "laracasts/utilities": "~2.0",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*"
+        "symfony/dom-crawler": "3.1.*",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "classmap": [
@@ -40,12 +41,14 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {
