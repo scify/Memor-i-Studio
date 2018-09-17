@@ -7,16 +7,17 @@
     "require": {
         "php": ">=5.6.4",
         "doctrine/dbal": "^2.5",
-        "laravel/framework": "5.3.*"
+        "laravel/framework": "5.4.*"
     },
     "require-dev": {
+        "chumper/zipper": "1.0.x",
         "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*",
+        "laracasts/generators": "^1.1",
         "laracasts/utilities": "~2.0",
-        "chumper/zipper": "0.6.x"
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~5.7",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*"
     },
     "autoload": {
         "classmap": [
