@@ -12,7 +12,7 @@ Memor-i Studio, is an online games repository that people can use in order to cr
 
 In a nutshell (assuming debian-based OS), first install the dependencies needed:
 
-Note: php5 package installs apache2 as a dependency so we have no need to add it manually.
+Note: php5 package installs apache2 as a dependency, so we have no need to add it manually.
 
 ```
 % sudo aptitude install php5 php5-cli mcrypt php5-mcrypt mysql-server php5-mysql
@@ -130,7 +130,7 @@ In order to accomplish this, we use [ImageMagick tool](https://github.com/ImageM
 ImageMagick can be installed like this:
 ```apt-get install imagemagick```
 
-##Building Windows executables for game flavors
+## Building Windows executables for game flavors
 When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application uses
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: 5.5.9). 
 The launch4J application is included in ```public/build_app/launch4j``` as a standalone application. 
@@ -141,7 +141,7 @@ This user has to be set in .env file:
 ```
 APP_LOG_LEVEL=debug
 APP_URL=http://localhost
-SYSTEM_USER=testUser
+SYSTEM_USER=user
 ...
 ```
 

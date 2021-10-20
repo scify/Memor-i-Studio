@@ -57,3 +57,4 @@ public/memoristore
 npm-debug.log
 storage/*.jar
 *.exe
+.idea/
