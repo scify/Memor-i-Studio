@@ -62,7 +62,8 @@ mix.js([
         'node_modules/icheck/icheck.min.js',
         'resources/assets/pleasure-admin-panel/js/sliders.js',
         'resources/assets/pleasure-admin-panel/js/layout.js',
-        'resources/assets/pleasure-admin-panel/js/pleasure.js'
+        'resources/assets/pleasure-admin-panel/js/pleasure.js',
+        'resources/assets/js/bootstrap.js'
     ],
     'public/js/app.js')
     .scripts([
