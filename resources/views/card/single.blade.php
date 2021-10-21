@@ -2,9 +2,9 @@
     <div class="card-heading heading-full">
         <div class="user-image coverImgContainer">
             @if($card->image_id == null)
-                <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
+                <img loading="lazy" class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $card->image->file->file_path])}}">
+                <img loading="lazy" class="coverImg" src="{{route('resolveDataPath', ['filePath' => $card->image->file->file_path])}}">
             @endif
         </div>
         @if($user != null)

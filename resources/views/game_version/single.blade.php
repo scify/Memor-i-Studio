@@ -2,9 +2,9 @@
     <div class="card-heading heading-full">
         <div class="user-image coverImgContainer">
             @if($gameVersion->cover_img_path == null)
-                <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
+                <img loading="lazy" class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameVersion->cover_img_path])}}">
+                <img loading="lazy" class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameVersion->cover_img_path])}}">
             @endif
         </div>
         <div class="clickable-button">

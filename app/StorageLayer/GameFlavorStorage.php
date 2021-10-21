@@ -13,10 +13,11 @@ use App\Models\GameFlavor;
 
 class GameFlavorStorage {
 
+    protected $default_relationships = ['coverImg', 'language', 'creator', 'gameVersion'];
     /**
-     * Stores @see GameFlavor object to DB
-     * @param GameFlavor $gameFlavor the object to be stored
+     * Stores @param GameFlavor $gameFlavor the object to be stored
      * @return GameFlavor the newly created game version
+     * @see GameFlavor object to DB
      */
     public function storeGameFlavor(GameFlavor $gameFlavor) {
         $gameFlavor->save();
@@ -24,11 +25,11 @@ class GameFlavorStorage {
     }
 
     public function getGameFlavorsByPublishedState($state) {
-        return GameFlavor::where('published', $state)->get()->sortByDesc("created_at");
+        return GameFlavor::where('published', $state)->with($this->default_relationships)->orderBy('created_at', 'desc')->get();
     }
 
     public function getAllGameFlavors() {
-        return GameFlavor::all()->sortByDesc("created_at");
+        return GameFlavor::with($this->default_relationships)->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameFlavorById($id) {
@@ -38,7 +39,7 @@ class GameFlavorStorage {
     public function getGameFlavorByGameIdentifier($gameIdentifier) {
         return GameFlavor::where([
             ['game_identifier', $gameIdentifier]
-        ])->get()->first();
+        ])->with($this->default_relationships)->first();
 
     }
 
@@ -46,7 +47,7 @@ class GameFlavorStorage {
         return GameFlavor::where([
             ['published', '=', $state],
             ['creator_id', '=', $userId],
-        ])->get()->sortByDesc("created_at");
+        ])->with($this->default_relationships)->orderBy('created_at', 'desc')->get();
 
     }
 
@@ -54,7 +55,7 @@ class GameFlavorStorage {
         return GameFlavor::where([
             ['id', '=', $id],
             ['creator_id', '=', $userId],
-        ])->get()->first();
+        ])->with($this->default_relationships)->first();
     }
 
     public function deleteGameFlavor(GameFlavor $gameFlavor) {
@@ -64,6 +65,6 @@ class GameFlavorStorage {
     public function gatGameFlavorsBySubmittedState($submittedState) {
         return GameFlavor::where([
             ['submitted_for_approval', '=', $submittedState],
-        ])->get()->sortByDesc("created_at");
+        ])->with($this->default_relationships)->orderBy('created_at', 'desc')->get();
     }
 }

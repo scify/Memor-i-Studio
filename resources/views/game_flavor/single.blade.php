@@ -3,9 +3,9 @@
         <div class="user-image coverImgContainer">
 
             @if($gameFlavor->cover_img_file_path == null)
-                <img class="coverImg" src="{{asset('assets/img/memori.png')}}">
+                <img loading="lazy" class="coverImg" src="{{asset('assets/img/memori.png')}}">
             @else
-                <img class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
+                <img loading="lazy" class="coverImg" src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
             @if($loggedInUser != null && $gameFlavor->allow_clone)
                 <a class="cloneBtn btn btn-green btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i class="fa fa-files-o" aria-hidden="true"></i> Clone</a>
@@ -21,7 +21,7 @@
                     </a>
                 @endif
             @endif
-            <img class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
+            <img loading="lazy" class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
         </div>
         @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)

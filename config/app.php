@@ -110,7 +110,7 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-
+    'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -8,7 +8,7 @@
     <div style="width: 420px; background-color: white; position: relative;
                 top: 0; left: 0; right: 0; padding: 20px 20px 0; margin: auto auto 70px;">
         <div style="position: relative; text-align: center;">
-            <img src="{{asset("/assets/img/memori.png")}}" height= "85"
+            <img loading="lazy" src="{{asset("/assets/img/memori.png")}}" height= "85"
                  style="margin-bottom:5px;" alt="Memory logo">
         </div>
         <div style="position: relative; margin-top: 20px; text-align: center;">

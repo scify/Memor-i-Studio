@@ -57,7 +57,7 @@
                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                          style="max-height: 200px; min-height: 150px; min-width: 200px">
                                         @if($gameVersion->cover_img_path != '')
-                                            <img class="coverImg"
+                                            <img loading="lazy" class="coverImg"
                                                  src="{{route('resolveDataPath', ['filePath' => $gameVersion->cover_img_path])}}">
                                         @endif
                                     </div>

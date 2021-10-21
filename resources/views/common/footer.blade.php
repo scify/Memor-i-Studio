@@ -1,5 +1,5 @@
-<script src="{{asset(elixir('js/app.js'))}}"></script>
-<script src="{{asset(elixir('js/controllers.js'))}}"></script>
+<script src="{{mix('js/app.js')}}"></script>
+<script src="{{mix('js/controllers.js')}}"></script>
 <script>
     $(document).ready(function () {
         Pleasure.init();
