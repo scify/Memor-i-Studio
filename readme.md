@@ -139,10 +139,10 @@ This project was built with the following nodejs and npm versions:
 
 ```
 $ node -v
-v10.24.1
+v14.18.1
 
 $ npm -v
-6.14.12
+6.14.15
 ```
 
 So, when in project root directory, and after npm has been installed correctly, run
