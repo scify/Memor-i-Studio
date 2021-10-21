@@ -139,7 +139,7 @@ class GameFlavorManager {
         }
 
         foreach ($gameFlavorsToBeReturned as $gameFlavor) {
-            $gameFlavor->cover_img_file_path = $gameFlavor->coverImg->file_path;
+            $gameFlavor->cover_img_file_path = $gameFlavor->coverImg->file->file_path;
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
         }
         return $gameFlavorsToBeReturned;

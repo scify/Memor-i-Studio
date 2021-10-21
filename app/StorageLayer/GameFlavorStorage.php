@@ -13,7 +13,7 @@ use App\Models\GameFlavor;
 
 class GameFlavorStorage {
 
-    protected $default_relationships = ['coverImg', 'language', 'creator', 'gameVersion'];
+    protected $default_relationships = ['coverImg', 'coverImg.file', 'language', 'creator', 'gameVersion'];
     /**
      * Stores @param GameFlavor $gameFlavor the object to be stored
      * @return GameFlavor the newly created game version
