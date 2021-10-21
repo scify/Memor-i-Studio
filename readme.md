@@ -68,8 +68,8 @@ This project assumes working installations of the following technologies / compo
    sudo chown -R ${USER}:www-data storage
    sudo chmod -R 755 storage bootstrap/cache
    cd storage/
-   find . -type f -exec chmod 664 {} \;
-   find . -type d -exec chmod 775 {} \;
+   sudo find . -type f -exec chmod 664 {} \;
+   sudo find . -type d -exec chmod 775 {} \;
    ```
 
 ## Apache configuration (optional)

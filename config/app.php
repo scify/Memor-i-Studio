@@ -111,6 +111,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
+    'mail_username' => env('MAIL_USERNAME'),
+    'mail_password' => env('MAIL_PASSWORD'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

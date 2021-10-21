@@ -12,8 +12,8 @@ class MailManager
     private $mailPassword;
 
     function __construct() {
-        $this->mailUsername = env('MAIL_USERNAME');
-        $this->mailPassword = env('MAIL_PASSWORD');
+        $this->mailUsername = config('app.mail_username');
+        $this->mailPassword = config('app.mail_password');
 
         Config::set('mail.username', $this->mailUsername);
         Config::set('mail.password', $this->mailPassword);
