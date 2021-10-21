@@ -15,7 +15,6 @@ try {
 
 $(function () {
     $(document).ready(function () {
-        $("[id^=tooltipWindows-]").tooltip();
         $("[id^=tooltip-]").tooltip();
         Pleasure.init();
         Layout.init();
@@ -33,4 +32,4 @@ $(function () {
         });
     });
 
-})(window.jQuery);
+})();
