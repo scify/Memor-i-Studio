@@ -65,7 +65,7 @@ mix.js([
         'resources/assets/pleasure-admin-panel/js/pleasure.js'
     ],
     'public/js/app.js')
-    .js('resources/js/bootstrap.js', 'public/js')
+    .js('resources/assets/js/bootstrap.js', 'public/js')
     .scripts([
         'resources/assets/js/controllers/'
     ], 'public/js/controllers.js').version();
