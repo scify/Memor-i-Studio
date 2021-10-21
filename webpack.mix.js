@@ -69,3 +69,6 @@ mix.js([
         'resources/assets/js/controllers/'
     ], 'public/js/controllers.js').version();
 
+mix.autoload({
+    'jquery': ['$', 'window.jQuery', 'jQuery']
+});
