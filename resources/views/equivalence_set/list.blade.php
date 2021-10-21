@@ -116,7 +116,6 @@
 @section('additionalFooter')
     <script>
         $(function () {
-            $("[id^=tooltip-]").tooltip();
             var controller = new window.EquivalenceSetsController(cards, editCardRoute);
             controller.init();
         });

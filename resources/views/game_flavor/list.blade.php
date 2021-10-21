@@ -25,7 +25,6 @@
 @section('additionalFooter')
     <script>
         $(function() {
-            $("[id^=tooltipWindows-]").tooltip();
             var gameFlavorController = new GameFlavorsController();
             gameFlavorController.init();
         });
