@@ -15,10 +15,9 @@ try {
 
 $(function () {
     $(document).ready(function () {
-        $("[id^=tooltip-]").tooltip();
         Pleasure.init();
         Layout.init();
-
+        $("[id^=tooltip-]").tooltip();
         setTimeout(function () {
             /*Close any flash message after some time*/
             $(".alert-dismissable").fadeTo(4000, 500).slideUp(500, function () {
