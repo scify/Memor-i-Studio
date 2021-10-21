@@ -6,7 +6,7 @@ use App\Models\GameVersion;
 use App\Models\User;
 use App\StorageLayer\FileStorage;
 use App\StorageLayer\GameVersionStorage;
-use Chumper\Zipper\Zipper;
+use Madnest\Madzipper\Madzipper;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -175,7 +175,7 @@ class GameVersionManager {
     }
 
     private function extractFilesFromZipFile($zipFilePath, $gameVersionId) {
-        $zipper = new Zipper();
+        $zipper = new Madzipper();
         $result = File::makeDirectory($this->getPathForGameVersionDataFiles($gameVersionId), 0777, true);
         $zipper->make($zipFilePath)->folder('scify_pack')->extractTo(storage_path('app/game_versions/data/' . $gameVersionId));
     }

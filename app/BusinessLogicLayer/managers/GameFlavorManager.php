@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Chumper\Zipper\Zipper;
+use Madnest\Madzipper\Madzipper;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Exception;
 
@@ -280,7 +280,7 @@ class GameFlavorManager {
      */
     public function zipGameFlavorDataPack($gameFlavorId) {
         $packDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId;
-        $zipper = new Zipper();
+        $zipper = new Madzipper();
         $zipFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar';
         if(File::exists($zipFile)) {
             File::delete($zipFile);
