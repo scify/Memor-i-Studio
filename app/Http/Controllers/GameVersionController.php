@@ -57,7 +57,7 @@ class GameVersionController extends Controller
             return redirect()->back()->withInput($request->input());
         }
 
-        session()->flash('flash_message_success', 'Game Version created!');
+        session()->flash('flash_message_success', trans('messages.successfully_created_game'));
         return $this->showAllGameVersions();
 
     }
@@ -108,7 +108,7 @@ class GameVersionController extends Controller
             return redirect()->back()->withInput($request->input());
         }
 
-        session()->flash('flash_message_success', 'Game Version updated!');
+        session()->flash('flash_message_success', trans('messages.game_flavor_updated'));
         //return redirect()->back();
         return $this->showAllGameVersions();
     }
@@ -143,7 +143,7 @@ class GameVersionController extends Controller
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $gameVersionLanguages = $gameVersionLanguageManager->getGameVersionLanguages($id);
         if(count($gameVersionLanguages) == 0) {
-            session()->flash('flash_message_failure', 'This game version has no languages selected. Please add at least one.');
+            session()->flash('flash_message_failure', trans('messages.no_languages_selected'));
             return redirect()->back();
         }
         return view('game_resource_category.select_language', ['languages' => $gameVersionLanguages, 'gameVersionId' => $id]);
@@ -173,7 +173,7 @@ class GameVersionController extends Controller
         $gameVersionId = $input['game_version_id'];
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         if($gameVersionLanguageManager->gameVersionHasLanguage($gameVersionId, $langId)) {
-            session()->flash('flash_message_failure', 'This Game Version has already the selected language');
+            session()->flash('flash_message_failure', trans('messages.game_language_selected'));
             return redirect()->back();
         }
         try {
@@ -182,18 +182,7 @@ class GameVersionController extends Controller
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();
         }
-        session()->flash('flash_message_success', 'Language added');
+        session()->flash('flash_message_success', trans('messages.language_added'));
         return redirect()->back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function delete($id)
-    {
-        //
     }
 }

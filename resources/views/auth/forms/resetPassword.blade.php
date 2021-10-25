@@ -1,6 +1,6 @@
 <div class="panel">
     <div class="panel-heading">
-        <div class="panel-title"><h4>RESET PASSWORD</h4></div>
+        <div class="panel-title"><h4>{!! __('auth.reset_password') !!}</h4></div>
     </div>
 
     <div class="panel-body">
@@ -16,7 +16,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                    <label for="email" class="col-md-4 control-label">{!! __('auth.email_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="col-md-4 control-label">Password</label>
+                    <label for="password" class="col-md-4 control-label">{!! __('auth.password_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                    <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                    <label for="password-confirm" class="col-md-4 control-label">{!! __('auth.confirm_password_label') !!}</label>
                     <div class="col-md-6">
                         <div class="inputer">
                             <div class="input-wrapper">
@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
-                            Reset Password
+                            {!! __('auth.reset_password_btn') !!}
                         </button>
                     </div>
                 </div>

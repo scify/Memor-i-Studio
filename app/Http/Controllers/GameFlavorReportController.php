@@ -48,7 +48,7 @@ class GameFlavorReportController extends Controller
             return redirect()->back();
         }
 
-        return redirect()->back()->with('flash_message_success', 'Report submitted');
+        return redirect()->back()->with('flash_message_success', trans('messages.report_submitted'));
 
     }
 

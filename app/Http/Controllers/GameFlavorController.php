@@ -87,10 +87,10 @@ class GameFlavorController extends Controller
             return redirect()->back();
         }
         if($newGameFlavor == null)
-            return Redirect::back()->withInput()->withErrors(['error', 'Something went wrong. please try again.']);
+            return Redirect::back()->withInput()->withErrors(['error', trans('messages.error_generic')]);
 
 
-        return redirect()->route('showEquivalenceSetsForGameFlavor', ['gameFlavorId' => $newGameFlavor->id])->with('flash_message_success', 'Successfully created game "' . $newGameFlavor->name . '"');
+        return redirect()->route('showEquivalenceSetsForGameFlavor', ['gameFlavorId' => $newGameFlavor->id])->with('flash_message_success', trans('messages.successfully_created_game') . ' "' . $newGameFlavor->name . '"');
 
     }
 
@@ -136,9 +136,9 @@ class GameFlavorController extends Controller
         $newGameFlavor = $this->gameFlavorManager->createGameFlavor($id, $input);
 
         if($newGameFlavor != null) {
-            return redirect()->route('showAllGameFlavors')->with('flash_message_success', 'Successfully edited game "' . $newGameFlavor->name . '"');
+            return redirect()->route('showAllGameFlavors')->with('flash_message_success', trans('messages.successfully_edited_game') . ' "' . $newGameFlavor->name . '"');
         } else {
-            session()->flash('flash_message_failure', 'Error updating game. Please try again.');
+            session()->flash('flash_message_failure', trans('messages.error_generic'));
             return redirect()->back()->withInput();
         }
     }
@@ -154,9 +154,9 @@ class GameFlavorController extends Controller
 
         $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if(!$result) {
-            return view('common.error_message', ['message' => 'Uncaught error while deleting game flavor.']);
+            return view('common.error_message', ['message' => trans('messages.error_generic')]);
         }
-        session()->flash('flash_message_success', 'Game version deleted.');
+        session()->flash('flash_message_success', trans('messages.game_version_deleted'));
         return redirect()->back();
     }
 
@@ -166,12 +166,12 @@ class GameFlavorController extends Controller
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
 
             if(!$result) {
-                return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
+                return view('common.error_message', ['message' => trans('messages.error_generic')]);
             }
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-        session()->flash('flash_message_success', 'Game flavor published.');
+        session()->flash('flash_message_success', trans('messages.game_flavor_published'));
         return redirect()->back();
     }
 
@@ -180,9 +180,9 @@ class GameFlavorController extends Controller
         $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
         //$this->gameFlavorManager->clearJnlpDir($id);
         if(!$result) {
-            return view('common.error_message', ['message' => 'Uncaught error while toggling game flavor publish state.']);
+            return view('common.error_message', ['message' => trans('messages.error_generic')]);
         }
-        session()->flash('flash_message_success', 'Game version unpublished.');
+        session()->flash('flash_message_success', trans('messages.game_flavor_unpublished'));
         return redirect()->back();
     }
 
@@ -237,7 +237,7 @@ class GameFlavorController extends Controller
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
-        session()->flash('flash_message_success', 'Game flavor cloned.');
+        session()->flash('flash_message_success', trans('messages.game_flavor_cloned'));
         return redirect()->back();
     }
 
@@ -250,7 +250,7 @@ class GameFlavorController extends Controller
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
-        session()->flash('flash_message_success', 'Game submitted for approval.');
+        session()->flash('flash_message_success', trans('messages.game_submitted_for_approval'));
         return redirect()->back();
     }
 
@@ -266,7 +266,7 @@ class GameFlavorController extends Controller
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-        session()->flash('flash_message_success', 'Game flavor executables built.');
+        session()->flash('flash_message_success', trans('messages.game_was_built'));
         return redirect()->back();
     }
 
@@ -277,7 +277,7 @@ class GameFlavorController extends Controller
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-        session()->flash('flash_message_success', 'Game flavor executables built.');
+        session()->flash('flash_message_success', trans('messages.game_was_built'));
         return redirect()->back();
     }
 
@@ -295,7 +295,7 @@ class GameFlavorController extends Controller
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-        session()->flash('flash_message_success', 'Game flavor executables built.');
+        session()->flash('flash_message_success', trans('messages.game_was_built'));
         return redirect()->back();
     }
 
@@ -306,7 +306,7 @@ class GameFlavorController extends Controller
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
-        session()->flash('flash_message_success', 'Game flavor updated.');
+        session()->flash('flash_message_success', trans('messages.game_flavor_updated'));
         return redirect()->back();
     }
 

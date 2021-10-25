@@ -17,8 +17,8 @@
                             <table class="table-bordered table-striped table-condensed resourcesTable">
                                 <thead>
                                 <tr>
-                                    <th>Audio file description</th>
-                                    <th>Upload your audio</th>
+                                    <th>{!! __('messages.audio_file_description') !!}</th>
+                                    <th>{!! __('messages.upload_audio') !!}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -34,7 +34,7 @@
                                                                     type="audio/mpeg">
                                                             <source src="{{route('resolveDataPath', ['filePath' => $resource->file_path])}}"
                                                                     type="audio/wav">
-                                                            Your browser does not support the audio element.
+                                                            {!! __('messages.sound_browser_no_support') !!}
                                                         </audio>
                                                     </div>
                                                 @endif
@@ -42,14 +42,11 @@
                                                      data-provides="fileinput">
                                                 <span class="btn {{$resource->file_path == null ? 'btn-info' : 'btn-success'}} btn-file">
                                                     @if($resource->file_path == null)
-                                                        <span class="fileinput-new">Select file</span>
-
-                                                        <span class="fileinput-exists">Change</span>
+                                                        <span class="fileinput-new">{!! __('messages.select_file') !!}</span>
                                                     @else
-                                                        <span class="fileinput-new">Update file</span>
-
-                                                        <span class="fileinput-exists">Change</span>
+                                                        <span class="fileinput-new">{!! __('messages.update_file') !!}</span>
                                                     @endif
+                                                    <span class="fileinput-exists">{!! __('messages.change') !!}</span>
                                                     <input type="file" name="resources[{{$index}}][audio]">
                                                 </span>
                                                     <span class="fileinput-filename"></span>
@@ -68,7 +65,7 @@
                             </table>
                         </div>
                         <button type="submit" class="btn btn-primary btn-ripple pull-right">
-                            Update
+                            {!! __('messages.update') !!}
                         </button>
                     </div>
                 </div>

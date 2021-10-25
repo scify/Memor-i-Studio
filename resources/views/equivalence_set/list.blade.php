@@ -12,34 +12,31 @@
             @if(count($equivalenceSets) == 0)
                 <div class="col-md-6">
                     <div class="alert alert-warning noFloatAlert">
-                        <strong>This game flavor does not contain any card sets!</strong> Press the "+" button to add
-                        one.
+                        {!! __('messages.no_card_sets') !!}
                     </div>
                 </div>
             @elseif(count($equivalenceSets) < 3)
                 <div class="col-md-6">
                     <div class="alert alert-info noFloatAlert">
-                        <strong>This game flavor contains less than 3 card sets!</strong> In order to proceed, add at least
-                        3 card sets.
+                        {!! __('messages.not_enough_card_sets') !!}
                     </div>
                 </div>
             @else
                 <div class="col-md-6">
                     <div class="alert alert-info noFloatAlert">
-                        Click <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">here</a> to
-                        proceed to game sounds (optional)
+                        {!! __('messages.click') !!} <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">{!! __('messages.here') !!}</a> {!! __('messages.proceed_to_game_sounds') !!}
                     </div>
                 </div>
                 <div class="col-md-2 margin-bottom-20">
                     @if($gameFlavor->submitted_for_approval)
                         <a href="#" class="width-percent-100 disabled btn btn-success btn-ripple padding-15">
-                            Submitted
+                            {!! __('messages.submitted') !!}
                         </a>
                     @else
                         <form method="GET" action="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <button type="submit" class="width-percent-100 btn btn-success btn-ripple padding-15">
-                                Submit game
+                                {!! __('messages.submit_game_btn') !!}
                             </button>
                         </form>
                     @endif
@@ -47,7 +44,7 @@
                 <div class="col-md-2 margin-bottom-20">
                     @if($gameFlavor->is_built)
                         <a class="width-percent-100 btn btn-primary btn-ripple padding-15" data-toggle="modal"
-                           data-target="#downloadLinksModal">Download</a>
+                           data-target="#downloadLinksModal">{!! __('messages.download') !!}</a>
                     @endif
                 </div>
         </div>
@@ -72,15 +69,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Download Games</h4>
+                    <h4 class="modal-title">{!! __('messages.download_games') !!}</h4>
                 </div>
                 <div class="modal-body" style="height: 200px;">
                     <div class="row downloadBtnContainer">
                         <ul class="margin-bottom-30">
-                            <li style="text-align: left">For Windows, run the installer .exe file to install the game.
+                            <li style="text-align: left">{!! __('messages.download_windows_info') !!}
                             </li>
-                            <li style="text-align: left">For Linux, right click the .jar file -> Open with -> Oracle
-                                Java 8
+                            <li style="text-align: left">{!! __('messages.download_linux_info') !!}
                             </li>
                         </ul>
                         <div class="col-md-6">

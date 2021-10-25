@@ -3,11 +3,11 @@
     <div class="padding-left-30">
         <div class="panel">
             <div class="panel-heading">
-                <div class="panel-title"><h4>Language</h4></div>
+                <div class="panel-title"><h4>{!! __('messages.language') !!}</h4></div>
             </div><!--.panel-heading-->
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-3">Language</div><!--.col-md-3-->
+                    <div class="col-md-3">{!! __('messages.language') !!}</div><!--.col-md-3-->
                     <div class="col-md-9">
                         <form id="gameVersion-handling-form" class="memoriForm" method="GET"
                               action="{{route('showGameVersionResourcesForLanguage')}}"
@@ -32,14 +32,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('additionalFooter')
-    <script>
-        $(function() {
-
-//            var controller = new window.EquivalenceSetsController(cards, editCardRoute);
-//            controller.init();
-//            TablesDataTablesEditor.init();
-        });
-    </script>
 @endsection

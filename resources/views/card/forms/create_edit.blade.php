@@ -7,8 +7,8 @@
                 <h3 class="col-md-12 text-purple">{{$formTitle}}</h3><!--.col-md-12-->
             </div>
             <div class="row">
-                <div class="col-md-6">{{$formTitle}} image</div><!--.col-md-6-->
-                <div class="col-md-6">{{$formTitle}} negative image (optional) <h6>To help people with low vision</h6></div><!--.col-md-6-->
+                <div class="col-md-6">{{$formTitle}} {!! __('messages.image_label') !!}</div><!--.col-md-6-->
+                <div class="col-md-6">{{$formTitle}} {!! __('messages.negative_image_label') !!}</div><!--.col-md-6-->
             </div>
 
             <div class="col-md-6">
@@ -19,10 +19,10 @@
                     </div>
                     <div>
                         <span class="btn btn-default btn-file">
-                        <span class="fileinput-new">Select image</span>
-                        <span class="fileinput-exists">Change</span>
+                        <span class="fileinput-new">{!! __('messages.select_image') !!}</span>
+                        <span class="fileinput-exists">{!! __('messages.change') !!}</span>
                         <input type="file" name="card[{{$formNum}}][image]"></span>
-                        <small><p class="help-block">Suggested dimensions: 400 pixels (width), 600 pixels (height).</p></small>
+                        <small><p class="help-block">{!! __('messages.suggested_dimensions') !!}</p></small>
                     </div>
                 </div>
             </div><!--.col-md-9-->
@@ -35,23 +35,23 @@
                     </div>
                     <div>
                         <span class="btn btn-default btn-file">
-                        <span class="fileinput-new">Select image</span>
-                        <span class="fileinput-exists">Change</span>
+                        <span class="fileinput-new">{!! __('messages.select_image') !!}</span>
+                        <span class="fileinput-exists">{!! __('messages.change') !!}</span>
                         <input type="file" name="card[{{$formNum}}][negative_image]"></span>
-                        <small><p class="help-block">Suggested dimensions: 400 pixels (width), 600 pixels (height).</p></small>
+                        <small><p class="help-block">{!! __('messages.suggested_dimensions') !!}</p></small>
                     </div>
                 </div>
             </div><!--.col-md-9-->
         </div>
         <div class="row example-row">
             <div class="col-md-6">
-                <div class="">{{$formTitle}} sound (.wav or .mp3 file)</a>)</div>
+                <div class="">{{$formTitle}} {!! __('messages.sound_label') !!}</a>)</div>
                 <div class="cardAudioVal margin-bottom-10"></div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <input type="file" name="card[{{$formNum}}][sound]">
-                    <small><p class="help-block">Maximum size: 3Mb.</p></small>
+                    <small><p class="help-block">{!! __('messages.sound_max_size') !!}</p></small>
                 </div><!--.form-group-->
             </div><!--.col-md-9-->
         </div><!--.row-->

@@ -39,7 +39,7 @@ class ResourceController extends Controller
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();
         }
-        session()->flash('flash_message_success', 'Resource translation updated');
+        session()->flash('flash_message_success', trans('messages.resource_translation_updated'));
         return redirect()->back();
     }
 
@@ -63,7 +63,7 @@ class ResourceController extends Controller
         }
 
         $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
-        
+
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
         return view('game_resource_category.list',
@@ -93,7 +93,7 @@ class ResourceController extends Controller
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();
         }
-        session()->flash('flash_message_success', 'Resource files updated');
+        session()->flash('flash_message_success', trans('messages.resource_files_updated'));
         return redirect()->back();
     }
 }

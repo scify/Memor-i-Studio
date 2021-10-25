@@ -21,7 +21,7 @@
         </div>
         <div style="font-size: 10px; display: block; padding: 45px 0 5px; position: relative;">
             <p style="font-family: RobotoDraft, sans-serif; color: #53585e; opacity: 0.9; font-weight: 300; margin: 0;
-                      text-align: center;"><a href="http://www.scify.gr/site/en/">www.scify.org</a></p>
+                      text-align: center;"><a href="https://www.scify.gr/site/en/">www.scify.org</a></p>
         </div>
     </div>
 </div>

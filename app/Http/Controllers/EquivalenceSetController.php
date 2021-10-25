@@ -36,7 +36,7 @@ class EquivalenceSetController extends Controller
         $gameFlavorManager = new GameFlavorManager();
         $gameFlavor = $gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
         if(!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
-            return view('common.error_message', ['message' => 'This game flavor is not published yet.']);
+            return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
         }
         $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
         $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
@@ -106,7 +106,7 @@ class EquivalenceSetController extends Controller
             return redirect()->back();
         }
 
-        session()->flash('flash_message_success', 'Set updated!');
+        session()->flash('flash_message_success', trans('messages.card_set_updated') . '!');
         return redirect()->back();
     }
 
@@ -124,7 +124,7 @@ class EquivalenceSetController extends Controller
             return redirect()->back();
         }
 
-        session()->flash('flash_message_success', 'Card set deleted');
+        session()->flash('flash_message_success', trans('messages.card_set_deleted') . '!');
         return redirect()->back();
     }
 }

@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div class="panel">
                 <div class="panel-heading">
-                    <div class="panel-title"><h4>Add Language</h4></div>
+                    <div class="panel-title"><h4>{!! __('messages.add_language') !!}</h4></div>
                 </div><!--.panel-heading-->
                 <div class="panel-body">
                     <form id="gameVersion-handling-form" class="memoriForm" method="POST"
@@ -13,7 +13,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="game_version_id" value="{{$gameVersionId}}">
                         <div class="row">
-                            <div class="col-md-3">Language</div><!--.col-md-3-->
+                            <div class="col-md-3">{!! __('messages.language') !!}</div><!--.col-md-3-->
                             <div class="col-md-6">
                                 <select class="selecter width-percent-80" name="lang_id">
                                     @foreach($languages as $language)
@@ -23,7 +23,7 @@
                             </div><!--.col-md-9-->
                             <div class="col-md-3">
                                 <button type="submit" id="gameVersionLangSubmitBtn" class="btn btn-primary btn-ripple">
-                                    Add Language
+                                    {!! __('messages.add_language') !!}
                                 </button>
                             </div><!--.col-md-9-->
                         </div><!--.row-->

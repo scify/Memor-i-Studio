@@ -15,9 +15,9 @@
                         <table class="table-bordered table-striped table-condensed resourcesTable">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Display text</th>
-                                <th>Display description</th>
+                                <th>{!! __('messages.name') !!}</th>
+                                <th>{!! __('messages.display_text') !!}</th>
+                                <th>{!! __('messages.display_description') !!}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -37,7 +37,7 @@
                         </table>
                     </div>
                     <button type="submit" class="btn btn-primary btn-ripple pull-right">
-                        Update
+                        {!! __('messages.update') !!}
                     </button>
                 </div>
             </div>

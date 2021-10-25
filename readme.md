@@ -8,7 +8,7 @@
 [Memor-i](https://www.youtube.com/watch?v=uRpUeqyN1eA) is a Memory card game especially tailored to meet the needs of
 blind people.
 
-[Memor-i Studio](http://memoristudio.scify.org/), is an online games repository that people can use in order to create
+[Memor-i Studio](https://memoristudio.scify.org/), is an online games repository that people can use in order to create
 their own flavors of Memor-i game!
 
 # Installation Instructions:
@@ -229,10 +229,10 @@ navigate to http://localhost/{yourLinkName}
 This project is open-sourced software licensed under
 the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Memor-i studio has been created by [Science For You (SciFY)](http://www.scify.org), a Greek not-for-profit organization.
+Memor-i studio has been created by [Science For You (SciFY)](https://www.scify.org), a Greek not-for-profit organization.
 
 The Memor-i Studio project has been funded
-by [Public Benefit Foundation John S. Latsis](http://www.latsis-foundation.org/eng)
+by [Public Benefit Foundation John S. Latsis](https://www.latsis-foundation.org/eng)
 <br>
 <p align="center">
 <img src="https://raw.githubusercontent.com/scify/memori-online-games-repository/master/public/assets/img/latsis_logo.jpg" width="300">

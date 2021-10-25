@@ -22,12 +22,12 @@
                         <audio controls>
                             <source src="{{route('resolveDataPath', ['filePath' => $equivalenceSet->descriptionSound->file->file_path])}}" type="audio/mpeg">
                             <source src="{{route('resolveDataPath', ['filePath' => $equivalenceSet->descriptionSound->file->file_path])}}" type="audio/wav">
-                            Your browser does not support the audio element.
+                            {!! __('messages.sound_browser_no_support') !!}
                         </audio>
                     </div>
                     @if($equivalenceSet->description_sound_probability != null)
                         <div class="col-md-3">
-                            <h6 class=descriptionSoundProbability">probability: {{$equivalenceSet->description_sound_probability}} %</h6>
+                            <h6 class=descriptionSoundProbability">{!! __('messages.sound_probability') !!}: {{$equivalenceSet->description_sound_probability}} %</h6>
                         </div>
                     @endif
                 @endif

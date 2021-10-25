@@ -1,13 +1,13 @@
 <div class="panel">
     <div class="panel-heading">
-        <div class="panel-title"><h4>REGISTER</h4></div>
+        <div class="panel-title"><h4>{!! __('auth.register_btn') !!}</h4></div>
     </div>
     <div class="panel-body">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
             {{ csrf_field() }}
             <div class="form-content">
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                    <label for="name" class="col-md-4 control-label">Name</label>
+                    <label for="name" class="col-md-4 control-label">{!! __('auth.name_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                    <label for="email" class="col-md-4 control-label">{!! __('auth.email_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="col-md-4 control-label">Password</label>
+                    <label for="password" class="col-md-4 control-label">{!! __('auth.password_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -65,8 +65,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password-confirm" class="col-md-4 control-label">Confirm
-                        Password</label>
+                    <label for="password-confirm"
+                           class="col-md-4 control-label">{!! __('auth.confirm_password_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -81,22 +81,24 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
-                            Register
+                            {!! __('auth.register_btn') !!}
                         </button>
                     </div>
                 </div>
             </div>
         </form>
         <div class="privacyText">
-            The information you are about to fill in will only be used only by SciFY to use the Platform.
-            For any request or comment please contact <a href="mailto:info@scify.org">info@scify.org</a>.
-            <br><br>By signing up, you agree with the <a href="https://docs.google.com/document/d/1bGs2mYKGG6LH1Yy6Ewl_mqs5URVNIxdkUHqILGnY0to/">terms of use and privacy policy</a>.
-            Read the <a href="https://docs.google.com/document/d/1O3iRjWAtG5vbJRsWHcZT6EhdvAhVbFymqHZqh1GRvjM/">GDPR Compliance Statement</a>.
+            {!! __('messages.info_text_1') !!}
+            <br><br>{!! __('messages.info_text_2') !!} <a
+                    href="{{ __('messages.terms_link') }}"
+                    target="_blank">{!! __('messages.terms_of_use_and_privacy_policy') !!}</a>.
+            {!! __('messages.read_the') !!} <a href="{{ __('messages.gdpr_link') }}"
+                                               target="_blank">{!! __('messages.gdpr_compliance_statement') !!}</a>.
         </div>
     </div>
     <div class="panel-footer footer-light text-dark">
         <ul class="justified-list">
-            <li><small><a href="{{ url('login') }}">I already have an account</a></small></li>
+            <li><small><a href="{{ url('login') }}">{!! __('auth.already_account') !!}</a></small></li>
         </ul>
     </div><!--.panel-footer-->
 </div>

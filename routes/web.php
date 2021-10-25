@@ -15,6 +15,7 @@
 //    return view('welcome');
 //});
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,7 @@ Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGam
 Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
 Route::get('test', 'CardController@test')->name('test');
 Route::get('storeUserAction', 'CardController@storeUserAction')->name('storeUserAction');
-
+Route::get('/lang/{lang}', [HomeController::class, 'setLangLocaleCookie'])->name('set-lang-locale');
 Route::group(['prefix' => 'api'], function () {
     Route::get('players/online', 'PlayerController@getOnlinePlayersExcept')->name('getOnlinePlayersExcept');
     Route::get('player/requests', 'GameRequestController@getGameRequestsForPlayer')->name('getGameRequestsForPlayer');

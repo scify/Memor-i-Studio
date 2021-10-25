@@ -25,17 +25,10 @@
             <div class="col-md-6 centeredVertically text-align-center padding-15">
                 <div class="card card-video card-player-blue">
                     <div class="card-heading padding-top-20">
-                        <h4>Instructions</h4>
-
+                        <h4>{!! __('messages.instructions_title') !!}</h4>
                     </div>
                     <div class="card-body">
-                        Here you can replace all the sounds heard in the game (or only the ones you want!). Create your
-                        own story, your instructions for the tutorial and record your own voice. There are detailed
-                        descriptions for each audio. Listen to how the game’s audios are now, in order to be helped and
-                        get ideas!
-                        * For the ‘Storyline’ and the ‘Funny elements’ get ideas from the ones we made for the Memor-i
-                        game 'Noah's Ark'. Use your sense of humor and your imagination!
-                        ** The audios must be .wav or .mp3 file and have a size up to 3Mb.
+                        {!! __('messages.instructions_message') !!}
                     </div>
                 </div>
             </div>
@@ -49,10 +42,10 @@
                 <div class="panelContainer">
                     <div class="panel">
                         <div class="panel-heading">
-                            <div class="panel-title"><h4>Choose language</h4></div>
+                            <div class="panel-title"><h4>{!! __('messages.choose_language') !!}</h4></div>
                         </div><!--.panel-heading-->
                         <div class="panel-body">
-                            <div class="col-md-3">Interface Language</div><!--.col-md-3-->
+                            <div class="col-md-3">{!! __('messages.interface_language') !!}</div><!--.col-md-3-->
                             <div class="col-md-9">
                                 <select class="form-control selecter" name="interface_lang_id" onchange="this.form.submit()">
                                     @foreach($interfaceLanguages as $interfaceLanguage)

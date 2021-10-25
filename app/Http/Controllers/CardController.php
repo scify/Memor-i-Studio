@@ -43,13 +43,13 @@ class CardController extends Controller
             $editedCard = $this->cardManager->editCard($gameFlavorId, $request->all());
 
             if($editedCard == null)
-                throwException(new \Exception("Something went wrong. Please try again."));
+                throwException(new \Exception(trans('messages.error_generic')));
         }  catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
             return redirect()->back();
         }
 
-        session()->flash('flash_message_success', 'Game card edited');
+        session()->flash('flash_message_success', trans('messages.game_card_created'));
         return redirect()->back();
     }
 
@@ -58,17 +58,4 @@ class CardController extends Controller
         Storage::disk('local')->put('file.txt', $input['actions']);
         return '{"actions":' . $input['actions'] . '}';
     }
-
-    public function test() {
-        $contents = Storage::get('file.txt');
-        $move = '{"actions":' . $contents . '}';
-        return $move;
-    }
-
-    public function testPost(Request $request) {
-        $input = $request->all();
-        dd($input);
-    }
-
-
 }

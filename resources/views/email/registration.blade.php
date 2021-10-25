@@ -2,6 +2,6 @@
 @section('title', 'Welcome to Memor-i Studio!')
 @section('body')
     <p style="text-align: center">
-        Welcome! Click <a href="http://memoristudio.scify.org/gameFlavor/selectVersion"> here</a> to start building your own Memor-i game!
+        {!! __('messages.welcome_email_message') !!}
     </p>
 @stop

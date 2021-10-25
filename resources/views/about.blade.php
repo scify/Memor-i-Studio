@@ -59,19 +59,19 @@
                     <div class="panel-title"><h4>ABOUT</h4></div>
                 </div><!--.panel-heading-->
                 <div class="panel-body padding-30">
-                    Memor-i studio has been created by <a href="http://www.scify.gr/site/en/">Science For You (SciFY)</a>, a Greek not-for-profit organization.
+                    Memor-i studio has been created by <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, a Greek not-for-profit organization.
 
-                    The Memor-i studio project has been funded by <a href="http://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a>
+                    The Memor-i studio project has been funded by <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a>
 
-                    For more information, click <a href="http://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>
+                    For more information, click <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>
                     <div class="row margin-top-30">
                         <div class="col-md-6 text-align-center">
-                            <a href="http://www.scify.gr/site/en/">
+                            <a href="https://www.scify.gr/site/en/">
                                 <img loading="lazy" class="col-md-5 centeredVertically"  src="{{asset("/assets/img/scify.jpg")}}" alt="Latsis Logo Image">
                             </a>
                         </div>
                         <div class="col-md-6 text-align-center">
-                            <a href="http://www.latsis-foundation.org/eng">
+                            <a href="https://www.latsis-foundation.org/eng">
                                 <img loading="lazy" class="col-md-6 margin-top-20 centeredVertically" src="{{asset("/assets/img/latsis_logo.jpg")}}" alt="Latsis Logo Image">
                             </a>
                         </div>

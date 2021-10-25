@@ -1,6 +1,6 @@
 <div class="panel">
     <div class="panel-heading">
-        <div class="panel-title"><h4>RESET PASSWORD</h4></div>
+        <div class="panel-title"><h4>{!! __('auth.reset_password') !!}</h4></div>
     </div>
     <div class="panel-body">
         @if (session('status'))
@@ -13,7 +13,7 @@
             {{ csrf_field() }}
             <div class="form-content">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                    <label for="email" class="col-md-4 control-label">{!! __('auth.email_label') !!}</label>
 
                     <div class="col-md-6">
                         <div class="inputer">
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
-                            Send Password Reset Link
+                            {!! __('auth.send_password_reset_link') !!}
                         </button>
                     </div>
                 </div>

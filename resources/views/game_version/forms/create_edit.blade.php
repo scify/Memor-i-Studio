@@ -12,7 +12,7 @@
                 <div class="row example-row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="requiredExpl"><span class="required">*</span> = required</div>
+                            <div class="requiredExpl"><span class="required">*</span> = {{ __('messages.required') }}</div>
                             <div class="form-group">
                                 <div class="inputer">
                                     Version name <span class="required">*</span>
