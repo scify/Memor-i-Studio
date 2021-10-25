@@ -57,3 +57,4 @@ npm-debug.log
 storage/*.jar
 *.exe
 .idea/
+public/mix-manifest.json
