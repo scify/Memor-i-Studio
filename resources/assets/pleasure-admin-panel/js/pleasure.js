@@ -102,8 +102,8 @@ export const Pleasure = {
 			}
 			resizing = setTimeout(function () {
 				//Pleasure.toggleSidebarMenu();
-				for (var i = 0; i < this.callOnResize.length; i++) {
-					this.callOnResize[i].call();
+				for (var i = 0; i < Pleasure.callOnResize.length; i++) {
+					Pleasure.callOnResize[i].call();
 				}
 			}, 300);
 		});
@@ -379,7 +379,7 @@ export const Pleasure = {
 
 	handleRippledButtons: function () {
 
-		if( this.settings.rippledButtons ) {
+		if( Pleasure.settings.rippledButtons ) {
 
 			// Thanks to Andrew Tunnecliffe http://codepen.io/atunnecliffe/pen/VYayGp
 			var element, ripple, d, x, y;

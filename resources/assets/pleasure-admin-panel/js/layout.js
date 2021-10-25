@@ -14,7 +14,7 @@ export let Layout = {
 	handleRtlLayout: function () {
 		let $body = $('body');
 
-		if(this.settings.rtl)
+		if(Layout.settings.rtl)
 			$body.addClass('layout-rtl');
 		else
 			$body.removeClass('layout-rtl');
@@ -25,7 +25,7 @@ export let Layout = {
 
 		$body.removeClass(function (index, css) {
 			return (css.match (/(^|\s)theme-\S+/g) || []).join(' ');
-		}).addClass('theme-'+this.settings.themeClass);
+		}).addClass('theme-'+Layout.settings.themeClass);
 	},
 
 	initLayer: function () {
@@ -86,7 +86,7 @@ export let Layout = {
 			// If Menu Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !Pleasure.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$menu.addClass('activating');
@@ -107,7 +107,7 @@ export let Layout = {
 						scaleY: 1
 					}, { duration: 500, easing: [.42, 0, .58, 1] });
 
-					if( this.settings.autoScrollWhenMenuIsActive ) {
+					if( Layout.settings.autoScrollWhenMenuIsActive ) {
 						setTimeout(function () {
 							$menu.animate({ scrollTop: $menu.find('[data-open-after="true"]').position().top + 200 }, 300);
 						}, 600);
@@ -165,7 +165,7 @@ export let Layout = {
 			// If Search Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !Pleasure.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$searchLayer.addClass('activating');
@@ -242,7 +242,7 @@ export let Layout = {
 			// If User Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !Pleasure.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$userLayer.addClass('activating');

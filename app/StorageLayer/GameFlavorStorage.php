@@ -13,7 +13,7 @@ use App\Models\GameFlavor;
 
 class GameFlavorStorage {
 
-    protected $default_relationships = ['coverImg', 'coverImg.file', 'language', 'creator', 'gameVersion'];
+    protected $default_relationships = ['coverImg', 'language', 'creator', 'gameVersion'];
     /**
      * Stores @param GameFlavor $gameFlavor the object to be stored
      * @return GameFlavor the newly created game version
@@ -29,7 +29,7 @@ class GameFlavorStorage {
     }
 
     public function getAllGameFlavors() {
-        return GameFlavor::with($this->default_relationships)->orderBy('created_at', 'desc')->get();
+        return GameFlavor::with($this->default_relationships)->orderBy('created_at', 'desc')->limit(5)->get();
     }
 
     public function getGameFlavorById($id) {

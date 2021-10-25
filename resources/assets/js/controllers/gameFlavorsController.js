@@ -13,7 +13,6 @@ window.GameFlavorsController.prototype = function () {
             });
         },
         downloadBtnHandler = function () {
-            console.log("downloadBtnHandler");
             $("body").on("click", ".downloadBtnWindows", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");

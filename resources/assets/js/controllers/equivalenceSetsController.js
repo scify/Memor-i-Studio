@@ -9,7 +9,6 @@ window.EquivalenceSetsController.prototype = function () {
             $(".deleteSetBtn").on("click", function (e) {
                 e.stopPropagation();
                 var setId = $(this).attr("data-equivalenceSetId");
-                console.log(setId);
                 $('#deleteEquivalenceSetModal').modal('toggle');
                 $('#deleteEquivalenceSetModal .submitLink').attr("href", "equivalenceSet/delete?id=" + setId);
             });
@@ -18,7 +17,6 @@ window.EquivalenceSetsController.prototype = function () {
             $(".editSetBtn").on("click", function (e) {
                 e.stopPropagation();
                 var setId = $(this).attr("data-equivalenceSetId");
-                console.log(setId);
                 $('#editEquivalenceSetModal').modal('toggle');
                 $('#editEquivalenceSetModal #equivalenceSetId').val(setId);
             });
@@ -27,7 +25,6 @@ window.EquivalenceSetsController.prototype = function () {
             $(".editCardBtn").on("click", function (e) {
                 e.stopPropagation();
                 var cardId = $(this).attr("data-cardId");
-                console.log(editCardRoute);
                 var card = findCardById(cards, cardId);
                 populateCardForm(card);
                 $('#cardSimpleModal').modal('toggle');
@@ -42,7 +39,6 @@ window.EquivalenceSetsController.prototype = function () {
             return null;
         },
         populateCardForm = function(card) {
-            console.log(card);
             if(card.imageObj.file_path != null && card.imageObj.file_path != '') {
                 $('.cardImage').removeClass("fileinput-new");
                 $('.cardImage').addClass("fileinput-exists");
@@ -74,7 +70,6 @@ window.EquivalenceSetsController.prototype = function () {
         modalCloseHandler = function(instance) {
             $('#cardSimpleModal').on('hidden.bs.modal', function () {
                 clearCardForm(instance);
-                console.log("form cleared");
             })
         },
         downloadBtnHandler = function () {
@@ -82,7 +77,6 @@ window.EquivalenceSetsController.prototype = function () {
             $("body").on("click", ".downloadBtnWindows", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
-                console.log(gameFlavorId);
 
                 ga('send', {
                     hitType: 'event',
@@ -96,7 +90,6 @@ window.EquivalenceSetsController.prototype = function () {
             $("body").on("click", ".downloadBtnLinux", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
-                console.log(gameFlavorId);
                 ga('send', {
                     hitType: 'event',
                     eventCategory: 'Games',
@@ -108,8 +101,6 @@ window.EquivalenceSetsController.prototype = function () {
         },
         init = function () {
             var instance = this;
-            console.log(instance.cards);
-            console.log("here");
             deleteEquivalenceSetBtnHandler();
             editEquivalenceSetBtnHandler();
             editCardBtnHandler(instance.cards, instance.editCardRoute);
