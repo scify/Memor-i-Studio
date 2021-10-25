@@ -58,3 +58,4 @@ storage/*.jar
 *.exe
 .idea/
 public/mix-manifest.json
+storage/logs
