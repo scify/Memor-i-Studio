@@ -29,7 +29,7 @@ class GameFlavorStorage {
     }
 
     public function getAllGameFlavors() {
-        return GameFlavor::with($this->default_relationships)->orderBy('created_at', 'desc')->limit(5)->get();
+        return GameFlavor::with($this->default_relationships)->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameFlavorById($id) {
