@@ -16,11 +16,11 @@
                         one.
                     </div>
                 </div>
-            @elseif(count($equivalenceSets) < 2)
+            @elseif(count($equivalenceSets) < 3)
                 <div class="col-md-6">
                     <div class="alert alert-info noFloatAlert">
-                        <strong>This game flavor contains only one card set!</strong> In order to proceed, add at least
-                        one card set more.
+                        <strong>This game flavor contains less than 3 card sets!</strong> In order to proceed, add at least
+                        3 card sets.
                     </div>
                 </div>
             @else
