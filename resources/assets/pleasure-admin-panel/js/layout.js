@@ -1,4 +1,5 @@
-var Layout = {
+const {Pleasure} = require("./pleasure");
+export let Layout = {
 
 	// Layout Theme Settings
 	settings: {
@@ -11,7 +12,7 @@ var Layout = {
 	},
 
 	handleRtlLayout: function () {
-		$body = $('body');
+		let $body = $('body');
 
 		if(this.settings.rtl)
 			$body.addClass('layout-rtl');
@@ -20,7 +21,7 @@ var Layout = {
 	},
 
 	handleThemeColor: function () {
-		$body = $('body');
+		let $body = $('body');
 
 		$body.removeClass(function (index, css) {
 			return (css.match (/(^|\s)theme-\S+/g) || []).join(' ');
@@ -85,7 +86,7 @@ var Layout = {
 			// If Menu Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$menu.addClass('activating');
@@ -106,7 +107,7 @@ var Layout = {
 						scaleY: 1
 					}, { duration: 500, easing: [.42, 0, .58, 1] });
 
-					if( Layout.settings.autoScrollWhenMenuIsActive ) {
+					if( this.settings.autoScrollWhenMenuIsActive ) {
 						setTimeout(function () {
 							$menu.animate({ scrollTop: $menu.find('[data-open-after="true"]').position().top + 200 }, 300);
 						}, 600);
@@ -164,7 +165,7 @@ var Layout = {
 			// If Search Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$searchLayer.addClass('activating');
@@ -241,7 +242,7 @@ var Layout = {
 			// If User Layer is not active
 			if( !$this.hasClass('active') ) {
 
-				if( !Pleasure.checkTouchScreen() && !Layout.settings.improvePerformance ) // If screen is desktop, add scaled effect
+				if( !Pleasure.checkTouchScreen() && !this.settings.improvePerformance ) // If screen is desktop, add scaled effect
 					$content.addClass('scaled');
 
 				$userLayer.addClass('activating');
@@ -381,7 +382,7 @@ var Layout = {
 		} else if( $window.width() > 990 ) {
 			$body.removeClass('layout-device layout-tablet');
 		}
-		Layout.resetSendMessage();
+		this.resetSendMessage();
 	},
 
 	// Listen Message Events
@@ -393,7 +394,7 @@ var Layout = {
 			$(this).addClass('selected');
 			$('#messages').addClass('open');
 
-			Layout.getMessageById( $(this).find('a').data('message-id') );
+			this.getMessageById( $(this).find('a').data('message-id') );
 		});
 
 		// When mobile close message overlay
@@ -423,7 +424,7 @@ var Layout = {
 				url: 'demo/messages/'+id+'.html',
 				beforeSend: function() {
 					$messages.html('');
-					Layout.resetSendMessage();
+					this.resetSendMessage();
 				}
 			}).done(function(data) {
 				$messages.html(data);
@@ -476,7 +477,7 @@ var Layout = {
 					'<img src="'+Pleasure.settings.paths.images+'/faces/tolga-ergin.jpg" class="user-picture" alt="">'+
 					'</div>';
 			$messages.append(html);
-			Layout.resetSendMessage();
+			this.resetSendMessage();
 			$messages.scrollTop( $messages.prop('scrollHeight') );
 
 		});

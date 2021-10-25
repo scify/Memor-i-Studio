@@ -44,7 +44,6 @@ for (const file in files) {
 }
 
 mix.js([
-        'node_modules/npm-modernizr/modernizr.js',
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/jquery-ui-dist/jquery-ui.min.js',
         'node_modules/chosen-js/chosen.jquery.js',

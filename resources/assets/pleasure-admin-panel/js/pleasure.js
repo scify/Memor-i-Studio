@@ -1,4 +1,13 @@
-var Pleasure = {
+import FastClick from 'fastclick';
+require('jquery-ui');
+require('jquery-ui/ui/widgets/sortable');
+require('jquery-ui/ui/disable-selection');
+require('bootstrap');
+require('bootstrap-select');
+require('bootstrap-select');
+require('fastclick');
+require('velocity-animate');
+export const Pleasure = {
 
 	// Pleasure Theme Settings
 	settings: {
@@ -61,7 +70,6 @@ var Pleasure = {
 		wet_asphalt: "#34495e",
 		midnight_blue: "#2c3e50",
 		sunflower: "#f1c40f",
-		orange: "#f39c12",
 		carrot: "#e67e22",
 		pumpkin: "#d35400",
 		alizarin: "#e74c3c",
@@ -94,8 +102,8 @@ var Pleasure = {
 			}
 			resizing = setTimeout(function () {
 				//Pleasure.toggleSidebarMenu();
-				for (var i = 0; i < Pleasure.callOnResize.length; i++) {
-					Pleasure.callOnResize[i].call();
+				for (var i = 0; i < this.callOnResize.length; i++) {
+					this.callOnResize[i].call();
 				}
 			}, 300);
 		});
@@ -152,8 +160,8 @@ var Pleasure = {
 					par = $this.parents('.panel:first'),
 					dataToRefresh = par.find('.refresh-data'),
 					ajax_target = $this.data('ajax-target'),
-					ajax_selector = $this.data('ajax-selector');
-					ajax_notify = $this.data('ajax-notify');
+					ajax_selector = $this.data('ajax-selector'),
+					ajax_notify = $this.data('ajax-notify'),
 					ajax_notify_sound = $this.data('ajax-notify-sound');
 
 			// Loading ajax content
@@ -316,7 +324,7 @@ var Pleasure = {
 					sticky = $this.data('toastr-sticky'),
 					type = $this.data('toastr-type'),
 					closeOthers = $this.data('toastr-close-others'),
-					title = $this.data('toastr-title')
+					title = $this.data('toastr-title'),
 					notification = $this.data('toastr-notification');
 			Pleasure.handleToastrSettings(closeButton, positionClass, sticky, type, closeOthers, title, notification);
 		});
@@ -545,7 +553,7 @@ var Pleasure = {
 
 		// Form Elements
 		this.initSelectPicker();
-		this.initAutoSizeTextarea();
+		//this.initAutoSizeTextarea();
 		this.listenInputs();
 		this.initInputerBorders();
 
