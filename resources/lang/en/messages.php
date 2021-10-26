@@ -170,5 +170,20 @@ return [
     'thank_you_for_contacting_us' => 'Thank you for contacting us',
     'wrong_language' => 'Wrong language',
     'resource_translation_updated' => 'Resource translation updated',
-    'resource_files_updated' => 'Resource files updated'
+    'resource_files_updated' => 'Resource files updated',
+    'details' => 'Details',
+    'info_about' => 'Information about',
+    'what_is_memori_studio' => 'What is Memor-i Studio?',
+    'pre' => '',
+    'about_text_1' => 'is a platform that allows anyone without programming skills to create new inclusive electronic games. You can:',
+    'about_text_2' => 'download games for free',
+    'about_text_3' => 'create new Memor-i games with new sounds and images',
+    'about_text_4' => 'create variants ("clones") of a game and enrich it with additional images and sounds.',
+    'about_text_5' => 'play against the computer.',
+    'about_text_6' => 'securely play online with other players or even with your friends.',
+    'who_can_use_memori_studio_title' => 'Who can use Memor-i Studio',
+    'who_can_use_memori_studio_message' => 'The games are created through the platform are targeted at people with blindness (audio file), people with visual impairments (black and white image) and sighted (color image).',
+    'about_text_7' => 'Memor-i studio has been created by <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, a Greek not-for-profit organization.<br><br>The Memor-i studio project has been funded by <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a><br><br>For more information, click <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>',
+    'disclaimer_title' => 'Disclaimer',
+    'disclaimer_message' => 'Tο Memor-i Studio το δημιούργησε η SciFY και το διαθέτει δωρεάν σε όλους, ως εργαλείο ανοιχτού κώδικα (open source). Οποιοσδήποτε μπορεί να δημιουργήσει τα δικά του παιχνίδια, χωρίς να έχει γνώσεις πληροφορικής. Η SciFY φροντίζει, όσο είναι δυνατόν, όλα τα παιχνίδια του Memor-i Studio να είναι σύμφωνα με τους νόμους και τους κανονισμούς. Επίσης δίνει τη δυνατότητα στους χρήστες να καταγγέλλουν παιχνίδια με απρεπές ή παράνομο περιεχόμενο, με την επιλογή "Αναφορά"/"Report". Παρ\' όλα αυτά, η SciFY δεν είναι με κανένα τρόπο υπεύθυνη για το περιεχόμενο ή για παραβάσεις του νόμου περί πνευματικής ιδιοκτησίας παιχνιδιών που έχουν δημιουργηθεί από τρίτους.'
 ];
