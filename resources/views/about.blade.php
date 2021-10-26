@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="row aboutPageRow">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-title"><h4>{!! __('messages.details') !!}</h4></div>
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 centeredVertically">
+        <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-title"><h4>{!! __('messages.about') !!}</h4></div>
@@ -55,7 +55,7 @@
     </div>
 
     <div class="row margin-top-20">
-        <div class="col-md-6 centeredVertically">
+        <div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-title"><h4>{!! __('messages.disclaimer_title') !!}</h4></div>
