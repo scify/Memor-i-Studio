@@ -167,7 +167,7 @@
                         </button>
                     </a></li>
             </ul>
-            <h6 class="installJavaMsg">{{ __('messages.java_message') }}</h6>
+            <h6 class="installJavaMsg">{!! __('messages.java_message') !!}</h6>
         @else
             <small class="pull-left"><h6>{{ __('messages.game_available_when_published') }}</h6></small>
         @endif
