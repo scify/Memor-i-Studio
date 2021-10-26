@@ -42,7 +42,7 @@
                                 Ελληνικά
                             </a>
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('set-lang-locale', 'de') }}">
+                        <li><a class="dropdown-item" href="{{ route('set-lang-locale', 'es') }}">
                                 <img
                                         loading="lazy"
                                         class="mr-2"
