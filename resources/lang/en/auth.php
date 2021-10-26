@@ -29,5 +29,6 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'logout' => 'Logout',
     'no_account' => 'I Don\'t have an account',
-    'already_account' => 'I already have an account'
+    'already_account' => 'I already have an account',
+    'sign_in' => 'Sign in'
 ];

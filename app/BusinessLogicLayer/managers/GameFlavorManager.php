@@ -126,21 +126,19 @@ class GameFlavorManager {
         if($user != null) {
             if ($user->isAdmin()) {
                 //if admin, get all game versions
-                $gameFlavorsToBeReturned = $this->gameFlavorStorage->getAllGameFlavors();
+                $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors();
             } else {
                 //if regular user, merge the published game versions with the game versions created by the user
-                $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavorsByPublishedState(true);
-                $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavorsByPublishedStateByUser(false, $user->id);
+                $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavors(true);
+                $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavors(false, $user->id);
 
                 $gameFlavorsToBeReturned = $gameFlavorsCreatedByUser->merge($publishedGameFlavors);
             }
         } else {
-            $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavorsByPublishedState(true);
+            $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true);
         }
-
         foreach ($gameFlavorsToBeReturned as $gameFlavor) {
-            $gameFlavor->cover_img_file_path = $this->getGameFlavorCoverImgFilePath($gameFlavor);
-            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
+            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
         }
         return $gameFlavorsToBeReturned;
     }
@@ -170,7 +168,7 @@ class GameFlavorManager {
 
         //if the game Version exists, check if the user has access
         if($gameFlavor != null) {
-            if ($this->isGameFlavorAccessedByUser($gameFlavor, $user))
+            if ($this->isGameFlavorAccessedByUser($gameFlavor->creator->id, $user))
                 return $gameFlavor;
         } else {
             throw new \Exception("Game flavor not found. Id queried: " . $id);
@@ -201,7 +199,7 @@ class GameFlavorManager {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         //if the game Version exists, check if the user has access
         if($gameFlavor != null) {
-            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor, $user);
+            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->creator->id, $user);
             $gameFlavor->cover_img_file_path = $this->getGameFlavorCoverImgFilePath($gameFlavor);
         } else {
             throw new Exception("Game flavor not found");
@@ -242,16 +240,16 @@ class GameFlavorManager {
      * Checks if a game Version object is accessed by a user
      * (If user is admin or has created it, then they should have access, otherwise they should not)
      *
-     * @param $gameVersion GameFlavor
+     * @param $user_creator_id int
      * @param $user User
      * @return bool user access
      */
-    private function isGameFlavorAccessedByUser($gameVersion, $user) {
+    private function isGameFlavorAccessedByUser(int $user_creator_id, $user) {
         if($user == null)
             return false;
         if($user->isAdmin())
             return true;
-        if($gameVersion->creator->id == $user->id)
+        if($user_creator_id == $user->id)
             return true;
         return false;
     }

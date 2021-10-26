@@ -25,7 +25,7 @@
                     </a>
                 @endif
             @endif
-            <img loading="lazy" class="langImg" src="{{asset('assets/img/' . $gameFlavor->language->flag_img_path)}}">
+            <img loading="lazy" class="langImg" src="{{asset('assets/img/' . $gameFlavor->language_flag_img_path)}}">
         </div>
         @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)
@@ -120,10 +120,10 @@
                 <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">{{ __('messages.copyright_link') }}</a>
                 </h6>
             @endif
-            <h6>Created by: {{$gameFlavor->creator->name}}
+            <h6>Created by: {{$gameFlavor->user_creator_name}}
                 @if($loggedInUser != null)
                     @if($loggedInUser->isAdmin())
-                        ({{$gameFlavor->creator->email}})
+                        ({{$gameFlavor->user_creator_email}})
                     @endif
                 @endif
             </h6>
@@ -131,7 +131,7 @@
         </div>
         <div class="extraInfo row">
             <div class="col-md-6">
-                @if($gameFlavor->gameVersion->online)
+                @if($gameFlavor->is_online)
                     <div class="item-left"> {{ __('messages.pvp_supported') }} <i class="fa fa-check"
                                                                                   aria-hidden="true"></i></div>
                 @endif
