@@ -46,7 +46,7 @@ class HomeController extends Controller {
     }
 
     public function setLangLocaleCookie(Request $request): RedirectResponse {
-        if (!in_array($request->lang, ['en', 'el', 'es'])) {
+        if (!in_array($request->lang, ['en', 'el', 'es', 'it'])) {
             session()->flash('flash_message_failure', trans('messages.wrong_language'));
             return back();
         }
