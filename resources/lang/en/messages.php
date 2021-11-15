@@ -17,14 +17,14 @@ return [
     'about' => 'About',
     'contact' => 'Contact',
     'help' => 'Help',
-    'help_link' => 'https://docs.google.com/document/d/1irOmObgn9ZwEqmwn3uXNvQTJmgt1YiMqFx5Tzp-l_Oo',
+    'help_link' => 'https://docs.google.com/document/d/1Kf9LoqVeOa8yOPOetgbSIxEgQ9CBan16ckX7xw-7WNA',
     'not_found' => 'Not found',
     'return_home' => 'Return home',
     'info_text_1' => 'The information you are about to fill in will only be used only by SciFY to use the Platform. For any request or comment please contact <a href="mailto:info@scify.org">info@scify.org</a>.',
     'info_text_2' => 'By signing up, you agree with the',
-    'terms_link' => 'https://docs.google.com/document/d/1bGs2mYKGG6LH1Yy6Ewl_mqs5URVNIxdkUHqILGnY0to/',
+    'terms_link' => 'https://docs.google.com/document/d/1aWYOtHhs-0HlbwJU0Oa6ODskbDIgTDuupeLMrvbV210/',
     'terms_of_use_and_privacy_policy' => 'terms of use and privacy policy',
-    'gdpr_link' => 'https://docs.google.com/document/d/1O3iRjWAtG5vbJRsWHcZT6EhdvAhVbFymqHZqh1GRvjM/',
+    'gdpr_link' => 'https://docs.google.com/document/d/1O3iRjWAtG5vbJRsWHcZT6EhdvAhVbFymqHZqh1GRvjM',
     'read_the' => 'Read the',
     'gdpr_compliance_statement' => 'GDPR Compliance Statement',
     'image_label' => 'image',
@@ -185,5 +185,5 @@ return [
     'who_can_use_memori_studio_message' => 'The games are created through the platform are targeted at people with blindness (audio file), people with visual impairments (black and white image) and sighted (color image).',
     'about_text_7' => 'Memor-i studio has been created by <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, a Greek not-for-profit organization.<br><br>The Memor-i studio project has been funded by <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a><br><br>For more information, click <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>',
     'disclaimer_title' => 'Disclaimer',
-    'disclaimer_message' => 'Tο Memor-i Studio το δημιούργησε η SciFY και το διαθέτει δωρεάν σε όλους, ως εργαλείο ανοιχτού κώδικα (open source). Οποιοσδήποτε μπορεί να δημιουργήσει τα δικά του παιχνίδια, χωρίς να έχει γνώσεις πληροφορικής. Η SciFY φροντίζει, όσο είναι δυνατόν, όλα τα παιχνίδια του Memor-i Studio να είναι σύμφωνα με τους νόμους και τους κανονισμούς. Επίσης δίνει τη δυνατότητα στους χρήστες να καταγγέλλουν παιχνίδια με απρεπές ή παράνομο περιεχόμενο, με την επιλογή "Αναφορά"/"Report". Παρ\' όλα αυτά, η SciFY δεν είναι με κανένα τρόπο υπεύθυνη για το περιεχόμενο ή για παραβάσεις του νόμου περί πνευματικής ιδιοκτησίας παιχνιδιών που έχουν δημιουργηθεί από τρίτους.'
+    'disclaimer_message' => 'Memor-i studio has been created by Science For You (SciFY) and it\'s provided for free to all, as an open-source tool. Anyone can make theirown games, without having programming knowledge. SciFY makes sure that as much as possible, all the games of Merom-i Studio are according to the laws and regulations. Also, it makes it possible for the users to report the games with inappropriate or illegal content, with the option "Report". Despite that, SciFY is in no way reliable for the content or the violations of the law pertaining the Copyright of games that have been created by third parties.'
 ];

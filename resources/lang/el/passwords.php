@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least eight characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+    'password' => 'Οι κωδικοί πρόσβασης πρέπει να έχει τουλάχιστον οκτώ χαρακτήρες και να ταιριάζει με την επιβεβαίωση.',
+    'reset' => 'Ο κωδικός πρόσβασής σας επαναφέρθηκε!',
+    'sent' => 'Σας στείλαμε στη διεύθυνση e-mail σας ένα σύνδεσμο επαναφοράς κωδικού πρόσβασης!',
+    'token' => 'Αυτό το διακριτικό επαναφοράς κωδικού πρόσβασης δεν είναι έγκυρο.',
+    'user' => "Δε μπορούμε να βρούμε κάποιο χρήστη με αυτή τη διεύθυνση e-mail.",
 
 ];

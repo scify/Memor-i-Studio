@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Las contraseñas deben tener al menos ocho caracteres y coincidir con la confirmación.',
-    'reset' => 'Tu contraseña ha sido reestablecida!',
-    'sent' => '¡Hemos enviado tu enlace de restablecimiento de contraseña por correo electrónico!',
-    'token' => 'Este parámetro de restablecimiento de contraseña no es válido.',
-    'user' => "No podemos encontrar a un usuario con esa dirección de correo electrónico.",
+    'password' => 'Le password devono contenere almeno sei caratteri e devono corrispondere alla conferma.',
+    'reset' => 'La tua password è cambiata!',
+    'sent' => 'Ti abbiamo inviato una e-mail con il link per la modifica della password!',
+    'token' => 'Il parametro di ripristino della password non è corretto.',
+    'user' => 'Non siamo riusciti a trovare alcun utente con questo indirizzo e-mail.',
 
 ];
