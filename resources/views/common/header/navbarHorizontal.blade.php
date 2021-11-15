@@ -38,7 +38,7 @@
                                         loading="lazy"
                                         class="mr-2"
                                         src="{{ asset('assets/img/el.png') }}"
-                                        height="20px" alt="Greek">
+                                        height="20px" alt="Ελληνικά">
                                 Ελληνικά
                             </a>
                         </li>
@@ -47,8 +47,17 @@
                                         loading="lazy"
                                         class="mr-2"
                                         src="{{ asset('assets/img/es.png') }}"
-                                        height="20px" alt="German">
+                                        height="20px" alt="Español">
                                 Español
+                            </a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('set-lang-locale', 'it') }}">
+                                <img
+                                        loading="lazy"
+                                        class="mr-2"
+                                        src="{{ asset('assets/img/it.png') }}"
+                                        height="20px" alt="Italiano">
+                                Italiano
                             </a>
                         </li>
                     </ul>
