@@ -49,6 +49,7 @@
 @if(Auth::check())
     @include('common.sidebar')
 @endif
+@stack('modals')
 @include('common.footer')
 </body>
 </html>

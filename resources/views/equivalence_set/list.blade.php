@@ -24,7 +24,8 @@
             @else
                 <div class="col-md-6">
                     <div class="alert alert-info noFloatAlert">
-                        {!! __('messages.click') !!} <a href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">{!! __('messages.here') !!}</a> {!! __('messages.proceed_to_game_sounds') !!}
+                        {!! __('messages.click') !!} <a
+                                href="{{route('getResourcesForGameFlavor', ['id' => $gameFlavor->id])}}">{!! __('messages.here') !!}</a> {!! __('messages.proceed_to_game_sounds') !!}
                     </div>
                 </div>
                 <div class="col-md-2 margin-bottom-20">
@@ -109,11 +110,11 @@
     </div><!--.modal-->
     @include('equivalence_set.modals')
 @endsection
-@section('additionalFooter')
+@push('scripts')
     <script>
         $(function () {
             var controller = new window.EquivalenceSetsController(cards, editCardRoute);
             controller.init();
         });
     </script>
-@endsection
+@endpush

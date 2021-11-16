@@ -101,48 +101,61 @@
     </div><!--.card-heading-->
 
     <div class="card-body padding-bottom-10">
-        <h4 class="margin-bottom-10">
-            <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
-            @if($loggedInUser != null)
-                @if($loggedInUser->isAdmin())
-                    @if(!$gameFlavor->published)
-                        <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true" style="color: #f44336"
-                           title="{{ __('messages.game_not_public') }}"></i>
-                    @else
-                        <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: #4caf50"
-                           title="{{ __('messages.game_public') }}"></i>
-                    @endif
-                @endif
-            @endif
-        </h4>
-        <div class="description">{{$gameFlavor->description}}
-            @if($gameFlavor->copyright_link != null)
-                <h6><a target="_blank" href="{{$gameFlavor->copyright_link}}">{{ __('messages.copyright_link') }}</a>
-                </h6>
-            @endif
-            <h6>Created by: {{$gameFlavor->user_creator_name}}
-                @if($loggedInUser != null)
-                    @if($loggedInUser->isAdmin())
-                        ({{$gameFlavor->user_creator_email}})
-                    @endif
-                @endif
-            </h6>
-
-        </div>
-        <div class="extraInfo row">
-            <div class="col-md-6">
-                @if($gameFlavor->is_online)
-                    <div class="item-left"> {{ __('messages.pvp_supported') }} <i class="fa fa-check"
-                                                                                  aria-hidden="true"></i></div>
-                @endif
+        <div class="conainer-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="margin-bottom-10">
+                        <a href="{{route('showEquivalenceSetsForGameFlavor', $gameFlavor->id)}}"> {{$gameFlavor->name}}</a>
+                        @if($loggedInUser != null)
+                            @if($loggedInUser->isAdmin())
+                                @if(!$gameFlavor->published)
+                                    <i class="fa fa-exclamation-triangle statusIcon" aria-hidden="true"
+                                       style="color: #f44336"
+                                       title="{{ __('messages.game_not_public') }}"></i>
+                                @else
+                                    <i class="fa fa-check-circle statusIcon" aria-hidden="true" style="color: #4caf50"
+                                       title="{{ __('messages.game_public') }}"></i>
+                                @endif
+                            @endif
+                        @endif
+                    </h4>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="item-right">
-                    <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
-                           class="reportGameFlavorBtn"
-                           style="top:75px;" href="javascript: void(0)">{{ __('messages.report') }}
-                        </a>
-                    </h6>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="description">{{$gameFlavor->description}}
+                        @if($gameFlavor->copyright_link != null)
+                            <h6><a target="_blank"
+                                   href="{{$gameFlavor->copyright_link}}">{{ __('messages.copyright_link') }}</a>
+                            </h6>
+                        @endif
+                        <h6>Created by: {{$gameFlavor->user_creator_name}}
+                            @if($loggedInUser != null)
+                                @if($loggedInUser->isAdmin())
+                                    ({{$gameFlavor->user_creator_email}})
+                                @endif
+                            @endif
+                        </h6>
+
+                    </div>
+                    <div class="extraInfo row">
+                        <div class="col-md-6">
+                            @if($gameFlavor->is_online)
+                                <div class="item-left"> {{ __('messages.pvp_supported') }} <i class="fa fa-check"
+                                                                                              aria-hidden="true"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            <div class="item-right">
+                                <h6><a data-gameFlavorId="{{$gameFlavor->id}}"
+                                       class="reportGameFlavorBtn"
+                                       style="top:75px;" href="javascript: void(0)">{{ __('messages.report') }}
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

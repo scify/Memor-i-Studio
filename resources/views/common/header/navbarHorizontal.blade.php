@@ -54,9 +54,9 @@
                         <li><a class="dropdown-item" href="{{ route('set-lang-locale', 'it') }}">
                                 <img
                                         loading="lazy"
-                                        class="mr-2"
+                                        class="margin-right-5"
                                         src="{{ asset('assets/img/it.png') }}"
-                                        height="20px" alt="Italiano">
+                                        width="30px" alt="Italiano">
                                 Italiano
                             </a>
                         </li>

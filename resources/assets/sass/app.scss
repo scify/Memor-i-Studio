@@ -99,6 +99,17 @@
   .installJavaMsg {
     font-size: smaller;
   }
+
+  .layered-content .overflow-content {
+    margin: 5px 0 5px 5px;
+    padding-right: 30px;
+    height: auto;
+  }
+
+  .layered-content.active .clickable-close-button {
+    right: 0;
+    top: 0;
+  }
 }
 
 .gameFlavorCoverImg {
@@ -359,5 +370,67 @@ body {
 .dropdown-toggle {
   &:hover {
     cursor: pointer;
+  }
+}
+
+.moreGames {
+  font-style: italic;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.display-none {
+  display: none;
+}
+
+.loader:before, .loader:after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 5px solid transparent;
+  border-top-color: #337ab7;
+  margin-left: -25px;
+}
+
+.loader:before {
+  z-index: 100;
+  animation: spin 1s infinite;
+}
+
+.loader:after {
+  border: 5px solid #ccc;
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#gameFilters {
+  .bootstrap-select .dropdown-toggle:focus, .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+    outline: unset !important;
+  }
+  .btn.dropdown-toggle.btn-ripple {
+    background-color: white;
   }
 }

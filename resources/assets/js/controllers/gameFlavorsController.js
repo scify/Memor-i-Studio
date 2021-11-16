@@ -1,51 +1,83 @@
-window.GameFlavorsController = function () {
+import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
 
-};
+(function () {
+    let reportGameFlavorBtnHandler = function () {
+        const body = $("body");
+        body.on("click", ".reportGameFlavorBtn", function (e) {
+            e.stopPropagation();
+            const gameFlavorId = $(this).attr("data-gameFlavorId");
+            console.log(gameFlavorId);
+            console.log($('#createGameFlavorReportModal'));
+            $('#createGameFlavorReportModal').modal('toggle');
+            $('#reportGameFlavorForm #gameFlavorIdInput').val(gameFlavorId);
+        });
+    };
 
-window.GameFlavorsController.prototype = function () {
-    var reportGameFlavorBtnHandler = function () {
-            $(".reportGameFlavorBtn").on("click", function (e) {
-                e.stopPropagation();
-                var gameFlavorId = $(this).attr("data-gameFlavorId");
-                console.log(gameFlavorId);
-                $('#createGameFlavorReportModal').modal('toggle');
-                $('#reportGameFlavorForm #gameFlavorIdInput').val(gameFlavorId);
-            });
-        },
-        downloadBtnHandler = function () {
-            $("body").on("click", ".downloadBtnWindows", function (e) {
-                e.preventDefault();
-                var gameFlavorId = $(this).attr("data-gameFlavorId");
+    let downloadBtnHandler = function () {
+        const body = $("body");
+        body.on("click", ".downloadBtnWindows", function (e) {
+            downloadGame(e, $(this), 'Windows');
+        });
 
-
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Games',
-                    eventAction: 'download',
-                    eventLabel: 'Windows | game id: ' + gameFlavorId
-                });
-                window.location = this.href;
-            });
-
-            $("body").on("click", ".downloadBtnLinux", function (e) {
-                e.preventDefault();
-                var gameFlavorId = $(this).attr("data-gameFlavorId");
-
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Games',
-                    eventAction: 'download',
-                    eventLabel: 'Linux | game id: ' + gameFlavorId
-                });
-                window.location = this.href;
-            });
-        },
-        init = function () {
-            var instance = this;
-            reportGameFlavorBtnHandler();
-            downloadBtnHandler();
-        };
-    return {
-        init: init
-    }
-}();
+        body.on("click", ".downloadBtnLinux", function (e) {
+            downloadGame(e, $(this), 'Linux');
+        });
+    };
+    let downloadGame = function (event, element, platformName) {
+        event.preventDefault();
+        const gameFlavorId = element.attr("data-gameFlavorId");
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Games',
+            eventAction: 'download',
+            eventLabel: platformName + ' | game id: ' + gameFlavorId
+        });
+        window.location = element.attr('href');
+    };
+    let getGamesWithFiltersHandler = function () {
+        const body = $("body");
+        body.on("click", "#getGames", function (e) {
+            getGamesWithFilters();
+        });
+    };
+    let getGamesWithFilters = function () {
+        console.log("getGamesWithFilters");
+        const userObj = user;
+        const formLoader = $('#gamesLoader');
+        const formButton = $('#getGames');
+        const errorEl = $('#error');
+        const _token = $('input[name$="_token"]').val();
+        const resultsEl = $('#gameResults');
+        $.ajax({
+            method: "POST",
+            url: gameFlavorsRoute,
+            cache: false,
+            data: {user: userObj, _token: _token},
+            beforeSend: function () {
+                errorEl.html('');
+                formLoader.removeClass('display-none');
+                formButton.attr('disabled', true);
+            },
+            success: function (response) {
+                formLoader.addClass('display-none');
+                formButton.attr('disabled', false);
+                resultsEl.html(response);
+                Pleasure.init();
+            },
+            error: function (error) {
+                formLoader.addClass('display-none');
+                formButton.attr('disabled', false);
+                errorEl.html(error.responseJSON.message);
+                console.error(error);
+            }
+        });
+    };
+    let init = function () {
+        reportGameFlavorBtnHandler();
+        downloadBtnHandler();
+        getGamesWithFiltersHandler();
+    };
+    $(document).ready(function () {
+        init();
+    });
+})();

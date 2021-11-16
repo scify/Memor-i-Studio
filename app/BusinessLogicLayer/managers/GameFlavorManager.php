@@ -5,16 +5,18 @@ namespace App\BusinessLogicLayer\managers;
 use App\BusinessLogicLayer\WindowsBuilder;
 use App\Models\GameFlavor;
 use App\Models\ResourceFile;
-use App\StorageLayer\GameFlavorStorage;
 use App\Models\User;
+use App\StorageLayer\GameFlavorStorage;
+use App\StorageLayer\UserStorage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Madnest\Madzipper\Madzipper;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Exception;
+use Madnest\Madzipper\Madzipper;
 
 include_once 'functions.php';
 
@@ -27,21 +29,22 @@ include_once 'functions.php';
 class GameFlavorManager {
 
     private $gameFlavorStorage;
-    //the string that will be used to name the final jnlp file
-    //private $JNLP_FILE_PREFIX = "game";
     private $fileManager;
+    private $userStorage;
 
-    public function __construct() {
-        $this->gameFlavorStorage = new GameFlavorStorage();
-        $this->fileManager = new FileManager();
+    public function __construct(GameFlavorStorage $gameFlavorStorage, FileManager $fileManager, UserStorage $userStorage) {
+        $this->gameFlavorStorage = $gameFlavorStorage;
+        $this->fileManager = $fileManager;
+        $this->userStorage = $userStorage;
     }
 
     public function getJarFilePathForGameFlavor($gameFlavorId) {
-        return storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/memori.jar';
+        return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar';
     }
 
 
     //TODO: refactor separate into create and edit
+
     /**
      * @param $gameFlavorId int id of the game flavor
      * @param array $inputFields contain the game flavor parameters
@@ -64,9 +67,9 @@ class GameFlavorManager {
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
             $this->markGameFlavorAsSubmittedForApproval($gameFlavor->id);
         }
-        DB::transaction(function() use($gameFlavor, $inputFields) {
+        DB::transaction(function () use ($gameFlavor, $inputFields) {
             $imgManager = new ImgManager();
-            if(!$gameFlavor->game_identifier)
+            if (!$gameFlavor->game_identifier)
                 $gameFlavor->game_identifier = $this->createIdentifierForGameFlavor($gameFlavor);
             $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
 
@@ -87,7 +90,7 @@ class GameFlavorManager {
         $gameVersionManager = new GameVersionManager();
         $gameVersion = $gameVersionManager->getGameVersion($gameVersionId);
 
-        if(!$gameFlavor || !$gameVersion)
+        if (!$gameFlavor || !$gameVersion)
             throw new \Exception("ERROR game flavor id: " . $gameFlavorId . " or game version id: " . $gameVersionId . " do not exist");
         $gameFlavor->game_version_id = $gameVersion->id;
         $gameFlavor->save();
@@ -106,10 +109,10 @@ class GameFlavorManager {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
                 $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
-                if($resourceFile != null) {
+                if ($resourceFile != null) {
                     $resource->file_path = $resourceFile->file_path;
                 } else {
-                    if(File::exists(storage_path('app/game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name))) {
+                    if (File::exists(storage_path('app/game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name))) {
                         $resource->file_path = 'game_versions/data/' . $gameFlavor->game_version_id . '/' . $resource->name;
                     } else {
                         $resource->file_path = null;
@@ -120,10 +123,9 @@ class GameFlavorManager {
         return $gameVersionResourceCategories;
     }
 
-    public function getGameFlavors() {
-        $user = Auth::user();
-        //if not logged in user, get only the published versions
-        if($user != null) {
+    public function getGameFlavors(int $userId) {
+        try {
+            $user = $this->userStorage->get($userId);
             if ($user->isAdmin()) {
                 //if admin, get all game versions
                 $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors();
@@ -134,21 +136,23 @@ class GameFlavorManager {
 
                 $gameFlavorsToBeReturned = $gameFlavorsCreatedByUser->merge($publishedGameFlavors);
             }
-        } else {
+        } catch (ModelNotFoundException $e) {
             $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true);
+        } finally {
+            foreach ($gameFlavorsToBeReturned as $gameFlavor) {
+                $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
+            }
+            return $gameFlavorsToBeReturned;
         }
-        foreach ($gameFlavorsToBeReturned as $gameFlavor) {
-            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
-        }
-        return $gameFlavorsToBeReturned;
+
     }
 
     private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor) {
         $resource = $gameFlavor->coverImg;
-        if($resource != null) {
+        if ($resource != null) {
             $resourceManager = new ResourceManager();
             $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
-            if($resourceFile != null)
+            if ($resourceFile != null)
                 return $resourceFile->file_path;
         }
         return null;
@@ -167,7 +171,7 @@ class GameFlavorManager {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
 
         //if the game Version exists, check if the user has access
-        if($gameFlavor != null) {
+        if ($gameFlavor != null) {
             if ($this->isGameFlavorAccessedByUser($gameFlavor->creator->id, $user))
                 return $gameFlavor;
         } else {
@@ -179,8 +183,8 @@ class GameFlavorManager {
 
     public function getGameFlavorByGameIdentifier($gameFlavorIdentifier) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
-        if(!$gameFlavor) {
-                throw new \Exception("Game flavor not found. Identifier queried: " . $gameFlavorIdentifier);
+        if (!$gameFlavor) {
+            throw new \Exception("Game flavor not found. Identifier queried: " . $gameFlavorIdentifier);
         }
 
         return $gameFlavor;
@@ -198,7 +202,7 @@ class GameFlavorManager {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         //if the game Version exists, check if the user has access
-        if($gameFlavor != null) {
+        if ($gameFlavor != null) {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->creator->id, $user);
             $gameFlavor->cover_img_file_path = $this->getGameFlavorCoverImgFilePath($gameFlavor);
         } else {
@@ -216,7 +220,7 @@ class GameFlavorManager {
         $gameVersionLanguageManager = new GameVersionLanguageManager();
         $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->lang_id;
         $gameFlavor->copyright_link = $gameFlavorFields['copyright_link'];
-        if(isset($gameFlavorFields['allow_clone']))
+        if (isset($gameFlavorFields['allow_clone']))
             $gameFlavor->allow_clone = true;
         else
             $gameFlavor->allow_clone = false;
@@ -225,12 +229,12 @@ class GameFlavorManager {
     }
 
     /**
-     * @param $gameFlavorId. The id of the game version to be deleted
+     * @param $gameFlavorId . The id of the game version to be deleted
      * @return bool. True if the game version was deleted successfully, false if the user has no access
      */
     public function deleteGameFlavor($gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
-        if($gameFlavor == null)
+        if ($gameFlavor == null)
             return false;
         $this->gameFlavorStorage->deleteGameFlavor($gameFlavor);
         return true;
@@ -245,11 +249,11 @@ class GameFlavorManager {
      * @return bool user access
      */
     private function isGameFlavorAccessedByUser(int $user_creator_id, $user) {
-        if($user == null)
+        if ($user == null)
             return false;
-        if($user->isAdmin())
+        if ($user->isAdmin())
             return true;
-        if($user_creator_id == $user->id)
+        if ($user_creator_id == $user->id)
             return true;
         return false;
     }
@@ -262,10 +266,10 @@ class GameFlavorManager {
      */
     public function toggleGameFlavorPublishedState($gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
-        if($gameFlavor == null)
+        if ($gameFlavor == null)
             return false;
         $gameFlavor->published = !$gameFlavor->published;
-        if($this->gameFlavorStorage->storeGameFlavor($gameFlavor) != null) {
+        if ($this->gameFlavorStorage->storeGameFlavor($gameFlavor) != null) {
             return true;
         }
         return false;
@@ -280,7 +284,7 @@ class GameFlavorManager {
         $packDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId;
         $zipper = new Madzipper();
         $zipFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar';
-        if(File::exists($zipFile)) {
+        if (File::exists($zipFile)) {
             File::delete($zipFile);
         }
         $zipper->make($zipFile)
@@ -338,19 +342,19 @@ class GameFlavorManager {
         $gameVersionManager = new GameVersionManager();
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         $sourceFile = $gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
-        $destinationFile = storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/memori.jar';
+        $destinationFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar';
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
     }
 
     private function addDataPackIntoJar($gameFlavorId) {
         $old_path = getcwd();
-        chdir(storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId);
+        chdir(storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId);
         // if the game version .jar is already a game flavor build, there is already a project_additional.properties
         // inside the .jar file. We need to get this file and append it's contents to the project_additional.properties
         // file for this game flavor.
         // then we delete the project_additional.properties file and we add the newly created one
         $existingAdditionalPropertiesFileContents = shell_exec('unzip -p memori.jar project_additional.properties');
-        if($existingAdditionalPropertiesFileContents) {
+        if ($existingAdditionalPropertiesFileContents) {
             $this->replaceAdditionalPropertiesFileForGameFlavor($gameFlavorId, $existingAdditionalPropertiesFileContents);
         }
         $command = 'zip -ur memori.jar project_additional.properties data/*';
@@ -362,11 +366,11 @@ class GameFlavorManager {
 
     private function replaceAdditionalPropertiesFileForGameFlavor($gameFlavorId, $existingAdditionalPropertiesFileContents) {
         $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'project_additional.properties';
-        foreach(preg_split("/((\r?\n)|(\r\n?))/", $existingAdditionalPropertiesFileContents) as $line){
-            if($line) {
+        foreach (preg_split("/((\r?\n)|(\r\n?))/", $existingAdditionalPropertiesFileContents) as $line) {
+            if ($line) {
                 $arr = explode("=", $line, 2);
                 $propertyName = $arr[0];
-                if(!$this->propertyExistsInPropertiesFile($propertyName, $pathToPropsFile)) {
+                if (!$this->propertyExistsInPropertiesFile($propertyName, $pathToPropsFile)) {
                     Storage::append($pathToPropsFile, $line);
                 }
             }
@@ -375,10 +379,10 @@ class GameFlavorManager {
 
     private function propertyExistsInPropertiesFile($property, $pathToPropsFile) {
         $contents = Storage::get($pathToPropsFile);
-        foreach(preg_split("/((\r?\n)|(\r\n?))/", $contents) as $line){
+        foreach (preg_split("/((\r?\n)|(\r\n?))/", $contents) as $line) {
             $arr = explode("=", $line, 2);
             $propertyName = $arr[0];
-            if($propertyName == $property)
+            if ($propertyName == $property)
                 return true;
         }
         return false;
@@ -389,7 +393,7 @@ class GameFlavorManager {
         //we need to get the file name of the cover img (the string after the last slash of the full path)
         $coverImgFileName = substr($coverImgFullFilePath, strrpos($coverImgFullFilePath, '/') + 1);
         //now we need to get the directory that the image is located, so that we can cd into this directory and conver the image
-        $coverImgFileDirectory = substr($coverImgFullFilePath, 0,strrpos($coverImgFullFilePath, '/'));
+        $coverImgFileDirectory = substr($coverImgFullFilePath, 0, strrpos($coverImgFullFilePath, '/'));
         $imgManager = new ImgManager();
         $imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
 
@@ -404,16 +408,16 @@ class GameFlavorManager {
      * @throws FileNotFoundException if the file is not found
      */
     public function getWindowsSetupFileForGameFlavor($gameFlavorId) {
-        $file = storage_path('app/data_packs/additional_pack_'. $gameFlavorId . '/Output/memor-i-setup.exe');
-        if(!File::exists($file)) {
+        $file = storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/Output/memor-i-setup.exe');
+        if (!File::exists($file)) {
             throw new FileNotFoundException("The setup file for this game could not be found");
         }
         return $file;
     }
 
     public function getLinuxSetupFileForGameFlavor($gameFlavorId) {
-        $file = storage_path('app/data_packs/additional_pack_'. $gameFlavorId . '/memori.jar');
-        if(!File::exists($file)) {
+        $file = storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar');
+        if (!File::exists($file)) {
             throw new FileNotFoundException("The linux file for this game could not be found");
         }
         return $file;
@@ -459,7 +463,7 @@ class GameFlavorManager {
         $destinationDir = $this->getDataPackDir($newGameFlavor->id);
 
         $success = File::copyDirectory($sourceDir, $destinationDir);
-        if(!$success)
+        if (!$success)
             throw new Exception("Error while copying data pack files");
     }
 
@@ -470,7 +474,7 @@ class GameFlavorManager {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
                 $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
-                if($resourceFile != null) {
+                if ($resourceFile != null) {
                     $resourceManager->cloneResourceFile($resource, $resourceFile, $newGameFlavor->id);
                 }
             }
@@ -533,7 +537,7 @@ class GameFlavorManager {
 
     public function getFlavorIdFromIdentifier($gameFlavorIdentifier) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
-        if($gameFlavor)
+        if ($gameFlavor)
             return $gameFlavor->id;
         else
             throw new \Exception("Game Flavor not found. Identifier: " . $gameFlavorIdentifier);

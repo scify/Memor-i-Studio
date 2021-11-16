@@ -25,6 +25,7 @@ Route::get('/', 'HomeController@showHomePage')->name('showHomePage');
 Route::get('home', 'HomeController@showHomePage')->name('showHomePage');
 Route::get('about', 'HomeController@showAboutPage')->name('showAboutPage');
 Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
+Route::post('games/flavors', 'GameFlavorController@getGameFlavorsForUser')->name('getGameFlavorsForUser');
 
 Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
 Route::get('test', 'CardController@test')->name('test');
