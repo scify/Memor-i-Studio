@@ -21,22 +21,15 @@ class EquivalenceSetManager {
     private $equivalenceSetStorage;
     private $soundManager;
     private $cardManager;
+    private $equivalenceSetViewModelProvider;
 
-    public function __construct(EquivalentSetStorage $equivalenceSetStorage, SoundManager $soundManager,
-                                CardManager          $cardManager) {
+    public function __construct(EquivalentSetStorage            $equivalenceSetStorage, SoundManager $soundManager,
+                                EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider,
+                                CardManager                     $cardManager) {
         $this->equivalenceSetStorage = $equivalenceSetStorage;
         $this->soundManager = $soundManager;
+        $this->equivalenceSetViewModelProvider = $equivalenceSetViewModelProvider;
         $this->cardManager = $cardManager;
-    }
-
-    public function getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId) {
-        $equivalenceSets = $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
-        foreach ($equivalenceSets as $equivalenceSet) {
-            if ($equivalenceSet->descriptionSound != null) {
-                $equivalenceSet->descriptionSoundPath = url('resolveData/' . $equivalenceSet->descriptionSound->file->file_path);
-            }
-        }
-        return $equivalenceSets;
     }
 
     public function getEquivalenceSetsForGameFlavor($gameFlavorId) {
@@ -69,7 +62,7 @@ class EquivalenceSetManager {
      * @return string
      */
     public function createEquivalenceSetsJSONFile($gameFlavorId) {
-        $equivalenceSets = $this->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+        $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
         //dd($equivalenceSets);
         $equivalence_card_sets = array();
         $equivalence_card_sets['equivalence_card_sets'] = array();

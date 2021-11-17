@@ -23,28 +23,19 @@ class CardManager {
     private $imgManager;
     private $soundManager;
     private $resourceManager;
+    private $equivalenceSetViewModelProvider;
+
     /**
      * CardController constructor.
      */
-    public function __construct(CardStorage $cardStorage, ImgManager $imgManager,
-                                SoundManager $soundManager, ResourceManager $resourceManager) {
+    public function __construct(CardStorage                     $cardStorage, ImgManager $imgManager,
+                                SoundManager                    $soundManager, ResourceManager $resourceManager,
+                                EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider) {
         $this->cardStorage = $cardStorage;
         $this->imgManager = $imgManager;
         $this->soundManager = $soundManager;
-        $this->resourceManager= $resourceManager;
-    }
-
-    /**
-     * Adds an array of @param array $cards the array of @see Card cards
-     * @param EquivalenceSet $equivalenceSet the set that these cards will belong
-     * @see Card objects to a given @see EquivalentSet instance
-     *
-     */
-    public function addCardsToEquivalenceSet(array $cards, EquivalenceSet $equivalenceSet) {
-        foreach ($cards as $createdCard) {
-            $createdCard->equivalence_set_id = $equivalenceSet->id;
-            $this->cardStorage->saveCard($createdCard);
-        }
+        $this->resourceManager = $resourceManager;
+        $this->equivalenceSetViewModelProvider = $equivalenceSetViewModelProvider;
     }
 
     public function createCards($gameFlavorId, EquivalenceSet $newEquivalenceSet, array $input) {
@@ -121,8 +112,7 @@ class CardManager {
      *
      */
     public function getCardsForGameFlavor($gameFlavorId) {
-        $equivalenceSetManager = new EquivalenceSetManager();
-        $equivalenceSets = $equivalenceSetManager->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+        $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
 
         $cards = array();
         foreach ($equivalenceSets as $equivalenceSet) {

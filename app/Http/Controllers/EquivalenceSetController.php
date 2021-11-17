@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
+use App\BusinessLogicLayer\managers\EquivalenceSetViewModelProvider;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -16,16 +17,19 @@ use Javascript;
  */
 class EquivalenceSetController extends Controller {
     private $equivalenceSetManager;
+    private $equivalenceSetViewModelProvider;
     private $cardManager;
     private $gameFlavorManager;
 
     /**
      * CardController constructor.
      */
-    public function __construct(EquivalenceSetManager $equivalenceSetManager,
-                                CardManager           $cardManager,
-                                GameFlavorManager     $gameFlavorManager) {
+    public function __construct(EquivalenceSetManager           $equivalenceSetManager,
+                                EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider,
+                                CardManager                     $cardManager,
+                                GameFlavorManager               $gameFlavorManager) {
         $this->equivalenceSetManager = $equivalenceSetManager;
+        $this->equivalenceSetViewModelProvider = $equivalenceSetViewModelProvider;
         $this->cardManager = $cardManager;
         $this->gameFlavorManager = $gameFlavorManager;
     }
@@ -42,7 +46,7 @@ class EquivalenceSetController extends Controller {
         if (!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
             return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
         }
-        $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+        $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
         $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
 
         JavaScript::put([
