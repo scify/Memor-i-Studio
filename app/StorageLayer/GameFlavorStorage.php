@@ -28,17 +28,18 @@ class GameFlavorStorage {
 
     public function getGameFlavors($onlyPublished = true, $created_by_user_id = null, $language_id = null) {
         DB::enableQueryLog();
-        $query = DB::table('game_flavor');
+        $query = DB::table('game_flavor')->whereNull('game_flavor.deleted_at');
 
         if ($onlyPublished)
             $query->where('published', true);
         if ($created_by_user_id)
             $query->where('creator_id', $created_by_user_id);
         if ($language_id)
-            $query->where(['lang_id' => $language_id]);
+            $query->where('lang_id', $language_id);
 
         return $query->join('language', 'game_flavor.lang_id', '=', 'language.id')
             ->join('users as creator', 'creator.id', '=', 'game_flavor.creator_id')
+            ->whereNull('creator.deleted_at')
             ->join('game_version', 'game_version.id', '=', 'game_flavor.game_version_id')
             ->join('resource', 'resource.id', '=', 'game_flavor.cover_img_id')
             ->leftJoin("resource_file", function ($join) {

@@ -147,7 +147,6 @@ class GameFlavorManager {
                 //if regular user, merge the published game versions with the game versions created by the user
                 $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavors(true, null, $language_id);
                 $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavors(false, $user->id, $language_id);
-
                 $gameFlavorsToBeReturned = $gameFlavorsCreatedByUser->merge($publishedGameFlavors);
             }
         } catch (ModelNotFoundException $e) {
