@@ -18,8 +18,8 @@ class CardController extends Controller
     /**
      * CardController constructor.
      */
-    public function __construct() {
-        $this->cardManager = new CardManager();
+    public function __construct(CardManager $cardManager) {
+        $this->cardManager = $cardManager;
     }
 
     /**

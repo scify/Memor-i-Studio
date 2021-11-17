@@ -22,21 +22,23 @@ class CardManager {
     private $cardStorage;
     private $imgManager;
     private $soundManager;
-
+    private $resourceManager;
     /**
      * CardController constructor.
      */
-    public function __construct() {
-        $this->cardStorage = new CardStorage();
-        $this->imgManager = new ImgManager();
-        $this->soundManager = new SoundManager();
+    public function __construct(CardStorage $cardStorage, ImgManager $imgManager,
+                                SoundManager $soundManager, ResourceManager $resourceManager) {
+        $this->cardStorage = $cardStorage;
+        $this->imgManager = $imgManager;
+        $this->soundManager = $soundManager;
+        $this->resourceManager= $resourceManager;
     }
 
     /**
-     * Adds an array of @see Card objects to a given @see EquivalentSet instance
+     * Adds an array of @param array $cards the array of @see Card cards
+     * @param EquivalenceSet $equivalenceSet the set that these cards will belong
+     * @see Card objects to a given @see EquivalentSet instance
      *
-     * @param array $cards the array of @see Card cards
-     * @param EquivalenceSet $equivalenceSet  the set that these cards will belong
      */
     public function addCardsToEquivalenceSet(array $cards, EquivalenceSet $equivalenceSet) {
         foreach ($cards as $createdCard) {
@@ -55,7 +57,7 @@ class CardManager {
                 throw new Exception('Card creation failed');
             }
         }
-        if(count($input['card']) == 1) {
+        if (count($input['card']) == 1) {
             $newCard = $this->createNewCard($gameFlavorId, $cardLabel, $input['card'][1], $newEquivalenceSet->id, 'item_equivalent');
             if ($newCard == null) {
                 throw new Exception('Card creation failed');
@@ -64,14 +66,14 @@ class CardManager {
     }
 
     /**
-     * Creates a new @see Card instance and assignes values to it, as well as its @see EquivalenceSet
-     *
-     * @param $gameFlavorId int the id of the game flavor tha card belongs to
+     * Creates a new @param $gameFlavorId int the id of the game flavor tha card belongs to
      * @param $cardLabel string a random string serving as card label (debugging purposes only)
      * @param $input array an associative array with the card data
      * @param $equivalenceSetId int the id of the @see EquivalenceSet the card will belong.
      * @param $category string the category this card will be assigned with
      * @return Card the newly created card
+     * @see Card instance and assignes values to it, as well as its @see EquivalenceSet
+     *
      */
     public function createNewCard($gameFlavorId, $cardLabel, $input, $equivalenceSetId, $category) {
         //dd($input);
@@ -84,7 +86,7 @@ class CardManager {
         $newCard = $this->cardStorage->saveCard($newCard);
         $newCard->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['image']);
         $newCard->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $input['sound']);
-        if(isset($input['negative_image'])) {
+        if (isset($input['negative_image'])) {
             if ($input['negative_image'] != null)
                 $newCard->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $input['negative_image']);
         }
@@ -92,31 +94,31 @@ class CardManager {
     }
 
     /**
-     * Finds and assigns new values to a @see Card instance.
-     *
-     * @param $gameFlavorId int the id of the game flavor this card belongs to
+     * Finds and assigns new values to a @param $gameFlavorId int the id of the game flavor this card belongs to
      * @param array $input an associative array with the card data
      * @return Card the just edited Card
+     * @see Card instance.
+     *
      */
     public function editCard($gameFlavorId, array $input) {
         $cardFields = $input['card'][1];
         $cardToBeEdited = $this->cardStorage->getCardById($input['cardId']);
-        if(isset($cardFields['image']))
+        if (isset($cardFields['image']))
             $cardToBeEdited->image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['image']);
-        if(isset($cardFields['negative_image']))
+        if (isset($cardFields['negative_image']))
             $cardToBeEdited->negative_image_id = $this->imgManager->uploadCardImg($gameFlavorId, $cardFields['negative_image']);
-        if(isset($cardFields['sound']))
+        if (isset($cardFields['sound']))
             $cardToBeEdited->sound_id = $this->soundManager->uploadCardSound($gameFlavorId, $cardFields['sound']);
 
         return $this->cardStorage->saveCard($cardToBeEdited);
     }
 
     /**
-     * Each @see GameFlavor has a set of equivalence sets.
+     * Each @param $gameFlavorId
+     * @return array
+     * @see GameFlavor has a set of equivalence sets.
      * Each of these sets contains a set of @see Card instances.
      *
-     * @param $gameFlavorId
-     * @return array
      */
     public function getCardsForGameFlavor($gameFlavorId) {
         $equivalenceSetManager = new EquivalenceSetManager();
@@ -126,16 +128,16 @@ class CardManager {
         foreach ($equivalenceSets as $equivalenceSet) {
             foreach ($equivalenceSet->cards as $card) {
                 //dd($card);
-                if($card->image != null) {
+                if ($card->image != null) {
                     $card->imageObj = $card->image->file;
                     $card->imgPath = url('resolveData/' . $card->image->file->file_path);
                 }
 
-                if($card->secondImage != null) {
+                if ($card->secondImage != null) {
                     $card->negativeImageObj = $card->secondImage->file;
                     $card->negativeImgPath = url('resolveData/' . $card->secondImage->file->file_path);
                 }
-                if($card->sound != null)
+                if ($card->sound != null)
                     $card->soundObj = $card->sound->file;
                 array_push($cards, $card);
             }
@@ -149,14 +151,13 @@ class CardManager {
             $newCard = $card->replicate();
             $newCard->equivalence_set_id = $newEquivalenceSet->id;
             $newCard->save();
-            $resourceManager = new ResourceManager();
-            $newImageResource = $resourceManager->cloneResource($card->image, $gameFlavorId, $newGameFlavorId);
+            $newImageResource = $this->resourceManager->cloneResource($card->image, $gameFlavorId, $newGameFlavorId);
             $newCard->image_id = $newImageResource->id;
-            if($card->secondImage != null) {
-                $newSecondImageResource = $resourceManager->cloneResource($card->secondImage, $gameFlavorId, $newGameFlavorId);
+            if ($card->secondImage != null) {
+                $newSecondImageResource = $this->resourceManager->cloneResource($card->secondImage, $gameFlavorId, $newGameFlavorId);
                 $newCard->negative_image_id = $newSecondImageResource->id;
             }
-            $newSoundResource = $resourceManager->cloneResource($card->sound, $gameFlavorId, $newGameFlavorId);
+            $newSoundResource = $this->resourceManager->cloneResource($card->sound, $gameFlavorId, $newGameFlavorId);
             $newCard->sound_id = $newSoundResource->id;
             $newCard->save();
         }

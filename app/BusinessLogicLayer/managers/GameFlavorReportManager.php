@@ -9,8 +9,8 @@ class GameFlavorReportManager {
 
     private $gameFlavorReportStorage;
 
-    public function __construct() {
-        $this->gameFlavorReportStorage = new GameFlavorReportStorage();
+    public function __construct(GameFlavorReportStorage $gameFlavorReportStorage) {
+        $this->gameFlavorReportStorage = $gameFlavorReportStorage;
     }
 
     public function createGameFlavorReport(array $inputFields) {

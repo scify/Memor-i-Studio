@@ -21,10 +21,15 @@ class GameVersionManager {
     private $gameExeStoragePath = 'game_versions/exe/';
     private $gameResourcesDirsSchema;
     private $gameResourcesFilesSchema;
+    private $resourceCategoryManager;
+    private $resourceManager;
 
-    public function __construct() {
-        $this->gameVersionStorage = new GameVersionStorage();
-        $this->fileStorage = new FileStorage();
+    public function __construct(GameVersionStorage $gameVersionStorage, FileStorage $fileStorage,
+                                ResourceCategoryManager $resourceCategoryManager, ResourceManager $resourceManager) {
+        $this->gameVersionStorage = $gameVersionStorage;
+        $this->fileStorage = $fileStorage;
+        $this->resourceCategoryManager = $resourceCategoryManager;
+        $this->resourceManager = $resourceManager;
         $this->gameResourcesDirsSchema = array();
         $this->gameResourcesFilesSchema = array();
     }
@@ -55,10 +60,8 @@ class GameVersionManager {
         $zipFilePath = $this->storeZipFile($newGameVersion->id, $input['gameResPack']);
         $this->extractResourceDirectoriesFromZipFile($zipFilePath);
         $this->extractFilesFromZipFile($zipFilePath, $newGameVersion->id);
-        $resourceCategoriesManager = new ResourceCategoryManager();
-        $resourcesManager = new ResourceManager();
-        $resourceCategoriesManager->createResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $newGameVersion->id);
-        $resourcesManager->createResourcesFromResourcesArray($this->gameResourcesFilesSchema, $newGameVersion->id);
+        $this->resourceCategoryManager->createResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $newGameVersion->id);
+        $this->resourceManager->createResourcesFromResourcesArray($this->gameResourcesFilesSchema, $newGameVersion->id);
 
         return $newGameVersion;
     }
@@ -122,13 +125,12 @@ class GameVersionManager {
         $editedGameVersion =  $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
 
         DB::transaction(function() use($editedGameVersion, $input) {
-            $resourceCategoriesManager = new ResourceCategoryManager();
-            $resourceManager = new ResourceManager();
+
             if (isset($input['gameResPack'])) {
-                $resourceCategoriesManager->editResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $editedGameVersion->id);
-                $resourceManager->editResourcesFromResourcesArray($this->gameResourcesFilesSchema, $editedGameVersion->id);
+                $this->resourceCategoryManager->editResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $editedGameVersion->id);
+                $this->resourceManager->editResourcesFromResourcesArray($this->gameResourcesFilesSchema, $editedGameVersion->id);
             }
-            $resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
+            $this->resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
         });
         return $editedGameVersion;
     }

@@ -12,7 +12,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 
@@ -46,8 +45,7 @@ class GameFlavorController extends Controller {
     public function createIndex(Request $request) {
         $input = $request->all();
         $gameVersionId = $input['game_version_id'];
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
-        //$interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
+
         $languages = $this->languageManager->getAvailableLanguages();
         $gameFlavor = new GameFlavor();
 
@@ -68,22 +66,15 @@ class GameFlavorController extends Controller {
     }
 
     /**
-     * Display a list with all game versions
+     * Return a rendered view of a list with all game versions
      *
      * @return string
-     * @throws ValidationException
      */
     public function getGameFlavorsForUser(Request $request) {
-        $this->validate($request, [
-            'user' => 'required'
-        ]);
+        $userId = $request->user ? $request->user['id'] : 0;
+        $language_id = $request->language_id ?: null;
 
-        if (!$request->user)
-            $userId = 0;
-        else
-            $userId = $request->user['id'];
-
-        $gameFlavors = $this->gameFlavorManager->getGameFlavors($userId);
+        $gameFlavors = $this->gameFlavorManager->getGameFlavors($userId, $language_id);
         $loggedInUser = Auth::user();
         return (string)view('game_flavor.list',
             ['gameFlavors' => $gameFlavors, 'loggedInUser' => $loggedInUser]);

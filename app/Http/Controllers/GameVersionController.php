@@ -7,21 +7,26 @@ use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\Models\GameVersion;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class GameVersionController extends Controller
-{
+class GameVersionController extends Controller {
     private $languageManager;
     private $gameVersionManager;
+    private $resourceCategoryManager;
+    private $gameVersionLanguageManager;
 
     /**
      * GameFlavorController constructor.
      */
-    public function __construct() {
-        $this->languageManager = new LanguageManager();
-        $this->gameVersionManager = new GameVersionManager();
+    public function __construct(LanguageManager         $languageManager,
+                                GameVersionManager      $gameVersionManager,
+                                ResourceCategoryManager $resourceCategoryManager,
+                                GameVersionLanguageManager $gameVersionLanguageManager) {
+        $this->languageManager = $languageManager;
+        $this->gameVersionManager = $gameVersionManager;
+        $this->resourceCategoryManager = $resourceCategoryManager;
+        $this->gameVersionLanguageManager = $gameVersionLanguageManager;
     }
 
     /**
@@ -39,7 +44,7 @@ class GameVersionController extends Controller
     /**
      * Create a new Game Version.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
@@ -53,7 +58,7 @@ class GameVersionController extends Controller
         try {
             $newGameVersion = $this->gameVersionManager->createGameVersion($input, $user);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back()->withInput($request->input());
         }
 
@@ -70,17 +75,16 @@ class GameVersionController extends Controller
     public function showAllGameVersions() {
         $gameVersions = $this->gameVersionManager->getAllGameVersions();
 
-        return view('game_version.list', ['gameVersions'=>$gameVersions]);
+        return view('game_version.list', ['gameVersions' => $gameVersions]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function editIndex($id)
-    {
+    public function editIndex($id) {
         $gameVersion = $this->gameVersionManager->getGameVersion($id);
         return view('game_version.create_edit_index', ['gameVersion' => $gameVersion]);
     }
@@ -88,12 +92,11 @@ class GameVersionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
-    {
+    public function edit(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required|max:255',
             'cover_img' => 'image|max:5000'
@@ -104,7 +107,7 @@ class GameVersionController extends Controller
         try {
             $editedGameVersion = $this->gameVersionManager->editGameVersion($id, $input);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back()->withInput($request->input());
         }
 
@@ -120,14 +123,12 @@ class GameVersionController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showGameVersionResourcesForLanguage(Request $request) {
-        $resourceCategoryManager = new ResourceCategoryManager();
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
         $input = $request->all();
         $langId = $input['lang_id'];
         $gameVersionId = $input['game_version_id'];
-        $gameVersionLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
+        $gameVersionLanguages = $this->gameVersionLanguageManager->getGameVersionLanguages($gameVersionId);
 
-        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId);
+        $gameVersionResourceCategories = $this->resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameVersionId, $langId);
 
         return view('game_resource_category.list_for_admin', ['resourceCategories' => $gameVersionResourceCategories, 'languages' => $gameVersionLanguages, 'gameVersionId' => $gameVersionId, 'langId' => $langId]);
     }
@@ -140,9 +141,8 @@ class GameVersionController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function showGameVersionResources($id) {
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameVersionLanguages = $gameVersionLanguageManager->getGameVersionLanguages($id);
-        if(count($gameVersionLanguages) == 0) {
+        $gameVersionLanguages = $this->gameVersionLanguageManager->getGameVersionLanguages($id);
+        if (count($gameVersionLanguages) == 0) {
             session()->flash('flash_message_failure', trans('messages.no_languages_selected'));
             return redirect()->back();
         }
@@ -156,8 +156,7 @@ class GameVersionController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addGameVersionLanguageIndex($id) {
-        $languageManager = new LanguageManager();
-        $languages = $languageManager->getAvailableLanguages();
+        $languages = $this->languageManager->getAvailableLanguages();
         return view('game_version.forms.add_language', ['languages' => $languages, 'gameVersionId' => $id]);
     }
 
@@ -171,15 +170,14 @@ class GameVersionController extends Controller
         $input = $request->all();
         $langId = $input['lang_id'];
         $gameVersionId = $input['game_version_id'];
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
-        if($gameVersionLanguageManager->gameVersionHasLanguage($gameVersionId, $langId)) {
+        if ($this->gameVersionLanguageManager->gameVersionHasLanguage($gameVersionId, $langId)) {
             session()->flash('flash_message_failure', trans('messages.game_language_selected'));
             return redirect()->back();
         }
         try {
-            $gameVersionLanguageManager->addGameVersionLanguage($gameVersionId, $langId);
+            $this->gameVersionLanguageManager->addGameVersionLanguage($gameVersionId, $langId);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
         session()->flash('flash_message_success', trans('messages.language_added'));

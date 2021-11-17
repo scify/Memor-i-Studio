@@ -20,34 +20,37 @@ class EquivalenceSetManager {
 
     private $equivalenceSetStorage;
     private $soundManager;
+    private $cardManager;
 
-    public function __construct() {
-        $this->equivalenceSetStorage = new EquivalentSetStorage();
-        $this->soundManager = new SoundManager();
+    public function __construct(EquivalentSetStorage $equivalenceSetStorage, SoundManager $soundManager,
+                                CardManager          $cardManager) {
+        $this->equivalenceSetStorage = $equivalenceSetStorage;
+        $this->soundManager = $soundManager;
+        $this->cardManager = $cardManager;
     }
 
     public function getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId) {
-        $equivalenceSets =  $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
+        $equivalenceSets = $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
         foreach ($equivalenceSets as $equivalenceSet) {
-            if($equivalenceSet->descriptionSound != null) {
+            if ($equivalenceSet->descriptionSound != null) {
                 $equivalenceSet->descriptionSoundPath = url('resolveData/' . $equivalenceSet->descriptionSound->file->file_path);
             }
         }
         return $equivalenceSets;
     }
+
     public function getEquivalenceSetsForGameFlavor($gameFlavorId) {
-        $equivalenceSets =  $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
-        return $equivalenceSets;
+        return $this->equivalenceSetStorage->getEquivalenceSetsForGameFlavor($gameFlavorId);
     }
 
     public function createEquivalenceSet($gameFlavorId, array $input) {
         $newEquivalenceSet = new EquivalenceSet();
         $newEquivalenceSet->name = generateRandomString();
         $newEquivalenceSet->flavor_id = $gameFlavorId;
-        if(isset($input['equivalence_set_description_sound'])) {
+        if (isset($input['equivalence_set_description_sound'])) {
             if ($input['equivalence_set_description_sound'] != null) {
                 $newEquivalenceSet->description_sound_id = $this->soundManager->uploadEquivalenceSetDescriptionSound($gameFlavorId, $input['equivalence_set_description_sound']);
-                if(isset($input['equivalence_set_description_sound_probability'])) {
+                if (isset($input['equivalence_set_description_sound_probability'])) {
                     $newEquivalenceSet->description_sound_probability = $input['equivalence_set_description_sound_probability'];
                 }
             }
@@ -82,20 +85,20 @@ class EquivalenceSetManager {
                 $current_card['images'] = array();
                 $current_card['description_sound'] = "";
                 $current_card['equivalenceCardSetHashCode'] = "";
-                if($equivalenceSet->descriptionSound != null) {
+                if ($equivalenceSet->descriptionSound != null) {
                     $fileName = substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
                     $current_card['description_sound'] = $fileName;
                     $current_card['description_sound_probability'] = $equivalenceSet->description_sound_probability;
                 }
-                if($card->sound != null) {
+                if ($card->sound != null) {
                     $fileName = substr($card->sound->file->file_path, strrpos($card->sound->file->file_path, '/') + 1);
                     array_push($current_card['sounds'], $fileName);
                 }
-                if($card->image != null) {
+                if ($card->image != null) {
                     $fileName = substr($card->image->file->file_path, strrpos($card->image->file->file_path, '/') + 1);
                     array_push($current_card['images'], $fileName);
                 }
-                if($card->secondImage != null) {
+                if ($card->secondImage != null) {
                     $fileName = substr($card->secondImage->file->file_path, strrpos($card->secondImage->file->file_path, '/') + 1);
                     array_push($current_card['images'], $fileName);
                 }
@@ -107,7 +110,7 @@ class EquivalenceSetManager {
         $pathRelative = 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/equivalence_cards_sets.json';
 
         $filePath = storage_path() . '/app/' . $pathRelative;
-        if(File::exists($filePath)) {
+        if (File::exists($filePath)) {
             File::delete($filePath);
         }
 
@@ -122,19 +125,18 @@ class EquivalenceSetManager {
             $newEquivalenceSet = $equivalenceSet->replicate();
             $newEquivalenceSet->flavor_id = $newGameFlavorId;
             $newEquivalenceSet->save();
-            $cardManager = new CardManager();
-            $cardManager->cloneCardsForEquivalenceSet($equivalenceSet, $newEquivalenceSet, $gameFlavorId, $newGameFlavorId);
+            $this->cardManager->cloneCardsForEquivalenceSet($equivalenceSet, $newEquivalenceSet, $gameFlavorId, $newGameFlavorId);
         }
     }
 
     public function editEquivalenceSet($equivalenceSetId, array $input) {
         $equivalenceSet = $this->getEquivalenceSet($equivalenceSetId);
-        if(isset($input['equivalence_set_description_sound'])) {
+        if (isset($input['equivalence_set_description_sound'])) {
             if ($input['equivalence_set_description_sound'] != null) {
                 $equivalenceSet->description_sound_id = $this->soundManager->uploadEquivalenceSetDescriptionSound($equivalenceSet->flavor_id, $input['equivalence_set_description_sound']);
             }
         }
-        if(isset($input['equivalence_set_description_sound_probability'])) {
+        if (isset($input['equivalence_set_description_sound_probability'])) {
             if ($input['equivalence_set_description_sound_probability'] != null) {
                 $equivalenceSet->description_sound_probability = $input['equivalence_set_description_sound_probability'];
             }

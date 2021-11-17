@@ -19,8 +19,8 @@ class GameRequestController {
 
     private $gameRequestManager;
 
-    function __construct() {
-        $this->gameRequestManager = new GameRequestManager();
+    function __construct(GameRequestManager $gameRequestManager) {
+        $this->gameRequestManager = $gameRequestManager;
     }
 
     public function initiateGameRequest(Request $request) {

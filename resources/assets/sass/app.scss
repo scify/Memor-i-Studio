@@ -430,7 +430,15 @@ body {
   .bootstrap-select .dropdown-toggle:focus, .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
     outline: unset !important;
   }
+
   .btn.dropdown-toggle.btn-ripple {
     background-color: white;
+  }
+}
+
+.games-message {
+  .games-num {
+    color: #337ab7;
+    font-weight: bold;
   }
 }

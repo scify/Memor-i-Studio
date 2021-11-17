@@ -13,10 +13,9 @@ class ResourceController extends Controller
     private $resourceManager;
     private $resourceCategoryManager;
 
-    public function __construct() {
-        // initialize $userStorage
-        $this->resourceManager = new ResourceManager();
-        $this->resourceCategoryManager = new ResourceCategoryManager();
+    public function __construct(ResourceManager $resourceManager, ResourceCategoryManager $resourceCategoryManager) {
+        $this->resourceManager = $resourceManager;
+        $this->resourceCategoryManager = $resourceCategoryManager;
     }
 
     /**

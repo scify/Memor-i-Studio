@@ -23,9 +23,14 @@ use Exception;
 class PlayerManager {
 
     private $playerStorage;
+    private $gameFlavorManager;
+    private $gameRequestManager;
 
-    function __construct() {
-        $this->playerStorage = new PlayerStorage();
+    function __construct(PlayerStorage $playerStorage, GameFlavorManager $gameFlavorManager,
+                         GameRequestManager $gameRequestManager) {
+        $this->playerStorage = $playerStorage;
+        $this->gameFlavorManager = $gameFlavorManager;
+        $this->gameRequestManager = $gameRequestManager;
     }
 
     public function playerWithUserNameExists($userName) {
@@ -59,8 +64,6 @@ class PlayerManager {
         $password = $input['password'];
         $gameFlavorPackIdentifier = $input['game_flavor_pack_identifier'];
         try {
-            $gameFlavorManager = new GameFlavorManager();
-            $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
             if($this->playerWithUserNameExists($username)) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, "user_name_taken", "");
             } else {
@@ -80,8 +83,7 @@ class PlayerManager {
     }
 
     private function makePlayerOnlineForGameFlavor(Player $player, $gameFlavorPackIdentifier) {
-        $gameFlavorManager = new GameFlavorManager();
-        $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
+        $gameFlavor = $this->gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorPackIdentifier);
         $player->game_flavor_playing = $gameFlavor->id;
         $this->playerStorage->savePlayer($player);
     }
@@ -125,14 +127,12 @@ class PlayerManager {
         $playerUserName = $input['user_name'];
         $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
         $initiatorPlayer = $this->getPlayerById($input['player_initiator_id']);
-        $gameRequestManager = new GameRequestManager();
-        $gameFlavorManager = new GameFlavorManager();
         try {
-            $gameRequestManager->deleteOldGameRequests($initiatorPlayer->id);
-            $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+            $this->gameRequestManager->deleteOldGameRequests($initiatorPlayer->id);
+            $gameFlavor = $this->gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
             if($this->playerWithUserNameExists($playerUserName)) {
                 $opponentPlayer = $this->getPlayerByUserName($playerUserName);
-                if($gameRequestManager->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
+                if($this->gameRequestManager->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
                     return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', "");
                 } else {
                     if ($this->isPlayerAvailableForGameFlavor($opponentPlayer, $gameFlavor)) {
@@ -157,13 +157,11 @@ class PlayerManager {
     public function getRandomPlayer(array $input) {
         $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
         $playerId = $input['player_id'];
-        $gameFlavorManager = new GameFlavorManager();
-        $gameRequestManager = new GameRequestManager();
         try {
             $player = $this->getPlayerById($playerId);
-            $gameRequestManager->deleteOldGameRequests($player->id);
-            $gameFlavor = $gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
-            if($gameRequestManager->playerExistsAsOpponentInAnotherRequest($player->id)) {
+            $this->gameRequestManager->deleteOldGameRequests($player->id);
+            $gameFlavor = $this->gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
+            if($this->gameRequestManager->playerExistsAsOpponentInAnotherRequest($player->id)) {
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', "");
             }
             $players = $this->playerStorage->getOnlinePlayersForGameFlavorExcept($gameFlavor->id, $playerId);
@@ -224,10 +222,9 @@ class PlayerManager {
     }
 
     private function closeAllOpenRequestsForPlayer(Player $player) {
-        $gameRequestManager = new GameRequestManager();
-        $openRequests = $gameRequestManager->getOpenRequestsForPlayer($player);
+        $openRequests = $this->gameRequestManager->getOpenRequestsForPlayer($player);
         foreach ($openRequests as $openRequest) {
-            $gameRequestManager->updateGameRequestStatusAndGetResponse($openRequest, GameRequestStatus::CANCELED);
+            $this->gameRequestManager->updateGameRequestStatusAndGetResponse($openRequest, GameRequestStatus::CANCELED);
         }
     }
 }

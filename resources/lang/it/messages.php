@@ -185,5 +185,10 @@ return [
     'who_can_use_memori_studio_message' => 'I giochi che è possibile creare attraverso la piattaforma sono rivolti a persone con cecità (file audio), persone con disabilità visive (immagine in bianco e nero) ma anche a persone vedenti (immagine a colori).',
     'about_text_7' => 'Memor-i studio è stato creato da <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, un\'organizzazione Greca non-profit.<br><br>Il progetto di Memor-i studio è stato finanziato dalla <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a><br><br>Per maggiori informazioni, clicca <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">qui.</a>',
     'disclaimer_title' => 'Disclaimer',
-    'disclaimer_message' => 'Memor-i Studio è stato creato da SciFY ed è disponibile per tutti gratuitamente, come strumento open source. Chiunque può creare I propri giochi senza bisogno di competenze informatiche. SciFY garantisce che, per quanto possibile, tutti I giochi di Memor-i Studio siano conformi alle leggi e ai regolamenti. Consente inoltre agli utenti di segnalare giochi con contenuti inappropriati o illegali selezionando "Segnalazione". Tuttavia, SciFY non è in alcun modo responsabile per il contenuto o le violazioni del copyright di giochi creati di terze parti.'
+    'disclaimer_message' => 'Memor-i Studio è stato creato da SciFY ed è disponibile per tutti gratuitamente, come strumento open source. Chiunque può creare I propri giochi senza bisogno di competenze informatiche. SciFY garantisce che, per quanto possibile, tutti I giochi di Memor-i Studio siano conformi alle leggi e ai regolamenti. Consente inoltre agli utenti di segnalare giochi con contenuti inappropriati o illegali selezionando "Segnalazione". Tuttavia, SciFY non è in alcun modo responsabile per il contenuto o le violazioni del copyright di giochi creati di terze parti.',
+    'all_languages' => 'Tutte le lingue',
+    'search_games' => 'Ricerca',
+    'no_games_found' => 'Nessun gioco trovato per questa lingua.',
+    'found' => 'Trovati',
+    'games' => 'giochi'
 ];

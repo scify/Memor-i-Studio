@@ -26,7 +26,7 @@ class GameFlavorStorage {
         return $gameFlavor;
     }
 
-    public function getGameFlavors($onlyPublished = true, $created_by_user_id = null) {
+    public function getGameFlavors($onlyPublished = true, $created_by_user_id = null, $language_id = null) {
         DB::enableQueryLog();
         $query = DB::table('game_flavor');
 
@@ -34,6 +34,8 @@ class GameFlavorStorage {
             $query->where('published', true);
         if ($created_by_user_id)
             $query->where('creator_id', $created_by_user_id);
+        if ($language_id)
+            $query->where(['lang_id' => $language_id]);
 
         return $query->join('language', 'game_flavor.lang_id', '=', 'language.id')
             ->join('users as creator', 'creator.id', '=', 'game_flavor.creator_id')

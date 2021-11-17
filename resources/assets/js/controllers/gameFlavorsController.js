@@ -41,7 +41,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
         });
     };
     let getGamesWithFilters = function () {
-        console.log("getGamesWithFilters");
+        const languageId = $('select[name=language] option').filter(':selected').attr('value');
         const userObj = user;
         const formLoader = $('#gamesLoader');
         const formButton = $('#getGames');
@@ -52,7 +52,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
             method: "POST",
             url: gameFlavorsRoute,
             cache: false,
-            data: {user: userObj, _token: _token},
+            data: {user: userObj, _token: _token, language_id: languageId},
             beforeSend: function () {
                 errorEl.html('');
                 formLoader.removeClass('display-none');
@@ -76,6 +76,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
         reportGameFlavorBtnHandler();
         downloadBtnHandler();
         getGamesWithFiltersHandler();
+        getGamesWithFilters();
     };
     $(document).ready(function () {
         init();

@@ -185,5 +185,10 @@ return [
     'who_can_use_memori_studio_message' => 'The games are created through the platform are targeted at people with blindness (audio file), people with visual impairments (black and white image) and sighted (color image).',
     'about_text_7' => 'Memor-i studio has been created by <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, a Greek not-for-profit organization.<br><br>The Memor-i studio project has been funded by <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a><br><br>For more information, click <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">here.</a>',
     'disclaimer_title' => 'Disclaimer',
-    'disclaimer_message' => 'Memor-i studio has been created by Science For You (SciFY) and it\'s provided for free to all, as an open-source tool. Anyone can make theirown games, without having programming knowledge. SciFY makes sure that as much as possible, all the games of Merom-i Studio are according to the laws and regulations. Also, it makes it possible for the users to report the games with inappropriate or illegal content, with the option "Report". Despite that, SciFY is in no way reliable for the content or the violations of the law pertaining the Copyright of games that have been created by third parties.'
+    'disclaimer_message' => 'Memor-i studio has been created by Science For You (SciFY) and it\'s provided for free to all, as an open-source tool. Anyone can make theirown games, without having programming knowledge. SciFY makes sure that as much as possible, all the games of Merom-i Studio are according to the laws and regulations. Also, it makes it possible for the users to report the games with inappropriate or illegal content, with the option "Report". Despite that, SciFY is in no way reliable for the content or the violations of the law pertaining the Copyright of games that have been created by third parties.',
+    'all_languages' => 'All Languages',
+    'search_games' => 'Search',
+    'no_games_found' => 'No games found for this language.',
+    'found' => 'Found',
+    'games' => 'games'
 ];

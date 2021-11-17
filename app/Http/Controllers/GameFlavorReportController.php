@@ -12,8 +12,8 @@ class GameFlavorReportController extends Controller
     /**
      * GameFlavorController constructor.
      */
-    public function __construct() {
-        $this->gameFlavorReportManager = new GameFlavorReportManager();
+    public function __construct(GameFlavorReportManager $gameFlavorReportManager) {
+        $this->gameFlavorReportManager = $gameFlavorReportManager;
     }
 
     /**

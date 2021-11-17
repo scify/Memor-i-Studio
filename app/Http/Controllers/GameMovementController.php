@@ -19,8 +19,8 @@ class GameMovementController {
 
     private $gameMovementManager;
 
-    function __construct() {
-        $this->gameMovementManager = new GameMovementManager();
+    function __construct(GameMovementManager $gameMovementManager) {
+        $this->gameMovementManager = $gameMovementManager;
     }
 
     public function createGameMovement(Request $request) {

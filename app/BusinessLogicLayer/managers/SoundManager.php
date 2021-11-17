@@ -24,8 +24,8 @@ class SoundManager {
     // So it it expected to appear in this specific folder.
     private $EQUIVALENCE_SET_DESCRIPTION_SOUND_PATH = 'audios/card_description_sounds/';
 
-    public function __construct() {
-        $this->resourceManager = new ResourceManager();
+    public function __construct(ResourceManager $resourceManager) {
+        $this->resourceManager = $resourceManager;
     }
 
     /**

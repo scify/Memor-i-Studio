@@ -41,9 +41,10 @@ class ResourceCategoryManager {
         'audios/numbers/' => 11,
     );
 
-    public function __construct() {
-        $this->resourceCategoryStorage = new ResourceCategoryStorage();
-        $this->resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
+    public function __construct(ResourceCategoryStorage $resourceCategoryStorage,
+                                ResourceCategoryTranslationStorage $resourceCategoryTranslationStorage) {
+        $this->resourceCategoryStorage = $resourceCategoryStorage;
+        $this->resourceCategoryTranslationStorage = $resourceCategoryTranslationStorage;
     }
 
     /**

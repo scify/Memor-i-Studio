@@ -185,5 +185,10 @@ return [
     'who_can_use_memori_studio_message' => 'Los juegos se crean a través de la plataforma y están dirigidos a personas con ceguera (archivo de audio), personas con discapacidad visual (imagen en blanco y negro) y videntes (imagen en color) .',
     'about_text_7' => 'El estudio Memor-i ha sido creado por <a href="https://www.scify.gr/site/en/">Science For You (SciFY)</a>, una organización griega sin fines de lucro.<br><br>El proyecto del estudio Memor-i ha sido financiado por la <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a><br><br>Para obtener más información, hagan clic <a href="https://www.scify.gr/site/en/impact-areas-en/assistive-technologies/memorien">aquí.</a>',
     'disclaimer_title' => 'Descargo de responsabilidad',
-    'disclaimer_message' => 'Memor-i studio ha sido creado por Science For You (SciFY) y se proporciona de forma gratuita a todos, como una herramienta de código abierto. Cualquiera puede crear sus propios juegos, sin tener conocimientos de programación. SciFY se asegura de que, en la medida de lo posible, todos los juegos de Merom-i Studio cumplan con las leyes y regulaciones. Además, permite que los usuarios denuncien los juegos con contenido inapropiado o ilegal, con la opción "Denunciar". A pesar de eso, SciFY no es responsable de ningún modo por el contenido o las infracciones de los derechos de autor de los juegos de terceros.'
+    'disclaimer_message' => 'Memor-i studio ha sido creado por Science For You (SciFY) y se proporciona de forma gratuita a todos, como una herramienta de código abierto. Cualquiera puede crear sus propios juegos, sin tener conocimientos de programación. SciFY se asegura de que, en la medida de lo posible, todos los juegos de Merom-i Studio cumplan con las leyes y regulaciones. Además, permite que los usuarios denuncien los juegos con contenido inapropiado o ilegal, con la opción "Denunciar". A pesar de eso, SciFY no es responsable de ningún modo por el contenido o las infracciones de los derechos de autor de los juegos de terceros.',
+    'all_languages' => 'Todos los idiomas',
+    'search_games' => 'Buscar',
+    'no_games_found' => 'No se encontraron juegos para este idioma.',
+    'found' => 'Encontrados',
+    'games' => 'juegos'
 ];

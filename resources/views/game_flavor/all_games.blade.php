@@ -13,10 +13,10 @@
         </div>
         <div class="row margin-bottom-30 text-center justify-content-center" id="gameFilters">
             <div class="col-md-2 col-md-offset-5">
-                <select name="languages" id="languages" class="width-percent-100 form-control selecter">
-                    <option selected>All Languages</option>
+                <select name="language" id="language" class="width-percent-100 form-control selecter">
+                    <option selected>{{ __('messages.all_languages') }}</option>
                     @foreach($languages as $language)
-                        <option>{{ $language->name }}</option>
+                        <option value="{{ $language->id }}">{{ $language->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -25,7 +25,8 @@
             <div class="col-md-12 text-center">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <button id="getGames"
-                        class="btn btn-success btn-ripple margin-bottom-5">{!! __('messages.more_games') !!}
+                        class="btn btn-success btn-ripple btn-lg margin-bottom-5">
+                    <i class="fa fa-search margin-right-10" aria-hidden="true"></i>{!! __('messages.search_games') !!}
                 </button>
                 <p class="text-danger" id="error"></p>
                 <div id="gamesLoader"

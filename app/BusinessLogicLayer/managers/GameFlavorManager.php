@@ -31,11 +31,27 @@ class GameFlavorManager {
     private $gameFlavorStorage;
     private $fileManager;
     private $userStorage;
+    private $resourceCategoryManager;
+    private $resourceManager;
+    private $gameVersionLanguageManager;
+    private $gameVersionManager;
+    private $equivalenceSetManager;
+    private $windowsBuilder;
 
-    public function __construct(GameFlavorStorage $gameFlavorStorage, FileManager $fileManager, UserStorage $userStorage) {
+    public function __construct(GameFlavorStorage  $gameFlavorStorage, FileManager $fileManager,
+                                UserStorage        $userStorage, ResourceCategoryManager $resourceCategoryManager,
+                                ResourceManager    $resourceManager, GameVersionLanguageManager $gameVersionLanguageManager,
+                                GameVersionManager $gameVersionManager, EquivalenceSetManager $equivalenceSetManager,
+                                WindowsBuilder     $windowsBuilder) {
         $this->gameFlavorStorage = $gameFlavorStorage;
         $this->fileManager = $fileManager;
         $this->userStorage = $userStorage;
+        $this->resourceCategoryManager = $resourceCategoryManager;
+        $this->resourceManager = $resourceManager;
+        $this->gameVersionLanguageManager = $gameVersionLanguageManager;
+        $this->gameVersionManager = $gameVersionManager;
+        $this->equivalenceSetManager = $equivalenceSetManager;
+        $this->windowsBuilder = $windowsBuilder;
     }
 
     public function getJarFilePathForGameFlavor($gameFlavorId) {
@@ -87,8 +103,7 @@ class GameFlavorManager {
 
     public function assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
-        $gameVersionManager = new GameVersionManager();
-        $gameVersion = $gameVersionManager->getGameVersion($gameVersionId);
+        $gameVersion = $this->gameVersionManager->getGameVersion($gameVersionId);
 
         if (!$gameFlavor || !$gameVersion)
             throw new \Exception("ERROR game flavor id: " . $gameFlavorId . " or game version id: " . $gameVersionId . " do not exist");
@@ -102,13 +117,11 @@ class GameFlavorManager {
     }
 
     public function getResourceCategoriesForGameFlavor($gameFlavor, $langId) {
-        $resourceCategoryManager = new ResourceCategoryManager();
-        $resourceManager = new ResourceManager();
-        $gameVersionResourceCategories = $resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $langId);
+        $gameVersionResourceCategories = $this->resourceCategoryManager->getResourceCategoriesForGameVersionForLanguage($gameFlavor->game_version_id, $langId);
         foreach ($gameVersionResourceCategories as $category) {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
-                $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+                $resourceFile = $this->resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
                 if ($resourceFile != null) {
                     $resource->file_path = $resourceFile->file_path;
                 } else {
@@ -123,21 +136,22 @@ class GameFlavorManager {
         return $gameVersionResourceCategories;
     }
 
-    public function getGameFlavors(int $userId) {
+    public function getGameFlavors(int $userId, $language_id) {
+        $user = null;
         try {
             $user = $this->userStorage->get($userId);
             if ($user->isAdmin()) {
                 //if admin, get all game versions
-                $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors();
+                $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(false, null, $language_id);
             } else {
                 //if regular user, merge the published game versions with the game versions created by the user
-                $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavors(true);
-                $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavors(false, $user->id);
+                $publishedGameFlavors = $this->gameFlavorStorage->getGameFlavors(true, null, $language_id);
+                $gameFlavorsCreatedByUser = $this->gameFlavorStorage->getGameFlavors(false, $user->id, $language_id);
 
                 $gameFlavorsToBeReturned = $gameFlavorsCreatedByUser->merge($publishedGameFlavors);
             }
         } catch (ModelNotFoundException $e) {
-            $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true);
+            $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true, null, $language_id);
         } finally {
             foreach ($gameFlavorsToBeReturned as $gameFlavor) {
                 $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
@@ -150,8 +164,7 @@ class GameFlavorManager {
     private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor) {
         $resource = $gameFlavor->coverImg;
         if ($resource != null) {
-            $resourceManager = new ResourceManager();
-            $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+            $resourceFile = $this->resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
             if ($resourceFile != null)
                 return $resourceFile->file_path;
         }
@@ -217,8 +230,7 @@ class GameFlavorManager {
         $gameFlavor->name = $gameFlavorFields['name'];
         $gameFlavor->description = $gameFlavorFields['description'];
         $gameFlavor->lang_id = $gameFlavorFields['lang_id'];
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $gameFlavor->interface_lang_id = $gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->lang_id;
+        $gameFlavor->interface_lang_id = $this->gameVersionLanguageManager->getFirstLanguageAvailableForGameVersion($gameFlavorFields['game_version_id'])->lang_id;
         $gameFlavor->copyright_link = $gameFlavorFields['copyright_link'];
         if (isset($gameFlavorFields['allow_clone']))
             $gameFlavor->allow_clone = true;
@@ -296,13 +308,11 @@ class GameFlavorManager {
     }
 
     public function packageFlavor($gameFlavorId) {
-        $resourceManager = new ResourceManager();
-        $equivalenceSetManager = new EquivalenceSetManager();
         //create resources map file
-        $resourceManager->createStaticResourcesMapFile($gameFlavorId);
-        $resourceManager->createAdditionalPropertiesFile($gameFlavorId);
+        $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
+        $this->resourceManager->createAdditionalPropertiesFile($gameFlavorId);
         //create card .json file (for equivalent sets)
-        $equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
+        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
         //compress the data pack directory into a temporary .jar file (it will be deleted later, after we sign it)
         //$this->zipGameFlavorDataPack($gameFlavorId);
 
@@ -327,9 +337,8 @@ class GameFlavorManager {
         }
         //copy the public jnlp file into the game flavor jnlp directory
         //$this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
-        $windowsBuilder = new WindowsBuilder();
 
-        $windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
+        $this->windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
 
         return;
     }
@@ -339,9 +348,8 @@ class GameFlavorManager {
      * @throws \Exception if the .jar file cannot be copied to the destination path
      */
     private function copyGameVersionJarFileToDataPackDir($gameFlavorId) {
-        $gameVersionManager = new GameVersionManager();
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
-        $sourceFile = $gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
+        $sourceFile = $this->gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
         $destinationFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar';
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
     }
@@ -435,15 +443,13 @@ class GameFlavorManager {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         DB::transaction(function () use ($user, $gameFlavor) {
-            $resourceManager = new ResourceManager();
             $newGameFlavor = $this->cloneGameFlavor($user->id, $gameFlavor);
-            $coverImgFile = $resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
-            $resourceManager->cloneResourceFile($gameFlavor->coverImg, $coverImgFile, $newGameFlavor->id);
+            $coverImgFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
+            $this->resourceManager->cloneResourceFile($gameFlavor->coverImg, $coverImgFile, $newGameFlavor->id);
 
             $this->cloneDataPackFiles($gameFlavor, $newGameFlavor);
             $this->cloneDataPackResourceFileRows($gameFlavor, $newGameFlavor);
-            $equivalenceSetManager = new EquivalenceSetManager();
-            $equivalenceSetManager->cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavor->id, $newGameFlavor->id);
+            $this->equivalenceSetManager->cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavor->id, $newGameFlavor->id);
         });
 
     }
@@ -469,13 +475,12 @@ class GameFlavorManager {
 
     private function cloneDataPackResourceFileRows(GameFlavor $gameFlavor, GameFlavor $newGameFlavor) {
         $resourceCategoriesForGameFlavor = $this->getResourceCategoriesForGameFlavor($gameFlavor, $gameFlavor->interface_lang_id);
-        $resourceManager = new ResourceManager();
         foreach ($resourceCategoriesForGameFlavor as $category) {
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
-                $resourceFile = $resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
+                $resourceFile = $this->resourceManager->getFileForResourceForGameFlavor($resource, $gameFlavor->id);
                 if ($resourceFile != null) {
-                    $resourceManager->cloneResourceFile($resource, $resourceFile, $newGameFlavor->id);
+                    $this->resourceManager->cloneResourceFile($resource, $resourceFile, $newGameFlavor->id);
                 }
             }
         }

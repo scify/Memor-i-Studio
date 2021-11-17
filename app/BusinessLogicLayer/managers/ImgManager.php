@@ -23,8 +23,8 @@ class ImgManager {
     private $CARD_IMAGE_CATEGORY = 'img/card_images/';
     private $GAME_FLAVOR_COVER_IMAGE_CATEGORY = 'img/game_cover/';
 
-    public function __construct() {
-        $this->resourceManager = new ResourceManager();
+    public function __construct(ResourceManager $resourceManager) {
+        $this->resourceManager = $resourceManager;
     }
 
     /**

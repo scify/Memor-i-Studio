@@ -7,9 +7,9 @@ use App\StorageLayer\LanguageStorage;
 class LanguageManager {
     private $languagesStorage;
 
-    public function __construct() {
+    public function __construct(LanguageStorage $languagesStorage) {
         // initialize $userStorage
-        $this->languagesStorage = new LanguageStorage();
+        $this->languagesStorage = $languagesStorage;
     }
 
     public function getAvailableLanguages() {

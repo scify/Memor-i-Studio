@@ -17,15 +17,19 @@ use Exception;
 class GameMovementManager {
 
     private $gameMovementStorage;
+    private $gameRequestManager;
+    private $playerManager;
 
-    function __construct() {
-        $this->gameMovementStorage = new GameMovementStorage();
+    function __construct(GameMovementStorage $gameMovementStorage, GameRequestManager $gameRequestManager,
+                         PlayerManager $playerManager) {
+        $this->gameMovementStorage = $gameMovementStorage;
+        $this->gameRequestManager = $gameRequestManager;
+        $this->playerManager = $playerManager;
     }
 
     public function createGameMovement(array $input) {
         try {
-            $gameRequestManager = new GameRequestManager();
-            $gameRequest = $gameRequestManager->getGameRequest($input['game_request_id']);
+            $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
             $newGameMovement = $this->create($input['player_id'], $input['movement_json'], $gameRequest->id, $input['timestamp']);
             return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_movement_created', ["game_movement_id" => $newGameMovement->id]);
         } catch (Exception $e) {
@@ -46,10 +50,8 @@ class GameMovementManager {
 
     public function getLatestOpponentGameMovement($input) {
         try {
-            $playerManager = new PlayerManager();
-            $gameRequestManager = new GameRequestManager();
-            $gameRequest = $gameRequestManager->getGameRequest($input['game_request_id']);
-            $opponent = $playerManager->getPlayerById($input['opponent_id']);
+            $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
+            $opponent = $this->playerManager->getPlayerById($input['opponent_id']);
             if(!$playerManager->isPlayerOnline($opponent))
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
 

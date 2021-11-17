@@ -5,37 +5,41 @@ namespace App\Http\Controllers;
 use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Javascript;
 
 /**
  * Class EquivalenceSetController controller for requests regarding equivalence sets (sets of cards that are equivalent)
  * @package App\Http\Controllers
  */
-class EquivalenceSetController extends Controller
-{
+class EquivalenceSetController extends Controller {
     private $equivalenceSetManager;
     private $cardManager;
+    private $gameFlavorManager;
 
     /**
      * CardController constructor.
      */
-    public function __construct() {
-        $this->equivalenceSetManager = new EquivalenceSetManager();
-        $this->cardManager = new CardManager();
+    public function __construct(EquivalenceSetManager $equivalenceSetManager,
+                                CardManager           $cardManager,
+                                GameFlavorManager     $gameFlavorManager) {
+        $this->equivalenceSetManager = $equivalenceSetManager;
+        $this->cardManager = $cardManager;
+        $this->gameFlavorManager = $gameFlavorManager;
     }
 
     /**
      * Prepares and returns a blade view with the appropriate data for a game flavor
      *
      * @param $gameFlavorId int the id of the game flavor the user views
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View a view with the appropriate data
+     * @return Factory|View a view with the appropriate data
      */
     public function showEquivalenceSetsForGameFlavor($gameFlavorId) {
 
-        $gameFlavorManager = new GameFlavorManager();
-        $gameFlavor = $gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
-        if(!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
+        $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
+        if (!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
             return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
         }
         $equivalenceSets = $this->equivalenceSetManager->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
@@ -76,7 +80,7 @@ class EquivalenceSetController extends Controller
             $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
             $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
 
@@ -102,7 +106,7 @@ class EquivalenceSetController extends Controller
         try {
             $equivalenceSet = $this->equivalenceSetManager->editEquivalenceSet($equivalenceSetId, $input);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
 
@@ -120,7 +124,7 @@ class EquivalenceSetController extends Controller
         try {
             $this->equivalenceSetManager->deleteSet($request->id);
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
 

@@ -10,9 +10,9 @@ class GameVersionLanguageManager {
     private $gameVersionLanguageStorage;
     private $languageManager;
 
-    public function __construct() {
-        $this->gameVersionLanguageStorage = new GameVersionLanguageStorage();
-        $this->languageManager = new LanguageManager();
+    public function __construct(GameVersionLanguageStorage $gameVersionLanguageStorage, LanguageManager $languageManager) {
+        $this->gameVersionLanguageStorage = $gameVersionLanguageStorage;
+        $this->languageManager = $languageManager;
     }
 
     /**

@@ -27,11 +27,11 @@ class WindowsBuilder {
     private $LICENCE_BASE_FILE;
     private $fileManager;
 
-    public function __construct() {
+    public function __construct(FileManager $fileManager) {
         $this->LAUNCH4J_BASE_FILE = public_path('build_app/launch4j/memor-i_config.xml');
         $this->INNOSETUP_BASE_FILE = public_path('build_app/innosetup/memor-i_config.iss');
         $this->LICENCE_BASE_FILE = public_path('build_app/innosetup/LICENCE.md');
-        $this->fileManager = new FileManager();
+        $this->fileManager = $fileManager;
     }
 
     public function buildGameFlavorForWindows(GameFlavor $gameFlavor, $gameFlavorJarFile) {
