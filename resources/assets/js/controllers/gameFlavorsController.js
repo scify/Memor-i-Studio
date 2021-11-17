@@ -55,6 +55,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
             data: {user: userObj, _token: _token, language_id: languageId},
             beforeSend: function () {
                 errorEl.html('');
+                errorEl.addClass('display-none');
                 formLoader.removeClass('display-none');
                 formButton.attr('disabled', true);
             },
@@ -67,6 +68,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
             error: function (error) {
                 formLoader.addClass('display-none');
                 formButton.attr('disabled', false);
+                errorEl.removeClass('display-none');
                 errorEl.html(error.responseJSON.message);
                 console.error(error);
             }

@@ -25,10 +25,14 @@
             <div class="col-md-12 text-center">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <button id="getGames"
-                        class="btn btn-success btn-ripple btn-lg margin-bottom-5">
+                        class="btn btn-success btn-ripple btn-lg">
                     <i class="fa fa-search margin-right-10" aria-hidden="true"></i>{!! __('messages.search_games') !!}
                 </button>
-                <p class="text-danger" id="error"></p>
+            </div>
+        </div>
+        <div class="row padding-top-10 padding-bottom-10">
+            <div class="col-md-12 text-center">
+                <p class="text-danger display-none" id="error"></p>
                 <div id="gamesLoader"
                      class="loader display-none"
                      role="status" aria-hidden="true"></div>
