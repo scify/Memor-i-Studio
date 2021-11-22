@@ -190,5 +190,9 @@ return [
     'search_games' => 'Buscar',
     'no_games_found' => 'No se encontraron juegos para este idioma.',
     'found' => 'Encontrados',
-    'games' => 'juegos'
+    'games' => 'juegos',
+    'sponsors_crowdfunding_title' => 'Patrocinadores de crowdfunding de la versión inicial de Memor-i:',
+    'sponsors_norwegian' => 'La versión noruega de Memor-i fue patrocinada por la embajada noruega de Grecia.',
+    'sponsors_pvp' => 'La versión PvP de Memor-i fue patrocinada por el <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a>',
+    'sponsors_multilingual' => 'La versión multilingüe de Memor-i y Memor-i Studio se desarrolló en el contexto de la <a href="https://shapes2020.eu/" target="_blank">"SHAPES"</a> Proyecto europeo.'
 ];

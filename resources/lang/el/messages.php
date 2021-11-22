@@ -190,5 +190,9 @@ return [
     'search_games' => 'Αναζήτηση',
     'no_games_found' => 'Δεν βρέθηκαν παιχνίδια σε αυτή τη γλώσσα.',
     'found' => 'Βρέθηκαν',
-    'games' => 'παιχνίδια'
+    'games' => 'παιχνίδια',
+    'sponsors_crowdfunding_title' => 'Crowdfunding χορηγοί της έκδοσης v1 του Memor-i:',
+    'sponsors_norwegian' => 'Η Νορβηγική έκδοση του Memor-i χρηματοδοτήθηκε από τη Νορβηγική πρεσβεία της Ελλάδας.',
+    'sponsors_pvp' => 'Η έκδοση PvP του έργου Memor-i υλοποιήθηκε με χρηματοδότηση από το <a href="https://www.latsis-foundation.org/eng">Κοινωφελές Ίδρυμα Ιωάννη Σ. Λάτση.</a>',
+    'sponsors_multilingual' => 'Η πολυγλωσσική έκδοση του έργου έγινε στα πλαίσια του Ευρωπαϊκού έργου <a href="https://shapes2020.eu/" target="_blank">"SHAPES"</a>'
 ];

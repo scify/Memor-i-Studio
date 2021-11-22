@@ -190,5 +190,9 @@ return [
     'search_games' => 'Search',
     'no_games_found' => 'No games found for this language.',
     'found' => 'Found',
-    'games' => 'games'
+    'games' => 'games',
+    'sponsors_crowdfunding_title' => 'Crowdfunding sponsors of the initial version of Memor-i:',
+    'sponsors_norwegian' => 'The Norwegian version of Memor-i was sponsored by the Norwegian embassy of Greece.',
+    'sponsors_pvp' => 'The PvP version of Memor-i was sponsored by the <a href="https://www.latsis-foundation.org/eng">Public Benefit Foundation John S. Latsis.</a>',
+    'sponsors_multilingual' => 'The multilingual version of Memor-i and Memor-i Studio was developed in the context of the <a href="https://shapes2020.eu/" target="_blank">"SHAPES"</a> European project.'
 ];
