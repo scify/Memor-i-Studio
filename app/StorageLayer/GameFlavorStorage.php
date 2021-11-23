@@ -10,6 +10,7 @@ namespace App\StorageLayer;
 
 
 use App\Models\GameFlavor;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GameFlavorStorage {
@@ -67,9 +68,22 @@ class GameFlavorStorage {
         $gameFlavor->delete();
     }
 
-    public function gatGameFlavorsBySubmittedState($submittedState) {
+    public function getGameFlavorsBySubmittedState($submittedState) {
         return GameFlavor::where([
             ['submitted_for_approval', '=', $submittedState],
         ])->with($this->default_relationships)->orderBy('created_at', 'desc')->get();
+    }
+
+    public function getGameFlavorsForCriteria(int $lang_id): Collection {
+        return DB::table('game_flavor')
+            ->select(['game_flavor.*', 'resource_file.file_path as cover_img_file_path'])
+            ->join('resource', 'game_flavor.cover_img_id', '=', 'resource.id')
+            ->join('resource_file', function ($join) {
+                $join->on('resource.id', '=', 'resource_file.resource_id')
+                    ->on('game_flavor.id', '=', 'resource_file.game_flavor_id');
+            })
+            ->where(['game_flavor.lang_id' => $lang_id, 'published' => true])
+            ->orderBy('game_flavor.created_at', 'desc')
+            ->get();
     }
 }

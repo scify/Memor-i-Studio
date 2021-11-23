@@ -100,7 +100,7 @@ class EquivalenceSetManager {
             }
             array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
         }
-        $pathRelative = 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/equivalence_cards_sets.json';
+        $pathRelative = $this->getEquivalenceSetFilePath($gameFlavorId, false);
 
         $filePath = storage_path() . '/app/' . $pathRelative;
         if (File::exists($filePath)) {
@@ -110,6 +110,10 @@ class EquivalenceSetManager {
         Storage::put($pathRelative, json_encode($equivalence_card_sets));
 
         return json_encode($equivalence_card_sets);
+    }
+
+    public function getEquivalenceSetFilePath(int $gameFlavorId): string {
+        return 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/equivalence_cards_sets.json';
     }
 
     public function cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavorId, $newGameFlavorId) {

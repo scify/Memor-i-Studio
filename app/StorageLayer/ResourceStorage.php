@@ -80,7 +80,7 @@ class ResourceStorage {
      * @return mixed set of results
      */
     public function getResourcesForGameFlavorByResourceType($gameFlavorId, $typeId) {
-        $resources = DB::table('resource')
+        return DB::table('resource')
             ->join('resource_category', 'resource.category_id', '=', 'resource_category.id')
             ->join('resource_file', 'resource.id', '=', 'resource_file.resource_id')
             ->where('resource_category.type_id', '=', $typeId)
@@ -88,7 +88,6 @@ class ResourceStorage {
             ->orderBy('resource.order_id', 'asc')
             ->orderBy(\DB::raw('-resource.order_id'), 'desc')
             ->get();
-        return $resources;
     }
 
     public function getReourceByNameForCategory($gameResourceFilePath, $categoryId) {

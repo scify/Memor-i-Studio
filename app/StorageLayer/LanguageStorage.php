@@ -12,4 +12,8 @@ class LanguageStorage {
     public function getLanguageById($langId) {
         return Language::find($langId);
     }
+
+    public function getLanguageByCode(string $lang_code) {
+        return Language::where(['code' => $lang_code])->first();
+    }
 }

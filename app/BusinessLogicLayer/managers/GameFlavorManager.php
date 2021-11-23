@@ -7,6 +7,7 @@ use App\Models\GameFlavor;
 use App\Models\ResourceFile;
 use App\Models\User;
 use App\StorageLayer\GameFlavorStorage;
+use App\StorageLayer\LanguageStorage;
 use App\StorageLayer\UserStorage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,12 +38,13 @@ class GameFlavorManager {
     private $gameVersionManager;
     private $equivalenceSetManager;
     private $windowsBuilder;
+    private $languageStorage;
 
     public function __construct(GameFlavorStorage  $gameFlavorStorage, FileManager $fileManager,
                                 UserStorage        $userStorage, ResourceCategoryManager $resourceCategoryManager,
                                 ResourceManager    $resourceManager, GameVersionLanguageManager $gameVersionLanguageManager,
                                 GameVersionManager $gameVersionManager, EquivalenceSetManager $equivalenceSetManager,
-                                WindowsBuilder     $windowsBuilder) {
+                                WindowsBuilder     $windowsBuilder, LanguageStorage $languageStorage) {
         $this->gameFlavorStorage = $gameFlavorStorage;
         $this->fileManager = $fileManager;
         $this->userStorage = $userStorage;
@@ -52,6 +54,7 @@ class GameFlavorManager {
         $this->gameVersionManager = $gameVersionManager;
         $this->equivalenceSetManager = $equivalenceSetManager;
         $this->windowsBuilder = $windowsBuilder;
+        $this->languageStorage = $languageStorage;
     }
 
     public function getJarFilePathForGameFlavor($gameFlavorId) {
@@ -508,7 +511,7 @@ class GameFlavorManager {
 
     public function getGameFlavorsSubmittedForApproval() {
         $gameFlavorViewModels = new Collection();
-        $gameFlavors = $this->gameFlavorStorage->gatGameFlavorsBySubmittedState(true);
+        $gameFlavors = $this->gameFlavorStorage->getGameFlavorsBySubmittedState(true);
         foreach ($gameFlavors as $gameFlavor) {
             $gameFlavorViewModels->add($this->getGameFlavorViewModel($gameFlavor->id));
         }
@@ -555,6 +558,17 @@ class GameFlavorManager {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public function getGameFlavorsForCriteria(string $lang_code) {
+        $language = $this->languageStorage->getLanguageByCode($lang_code);
+        $game_flavors = $this->gameFlavorStorage->getGameFlavorsForCriteria($language->id);
+        foreach ($game_flavors as $game_flavor) {
+            $game_flavor->base_path = route('resolveDataPath', ['filePath' => 'data_packs/additional_pack_' . $game_flavor->id . '/data/']);
+            $game_flavor->cover_img_file_path = route('resolveDataPath', ['filePath' => $game_flavor->cover_img_file_path]);
+            $game_flavor->equivalence_set_file_path = route('resolveDataPath', ['filePath' => $this->equivalenceSetManager->getEquivalenceSetFilePath($game_flavor->id)]);
+        }
+        return $game_flavors;
     }
 
 }

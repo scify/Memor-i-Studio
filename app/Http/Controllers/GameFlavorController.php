@@ -330,4 +330,11 @@ class GameFlavorController extends Controller {
         $gameVersions = $this->gameVersionManager->getAllGameVersions();
         return view('game_flavor.forms.select_game_version', ['gameVersions' => $gameVersions, 'gameFlavor' => $gameFlavor]);
     }
+
+    public function getGameFlavorsForCriteria(Request $request) {
+        $this->validate($request, [
+            'lang' => 'required|exists:language,code',
+        ]);
+        return $this->gameFlavorManager->getGameFlavorsForCriteria($request->lang);
+    }
 }
