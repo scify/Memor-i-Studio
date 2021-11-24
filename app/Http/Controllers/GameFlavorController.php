@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameFlavorManager;
-use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
 use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameFlavor;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -331,10 +331,10 @@ class GameFlavorController extends Controller {
         return view('game_flavor.forms.select_game_version', ['gameVersions' => $gameVersions, 'gameFlavor' => $gameFlavor]);
     }
 
-    public function getGameFlavorsForCriteria(Request $request) {
+    public function getGameFlavorsForCriteria(Request $request): JsonResponse {
         $this->validate($request, [
             'lang' => 'required|exists:language,code',
         ]);
-        return $this->gameFlavorManager->getGameFlavorsForCriteria($request->lang);
+        return response()->json(['data' => $this->gameFlavorManager->getGameFlavorsForCriteria($request->lang)]);
     }
 }

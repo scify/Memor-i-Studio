@@ -84,6 +84,7 @@ class GameFlavorStorage {
             })
             ->where(['game_flavor.lang_id' => $lang_id, 'published' => true])
             ->orderBy('game_flavor.created_at', 'desc')
+            ->limit(5)
             ->get();
     }
 }
