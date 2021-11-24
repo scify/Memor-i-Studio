@@ -59,11 +59,11 @@ class EquivalenceSetManager {
      * Prepares the JSON file describing the equivalence sets
      *
      * @param $gameFlavorId int the id of the @see GameFlavor
+     * @param bool $absoluteFilePaths whether to have the full path (with http:// in the file name)
      * @return string
      */
-    public function createEquivalenceSetsJSONFile($gameFlavorId) {
+    public function createEquivalenceSetsJSONFile(int $gameFlavorId, bool $absoluteFilePaths): string {
         $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
-        //dd($equivalenceSets);
         $equivalence_card_sets = array();
         $equivalence_card_sets['equivalence_card_sets'] = array();
         foreach ($equivalenceSets as $equivalenceSet) {
@@ -80,27 +80,27 @@ class EquivalenceSetManager {
                 $current_card['equivalenceCardSetHashCode'] = "";
                 if ($equivalenceSet->descriptionSound != null) {
                     $fileName = substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
-                    $current_card['description_sound'] = $fileName;
+                    $current_card['description_sound'] = $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]);
                     $current_card['description_sound_probability'] = $equivalenceSet->description_sound_probability;
                 }
                 if ($card->sound != null) {
                     $fileName = substr($card->sound->file->file_path, strrpos($card->sound->file->file_path, '/') + 1);
-                    array_push($current_card['sounds'], $fileName);
+                    array_push($current_card['sounds'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
                 }
                 if ($card->image != null) {
                     $fileName = substr($card->image->file->file_path, strrpos($card->image->file->file_path, '/') + 1);
-                    array_push($current_card['images'], $fileName);
+                    array_push($current_card['images'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
                 }
                 if ($card->secondImage != null) {
                     $fileName = substr($card->secondImage->file->file_path, strrpos($card->secondImage->file->file_path, '/') + 1);
-                    array_push($current_card['images'], $fileName);
+                    array_push($current_card['images'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
                 }
 
                 array_push($cards, $current_card);
             }
             array_push($equivalence_card_sets['equivalence_card_sets'], $cards);
         }
-        $pathRelative = $this->getEquivalenceSetFilePath($gameFlavorId, false);
+        $pathRelative = $this->getEquivalenceSetFilePath($gameFlavorId, $absoluteFilePaths);
 
         $filePath = storage_path() . '/app/' . $pathRelative;
         if (File::exists($filePath)) {
@@ -112,8 +112,10 @@ class EquivalenceSetManager {
         return json_encode($equivalence_card_sets);
     }
 
-    public function getEquivalenceSetFilePath(int $gameFlavorId): string {
-        return 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/equivalence_cards_sets.json';
+    public function getEquivalenceSetFilePath(int $gameFlavorId, $absoluteFilePaths = false): string {
+        $fileName = 'equivalence_cards_sets';
+        $fileName .= $absoluteFilePaths ? '_absolute' : '';
+        return 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/' . $fileName .'.json';
     }
 
     public function cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavorId, $newGameFlavorId) {

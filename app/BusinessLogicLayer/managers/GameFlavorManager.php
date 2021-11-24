@@ -305,7 +305,7 @@ class GameFlavorManager {
             ->add($packDir);
     }
 
-    public function getGameFlavorZipFile($gameFlavorId) {
+    public function getGameFlavorZipFile($gameFlavorId): string {
         return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
@@ -314,7 +314,8 @@ class GameFlavorManager {
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
         $this->resourceManager->createAdditionalPropertiesFile($gameFlavorId);
         //create card .json file (for equivalent sets)
-        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId);
+        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
+        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
         //compress the data pack directory into a temporary .jar file (it will be deleted later, after we sign it)
         //$this->zipGameFlavorDataPack($gameFlavorId);
 
@@ -566,7 +567,7 @@ class GameFlavorManager {
         foreach ($game_flavors as $game_flavor) {
             $game_flavor->base_path = route('resolveDataPath', ['filePath' => 'data_packs/additional_pack_' . $game_flavor->id . '/data/']);
             $game_flavor->cover_img_file_path = route('resolveDataPath', ['filePath' => $game_flavor->cover_img_file_path]);
-            $game_flavor->equivalence_set_file_path = route('resolveDataPath', ['filePath' => $this->equivalenceSetManager->getEquivalenceSetFilePath($game_flavor->id)]);
+            $game_flavor->equivalence_set_file_path = route('resolveDataPath', ['filePath' => $this->equivalenceSetManager->getEquivalenceSetFilePath($game_flavor->id, true)]);
         }
         return $game_flavors;
     }
