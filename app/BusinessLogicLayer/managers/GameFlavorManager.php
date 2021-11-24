@@ -309,10 +309,13 @@ class GameFlavorManager {
         return storage_path('app/data_packs/jnlp/' . $gameFlavorId . '/memori_data_flavor_' . $gameFlavorId . '.jar');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function packageFlavor($gameFlavorId) {
         //create resources map file
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
-        $this->resourceManager->createAdditionalPropertiesFile($gameFlavorId);
+        $this->resourceManager->createAdditionalPropertiesFile($this->getGameFlavor($gameFlavorId));
         //create card .json file (for equivalent sets)
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);

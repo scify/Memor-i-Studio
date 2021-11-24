@@ -335,12 +335,10 @@ class ResourceManager {
 
     }
 
-    public function createAdditionalPropertiesFile($gameFlavorId) {
-        $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavorId . '/' . 'project_additional.properties';
+    public function createAdditionalPropertiesFile($gameFlavor) {
+        $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavor->id . '/' . 'project_additional.properties';
         Storage::put($pathToPropsFile, null);
         Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
-        $gameFlavorManager = new GameFlavorManager();
-        $gameFlavor = $gameFlavorManager->getGameFlavor($gameFlavorId);
         // we need to set up the game text resources language.
         // the game supports greek and english texts
         // default is greek, so if the lang_id of the game flavor is set to 2, we update it to be english.
