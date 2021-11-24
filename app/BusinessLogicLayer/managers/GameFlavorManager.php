@@ -317,6 +317,7 @@ class GameFlavorManager {
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
         $this->resourceManager->createAdditionalPropertiesFile($this->getGameFlavor($gameFlavorId));
         //create card .json files (for equivalent sets)
+        $this->equivalenceSetManager->prepareEquivalenceSets($gameFlavorId);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
 

@@ -22,6 +22,7 @@ class EquivalenceSetManager {
     private $soundManager;
     private $cardManager;
     private $equivalenceSetViewModelProvider;
+    private $equivalenceSets;
 
     public function __construct(EquivalentSetStorage            $equivalenceSetStorage, SoundManager $soundManager,
                                 EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider,
@@ -55,6 +56,10 @@ class EquivalenceSetManager {
         $this->equivalenceSetStorage->deleteSet($id);
     }
 
+    public function prepareEquivalenceSets(int $gameFlavorId) {
+        $this->equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+    }
+
     /**
      * Prepares the JSON file describing the equivalence sets
      *
@@ -63,10 +68,10 @@ class EquivalenceSetManager {
      * @return string
      */
     public function createEquivalenceSetsJSONFile(int $gameFlavorId, bool $absoluteFilePaths): string {
-        $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+
         $equivalence_card_sets = array();
         $equivalence_card_sets['equivalence_card_sets'] = array();
-        foreach ($equivalenceSets as $equivalenceSet) {
+        foreach ($this->equivalenceSets as $equivalenceSet) {
             $cards = array();
 
             foreach ($equivalenceSet->cards as $card) {
