@@ -73,7 +73,6 @@ class EquivalenceSetManager {
         $equivalence_card_sets['equivalence_card_sets'] = array();
         foreach ($this->equivalenceSets as $equivalenceSet) {
             $cards = array();
-
             foreach ($equivalenceSet->cards as $card) {
                 $current_card = array();
                 $current_card['label'] = $card->label;
@@ -84,21 +83,21 @@ class EquivalenceSetManager {
                 $current_card['description_sound'] = "";
                 $current_card['equivalenceCardSetHashCode'] = "";
                 if ($equivalenceSet->descriptionSound != null) {
-                    $fileName = substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
-                    $current_card['description_sound'] = $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]);
+                    $fileName = $absoluteFilePaths ? $equivalenceSet->descriptionSound->file->file_path : substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
+                    $current_card['description_sound'] = $absoluteFilePaths ? route('resolveDataPath', ['filePath' => $fileName]) : $fileName;
                     $current_card['description_sound_probability'] = $equivalenceSet->description_sound_probability;
                 }
                 if ($card->sound != null) {
-                    $fileName = substr($card->sound->file->file_path, strrpos($card->sound->file->file_path, '/') + 1);
-                    array_push($current_card['sounds'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
+                    $fileName = $absoluteFilePaths ? $card->sound->file->file_path : substr($card->sound->file->file_path, strrpos($card->sound->file->file_path, '/') + 1);
+                    array_push($current_card['sounds'], $absoluteFilePaths ? route('resolveDataPath', ['filePath' => $fileName]) : $fileName);
                 }
                 if ($card->image != null) {
-                    $fileName = substr($card->image->file->file_path, strrpos($card->image->file->file_path, '/') + 1);
-                    array_push($current_card['images'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
+                    $fileName = $absoluteFilePaths ? $card->image->file->file_path : substr($card->image->file->file_path, strrpos($card->image->file->file_path, '/') + 1);
+                    array_push($current_card['images'], $absoluteFilePaths ? route('resolveDataPath', ['filePath' => $fileName]) : $fileName);
                 }
                 if ($card->secondImage != null) {
-                    $fileName = substr($card->secondImage->file->file_path, strrpos($card->secondImage->file->file_path, '/') + 1);
-                    array_push($current_card['images'], $absoluteFilePaths ? $fileName : route('resolveDataPath', ['filePath' => $fileName]));
+                    $fileName = $absoluteFilePaths ? $card->secondImage->file->file_path : substr($card->secondImage->file->file_path, strrpos($card->secondImage->file->file_path, '/') + 1);
+                    array_push($current_card['images'], $absoluteFilePaths ? route('resolveDataPath', ['filePath' => $fileName]) : $fileName);
                 }
 
                 array_push($cards, $current_card);

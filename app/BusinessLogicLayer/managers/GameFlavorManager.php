@@ -319,16 +319,16 @@ class GameFlavorManager {
         //create card .json files (for equivalent sets)
         $this->equivalenceSetManager->prepareEquivalenceSets($gameFlavorId);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
-        //$this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
+        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
 
-        try {
-            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
-            $this->addDataPackIntoJar($gameFlavorId);
-        } catch (\Exception $e) {
-            dd($e);
-        }
-
-        $this->windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
+//        try {
+//            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
+//            $this->addDataPackIntoJar($gameFlavorId);
+//        } catch (\Exception $e) {
+//            dd($e);
+//        }
+//
+//        $this->windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
 
     }
 
