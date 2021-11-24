@@ -319,7 +319,7 @@ class GameFlavorManager {
         //create card .json files (for equivalent sets)
         $this->equivalenceSetManager->prepareEquivalenceSets($gameFlavorId);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
-        $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
+        //$this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
 
         try {
             $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
