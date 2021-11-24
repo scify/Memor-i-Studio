@@ -316,24 +316,9 @@ class GameFlavorManager {
         //create resources map file
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
         $this->resourceManager->createAdditionalPropertiesFile($this->getGameFlavor($gameFlavorId));
-        //create card .json file (for equivalent sets)
+        //create card .json files (for equivalent sets)
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
-        //compress the data pack directory into a temporary .jar file (it will be deleted later, after we sign it)
-        //$this->zipGameFlavorDataPack($gameFlavorId);
-
-        //get a timestamp as a random string in order to name the generated jar files appropriately
-        //$randomSuffix = milliseconds();
-        //get the path
-        //$packagePath = $this->getGameFlavorZipFile($gameFlavorId);
-        //$filePathToStore = storage_path() . '/app/data_packs/jnlp/'. $gameFlavorId . '/memori_data_signed-' . $randomSuffix . '.jar ';
-
-        //we need to sign the created jar file
-        //$output = $this->signDataPackJarFile($filePathToStore, $packagePath);
-
-        //delete not-signed jar file
-        //$this->deleteTemporaryFlavorPackZipFile($gameFlavorId);
-        //copy the jar file for the current game version into the jnlp directory and name it appropriately
 
         try {
             $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
@@ -341,12 +326,9 @@ class GameFlavorManager {
         } catch (\Exception $e) {
             dd($e);
         }
-        //copy the public jnlp file into the game flavor jnlp directory
-        //$this->copyAndUpdateJnlpFileToDir($gameFlavorId, $randomSuffix);
 
         $this->windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
 
-        return;
     }
 
     /**

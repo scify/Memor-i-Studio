@@ -16,7 +16,9 @@ class EquivalentSetStorage {
     public function getEquivalenceSetsForGameFlavor($gameFlavorId) {
         return EquivalenceSet::where([
             ['flavor_id', '=', $gameFlavorId]
-        ])->get()->sortByDesc("created_at");
+        ])->with(['descriptionSound', 'cards',
+            'cards.sound', 'cards.sound.file', 'cards.image', 'cards.image.file',
+            'cards.secondImage', 'cards.secondImage.file'])->get()->sortByDesc("created_at");
     }
 
     public function saveEquivalenceSet(EquivalenceSet $equivalenceSet) {
