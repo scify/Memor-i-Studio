@@ -39,12 +39,14 @@ class GameFlavorManager {
     private $equivalenceSetManager;
     private $windowsBuilder;
     private $languageStorage;
+    private $imgManager;
 
     public function __construct(GameFlavorStorage  $gameFlavorStorage, FileManager $fileManager,
                                 UserStorage        $userStorage, ResourceCategoryManager $resourceCategoryManager,
                                 ResourceManager    $resourceManager, GameVersionLanguageManager $gameVersionLanguageManager,
                                 GameVersionManager $gameVersionManager, EquivalenceSetManager $equivalenceSetManager,
-                                WindowsBuilder     $windowsBuilder, LanguageStorage $languageStorage) {
+                                WindowsBuilder     $windowsBuilder, LanguageStorage $languageStorage,
+                                ImgManager         $imgManager) {
         $this->gameFlavorStorage = $gameFlavorStorage;
         $this->fileManager = $fileManager;
         $this->userStorage = $userStorage;
@@ -55,6 +57,7 @@ class GameFlavorManager {
         $this->equivalenceSetManager = $equivalenceSetManager;
         $this->windowsBuilder = $windowsBuilder;
         $this->languageStorage = $languageStorage;
+        $this->imgManager = $imgManager;
     }
 
     public function getJarFilePathForGameFlavor($gameFlavorId) {
@@ -87,15 +90,13 @@ class GameFlavorManager {
             $this->markGameFlavorAsSubmittedForApproval($gameFlavor->id);
         }
         DB::transaction(function () use ($gameFlavor, $inputFields) {
-            $imgManager = new ImgManager();
             if (!$gameFlavor->game_identifier)
                 $gameFlavor->game_identifier = $this->createIdentifierForGameFlavor($gameFlavor);
             $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
 
             if (isset($inputFields['cover_img'])) {
-                $gameFlavor->cover_img_id = $imgManager->uploadGameFlavorCoverImg($gameFlavor, $inputFields['cover_img']);
-                $resourceManager = new ResourceManager();
-                $gameFlavorImgCoverFile = $resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
+                $gameFlavor->cover_img_id = $this->imgManager->uploadGameFlavorCoverImg($gameFlavor, $inputFields['cover_img']);
+                $gameFlavorImgCoverFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
                 $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
             }
             $gameFlavor->save();
@@ -385,9 +386,7 @@ class GameFlavorManager {
         $coverImgFileName = substr($coverImgFullFilePath, strrpos($coverImgFullFilePath, '/') + 1);
         //now we need to get the directory that the image is located, so that we can cd into this directory and conver the image
         $coverImgFileDirectory = substr($coverImgFullFilePath, 0, strrpos($coverImgFullFilePath, '/'));
-        $imgManager = new ImgManager();
-        $imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
-
+        $this->imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
     }
 
     /**
@@ -395,10 +394,10 @@ class GameFlavorManager {
      * returns the file to be downloaded.
      *
      * @param $gameFlavorId
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return string
      * @throws FileNotFoundException if the file is not found
      */
-    public function getWindowsSetupFileForGameFlavor($gameFlavorId) {
+    public function getWindowsSetupFileForGameFlavor($gameFlavorId): string {
         $file = storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/Output/memor-i-setup.exe');
         if (!File::exists($file)) {
             throw new FileNotFoundException("The setup file for this game could not be found");
@@ -406,7 +405,7 @@ class GameFlavorManager {
         return $file;
     }
 
-    public function getLinuxSetupFileForGameFlavor($gameFlavorId) {
+    public function getLinuxSetupFileForGameFlavor($gameFlavorId): string {
         $file = storage_path('app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar');
         if (!File::exists($file)) {
             throw new FileNotFoundException("The linux file for this game could not be found");
