@@ -323,7 +323,7 @@ class GameFlavorManager {
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         try {
             $this->copyGameVersionJarFileToDataPackDir($gameFlavor);
-            $this->addDataPackIntoJar($gameFlavorId);
+            //$this->addDataPackIntoJar($gameFlavorId);
         } catch (\Exception $e) {
             dd($e);
         }
