@@ -322,7 +322,7 @@ class GameFlavorManager {
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         try {
-            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
+            $this->copyGameVersionJarFileToDataPackDir($gameFlavor);
             $this->addDataPackIntoJar($gameFlavorId);
         } catch (\Exception $e) {
             dd($e);
