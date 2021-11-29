@@ -75,11 +75,11 @@ class WindowsBuilder {
     }
 
     public function getLaunch4JFilePathForGameFlavor($gameFlavorId) {
-        return storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/launch4j-config.xml';
+        return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
     }
 
     public function getLicenceFilePathForGameFlavor($gameFlavorId) {
-        return storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/LICENCE.md';
+        return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/LICENCE.md';
     }
 
     /**
@@ -94,16 +94,16 @@ class WindowsBuilder {
         $dom->load($launch4JConfigFile);
         $root = $dom->documentElement;
 
-        $jarElement= $root->getElementsByTagName('jar');
+        $jarElement = $root->getElementsByTagName('jar');
         foreach ($jarElement as $item) {
             $item->nodeValue = $gameFlavorJarFilePath;
         }
-        $outputExeElement= $root->getElementsByTagName('outfile');
+        $outputExeElement = $root->getElementsByTagName('outfile');
         foreach ($outputExeElement as $item) {
             $item->nodeValue = $this->getWindowsExeFilePathForGameFlavor($gameFlavor->id);
         }
 
-        $iconElements= $root->getElementsByTagName('icon');
+        $iconElements = $root->getElementsByTagName('icon');
 
         $iconElements[0]->nodeValue = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/data/img/game_cover/game_icon.ico';
 
@@ -111,7 +111,7 @@ class WindowsBuilder {
     }
 
     public function getWindowsExeFilePathForGameFlavor($gameFlavorId) {
-        return storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/memori-win.exe';
+        return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori-win.exe';
     }
 
     /**
@@ -121,7 +121,7 @@ class WindowsBuilder {
      * @return string the output from the building process
      */
     public function buildWindowsExecutable($gameFlavorId) {
-        $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_'. $gameFlavorId . '/launch4j-config.xml';
+        $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
         $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $file . ' 2>&1 ';
         //empty log file
@@ -141,7 +141,7 @@ class WindowsBuilder {
         $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
 
         $currentSystemUser = config('app.SYSTEM_USER');
-        if($currentSystemUser == null)
+        if ($currentSystemUser == null)
             throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
         //empty log file
@@ -159,7 +159,7 @@ class WindowsBuilder {
     }
 
     private function prepareInnoSetupFileForGameFlavor($innoSetupConfFile, GameFlavor $gameFlavor) {
-        if(!File::exists($innoSetupConfFile)) {
+        if (!File::exists($innoSetupConfFile)) {
             throw new \Exception("InnoSetup copy file for game flavor not found. Looked in: " . $innoSetupConfFile);
         }
         $gameName = greeklish($gameFlavor->name);
@@ -171,9 +171,14 @@ class WindowsBuilder {
             'AppId={{F77117F0-B9BC-43B6-99F7-AF74046D2054}' => 'AppId={{' . generateRandomString(8) . '-' . generateRandomString(4) . '-' . generateRandomString(4) . '-' . generateRandomString(4) . '-' . generateRandomString(12) . '}'
         );
 
+        //read the entire string
+        $str = file_get_contents($innoSetupConfFile);
+
         foreach ($stringsToBeReplaced as $stringPlaceholder => $newString) {
-            $this->fileManager->replaceStringInFileWith($innoSetupConfFile, $stringPlaceholder, $newString);
+            //$this->fileManager->replaceStringInFileWith($innoSetupConfFile, $stringPlaceholder, $newString);
+            $str = str_replace($stringPlaceholder, $newString, $str);
         }
+        file_put_contents($innoSetupConfFile, $str);
     }
 
 
