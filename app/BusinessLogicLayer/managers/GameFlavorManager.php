@@ -213,7 +213,7 @@ class GameFlavorManager {
      * object
      * @throws Exception if no game flavor found by the given id
      */
-    public function getGameFlavorViewModel($id) {
+    public function getGameFlavorViewModel($id): GameFlavor {
         $user = Auth::user();
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         //if the game Version exists, check if the user has access
@@ -320,26 +320,24 @@ class GameFlavorManager {
         $this->equivalenceSetManager->prepareEquivalenceSets($gameFlavorId);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
+        $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
+        try {
+            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
+            $this->addDataPackIntoJar($gameFlavorId);
+        } catch (\Exception $e) {
+            dd($e);
+        }
 
-//        try {
-//            $this->copyGameVersionJarFileToDataPackDir($gameFlavorId);
-//            $this->addDataPackIntoJar($gameFlavorId);
-//        } catch (\Exception $e) {
-//            dd($e);
-//        }
-//
-//        $this->windowsBuilder->buildGameFlavorForWindows($this->getGameFlavorViewModel($gameFlavorId), $this->getJarFilePathForGameFlavor($gameFlavorId));
-
+        $this->windowsBuilder->buildGameFlavorForWindows($gameFlavor, $this->getJarFilePathForGameFlavor($gameFlavorId));
     }
 
     /**
-     * @param $gameFlavorId int the id of the @see GameFlavor
+     * @param $gameFlavor GameFlavor the @see GameFlavor
      * @throws \Exception if the .jar file cannot be copied to the destination path
      */
-    private function copyGameVersionJarFileToDataPackDir($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
+    private function copyGameVersionJarFileToDataPackDir(GameFlavor $gameFlavor) {
         $sourceFile = $this->gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
-        $destinationFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar';
+        $destinationFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memori.jar';
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
     }
 

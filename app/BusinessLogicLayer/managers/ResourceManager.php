@@ -320,7 +320,7 @@ class ResourceManager {
      *
      * @param $gameFlavorId int the id of the game flavor
      */
-    public function createStaticResourcesMapFile($gameFlavorId) {
+    public function createStaticResourcesMapFile(int $gameFlavorId) {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
         $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)
@@ -328,7 +328,6 @@ class ResourceManager {
         Storage::put($pathToMapFile, null);
         foreach ($gameStaticResources as $gameStaticResource) {
             $resourceFileNameNoFile = substr($gameStaticResource->name, 0, strripos($gameStaticResource->name, '/'));
-//            $resourceFileNameNoPath = substr($gameStaticResource->name, strrpos($gameStaticResource->name, '/') + 1);
             $resourceFileValueNoPath = substr($gameStaticResource->file_path, strrpos($gameStaticResource->file_path, '/') + 1);
             Storage::append($pathToMapFile, $gameStaticResource->name . "=" . $resourceFileNameNoFile . '/' . $resourceFileValueNoPath);
         }
