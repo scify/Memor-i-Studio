@@ -515,7 +515,7 @@ class GameFlavorManager {
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission_creator', ['gameFlavor' => $gameFlavor], 'Thanks for submitting your game: "' . $gameFlavor->name . '"', $gameFlavor->creator->email);
     }
 
-    public function sendCongratulationsEmailToGameCreator($gameFlavorId) {
+    public function sendCongratulationsEmailToGameCreator(int $gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_approved', ['gameFlavor' => $gameFlavor], 'Game "' . $gameFlavor->name . '" approved!', $gameFlavor->creator->email);

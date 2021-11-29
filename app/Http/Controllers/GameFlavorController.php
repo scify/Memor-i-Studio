@@ -277,7 +277,7 @@ class GameFlavorController extends Controller {
 
     public function buildExecutablesForTesting($gameFlavorId) {
         try {
-            $this->buildExecutables($gameFlavorId);
+            $this->buildExecutables(intval($gameFlavorId));
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
@@ -287,8 +287,8 @@ class GameFlavorController extends Controller {
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
         try {
-            $this->buildExecutables($gameFlavorId);
-            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator($gameFlavorId);
+            $this->buildExecutables(intval($gameFlavorId));
+            $this->gameFlavorManager->sendCongratulationsEmailToGameCreator(intval($gameFlavorId));
         } catch (\Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
@@ -296,7 +296,7 @@ class GameFlavorController extends Controller {
         return redirect()->back();
     }
 
-    public function buildExecutables($gameFlavorId) {
+    public function buildExecutables(int $gameFlavorId) {
         try {
             $this->gameFlavorManager->packageFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
