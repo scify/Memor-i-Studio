@@ -322,13 +322,13 @@ class GameFlavorManager {
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, true);
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         try {
-            //$this->copyGameVersionJarFileToDataPackDir($gameFlavor);
-            //$this->addDataPackIntoJar($gameFlavorId);
+            $this->copyGameVersionJarFileToDataPackDir($gameFlavor);
+            $this->addDataPackIntoJar($gameFlavorId);
         } catch (\Exception $e) {
             dd($e);
         }
 
-        $this->windowsBuilder->buildGameFlavorForWindows($gameFlavor, $this->getJarFilePathForGameFlavor($gameFlavorId));
+        //$this->windowsBuilder->buildGameFlavorForWindows($gameFlavor, $this->getJarFilePathForGameFlavor($gameFlavorId));
     }
 
     /**
