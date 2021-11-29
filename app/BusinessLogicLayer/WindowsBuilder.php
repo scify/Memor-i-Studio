@@ -171,9 +171,9 @@ class WindowsBuilder {
             'AppId={{F77117F0-B9BC-43B6-99F7-AF74046D2054}' => 'AppId={{' . generateRandomString(8) . '-' . generateRandomString(4) . '-' . generateRandomString(4) . '-' . generateRandomString(4) . '-' . generateRandomString(12) . '}'
         );
 
-//        foreach ($stringsToBeReplaced as $stringPlaceholder => $newString) {
-//            $this->fileManager->replaceStringInFileWith($innoSetupConfFile, $stringPlaceholder, $newString);
-//        }
+        foreach ($stringsToBeReplaced as $stringPlaceholder => $newString) {
+            $this->fileManager->replaceStringInFileWith($innoSetupConfFile, $stringPlaceholder, $newString);
+        }
     }
 
 
