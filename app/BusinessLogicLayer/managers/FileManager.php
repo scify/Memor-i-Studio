@@ -18,8 +18,7 @@ class FileManager {
 
     public function replaceStringInFileWith($filePath, $stringToBeReplaced, $newString) {
         $command = "sed -i 's/" . $stringToBeReplaced . "/" . $newString . "/g' " . $filePath;
-        $output = shell_exec($command);
-        return $output;
+        return shell_exec($command);
     }
 
 }
