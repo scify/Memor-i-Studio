@@ -34,6 +34,9 @@ class WindowsBuilder {
         $this->fileManager = $fileManager;
     }
 
+    /**
+     * @throws Exception
+     */
     public function buildGameFlavorForWindows(GameFlavor $gameFlavor, $gameFlavorJarFile) {
         $this->copyLaunch4JBaseFileToDataPackDir($gameFlavor->id);
         $launch4JConfigFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavor->id);
@@ -42,7 +45,7 @@ class WindowsBuilder {
         //so for now we skip the step
         //$this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
         $this->buildWindowsExecutable($gameFlavor->id);
-        //$this->buildWindowsExecutableInstaller($gameFlavor);
+        $this->buildWindowsExecutableInstaller($gameFlavor);
     }
 
     /**
@@ -135,22 +138,21 @@ class WindowsBuilder {
 
         $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
-        $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
+//        $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
+//
+//        set_time_limit(1000);
+//        $currentSystemUser = config('app.SYSTEM_USER');
+//        if($currentSystemUser == null)
+//            throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
+//        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
+//        //empty log file
+//        File::put($file, "");
+//        $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
+//        shell_exec($command);
+//
+//        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+//        File::append($file, "\nExecuted command: \n" . $command . " \n");
 
-        set_time_limit(1000);
-        $currentSystemUser = config('app.SYSTEM_USER');
-        if($currentSystemUser == null)
-            throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
-        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
-        //empty log file
-        File::put($file, "");
-        $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
-        shell_exec($command);
-
-        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-        File::append($file, "\nExecuted command: \n" . $command . " \n");
-
-        return;
     }
 
     public function getInnoSetupFilePathForGameFlavor($gameFlavorId) {
