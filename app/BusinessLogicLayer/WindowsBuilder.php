@@ -42,7 +42,7 @@ class WindowsBuilder {
         //so for now we skip the step
         //$this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
         $this->buildWindowsExecutable($gameFlavor->id);
-        $this->buildWindowsExecutableInstaller($gameFlavor);
+        //$this->buildWindowsExecutableInstaller($gameFlavor);
     }
 
     /**
