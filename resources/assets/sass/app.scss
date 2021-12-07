@@ -447,4 +447,8 @@ body {
   .icheckbox_flat-blue, .iradio_flat-blue {
     background: url(/build/css/blue.png) no-repeat 0 0;
   }
+
+  .icheckbox_flat-blue.checked {
+    background-position: -22px 0;
+  }
 }
