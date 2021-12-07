@@ -92,8 +92,8 @@
             <br><br>{!! __('messages.info_text_2') !!} <a
                     href="{{ __('messages.terms_link') }}"
                     target="_blank">{!! __('messages.terms_of_use_and_privacy_policy') !!}</a>
-            {!! __('messages.read_the') !!}<br><a href="{{ __('messages.gdpr_link') }}"
-                                               target="_blank">{!! __('messages.gdpr_compliance_statement') !!}</a>.
+            <br><br>{!! __('messages.read_the') !!}<a href="{{ __('messages.gdpr_link') }}"
+                                                      target="_blank">{!! __('messages.gdpr_compliance_statement') !!}</a>.
         </div>
     </div>
     <div class="panel-footer footer-light text-dark">
