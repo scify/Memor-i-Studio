@@ -83,8 +83,8 @@ class GameFlavorStorage {
                     ->on('game_flavor.id', '=', 'resource_file.game_flavor_id');
             })
             ->where(['game_flavor.lang_id' => $lang_id, 'published' => true])
+            ->orWhere(['internationally_available' => true])
             ->orderBy('game_flavor.created_at', 'desc')
-            ->limit(5)
             ->get();
     }
 }
