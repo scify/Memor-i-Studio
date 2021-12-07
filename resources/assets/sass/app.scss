@@ -442,3 +442,9 @@ body {
     font-weight: bold;
   }
 }
+
+.form-check {
+  .icheckbox_flat-blue, .iradio_flat-blue {
+    background: url(/build/css/blue.png) no-repeat;
+  }
+}
