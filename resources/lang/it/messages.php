@@ -26,7 +26,7 @@ return [
     'terms_of_use_and_privacy_policy' => 'ttermini di utilizzo e l\'informativa sulla privacy.',
     'gdpr_link' => 'https://docs.google.com/document/d/1KEAm4KGMUs9yFiNWWuYVXCSwGldtTJ8YGcSAfv6pUFo',
     'read_the' => 'Leggi la',
-    'gdpr_compliance_statement' => 'Dichiarazione di conformità con il GDPR',
+    'gdpr_compliance_statement' => 'Dichiarazione di conformità con il GDPR.',
     'image_label' => 'Immagine',
     'negative_image_label' => 'Negativo dell\'immagine della carta (opzionale) <h6>Per aiutare le persone con problemi di vista</h6>',
     'select_image' => 'Seleziona immagine',
