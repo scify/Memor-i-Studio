@@ -1,20 +1,16 @@
 @extends('layouts.app')
 @section('content')
     <div class="row margin-top-50 margin-bottom-50 memoriActionBtns">
-        <div class="col-md-6">
-            <div class="col-md-9 text-align-center centeredVertically">
-                <a href="{{route('showGameVersionSelectionForm')}}"
-                   class="btn btn-success btn-ripple width-percent-100">
-                    <h1><i class="fa fa-lightbulb-o" aria-hidden="true"></i> {!! __('messages.create_new_game') !!}</h1>
-                </a>
-            </div><!--.col-md-6-->
+        <div class="col-md-5 col-md-offset-1 text-align-center">
+            <a href="{{route('showGameVersionSelectionForm')}}"
+               class="btn btn-success btn-ripple width-percent-100">
+                <h2 class="btn-title"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> {!! __('messages.create_new_game') !!}</h2>
+            </a>
         </div>
-        <div class="col-md-6">
-            <div class="col-md-9 text-align-center centeredVertically">
-                <a href="{{route('showAllGameFlavors')}}" class="btn btn-primary btn-ripple width-percent-100">
-                    <h1><i class="fa fa-gamepad" aria-hidden="true"></i> {!! __('messages.see_all_games') !!}</h1>
-                </a>
-            </div><!--.col-md-6-->
+        <div class="col-md-5 text-align-center">
+            <a href="{{route('showAllGameFlavors')}}" class="btn btn-primary btn-ripple width-percent-100">
+                <h2 class="btn-title"><i class="fa fa-gamepad" aria-hidden="true"></i> {!! __('messages.see_all_games') !!}</h2>
+            </a>
         </div>
     </div>
     <div class="row margin-top-50">
@@ -27,9 +23,12 @@
                 </div><!--.card-heading-->
                 <div class="card-body">
                     <ul class="list">
-                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_1') !!}</h4></li>
-                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_2') !!}</h4></li>
-                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_3') !!}</h4></li>
+                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_1') !!}</h4>
+                        </li>
+                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_2') !!}</h4>
+                        </li>
+                        <li><h4><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.intro_text_3') !!}</h4>
+                        </li>
                     </ul>
                 </div><!--.card-body-->
 
