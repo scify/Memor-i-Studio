@@ -22,7 +22,7 @@ return [
     'return_home' => 'Επιστροφή στην αρχική',
     'info_text_1' => 'Οι πληροφορίες που πρόκειται να συμπληρώσετε θα χρησιμοποιηθούν μόνο από τη SciFY για τη χρήση της Πλατφόρμας. Για οποιοδήποτε αίτημα ή σχόλιο παρακαλώ επικοινωνήστε με το <a href="mailto:info@scify.org">info@scify.org</a>.',
     'info_text_2' => 'Με την εγγραφή σας, συμφωνείτε με τους',
-    'terms_link' => 'https://docs.google.com/document/d/1JVA3pMhdB2N3ScxzjKhlxjWnmBacrtamp3zGIkiLz5A/edit#heading=h.p1izbjl48qks',
+    'terms_link' => 'https://docs.google.com/document/d/1JVA3pMhdB2N3ScxzjKhlxjWnmBacrtamp3zGIkiLz5A',
     'terms_of_use_and_privacy_policy' => 'όρους χρήσης και την πολιτική απορρήτου',
     'gdpr_link' => 'https://docs.google.com/document/d/1343Vdggs4pjKUbho4nMsWiRvmz0scfTFfamUb6cN1dk',
     'read_the' => 'Διαβάστε τη',

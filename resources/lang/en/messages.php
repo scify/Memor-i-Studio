@@ -17,7 +17,7 @@ return [
     'about' => 'About',
     'contact' => 'Contact',
     'help' => 'Help',
-    'help_link' => 'https://docs.google.com/document/d/1Kf9LoqVeOa8yOPOetgbSIxEgQ9CBan16ckX7xw-7WNA',
+    'help_link' => 'https://docs.google.com/document/d/1irOmObgn9ZwEqmwn3uXNvQTJmgt1YiMqFx5Tzp-l_Oo',
     'not_found' => 'Not found',
     'return_home' => 'Return home',
     'info_text_1' => 'The information you are about to fill in will only be used only by SciFY to use the Platform. For any request or comment please contact <a href="mailto:info@scify.org">info@scify.org</a>.',
