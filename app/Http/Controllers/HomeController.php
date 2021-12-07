@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller {
     public function showHomePage() {
-        return view('common.home');
+        return view('home');
     }
 
     /**
