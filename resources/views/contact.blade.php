@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-        <div class="col-md-6 centeredVertically">
+        <div class="col-md-8 centeredVertically">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-title"><h4>{!! __('messages.contact_us') !!}</h4></div>
