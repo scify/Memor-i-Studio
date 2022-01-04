@@ -90,6 +90,7 @@ class GameFlavorManager {
             $this->markGameFlavorAsSubmittedForApproval($gameFlavor->id);
         }
         DB::transaction(function () use ($gameFlavor, $inputFields) {
+            $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
             if (!$gameFlavor->game_identifier)
                 $gameFlavor->game_identifier = $this->createIdentifierForGameFlavor($gameFlavor);
             $gameFlavor = $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
@@ -117,7 +118,7 @@ class GameFlavorManager {
     }
 
     private function createIdentifierForGameFlavor(GameFlavor $gameFlavor) {
-        return greeklish($gameFlavor->name);
+        return greeklish($gameFlavor->name) . '_' . $gameFlavor->id;
     }
 
     public function getResourceCategoriesForGameFlavor($gameFlavor, $langId) {

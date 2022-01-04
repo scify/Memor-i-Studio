@@ -9,10 +9,14 @@ use App\Models\GameFlavor;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
 class GameFlavorController extends Controller {
@@ -83,8 +87,9 @@ class GameFlavorController extends Controller {
     /**
      * Validates Store a newly created game version.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function create(Request $request) {
 
@@ -105,10 +110,9 @@ class GameFlavorController extends Controller {
             return redirect()->back();
         }
         if ($newGameFlavor == null)
-            return Redirect::back()->withInput()->withErrors(['error', trans('messages.error_generic')]);
+            return redirect()->back()->withInput()->withErrors(['error', trans('messages.error_generic')]);
 
-
-        return redirect()->route('showEquivalenceSetsForGameFlavor', ['gameFlavorId' => $newGameFlavor->id])->with('flash_message_success', trans('messages.successfully_created_game') . ' "' . $newGameFlavor->name . '"');
+        return redirect()->route('showEquivalenceSetsForGameFlavor', ['id' => $newGameFlavor->id])->with('flash_message_success', trans('messages.successfully_created_game') . ' "' . $newGameFlavor->name . '"');
 
     }
 
@@ -117,7 +121,7 @@ class GameFlavorController extends Controller {
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function editIndex($id) {
         try {
@@ -136,9 +140,9 @@ class GameFlavorController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function edit(Request $request, $id) {
 
@@ -163,7 +167,7 @@ class GameFlavorController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|RedirectResponse
      */
     public function delete($id) {
 
@@ -207,7 +211,7 @@ class GameFlavorController extends Controller {
      * returns the file to be downloaded.
      *
      * @param $gameFlavorId
-     * @return Factory|View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return BinaryFileResponse
      */
     public function downloadWindows($gameFlavorId) {
         try {
@@ -225,7 +229,7 @@ class GameFlavorController extends Controller {
      * returns the file to be downloaded.
      *
      * @param $gameFlavorId
-     * @return Factory|View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Factory|View|BinaryFileResponse
      */
     public function downloadLinux($gameFlavorId) {
         try {
@@ -242,7 +246,7 @@ class GameFlavorController extends Controller {
      * This method clones a given game flavor for the currently logged in user.
      *
      * @param $gameFlavorId
-     * @return Factory|View|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Factory|View|BinaryFileResponse
      */
     public function cloneGameFlavorAndFiles($gameFlavorId) {
         try {
