@@ -32,11 +32,11 @@ class GameFlavorStorage {
         $query = DB::table('game_flavor')->whereNull('game_flavor.deleted_at');
 
         if ($onlyPublished)
-            $query->where('published', true);
+            $query->where('game_flavor.published', true);
         if ($created_by_user_id)
-            $query->where('creator_id', $created_by_user_id);
+            $query->where('game_flavor.creator_id', $created_by_user_id);
         if ($language_id)
-            $query->where('lang_id', $language_id);
+            $query->where('game_flavor.lang_id', $language_id);
 
         return $query->join('language', 'game_flavor.lang_id', '=', 'language.id')
             ->join('users as creator', 'creator.id', '=', 'game_flavor.creator_id')
