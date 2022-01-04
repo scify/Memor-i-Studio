@@ -135,13 +135,13 @@ class ResourceManager {
     private function storeFileToPath(UploadedFile $file, $pathToStore) {
         $fileNamePrefix = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_';
         $fileName = $fileNamePrefix . $file->getClientOriginalName();
-        $fileName = greeklish($fileName);
+        $fileName = $this->slugifyFileName($fileName);
         //temporarily store the file in order to be able to convert it
         $file->storeAs($pathToStore, $fileName);
         $mime = mime_content_type(storage_path('app/' . $pathToStore . $fileName));
         if (strstr($mime, "audio/")) {
             $convertedFileName = $fileNamePrefix . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_converted.mp3';
-            $convertedFileName = greeklish($convertedFileName);
+            $convertedFileName = $this->slugifyFileName($convertedFileName);
             $this->convertFileToMp3AndStore(storage_path('app/' . $pathToStore . $fileName), storage_path('app/' . $pathToStore . $convertedFileName));
             //delete old temp file
             Storage::delete($pathToStore . $fileName);
@@ -149,6 +149,14 @@ class ResourceManager {
         }
 
         return $fileName;
+    }
+
+    protected function slugifyFileName($original) {
+        $str_arr = explode('.', $original);
+        $only_name = $str_arr[0];
+        $extension = $str_arr[1];
+        $converted = greeklish($only_name);
+        return $converted . '.' . $extension;
     }
 
     private function convertFileToMp3AndStore($filePath, $newFilePath) {
