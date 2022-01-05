@@ -15,6 +15,7 @@
 //    return view('welcome');
 //});
 
+use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +54,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('gameMovement/latest', 'GameMovementController@getLatestOpponentGameMovement')->name('getLatestOpponentGameMovement');
 });
 
-Route::group([ 'middleware' => 'auth' ], function () {
+Route::group(['middleware' => 'auth'], function () {
 
     //Game Version routes
     Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
@@ -108,3 +109,7 @@ Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->nam
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
 
+Route::get('test-email/{email}', function (\Illuminate\Http\Request $request) {
+    $mailManager = new MailManager();
+    $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
+});
