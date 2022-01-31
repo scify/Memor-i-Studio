@@ -109,7 +109,7 @@ Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->nam
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
 
-Route::get('test-email/{email}', function (\Illuminate\Http\Request $request) {
-    $mailManager = new MailManager();
-    $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
-});
+// Route::get('test-email/{email}', function (\Illuminate\Http\Request $request) {
+//     $mailManager = new MailManager();
+//     $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
+// });
