@@ -3,24 +3,17 @@
 namespace App\StorageLayer;
 
 use App\Models\GameFlavorReport;
+use Illuminate\Support\Collection;
 
 class GameFlavorReportStorage {
 
-    public function storeGameFlavorReport(GameFlavorReport $gameFlavorReport) {
+    public function storeGameFlavorReport(GameFlavorReport $gameFlavorReport): GameFlavorReport {
         $gameFlavorReport->save();
         return $gameFlavorReport;
     }
 
-    public function getAllGameFlavorReports() {
+    public function getAllGameFlavorReports(): Collection {
         return GameFlavorReport::all()->sortByDesc("created_at");
-    }
-
-    public function getGameFlavorreportById($id) {
-        return GameFlavorReport::find($id);
-    }
-
-    public function deleteGameFlavorReport(GameFlavorReport $gameFlavor) {
-        $gameFlavor->delete();
     }
 
 }
