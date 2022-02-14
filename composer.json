@@ -8,8 +8,9 @@
         "php": "^7.2|^8.0",
         "doctrine/dbal": "^2.5",
         "fakerphp/faker": "^1.16",
-        "laravel/framework": "^6.0",
-        "guzzlehttp/guzzle": "^7.0.1"
+        "laravel/framework": "^7.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/ui": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
