@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Analytics\AnalyticsEventController;
 use Illuminate\Http\Request;
 
 /*
@@ -18,4 +19,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::get('games', 'GameFlavorController@getGameFlavorsForCriteria')->name('game_flavors.get');
-Route::post("/analytics/store", 'AnalyticsEventController@store');
+Route::post("/analytics/store", [AnalyticsEventController::class, 'store']);
