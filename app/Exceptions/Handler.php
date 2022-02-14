@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -9,10 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Throwable;
-use Exception;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
     /**
      * A list of the exception types that should not be reported.
      *
@@ -36,8 +35,7 @@ class Handler extends ExceptionHandler
      * @return void
      * @throws Exception
      */
-    public function report(Throwable $throwable)
-    {
+    public function report(Throwable $throwable) {
         parent::report($throwable);
     }
 
@@ -49,8 +47,7 @@ class Handler extends ExceptionHandler
      * @return Response
      * @throws Exception
      */
-    public function render($request, Throwable $throwable)
-    {
+    public function render($request, Throwable $throwable) {
         return parent::render($request, $throwable);
     }
 
@@ -58,11 +55,10 @@ class Handler extends ExceptionHandler
      * Convert an authentication exception into an unauthenticated response.
      *
      * @param Request $request
-     * @param Throwable $throwable
+     * @param AuthenticationException $exception
      * @return JsonResponse|RedirectResponse
      */
-    protected function unauthenticated($request, Throwable $throwable)
-    {
+    protected function unauthenticated($request, AuthenticationException $exception) {
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
