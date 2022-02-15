@@ -113,6 +113,10 @@ return [
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
     'mail_username' => env('MAIL_USERNAME'),
     'mail_password' => env('MAIL_PASSWORD'),
+    'firebase_api_key' => env('FIREBASE_API_KEY'),
+    'firebase_app_id' => env('FIREBASE_APP_ID'),
+    'firebase_measurement_id' => env('FIREBASE_MEASUREMENT_ID'),
+    'firebase_messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
