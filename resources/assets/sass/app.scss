@@ -172,8 +172,12 @@
 
 body {
   padding-top: 50px;
-  margin: 0 81px 0 81px;
+  margin: 0;
   background: #F7F7F7;
+}
+
+#app-horizontal-navbar {
+  padding: 2px 5%;
 }
 
 .cardEquivalenceArrow {
@@ -425,6 +429,11 @@ body {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.col-centered{
+  float: none;
+  margin: 0 auto;
 }
 
 #gameFilters {
