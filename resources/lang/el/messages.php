@@ -55,7 +55,7 @@ return [
     'was_submitted' => 'μόλις υποβλήθηκε. Ευχαριστούμε',
     'game_created_message' => 'Τι ακολουθεί στη συνέχεια:<br>Ένας διαχειρηστής θα προετοιμάσει το παιχνίδι σας για κατέβασμα. Μόλις το παιχνίδι είναι έτοιμο, θα ειδοποιηθείτε μέσω e-mail και θα μπορείτε να το κατεβάσετε από <a href="https://memoristudio.scify.org/games"> εδώ.</a><br>Αν έχετε περαιτέρω ερωτήσεις, παρακαλούμε <a href="https://memoristudio.scify.org/contact"> επικοινωνήστε μαζί μας.</a>',
     'welcome_email_message' => 'Καλώς ήρθατε στο <b>Memor-i Studio</b>! Πατήστε <a href="https://memoristudio.scify.org/gameFlavor/selectVersion"> εδώ</a> για να ξεκινήσετε να φτιάχνετε το δικό σας παιχνίδι Memor-i!',
-    'set_description_sound' => 'Ορίστε ήχο περιγραφής (προαιρετικό)',
+    'set_description_sound' => 'Ορίστε ήχο επιτυχίας (προαιρετικό)',
     'set_description_sound_message' => 'Τί ενημερωτικό ήχο θα ακούει ο παίκτης όταν βρίσκει το ζευγάρι<br>(μετά τον προκαθορισμένο ήχο επιτυχίας "χειροκρότημα");',
     'sound_probability' => 'Ήχος πιθανότητας',
     'no_card_sets' => '<strong>Αυτή η έκδοση παιχνιδιού δεν περιέχει κανένα σετ καρτών!</strong> Πιέστε το κουμπί "+" για να προσθέσετε ένα.',

@@ -55,7 +55,7 @@ return [
     'was_submitted' => 'was just submitted. Thank you',
     'game_created_message' => 'What follows next:<br>An admin will prepare your game for downloading. Once the game is ready, you will be notified vie e-mail and be able to download it from <a href="https://memoristudio.scify.org/games"> here.</a><br>If you have any further inquiries, please <a href="https://memoristudio.scify.org/contact"> contact us.</a>',
     'welcome_email_message' => 'Welcome to <b>Memor-i Studio</b>! Click <a href="https://memoristudio.scify.org/gameFlavor/selectVersion"> here</a> to start building your own Memor-i game!',
-    'set_description_sound' => 'Set description sound (optional)',
+    'set_description_sound' => 'Set success sound (optional)',
     'set_description_sound_message' => 'What informative sound will the player listen when they find the pair<br>(after the default success "clapping" sound)?',
     'sound_probability' => 'Sound probability',
     'no_card_sets' => '<strong>This game flavor does not contain any card sets!</strong> Press the "+" button to add one.',
