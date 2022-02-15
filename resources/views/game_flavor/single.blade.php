@@ -9,17 +9,17 @@
                      src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
             @if($loggedInUser != null && $gameFlavor->allow_clone)
-                <a class="cloneBtn btn btn-green btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i
+                <a class="actionBtn btn btn-purple btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i
                             class="fa fa-files-o" aria-hidden="true"></i> {!! __('messages.clone') !!}</a>
             @endif
             @if($gameFlavor->accessed_by_user && $gameFlavor->is_built)
                 @if(!$gameFlavor->published)
-                    <a class="cloneBtn btn btn-green btn-ripple" style="top:45px;"
+                    <a class="actionBtn btn btn-green btn-ripple" style="top:45px;"
                        href="{{route('publishGameFlavor', $gameFlavor->id)}}">
                         <i class="fa fa-globe" aria-hidden="true"></i> {!! __('messages.make_it_public') !!}
                     </a>
                 @else
-                    <a class="cloneBtn btn btn-danger btn-ripple" style="top:45px;"
+                    <a class="actionBtn btn btn-danger btn-ripple" style="top:45px;"
                        href="{{route('unPublishGameFlavor', $gameFlavor->id)}}">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i> {!! __('messages.make_it_private') !!}
                     </a>
