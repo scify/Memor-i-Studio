@@ -14,6 +14,7 @@ return [
     */
 
     'all_games' => 'All Games',
+    'home' => 'Home',
     'about' => 'About',
     'contact' => 'Contact',
     'help' => 'Help',

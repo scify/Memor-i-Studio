@@ -1,5 +1,9 @@
 .nav-user .user img {
-  border-radius: 0px;
+  border-radius: 0;
+}
+
+.p-0 {
+  padding: 0 !important;
 }
 
 .mainLogo {
@@ -431,7 +435,7 @@ body {
   margin-right: auto;
 }
 
-.col-centered{
+.col-centered {
   float: none;
   margin: 0 auto;
 }

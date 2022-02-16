@@ -2,9 +2,9 @@
 @section('content')
     <div class="">
         <ol class="breadcrumb col-md-12">
-            <li class="breadcrumb-item"><a href="{{route('showHomePage')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            <li class="breadcrumb-item"><a href="{{route('showHomePage')}}"><i class="fa fa-home" aria-hidden="true"></i> {!! __('messages.home') !!}</a>
             </li>
-            <li class="breadcrumb-item"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i> All Games</a>
+            <li class="breadcrumb-item"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i>  {!! __('messages.all_games') !!}</a>
             </li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
         </ol>
@@ -54,7 +54,7 @@
     @endif
     @endif
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
             @if($gameFlavor->accessed_by_user)
                 <div class="col-md-6">
                     <button id="newEquivalenceSetBtn" class="btn btn-default btn-ripple" data-toggle="modal"

@@ -14,6 +14,7 @@ return [
     */
 
     'all_games' => 'Todos los juegos',
+    'home' => 'Página principal',
     'about' => 'Sobre',
     'contact' => 'Contacto',
     'help' => 'Ayuda',

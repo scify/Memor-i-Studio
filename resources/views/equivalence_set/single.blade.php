@@ -18,7 +18,7 @@
             </div>
             <div class="equivalenceSetDescriptionSound">
                 @if($equivalenceSet->descriptionSound != null)
-                    <div class="col-md-9 padding-0">
+                    <div class="col-md-9 p-0">
                         <audio controls>
                             <source src="{{route('resolveDataPath', ['filePath' => $equivalenceSet->descriptionSound->file->file_path])}}" type="audio/mpeg">
                             <source src="{{route('resolveDataPath', ['filePath' => $equivalenceSet->descriptionSound->file->file_path])}}" type="audio/wav">
