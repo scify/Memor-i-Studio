@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
-class ResourceCategory extends Model
-{
+class ResourceCategory extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -25,25 +28,26 @@ class ResourceCategory extends Model
     /**
      * Get the @see GameVersion this resource category belongs to.
      */
-    public function gameVersion()
-    {
+    public function gameVersion(): HasOne {
         return $this->hasOne('App\Models\GameVersion', 'id', 'game_version_id');
     }
 
     /**
      * Get the @see GameVersion this resource category belongs to.
      */
-    public function resources()
-    {
+    public function resources(): HasMany {
         return $this->hasMany('App\Models\Resource', 'category_id', 'id')
-            ->orderBy(\DB::raw('-`order_id`'), 'desc');
+            ->orderBy(DB::raw('-`order_id`'), 'desc');
     }
 
     /**
      * Get the @see GameVersion this resource category belongs to.
      */
-    public function categoryType()
-    {
+    public function categoryType(): HasOne {
         return $this->hasOne('App\Models\ResourceCategoryType', 'id', 'type_id');
+    }
+
+    public function translations(): HasMany {
+        return $this->hasMany('App\Models\ResourceCategoryTranslation', 'resource_category_id', 'id');
     }
 }

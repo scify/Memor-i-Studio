@@ -18,19 +18,25 @@ class ResourceCategoryStorage {
     }
 
     public function getResourceCategoryByPathForGameVersion($name, $gameVersionId) {
-        return ResourceCategory::where(['path' => $name, 'game_version_id' =>$gameVersionId])->first();
+        return ResourceCategory::where(['path' => $name, 'game_version_id' => $gameVersionId])->first();
     }
 
     public function storeResourceCategory(ResourceCategory $resourceCategory) {
         $newResourceCategory = $resourceCategory->save();
-        if($newResourceCategory)
+        if ($newResourceCategory)
             return $resourceCategory->id;
         return null;
     }
 
-    public function getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId) {
+    public function getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId, $langId = null) {
         //we exclude the game cover image, because it is added on game flavor form
-        return ResourceCategory::where(['game_version_id' =>$gameVersionId, 'type_id' => $resourceTypeId])->where('description', '<>', 'img/game_cover')->orderBy('order_id', 'asc')->get();
+        $query = ResourceCategory::where(['game_version_id' => $gameVersionId, 'type_id' => $resourceTypeId])
+            ->where('description', '<>', 'img/game_cover');
+        if ($langId)
+            $query->with(['translations' => function ($q) use ($langId) {
+                $q->where('lang_id', '=', $langId);
+            }]);
+        return $query->orderBy('order_id', 'asc')->get();
     }
 
 }

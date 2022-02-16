@@ -6,14 +6,13 @@ use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\GameVersionManager;
 use App\BusinessLogicLayer\managers\LanguageManager;
 use App\Models\GameFlavor;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -72,9 +71,10 @@ class GameFlavorController extends Controller {
     /**
      * Return a rendered view of a list with all game versions
      *
+     * @param Request $request
      * @return string
      */
-    public function getGameFlavorsForUser(Request $request) {
+    public function getGameFlavorsForUser(Request $request): string {
         $userId = $request->user ? $request->user['id'] : 0;
         $language_id = $request->language_id ?: null;
 
@@ -91,7 +91,7 @@ class GameFlavorController extends Controller {
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function create(Request $request) {
+    public function create(Request $request): RedirectResponse {
 
         $this->validate($request, [
             'name' => 'required|max:255',
@@ -104,8 +104,8 @@ class GameFlavorController extends Controller {
         $input = $request->all();
 
         try {
-            $newGameFlavor = $this->gameFlavorManager->createGameFlavor(null, $input);
-        } catch (\Exception $e) {
+            $newGameFlavor = $this->gameFlavorManager->createOrUpdateGameFlavor(null, $input);
+        } catch (Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
@@ -123,10 +123,10 @@ class GameFlavorController extends Controller {
      * @param int $id
      * @return Application|Factory|View
      */
-    public function editIndex($id) {
+    public function editIndex(int $id) {
         try {
             $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         $gameVersionId = $gameFlavor->game_version_id;
@@ -143,8 +143,9 @@ class GameFlavorController extends Controller {
      * @param Request $request
      * @param int $id
      * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id): RedirectResponse {
 
         $this->validate($request, [
             'name' => 'required|max:255',
@@ -152,7 +153,7 @@ class GameFlavorController extends Controller {
         ]);
 
         $input = $request->all();
-        $newGameFlavor = $this->gameFlavorManager->createGameFlavor($id, $input);
+        $newGameFlavor = $this->gameFlavorManager->createOrUpdateGameFlavor($id, $input);
 
         if ($newGameFlavor != null) {
             return redirect()->route('showAllGameFlavors')->with('flash_message_success', trans('messages.successfully_edited_game') . ' "' . $newGameFlavor->name . '"');
@@ -168,8 +169,9 @@ class GameFlavorController extends Controller {
      *
      * @param int $id
      * @return Application|Factory|View|RedirectResponse
+     * @throws Exception
      */
-    public function delete($id) {
+    public function delete(int $id) {
 
         $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if (!$result) {
@@ -187,7 +189,7 @@ class GameFlavorController extends Controller {
             if (!$result) {
                 return view('common.error_message', ['message' => trans('messages.error_generic')]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', trans('messages.game_flavor_published'));
@@ -211,17 +213,16 @@ class GameFlavorController extends Controller {
      * returns the file to be downloaded.
      *
      * @param $gameFlavorId
-     * @return BinaryFileResponse
+     * @return RedirectResponse|BinaryFileResponse
      */
     public function downloadWindows($gameFlavorId) {
         try {
             $filePath = $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
-
-        } catch (\Exception $e) {
+            return response()->download($filePath);
+        } catch (Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
-        return response()->download($filePath);
     }
 
     /**
@@ -229,13 +230,13 @@ class GameFlavorController extends Controller {
      * returns the file to be downloaded.
      *
      * @param $gameFlavorId
-     * @return Factory|View|BinaryFileResponse
+     * @return BinaryFileResponse|RedirectResponse
      */
     public function downloadLinux($gameFlavorId) {
         try {
             $filePath = $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
@@ -246,13 +247,13 @@ class GameFlavorController extends Controller {
      * This method clones a given game flavor for the currently logged in user.
      *
      * @param $gameFlavorId
-     * @return Factory|View|BinaryFileResponse
+     * @return RedirectResponse
      */
-    public function cloneGameFlavorAndFiles($gameFlavorId) {
+    public function cloneGameFlavorAndFiles($gameFlavorId): RedirectResponse {
         try {
             $this->gameFlavorManager->cloneGameFlavorAndFiles($gameFlavorId);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
@@ -260,12 +261,12 @@ class GameFlavorController extends Controller {
         return redirect()->back();
     }
 
-    public function submitGameFlavorForApproval($gameFlavorId) {
+    public function submitGameFlavorForApproval($gameFlavorId): RedirectResponse {
         try {
             $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
             $this->gameFlavorManager->sendEmailForGameSubmissionToAdmin($gameFlavorId);
             $this->gameFlavorManager->sendEmailForGameSubmissionToCreator($gameFlavorId);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('flash_message_failure', $e->getMessage());
             return back();
         }
@@ -282,7 +283,7 @@ class GameFlavorController extends Controller {
     public function buildExecutablesForTesting($gameFlavorId) {
         try {
             $this->buildExecutables(intval($gameFlavorId));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', trans('messages.game_was_built'));
@@ -293,7 +294,7 @@ class GameFlavorController extends Controller {
         try {
             $this->buildExecutables(intval($gameFlavorId));
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator(intval($gameFlavorId));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', trans('messages.game_was_built'));
@@ -311,7 +312,7 @@ class GameFlavorController extends Controller {
             $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', trans('messages.game_was_built'));
@@ -322,7 +323,7 @@ class GameFlavorController extends Controller {
         $gameVersionId = $request['game_version_id'];
         try {
             $this->gameFlavorManager->assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
         session()->flash('flash_message_success', trans('messages.game_flavor_updated'));
@@ -335,6 +336,9 @@ class GameFlavorController extends Controller {
         return view('game_flavor.forms.select_game_version', ['gameVersions' => $gameVersions, 'gameFlavor' => $gameFlavor]);
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function getGameFlavorsForCriteria(Request $request): JsonResponse {
         $this->validate($request, [
             'lang' => 'required|exists:language,code',

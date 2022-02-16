@@ -6,25 +6,34 @@ use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use League\Flysystem\Exception;
 
-class ResourceController extends Controller
-{
+class ResourceController extends Controller {
     private $resourceManager;
     private $resourceCategoryManager;
+    private $gameFlavorManager;
+    private $gameVersionLanguageManager;
 
-    public function __construct(ResourceManager $resourceManager, ResourceCategoryManager $resourceCategoryManager) {
+    public function __construct(ResourceManager   $resourceManager, ResourceCategoryManager $resourceCategoryManager,
+                                GameFlavorManager $gameFlavorManager, GameVersionLanguageManager $gameVersionLanguageManager) {
         $this->resourceManager = $resourceManager;
         $this->resourceCategoryManager = $resourceCategoryManager;
+        $this->gameFlavorManager = $gameFlavorManager;
+        $this->gameVersionLanguageManager = $gameVersionLanguageManager;
     }
 
     /**
      * Creates or updates resource translations
      *
      * @param Request $request request containing attributes
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function updateGameResourcesTranslations(Request $request) {
+    public function updateGameResourcesTranslations(Request $request): RedirectResponse {
         $input = $request->all();
         try {
             $this->resourceManager->createOrUpdateResourceTranslations($input['resources'], $input['lang_id']);
@@ -35,7 +44,7 @@ class ResourceController extends Controller
             );
 
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
         session()->flash('flash_message_success', trans('messages.resource_translation_updated'));
@@ -47,24 +56,18 @@ class ResourceController extends Controller
      *
      * @param Request $request
      * @param $gameFlavorId
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
+     * @throws Exception
      */
     public function getResourcesForGameFlavor(Request $request, $gameFlavorId) {
-        $gameFlavorManager = new GameFlavorManager();
-        $gameFlavor = $gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
+        $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
         $input = $request->all();
 
-        $interfaceLangId = $gameFlavor->interface_lang_id;
+        $interfaceLangId = $input['interface_lang_id'] ?? $gameFlavor->interface_lang_id;
 
-        if(isset($input['interface_lang_id'])) {
-            $interfaceLangId = $input['interface_lang_id'];
+        $gameFlavorResources = $this->gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
 
-        }
-
-        $gameFlavorResources = $gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
-
-        $gameVersionLanguageManager = new GameVersionLanguageManager();
-        $interfaceLanguages = $gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
+        $interfaceLanguages = $this->gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
         return view('game_resource_category.list',
             ['resourceCategories' => $gameFlavorResources,
                 'interface_lang_id' => $interfaceLangId,
@@ -77,22 +80,22 @@ class ResourceController extends Controller
      * Method to update the files for a given set of resources ids
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function updateGameResourcesFiles(Request $request) {
+    public function updateGameResourcesFiles(Request $request): RedirectResponse {
         $resourceInputs = $request->resources;
         $gameFlavorId = $request->game_flavor_id;
         $this->validate($request, [
             'resources.*.audio' => 'mimetypes:audio/mpeg,audio/x-wav|max:4000'
         ]);
         try {
-            $isAudio = true;
             $this->resourceManager->createOrUpdateResourceFiles($resourceInputs, $gameFlavorId);
+            session()->flash('flash_message_success', trans('messages.resource_files_updated'));
+            return redirect()->back();
         } catch (\Exception $e) {
-            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " .  $e->getMessage());
+            session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
-        session()->flash('flash_message_success', trans('messages.resource_files_updated'));
-        return redirect()->back();
     }
 }
