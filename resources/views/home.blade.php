@@ -4,12 +4,14 @@
         <div class="col-md-5 col-md-offset-1 text-align-center">
             <a href="{{route('showGameVersionSelectionForm')}}"
                class="btn btn-success btn-ripple width-percent-100">
-                <h2 class="btn-title"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> {!! __('messages.create_new_game') !!}</h2>
+                <h2 class="btn-title"><i class="fa fa-lightbulb-o"
+                                         aria-hidden="true"></i> {!! __('messages.create_new_game') !!}</h2>
             </a>
         </div>
         <div class="col-md-5 text-align-center">
             <a href="{{route('showAllGameFlavors')}}" class="btn btn-primary btn-ripple width-percent-100">
-                <h2 class="btn-title"><i class="fa fa-gamepad" aria-hidden="true"></i> {!! __('messages.see_all_games') !!}</h2>
+                <h2 class="btn-title"><i class="fa fa-gamepad"
+                                         aria-hidden="true"></i> {!! __('messages.see_all_games') !!}</h2>
             </a>
         </div>
     </div>
@@ -34,11 +36,11 @@
 
             </div><!--.card-->
         </div><!--.col-md-6-->
-    </div>
-    <div class="col-md-3" style="position: absolute; bottom: 5px">
-        <a href="https://www.scify.gr/site/en/">
-            <img loading="lazy" class="col-md-3" src="{{asset("/assets/img/scify_logo_108.png")}}"
-                 alt="Latsis Logo Image">
-        </a>
+        <div class="col-md-3">
+            <a href="https://www.scify.gr/site/en/">
+                <img loading="lazy" class="col-md-3" src="{{asset("/assets/img/scify_logo_108.png")}}"
+                     alt="Latsis Logo Image">
+            </a>
+        </div>
     </div>
 @endsection

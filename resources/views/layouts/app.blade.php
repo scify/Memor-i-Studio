@@ -19,8 +19,6 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-11 col-md-11 col-sm-12 col-centered">
-
-
                     @if(session('flash_message_success'))
                         <div class="alert alert-success alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
