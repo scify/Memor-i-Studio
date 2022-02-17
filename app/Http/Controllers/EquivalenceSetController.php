@@ -58,7 +58,7 @@ class EquivalenceSetController extends Controller {
 
             return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
         } catch (ModelNotFoundException $e) {
-            return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
+            return view('common.error_message', ['message' => trans('messages.game_flavor_not_exist')]);
         }
     }
 
