@@ -153,6 +153,7 @@ return [
     'error_generic' => 'Κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά.',
     'game_card_created' => 'Επεξεργασία κάρτας παιχνιδιού',
     'game_flavor_not_published_yet' => 'Αυτή η εκδοση παιχνιδιου δεν έχει δημοσιευτεί ακόμα.',
+    'game_flavor_not_exist' => 'Το παιχνίδι δε βρέθηκε.',
     'card_set_updated' => 'Αυτό το σετ καρτών ανανεώθηκε',
     'card_set_deleted' => 'Αυτό το σετ καρτών διαγράφτηκε',
     'successfully_created_game' => 'Επιτυχής δημιουργία παιχνιδιού',

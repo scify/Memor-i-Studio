@@ -153,6 +153,7 @@ return [
     'error_generic' => 'Qualcosa è andato storto. Riprova.',
     'game_card_created' => 'La carta da gioco è stata modificata',
     'game_flavor_not_published_yet' => 'Questa versione del gioco non è ancora stata pubblicata.',
+    'game_flavor_not_exist' => 'Questo gioco non esiste.',
     'card_set_updated' => 'Gioco di carte aggiornato',
     'card_set_deleted' => 'Set di carte rimosso',
     'successfully_created_game' => 'Gioco creato con successo',

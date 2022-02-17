@@ -215,7 +215,7 @@ class GameFlavorManager {
      * @param $id . the id of game version
      * @return GameFlavor desired <a href='psi_element://GameFlavor'>GameFlavor</a> object
      * object
-     * @throws Exception if no game flavor found by the given id
+     * @throws ModelNotFoundException if no game flavor found by the given id
      */
     public function getGameFlavorViewModel($id): GameFlavor {
         $user = Auth::user();
@@ -225,7 +225,7 @@ class GameFlavorManager {
             $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->creator->id, $user);
             $gameFlavor->cover_img_file_path = $this->getGameFlavorCoverImgFilePath($gameFlavor);
         } else {
-            throw new Exception("Game flavor not found");
+            throw new ModelNotFoundException("Game flavor not found");
         }
 
         return $gameFlavor;

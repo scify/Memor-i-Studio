@@ -153,6 +153,7 @@ return [
     'error_generic' => 'Something went wrong. Please try again.',
     'game_card_created' => 'Game card edited',
     'game_flavor_not_published_yet' => 'This game flavor is not published yet.',
+    'game_flavor_not_exist' => 'This game flavor does not exist.',
     'card_set_updated' => 'Card set updated',
     'card_set_deleted' => 'Card set deleted',
     'successfully_created_game' => 'Successfully created game',

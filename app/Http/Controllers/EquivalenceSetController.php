@@ -6,9 +6,10 @@ use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetViewModelProvider;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
-use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 use Javascript;
 
 /**
@@ -38,33 +39,37 @@ class EquivalenceSetController extends Controller {
      * Prepares and returns a blade view with the appropriate data for a game flavor
      *
      * @param $gameFlavorId int the id of the game flavor the user views
-     * @return Factory|View a view with the appropriate data
      */
-    public function showEquivalenceSetsForGameFlavor($gameFlavorId) {
+    public function showEquivalenceSetsForGameFlavor(int $gameFlavorId) {
 
-        $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
-        if (!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
+        try {
+            $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
+            if (!$gameFlavor->accessed_by_user && !$gameFlavor->published) {
+                return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
+            }
+            $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
+            $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
+
+            JavaScript::put([
+                'cards' => json_encode($cards),
+                'editCardRoute' => route('editCard'),
+                'createEquivalenceSetRoute' => route('createEquivalenceSet')
+            ]);
+
+            return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
+        } catch (ModelNotFoundException $e) {
             return view('common.error_message', ['message' => trans('messages.game_flavor_not_published_yet')]);
         }
-        $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
-        $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
-
-        JavaScript::put([
-            'cards' => json_encode($cards),
-            'editCardRoute' => route('editCard'),
-            'createEquivalenceSetRoute' => route('createEquivalenceSet')
-        ]);
-
-        return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
     }
 
     /**
      * Create a new card
      *
      * @param Request $request the request containing the data
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function create(Request $request) {
+    public function create(Request $request): RedirectResponse {
 
         //dd($request->all());
         //The validation messages are defined in resources/lang/en/validation.php
@@ -96,9 +101,10 @@ class EquivalenceSetController extends Controller {
      * Edits an equivalence set
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function edit(Request $request) {
+    public function edit(Request $request): RedirectResponse {
         $this->validate($request, [
             'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100'
@@ -122,9 +128,9 @@ class EquivalenceSetController extends Controller {
      * Deletes an equivalence set
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function delete(Request $request) {
+    public function delete(Request $request): RedirectResponse {
         try {
             $this->equivalenceSetManager->deleteSet($request->id);
         } catch (\Exception $e) {

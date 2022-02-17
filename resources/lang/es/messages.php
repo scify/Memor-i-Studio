@@ -153,6 +153,7 @@ return [
     'error_generic' => 'Algo salió mal. Inténtalo de nuevo.',
     'game_card_created' => 'Juego de cartas editado',
     'game_flavor_not_published_yet' => 'Esta versión del juego aún no está publicada.',
+    'game_flavor_not_exist' => 'Este juego no existe.',
     'card_set_updated' => 'Juego de cartas actualizado',
     'card_set_deleted' => 'Conjunto de tarjetas eliminado',
     'successfully_created_game' => 'Juego creado con éxito',
