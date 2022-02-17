@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GameRequest extends Model
@@ -37,4 +38,7 @@ class GameRequest extends Model
         return $this->hasOne('App\Models\GameFlavor', 'id', 'game_flavor_id');
     }
 
+    public function gameMovements(): HasMany {
+        return $this->hasMany('App\Models\GameMovement', 'game_request_id', 'id');
+    }
 }
