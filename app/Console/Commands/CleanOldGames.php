@@ -51,11 +51,13 @@ class CleanOldGames extends Command {
                 return $q->withTrashed();
             }])
             ->having('equivalence_sets_count', '<', 3)->get();
-        $this->cleanGameFlavors($gameFlavors);
+        if (!$gameFlavors->isEmpty())
+            $this->cleanGameFlavors($gameFlavors);
         $gameFlavors = GameFlavor::onlyTrashed()->withCount(['equivalenceSets' => function ($q) {
             return $q->withTrashed();
         }])->get();
-        $this->cleanGameFlavors($gameFlavors);
+        if (!$gameFlavors->isEmpty())
+            $this->cleanGameFlavors($gameFlavors);
     }
 
     protected function cleanGameFlavor(int $gameFlavorId) {
@@ -63,48 +65,78 @@ class CleanOldGames extends Command {
         $gameFlavors->add(GameFlavor::withTrashed()->withCount(['equivalenceSets' => function ($q) {
             return $q->withTrashed();
         }])->find($gameFlavorId));
-        $this->cleanGameFlavors($gameFlavors);
+        if ($gameFlavors->get(0))
+            $this->cleanGameFlavors($gameFlavors);
     }
 
     protected function cleanGameFlavors(Collection $gameFlavors) {
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
             echo "Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "\thas num of sets: " . $gameFlavor->equivalence_sets_count . "\n";
-            $sets = $gameFlavor->equivalenceSets()->withTrashed()->get();
-            foreach ($sets as $set) {
-                $cards = $set->cards()->withTrashed()->get();
-                foreach ($cards as $card) {
-                    $card->forceDelete();
-                }
-                $set->forceDelete();
-            }
-            $resourceFiles = $gameFlavor->resourceFiles()->withTrashed()->get();
-            if ($resourceFiles)
-                foreach ($resourceFiles as $file) {
-                    $file->forceDelete();
-                }
-            $reports = $gameFlavor->reports()->withTrashed()->get();
-            if ($reports)
-                foreach ($reports as $report) {
-                    $report->forceDelete();
-                }
-            $requests = $gameFlavor->gameRequests()->withTrashed()->get();
-            if ($requests)
-                foreach ($requests as $request) {
-                    $movements = $request->gameMovements()->withTrashed()->get();
-                    foreach ($movements as $movement) {
-                        $movement->forceDelete();
+            $setsRelationship = $gameFlavor->equivalenceSets();
+
+            if ($setsRelationship) {
+                $sets = $gameFlavor->equivalenceSets()->withTrashed()->get();
+                foreach ($sets as $set) {
+                    $cards = $set->cards()->withTrashed()->get();
+                    foreach ($cards as $card) {
+                        echo "\nDeleting card:\t" . $card->label . " with id:\t" . $card->id;
+                        $card->forceDelete();
                     }
-                    $request->forceDelete();
+                    echo "\nDeleting equivalence set:\t" . $set->name . " with id:\t" . $set->id;
+                    $set->forceDelete();
                 }
+            }
+            $resourceFilesRelationship = $gameFlavor->resourceFiles();
+            if ($resourceFilesRelationship) {
+                $resourceFiles = $resourceFilesRelationship->withTrashed()->get();
+
+                if ($resourceFiles)
+                    foreach ($resourceFiles as $file) {
+                        echo "\nDeleting resource file:\t" . $file->file_path . " with id:\t" . $file->id;
+                        $file->forceDelete();
+                    }
+            }
+            $reportsRelationship = $gameFlavor->reports();
+            if ($reportsRelationship) {
+                $reports = $reportsRelationship->withTrashed()->get();
+                if ($reports)
+                    foreach ($reports as $report) {
+                        echo "\nDeleting report:\t" . $report->user_comment . " with id:\t" . $report->id;
+                        $report->forceDelete();
+                    }
+            }
+            $requestsRelationship = $gameFlavor->gameRequests();
+            if ($requestsRelationship) {
+                $requests = $requestsRelationship->withTrashed()->get();
+                if ($requests)
+                    foreach ($requests as $request) {
+                        $movements = $request->gameMovements()->withTrashed()->get();
+                        foreach ($movements as $movement) {
+                            echo "\nDeleting movement:\t" . $movement->id;
+                            $movement->forceDelete();
+                        }
+                        $request->forceDelete();
+                    }
+            }
             $dataPackDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
             if (file_exists($dataPackDir) && is_dir($dataPackDir)) {
                 echo "Deleting: " . $dataPackDir . " ...\n";
                 $this->rrmdir($dataPackDir);
             }
+            $currentPlayersRelationship = $gameFlavor->currentPlayers();
+            if ($currentPlayersRelationship) {
+                $currentPlayers = $currentPlayersRelationship->withTrashed()->get();
+                if ($currentPlayers)
+                    foreach ($currentPlayers as $currentPlayer) {
+                        echo "\nRemoving current player:\t" . $currentPlayer->user_name;
+                        $currentPlayer->game_flavor_playing = null;
+                        $currentPlayer->save();
+                    }
+            }
             $gameFlavor->forceDelete();
         }
-        echo "Total: " . $gameFlavors->count() . "\n";
+        echo "\nTotal deleted: " . $gameFlavors->count() . "\n";
     }
 
     protected function deleteResource(Resource $resource) {

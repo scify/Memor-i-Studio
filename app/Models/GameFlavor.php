@@ -48,6 +48,12 @@ class GameFlavor extends Model
     }
 
     /**
+     * Get the Equivalence Sets for the card.
+     */
+    public function currentPlayers(): HasMany {
+        return $this->hasMany('App\Models\Player', 'game_flavor_playing', 'id');
+    }
+    /**
      * Get the images for the card.
      */
     public function sounds(): HasMany {
