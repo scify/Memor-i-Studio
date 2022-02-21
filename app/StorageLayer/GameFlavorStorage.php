@@ -36,7 +36,8 @@ class GameFlavorStorage {
         if ($created_by_user_id)
             $query->where('game_flavor.creator_id', $created_by_user_id);
         if ($language_id)
-            $query->where('game_flavor.lang_id', $language_id);
+            $query->where('game_flavor.lang_id', $language_id)
+                ->orWhere(['internationally_available' => true]);
 
         return $query->join('language', 'game_flavor.lang_id', '=', 'language.id')
             ->join('users as creator', 'creator.id', '=', 'game_flavor.creator_id')
@@ -82,7 +83,8 @@ class GameFlavorStorage {
                 $join->on('resource.id', '=', 'resource_file.resource_id')
                     ->on('game_flavor.id', '=', 'resource_file.game_flavor_id');
             })
-            ->where(['game_flavor.lang_id' => $lang_id, 'published' => true])
+            ->where(['published' => true])
+            ->where(['game_flavor.lang_id' => $lang_id])
             ->orWhere(['internationally_available' => true])
             ->orderBy('game_flavor.created_at', 'desc')
             ->get();
