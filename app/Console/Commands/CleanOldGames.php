@@ -60,7 +60,9 @@ class CleanOldGames extends Command {
 
     protected function cleanGameFlavor(int $gameFlavorId) {
         $gameFlavors = new Collection();
-        $gameFlavors->add(GameFlavor::withTrashed()->find($gameFlavorId));
+        $gameFlavors->add(GameFlavor::withTrashed()->withCount(['equivalenceSets' => function ($q) {
+            return $q->withTrashed();
+        }])->find($gameFlavorId));
         $this->cleanGameFlavors($gameFlavors);
     }
 
