@@ -27,7 +27,7 @@
             @endif
             @if($gameFlavor->internationally_available)
                 <img loading="lazy" class="langImg"
-                     src="{{asset('assets/img/world.png')}}" alt="World image">
+                     src="{{asset('assets/img/world.png')}}" style="height: 42px" alt="World image">
             @else
                 <img loading="lazy" class="langImg"
                      src="{{asset('assets/img/' . $gameFlavor->language_flag_img_path)}}" alt="Language image">
