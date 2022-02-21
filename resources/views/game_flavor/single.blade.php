@@ -25,7 +25,13 @@
                     </a>
                 @endif
             @endif
-            <img loading="lazy" class="langImg" src="{{asset('assets/img/' . $gameFlavor->language_flag_img_path)}}">
+            @if($gameFlavor->internationally_available)
+                <img loading="lazy" class="langImg"
+                     src="{{asset('assets/img/world.png')}}" alt="World image">
+            @else
+                <img loading="lazy" class="langImg"
+                     src="{{asset('assets/img/' . $gameFlavor->language_flag_img_path)}}" alt="Language image">
+            @endif
         </div>
         @if($loggedInUser != null)
             @if($gameFlavor->accessed_by_user)
