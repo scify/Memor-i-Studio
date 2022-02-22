@@ -193,14 +193,18 @@ class GameFlavorController extends Controller {
     }
 
     public function unPublish($id) {
-        $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
-        $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
-        //$this->gameFlavorManager->clearJnlpDir($id);
-        if (!$result) {
-            return view('common.error_message', ['message' => trans('messages.error_generic')]);
+        try {
+            $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
+            $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
+            if (!$result) {
+                return view('common.error_message', ['message' => trans('messages.error_generic')]);
+            }
+            session()->flash('flash_message_success', trans('messages.game_flavor_unpublished'));
+            return redirect()->back();
+        } catch (Exception $e) {
+            session()->flash('flash_message_failure', $e->getMessage());
+            return redirect()->back();
         }
-        session()->flash('flash_message_success', trans('messages.game_flavor_unpublished'));
-        return redirect()->back();
     }
 
 
