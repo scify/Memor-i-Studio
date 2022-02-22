@@ -8,7 +8,7 @@ use App\Models\ResourceFile;
 use App\Models\User;
 use App\StorageLayer\GameFlavorStorage;
 use App\StorageLayer\LanguageStorage;
-use App\StorageLayer\UserStorage;
+use App\StorageLayer\UserRepository;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -41,7 +41,7 @@ class GameFlavorManager {
     private $imgManager;
 
     public function __construct(GameFlavorStorage  $gameFlavorStorage, FileManager $fileManager,
-                                UserStorage        $userStorage, ResourceCategoryManager $resourceCategoryManager,
+                                UserRepository     $userStorage, ResourceCategoryManager $resourceCategoryManager,
                                 ResourceManager    $resourceManager, GameVersionLanguageManager $gameVersionLanguageManager,
                                 GameVersionManager $gameVersionManager, EquivalenceSetManager $equivalenceSetManager,
                                 WindowsBuilder     $windowsBuilder, LanguageStorage $languageStorage,
@@ -144,7 +144,7 @@ class GameFlavorManager {
     public function getGameFlavors(int $userId, $language_id): Collection {
         $user = null;
         try {
-            $user = $this->userStorage->get($userId);
+            $user = $this->userStorage->find($userId);
             if ($user->isAdmin()) {
                 //if admin, get all game versions
                 $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(false, null, $language_id);

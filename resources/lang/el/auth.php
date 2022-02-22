@@ -30,5 +30,8 @@ return [
     'logout' => 'Αποσύνδεση',
     'no_account' => 'Δεν έχω λογαριασμό',
     'already_account' => 'Ήδη έχω λογαριασμό',
-    'sign_in' => 'Είσοδος'
+    'sign_in' => 'Είσοδος',
+    'with' => 'στο',
+    'shapes_create_account' => 'Δημιουργήστε ένα λογαρισμό για όλες τις εφαρμογές του SHAPES',
+    'shapes_create_account_prompt' => 'Είσοδος/Εγγραφή με λογαριασμό SHAPES'
 ];

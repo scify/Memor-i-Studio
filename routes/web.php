@@ -16,6 +16,7 @@
 //});
 
 use App\BusinessLogicLayer\managers\MailManager;
+use App\Http\Controllers\Auth\SHAPES\ShapesIntegrationController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,12 @@ Route::get('home', 'HomeController@showHomePage')->name('showHomePage');
 Route::get('about', 'HomeController@showAboutPage')->name('showAboutPage');
 Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
 Route::post('games/flavors', 'GameFlavorController@getGameFlavorsForUser')->name('getGameFlavorsForUser');
+
+Route::get("/login-shapes/", [ShapesIntegrationController::class, 'showLoginForm'])->name('shapes.login');
+Route::get("/register-shapes/", [ShapesIntegrationController::class, 'showRegisterForm'])->name('shapes.register');
+Route::post("/request-shapes-user-creation/", [ShapesIntegrationController::class, 'request_create_user'])->name('shapes.request-create-user');
+Route::post("/request-shapes-user-login_token/", [ShapesIntegrationController::class, 'request_login_token'])->name('shapes.request-login-token');
+
 
 Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
 Route::get('test', 'CardController@test')->name('test');

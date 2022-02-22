@@ -2,6 +2,11 @@
   border-radius: 0;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .p-0 {
   padding: 0 !important;
 }
@@ -52,10 +57,11 @@
   margin-bottom: 30px;
 }
 
-.content .alert {
+.alert-dismissable {
   float: right;
   min-width: 500px;
-  right: 100px;
+  right: 20px;
+  top: 70px;
   position: absolute;
   width: auto;
   z-index: 1;
@@ -99,6 +105,7 @@
 
 .gameFlavorItem {
   height: 570px;
+  margin-bottom: 50px;
 
   .installJavaMsg {
     font-size: smaller;

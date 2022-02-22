@@ -30,5 +30,8 @@ return [
     'logout' => 'Cerrar sesión',
     'no_account' => 'No tengo una cuenta',
     'already_account' => 'Ya tengo una cuenta',
-    'sign_in' => 'Acceder'
+    'sign_in' => 'Acceder',
+    'with' => 'con',
+    'shapes_create_account' => 'Create an account shared across all SHAPES - powered platforms',
+    'shapes_create_account_prompt' => 'Iniciar sesión/Registrarse con una cuenta SHAPES'
 ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\StorageLayer\UserRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,14 +29,16 @@ class RegisterController extends Controller {
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $userStorage;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct(UserRepository $userStorage) {
         $this->middleware('guest');
+        $this->userStorage = $userStorage;
     }
 
     /**
@@ -59,15 +62,9 @@ class RegisterController extends Controller {
      * @return User
      */
     protected function create(array $data) {
-        $newUser = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-
+        $newUser = $this->userStorage->create($data);
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $data['email']);
-
         return $newUser;
     }
 }

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\MailManager;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class HomeController extends Controller {
+
     public function showHomePage() {
         return view('home');
     }
@@ -15,7 +20,7 @@ class HomeController extends Controller {
     /**
      * Show the contact form.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function showContactForm() {
         return view('contact');
@@ -25,7 +30,10 @@ class HomeController extends Controller {
         return view('about');
     }
 
-    public function sendContactEmail(Request $request) {
+    /**
+     * @throws ValidationException
+     */
+    public function sendContactEmail(Request $request): RedirectResponse {
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email',

@@ -31,7 +31,7 @@ $(document).ready(function () {
         $(".alert-dismissable").fadeTo(4000, 500).slideUp(500, function () {
             $(".alert-dismissable").alert('close');
         });
-    }, 3000);
+    }, 5000);
 
     $("input[type='checkbox'], input[type='radio']").iCheck({
         checkboxClass: 'icheckbox_flat-blue',
