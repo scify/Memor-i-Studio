@@ -150,12 +150,11 @@ class GameFlavorController extends Controller {
         ]);
 
         $input = $request->all();
-        $newGameFlavor = $this->gameFlavorManager->createOrUpdateGameFlavor($id, $input);
-
-        if ($newGameFlavor != null) {
+        try {
+            $newGameFlavor = $this->gameFlavorManager->createOrUpdateGameFlavor($id, $input);
             return redirect()->route('showAllGameFlavors')->with('flash_message_success', trans('messages.successfully_edited_game') . ' "' . $newGameFlavor->name . '"');
-        } else {
-            session()->flash('flash_message_failure', trans('messages.error_generic'));
+        } catch (Exception $e) {
+            session()->flash('flash_message_failure', $e->getMessage());
             return redirect()->back()->withInput();
         }
     }
