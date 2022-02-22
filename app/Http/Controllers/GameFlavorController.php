@@ -109,11 +109,8 @@ class GameFlavorController extends Controller {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back();
         }
-        if ($newGameFlavor == null)
-            return redirect()->back()->withInput()->withErrors(['error', trans('messages.error_generic')]);
 
         return redirect()->route('showEquivalenceSetsForGameFlavor', ['id' => $newGameFlavor->id])->with('flash_message_success', trans('messages.successfully_created_game') . ' "' . $newGameFlavor->name . '"');
-
     }
 
 
