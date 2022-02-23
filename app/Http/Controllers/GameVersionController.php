@@ -50,19 +50,20 @@ class GameVersionController extends Controller {
      * Create a new Game Version.
      *
      * @param Request $request
-     * @return Application|Factory|RedirectResponse|View
+     * @return RedirectResponse
      * @throws ValidationException
      */
-    public function create(Request $request) {
+    public function create(Request $request): RedirectResponse {
         $user = Auth::user();
         $this->validate($request, [
             'name' => 'required|max:255',
-            'cover_img' => 'required|image|max:3000'
+            'cover_img' => 'required|image|max:3000',
+            'data_pack_dir_name' => 'required'
         ]);
         try {
             $this->gameVersionManager->createGameVersion($request->all(), $user);
             session()->flash('flash_message_success', trans('messages.successfully_created_game'));
-            return $this->showAllGameVersions();
+            return redirect()->route("showAllGameVersions");
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back()->withInput($request->input());
@@ -95,10 +96,10 @@ class GameVersionController extends Controller {
      *
      * @param Request $request
      * @param int $id
-     * @return Application|Factory|RedirectResponse|View
+     * @return RedirectResponse
      * @throws ValidationException
      */
-    public function edit(Request $request, int $id) {
+    public function edit(Request $request, int $id): RedirectResponse {
         $this->validate($request, [
             'name' => 'required|max:255',
             'cover_img' => 'image|max:5000'
@@ -106,7 +107,7 @@ class GameVersionController extends Controller {
         try {
             $this->gameVersionManager->editGameVersion($id, $request->all());
             session()->flash('flash_message_success', trans('messages.game_flavor_updated'));
-            return $this->showAllGameVersions();
+            return redirect()->route("showAllGameVersions");
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . "  " . $e->getMessage());
             return redirect()->back()->withInput($request->input());

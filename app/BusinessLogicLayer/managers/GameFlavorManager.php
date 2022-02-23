@@ -64,13 +64,13 @@ class GameFlavorManager {
     }
 
     /**
-     * @param $gameFlavorId int id of the game flavor
+     * @param $gameFlavorId int|null id of the game flavor
      * @param array $inputFields contain the game flavor parameters
      * @return GameFlavor the newly created instance
      * @throws \Exception
      * @internal param Request $request the request object
      */
-    public function createOrUpdateGameFlavor(int $gameFlavorId, array $inputFields): GameFlavor {
+    public function createOrUpdateGameFlavor($gameFlavorId, array $inputFields): GameFlavor {
 
         if ($gameFlavorId == null) {
             //create new instance
