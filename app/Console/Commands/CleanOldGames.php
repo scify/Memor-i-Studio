@@ -13,14 +13,14 @@ class CleanOldGames extends Command {
      *
      * @var string
      */
-    protected $signature = 'games:clear {id?}';
+    protected $signature = 'games:purge {id?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Cleans old games that have no equivalence sets';
+    protected $description = 'Cleans old game flavors that have no equivalence sets';
 
     /**
      * Create a new command instance.
