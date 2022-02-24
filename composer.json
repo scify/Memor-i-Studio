@@ -18,7 +18,7 @@
         "filp/whoops": "~2.0",
         "laracasts/generators": "^1.1",
         "laracasts/utilities": "~3.2",
-        "madnest/madzipper": "1.0.x",
+        "madnest/madzipper": "1.1.*",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^8.5.21",
         "symfony/css-selector": "3.1.*",

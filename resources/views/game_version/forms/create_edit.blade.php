@@ -90,7 +90,7 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <label for="gameResPack">Upload a file</label>
-                                    <input type="file" id="gameResPack" name="gameResPack">
+                                    <input type="file" accept=".jar" id="gameResPack" name="gameResPack">
                                 </div><!--.form-group-->
                             </div><!--.col-md-9-->
                         </div>

@@ -41,10 +41,12 @@ class GameVersionController extends Controller {
      */
     public function createIndex() {
         $gameVersion = new GameVersion();
-
+        $gameVersion['name'] = 'Memor-i';
+        $gameVersion['version_code'] = '1.0';
+        $gameVersion['description'] = 'Memor-i game for the blind';
+        $gameVersion['data_pack_dir_name'] = 'generic_pack_en';
         return view('game_version.create_edit_index', ['gameVersion' => $gameVersion]);
     }
-
 
     /**
      * Create a new Game Version.

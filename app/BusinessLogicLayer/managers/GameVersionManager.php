@@ -6,12 +6,14 @@ use App\Models\GameVersion;
 use App\Models\User;
 use App\StorageLayer\FileStorage;
 use App\StorageLayer\GameVersionStorage;
+use App\Utils\StringHelpers;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Madnest\Madzipper\Madzipper;
+use ZipArchive;
 
 class GameVersionManager {
 
@@ -46,6 +48,7 @@ class GameVersionManager {
     public function createGameVersion(array $input, User $user): GameVersion {
         $newGameVersion = new GameVersion();
         $newGameVersion->name = $input['name'];
+        $newGameVersion->data_pack_dir_name = $input['data_pack_dir_name'];
         $newGameVersion->version_code = $input['version_code'];
         $newGameVersion->description = $input['description'];
         $newGameVersion->creator_id = $user->id;
@@ -164,18 +167,21 @@ class GameVersionManager {
      *
      * @param string $filePath
      * @param GameVersion $gameVersion
+     * @throws Exception if the zip file cannot be opened
      */
     private function extractResourceDirectoriesFromZipFile(string $filePath, GameVersion $gameVersion) {
-        $zip = zip_open($filePath);
+        $zip = new ZipArchive();
+        $res = $zip->open($filePath);
+        if (!$res)
+            throw new Exception("Zip file could not be opened");
 
-        if ($zip) {
-            while ($entry = zip_read($zip)) {
-                $entryName = zip_entry_name($entry);
-                $isDir = substr($entryName, -1) == DIRECTORY_SEPARATOR;
-                $this->parseEntry($isDir, $entryName, $gameVersion);
-            }
-            zip_close($zip);
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $stat = $zip->statIndex($i);
+            $entryName = $stat['name'];
+            $isDir = substr($entryName, -1) == DIRECTORY_SEPARATOR;
+            $this->parseEntry($isDir, $entryName, $gameVersion);
         }
+        $zip->close();
     }
 
     /**
@@ -184,7 +190,8 @@ class GameVersionManager {
     private function extractFilesFromZipFile($zipFilePath, GameVersion $gameVersion) {
         $zipper = new Madzipper();
         File::makeDirectory($this->getPathForGameVersionDataFiles($gameVersion->id), 0777, true);
-        $zipper->make($zipFilePath)->folder($gameVersion->data_pack_dir_name)->extractTo(storage_path('app/game_versions/data/' . $gameVersion->id));
+        $zipper->make($zipFilePath)->folder($gameVersion->data_pack_dir_name)
+            ->extractTo(storage_path('app/game_versions/data/' . $gameVersion->id));
     }
 
     private function getPathForGameVersionDataFiles(int $gameVersionId): string {
@@ -209,7 +216,7 @@ class GameVersionManager {
                 $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
                 $this->gameResourcesFilesSchema[$fileName] = $this->stringUntilLastSlash($fileName);
             }
-        } else if ($this->entryIsApplicableForImageResource($entryName)) {
+        } else if ($this->entryIsApplicableForImageResource($entryName, $gameVersion)) {
             if ($isDir)
                 array_push($this->gameResourcesDirsSchema, substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName)));
             else {
@@ -227,7 +234,7 @@ class GameVersionManager {
      * @return bool
      */
     private function entryIsApplicableForAudioResource(string $entryName, GameVersion $gameVersion): bool {
-        return starts_with($entryName, $gameVersion->data_pack_dir_name . '/audios/')
+        return StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/audios/')
             && ($entryName != $gameVersion->data_pack_dir_name . '/audios/');
     }
 
@@ -239,7 +246,7 @@ class GameVersionManager {
      * @return bool
      */
     private function entryIsApplicableForImageResource(string $entryName, GameVersion $gameVersion): bool {
-        return (starts_with($entryName, $gameVersion->data_pack_dir_name . '/img/')
+        return (StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/img/')
             && ($entryName != $gameVersion->data_pack_dir_name . '/img/'));
     }
 
