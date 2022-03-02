@@ -132,7 +132,6 @@ class GameVersionManager {
         $editedGameVersion = $this->gameVersionStorage->storeGameVersion($gameVersionToBeUpdated);
 
         DB::transaction(function () use ($editedGameVersion, $input) {
-
             if (isset($input['gameResPack'])) {
                 $this->resourceCategoryManager->editResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $editedGameVersion->id);
                 $this->resourceManager->editResourcesFromResourcesArray($this->gameResourcesFilesSchema, $editedGameVersion->id);
@@ -156,10 +155,6 @@ class GameVersionManager {
 
     public function getGameVersionJarFile(int $id): string {
         return storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
-    }
-
-    public function getGameVersionExeFile(int $id): string {
-        return storage_path('app/' . $this->gameExeStoragePath . $id . '/' . 'memori.exe');
     }
 
     /**
@@ -211,14 +206,14 @@ class GameVersionManager {
     private function parseEntry(bool $isDir, string $entryName, GameVersion $gameVersion) {
         if ($this->entryIsApplicableForAudioResource($entryName, $gameVersion)) {
             if ($isDir)
-                array_push($this->gameResourcesDirsSchema, substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName)));
+                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
             else {
                 $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
                 $this->gameResourcesFilesSchema[$fileName] = $this->stringUntilLastSlash($fileName);
             }
         } else if ($this->entryIsApplicableForImageResource($entryName, $gameVersion)) {
             if ($isDir)
-                array_push($this->gameResourcesDirsSchema, substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName)));
+                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
             else {
                 $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
                 $this->gameResourcesFilesSchema[$fileName] = $this->stringUntilLastSlash($fileName);
@@ -235,7 +230,7 @@ class GameVersionManager {
      */
     private function entryIsApplicableForAudioResource(string $entryName, GameVersion $gameVersion): bool {
         return StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/audios/')
-            && ($entryName != $gameVersion->data_pack_dir_name . '/audios/');
+            && ($entryName !== $gameVersion->data_pack_dir_name . '/audios/');
     }
 
     /**
@@ -247,7 +242,7 @@ class GameVersionManager {
      */
     private function entryIsApplicableForImageResource(string $entryName, GameVersion $gameVersion): bool {
         return (StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/img/')
-            && ($entryName != $gameVersion->data_pack_dir_name . '/img/'));
+            && ($entryName !== $gameVersion->data_pack_dir_name . '/img/'));
     }
 
     /**

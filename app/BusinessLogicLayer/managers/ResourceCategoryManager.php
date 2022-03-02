@@ -100,7 +100,7 @@ class ResourceCategoryManager {
     }
 
     private function isResourceCategoryStatic($categoryPath): bool {
-        return (strpos($categoryPath, 'card_sounds') !== false
+        return !(strpos($categoryPath, 'card_sounds') !== false
             || strpos($categoryPath, 'card_description_sounds') !== false
             || strpos($categoryPath, 'card_images') !== false);
     }
@@ -111,8 +111,8 @@ class ResourceCategoryManager {
      * @param $gameVersionId int the GameVersion id
      * @return Collection a set of the ResourceCategory instances
      */
-    public function getResourceCategoriesForGameVersion(int $gameVersionId, $shouldResourcesBeOnlyStatic, $langId = null): Collection {
-        $resourceTypeId = $shouldResourcesBeOnlyStatic ? 1 : 2;
+    public function getResourceCategoriesForGameVersion(int $gameVersionId, $staticResources, $langId = null): Collection {
+        $resourceTypeId = $staticResources ? 1 : 2;
         return $this->resourceCategoryStorage->getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId, $langId);
     }
 
