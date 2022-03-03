@@ -62,7 +62,7 @@ class BuildGameFlavorsForVersion extends Command {
         foreach ($gameFlavors as $gameFlavor) {
             echo "Building Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
             $gameFlavorManager->buildGameFlavor($gameFlavor->id);
-            echo "Game Flavor was built!\n";
+            echo "Game Flavor was built!\n\n";
         }
     }
 }
