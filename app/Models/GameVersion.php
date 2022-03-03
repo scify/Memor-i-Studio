@@ -38,8 +38,8 @@ class GameVersion extends Model {
         return $this->hasMany('App\Models\ResourceCategory');
     }
 
-    public function languages(): BelongsToMany {
-        return $this->belongsToMany('App\Models\GameVersionLanguage', 'game_version_language');
+    public function gameVersionLanguages(): HasMany {
+        return $this->hasMany('App\Models\GameVersionLanguage', 'game_version_id');
     }
 
     /**

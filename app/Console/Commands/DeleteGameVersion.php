@@ -61,7 +61,7 @@ class DeleteGameVersion extends Command {
         $resourcesCount = 0;
         $resourceTranslationsCount = 0;
         $resourceFilesCount = 0;
-        $gameVersionLanguages = $gameVersion->languages();
+        $gameVersionLanguages = $gameVersion->gameVersionLanguages();
         $gameVersionLanguagesCount = $gameVersionLanguages->count();
 
         foreach ($gameVersionLanguages as $gameVersionLanguage) {
@@ -96,6 +96,7 @@ class DeleteGameVersion extends Command {
             }
             $resourceCategory->forceDelete();
         }
+
         $this->rrmdir(storage_path() . '/app/game_versions/data/' . $gameVersion->id);
         $this->rrmdir(storage_path() . '/app/game_versions/jar/' . $gameVersion->id);
         $gameVersion->forceDelete();
