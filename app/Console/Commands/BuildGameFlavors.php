@@ -71,6 +71,7 @@ class BuildGameFlavors extends Command {
      * @throws Exception
      */
     protected function buildGameFlavors(Collection $gameFlavors) {
+        dd($gameFlavors);
         $gameFlavorManager = app()->make(GameFlavorManager::class);
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
