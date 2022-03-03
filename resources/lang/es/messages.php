@@ -118,7 +118,7 @@ return [
     'download_the_game' => 'Descargar el juego',
     'download_windows_instructions' => 'Εjecuta el archivo .exe del instalador para instalar el juego.',
     'download_linux_instructions' => 'Haga clic derecho en el archivo .jar -> Abrir con -> Oracle Java 8',
-    'java_message' => 'Para poder jugar, necesitas tener instalado <a href="https://www.oracle.com/java/technologies/downloads/#java8" target="_blank">Java 8</a>.',
+    'java_message' => 'Para poder jugar, necesitas tener instalado <a href="https://www.oracle.com/java/technologies/downloads/#jre8-windows" target="_blank">Java 8</a>.',
     'game_available_when_published' => 'Este juego estará disponible para descargar cuando lo publique un administrador.',
     'clone' => 'Duplicar',
     'your_name' => 'Tu nombre',

@@ -118,7 +118,7 @@ return [
     'download_the_game' => 'Download the game',
     'download_windows_instructions' => 'Run the installer .exe file to install the game',
     'download_linux_instructions' => 'Run the installer .exe file to install the game',
-    'java_message' => 'In order to play the game, you need <a href="https://www.oracle.com/java/technologies/downloads/#java8" target="_blank">Java 8</a> installed.',
+    'java_message' => 'In order to play the game, you need <a href="https://www.oracle.com/java/technologies/downloads/#jre8-windows" target="_blank">Java 8</a> installed.',
     'game_available_when_published' => 'This game will be available for downloading when it is published by an admin.',
     'clone' => 'Clone',
     'your_name' => 'Your name',
