@@ -63,7 +63,7 @@ class BuildGameFlavors extends Command {
             try {
                 $this->buildGameFlavors($gameFlavors);
             } catch (Exception $e) {
-                echo "Could not build game flavor: " . $e->getMessage() . "\n";
+                echo "Could not build game flavor: " . $e->getTraceAsString() . "\n";
             }
     }
 
@@ -71,7 +71,6 @@ class BuildGameFlavors extends Command {
      * @throws Exception
      */
     protected function buildGameFlavors(Collection $gameFlavors) {
-        dd($gameFlavors);
         $gameFlavorManager = app()->make(GameFlavorManager::class);
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
