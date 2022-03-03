@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\Models\GameFlavor;
+use Exception;
+use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+
+class BuildGameFlavorsForVersion extends Command {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'games:build-for-version {id}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Silently build a game flavor (if given by id), or all published game flavors (if id is not provided)';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle(): int {
+        $gameVersionId = $this->argument('id');
+        $this->buildAllSuitableGameFlavors($gameVersionId);
+        return 0;
+    }
+
+    protected function buildAllSuitableGameFlavors(int $gameVersionId) {
+        $gameFlavors = GameFlavor::where(['game_version_id' => $gameVersionId])->get();
+        if (!$gameFlavors->isEmpty())
+            try {
+                $this->buildGameFlavors($gameFlavors);
+            } catch (Exception $e) {
+                echo "Could not build game flavor: " . $e->getMessage() . "\n";
+            }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function buildGameFlavors(Collection $gameFlavors) {
+        $gameFlavorManager = app()->make(GameFlavorManager::class);
+        echo "\n";
+        foreach ($gameFlavors as $gameFlavor) {
+            echo "Building Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
+            $gameFlavorManager->buildGameFlavor($gameFlavor->id);
+            echo "Game Flavor was built!\n";
+        }
+    }
+}
