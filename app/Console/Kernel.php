@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\BuildGameFlavors;
+use App\Console\Commands\BuildGameFlavorsForVersion;
 use App\Console\Commands\CleanOldGames;
 use App\Console\Commands\DeleteGameVersion;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel {
     protected $commands = [
         CleanOldGames::class,
         DeleteGameVersion::class,
-        BuildGameFlavors::class
+        BuildGameFlavors::class,
+        BuildGameFlavorsForVersion::class
     ];
 
     /**
