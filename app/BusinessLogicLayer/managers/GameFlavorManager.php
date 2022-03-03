@@ -298,7 +298,21 @@ class GameFlavorManager {
     /**
      * @throws \Exception
      */
-    public function packageFlavor($gameFlavorId) {
+    public function buildGameFlavor(int $gameFlavorId) {
+        $this->packageFlavor($gameFlavorId);
+        $this->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
+        //try to get setup files for windows and linux executables.
+        //if an executable is not found, then an exception will be thrown
+        //and the congratulations email will not be sent to the creator.
+        $this->getWindowsSetupFileForGameFlavor($gameFlavorId);
+        $this->getLinuxSetupFileForGameFlavor($gameFlavorId);
+        $this->markGameFlavorAsBuilt($gameFlavorId);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function packageFlavor($gameFlavorId) {
         //create resources map file
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
         $this->resourceManager->createAdditionalPropertiesFile($this->getGameFlavor($gameFlavorId));

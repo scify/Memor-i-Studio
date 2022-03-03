@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\GameFlavorController;
+use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\Models\GameFlavor;
+use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 
 class BuildGameFlavors extends Command {
@@ -51,7 +51,7 @@ class BuildGameFlavors extends Command {
         if (!$gameFlavors->isEmpty())
             try {
                 $this->buildGameFlavors($gameFlavors);
-            } catch (BindingResolutionException $e) {
+            } catch (Exception $e) {
                 echo "Could not build game flavor: " . $e->getMessage() . "\n";
             }
     }
@@ -62,20 +62,20 @@ class BuildGameFlavors extends Command {
         if ($gameFlavors->get(0))
             try {
                 $this->buildGameFlavors($gameFlavors);
-            } catch (BindingResolutionException $e) {
+            } catch (Exception $e) {
                 echo "Could not build game flavor: " . $e->getMessage() . "\n";
             }
     }
 
     /**
-     * @throws BindingResolutionException
+     * @throws Exception
      */
     protected function buildGameFlavors(Collection $gameFlavors) {
-        $gameFlavorController = app()->make(GameFlavorController::class);
+        $gameFlavorManager = app()->make(GameFlavorManager::class);
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
             echo "Building Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
-            $gameFlavorController->buildExecutablesForTesting($gameFlavor->id);
+            $gameFlavorManager->buildGameFlavor($gameFlavor->id);
             echo "Game Flavor was built!\n";
         }
     }

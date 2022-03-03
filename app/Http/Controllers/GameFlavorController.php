@@ -303,15 +303,7 @@ class GameFlavorController extends Controller {
 
     protected function buildExecutables(int $gameFlavorId) {
         try {
-            $this->gameFlavorManager->packageFlavor($gameFlavorId);
-            $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
-            //try to get setup files for windows and linux executables.
-            //if an executable is not found, then an exception will be thrown
-            //and the congratulations email will not be sent to the creator.
-            $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
-            $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
-            $this->gameFlavorManager->markGameFlavorAsBuilt($gameFlavorId);
-
+            $this->gameFlavorManager->buildGameFlavor($gameFlavorId);
         } catch (Exception $e) {
             return view('common.error_message', ['message' => $e->getMessage()]);
         }
