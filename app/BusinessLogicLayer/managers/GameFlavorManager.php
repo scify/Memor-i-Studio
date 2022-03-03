@@ -312,10 +312,10 @@ class GameFlavorManager {
     /**
      * @throws \Exception
      */
-    protected function packageFlavor($gameFlavorId) {
+    protected function packageFlavor(int $gameFlavorId) {
         //create resources map file
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
-        $this->resourceManager->createAdditionalPropertiesFile($this->getGameFlavor($gameFlavorId));
+        $this->resourceManager->createAdditionalPropertiesFile($this->gameFlavorStorage->getGameFlavorById($gameFlavorId));
         //create card .json files (for equivalent sets)
         $this->equivalenceSetManager->prepareEquivalenceSets($gameFlavorId);
         $this->equivalenceSetManager->createEquivalenceSetsJSONFile($gameFlavorId, false);
@@ -479,13 +479,13 @@ class GameFlavorManager {
      * @throws \Exception
      */
     public function markGameFlavorAsNotSubmittedForApproval(int $id) {
-        $gameFlavor = $this->getGameFlavor($id);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         $gameFlavor->submitted_for_approval = false;
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
 
     public function markGameFlavorAsSubmittedForApproval($id) {
-        $gameFlavor = $this->getGameFlavor($id);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
         $gameFlavor->submitted_for_approval = true;
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
@@ -500,25 +500,25 @@ class GameFlavorManager {
     }
 
     public function sendEmailForGameSubmissionToAdmin($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission_admin', ['gameFlavor' => $gameFlavor], 'New Game submission: "' . $gameFlavor->name . '"', 'paulisaris@gmail.com');
     }
 
     public function sendEmailForGameSubmissionToCreator($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_submission_creator', ['gameFlavor' => $gameFlavor], 'Thanks for submitting your game: "' . $gameFlavor->name . '"', $gameFlavor->creator->email);
     }
 
     public function sendCongratulationsEmailToGameCreator(int $gameFlavorId) {
-        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         $mailManager = new MailManager();
         $mailManager->sendEmailToSpecificEmail('email.game_flavor_approved', ['gameFlavor' => $gameFlavor], 'Game "' . $gameFlavor->name . '" approved!', $gameFlavor->creator->email);
     }
 
     public function markGameFlavorAsBuilt($gameFlavorId) {
-        $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         $gameFlavor->is_built = true;
         $this->gameFlavorStorage->storeGameFlavor($gameFlavor);
     }
