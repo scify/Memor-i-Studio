@@ -301,7 +301,7 @@ class GameFlavorController extends Controller {
         return redirect()->back();
     }
 
-    public function buildExecutables(int $gameFlavorId) {
+    protected function buildExecutables(int $gameFlavorId) {
         try {
             $this->gameFlavorManager->packageFlavor($gameFlavorId);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
