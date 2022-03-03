@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\GameVersion;
+use App\Models\GameVersionLanguage;
 use App\Models\Resource;
 use App\Models\ResourceCategory;
 use App\Models\ResourceCategoryTranslation;
@@ -61,7 +62,7 @@ class DeleteGameVersion extends Command {
         $resourcesCount = 0;
         $resourceTranslationsCount = 0;
         $resourceFilesCount = 0;
-        $gameVersionLanguages = $gameVersion->gameVersionLanguages();
+        $gameVersionLanguages = GameVersionLanguage::withTrashed()->where(['game_version_id' => $id])->get();
         $gameVersionLanguagesCount = $gameVersionLanguages->count();
 
         foreach ($gameVersionLanguages as $gameVersionLanguage) {
