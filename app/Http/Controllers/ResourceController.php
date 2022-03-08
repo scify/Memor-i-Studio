@@ -57,7 +57,6 @@ class ResourceController extends Controller {
      * @param Request $request
      * @param $gameFlavorId
      * @return Factory|View
-     * @throws Exception
      */
     public function getResourcesForGameFlavor(Request $request, $gameFlavorId) {
         $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
@@ -67,13 +66,12 @@ class ResourceController extends Controller {
 
         $gameFlavorResources = $this->gameFlavorManager->getResourceCategoriesForGameFlavor($gameFlavor, $interfaceLangId);
 
-        $interfaceLanguages = $this->gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
+        //$interfaceLanguages = $this->gameVersionLanguageManager->getGameVersionLanguages($gameFlavor->game_version_id);
         return view('game_resource_category.list',
             ['resourceCategories' => $gameFlavorResources,
                 'interface_lang_id' => $interfaceLangId,
                 'gameFlavor' => $gameFlavor,
-                'gameFlavorId' => $gameFlavorId,
-                'interfaceLanguages' => $interfaceLanguages]);
+                'gameFlavorId' => $gameFlavorId]);
     }
 
     /**
