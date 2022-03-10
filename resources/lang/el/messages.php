@@ -30,7 +30,7 @@ return [
     'and' => 'και',
     'privacy_policy' => 'την πολιτική απορρήτου.',
     'gdpr_link' => 'https://docs.google.com/document/d/1343Vdggs4pjKUbho4nMsWiRvmz0scfTFfamUb6cN1dk',
-    'read_the' => 'Διαβάστε τη',
+    'read_the' => 'Διάβασα τη',
     'gdpr_compliance_statement' => 'Δήλωση Συμόρφωσης με το GDPR.',
     'image_label' => 'εικόνα',
     'negative_image_label' => 'αρνητική εικόνα (προαιρετικό) <h6>Για να βοηθήσετε τα άτομα με χαμηλή όραση</h6>',

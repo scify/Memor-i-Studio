@@ -30,7 +30,7 @@ return [
     'and' => 'and',
     'privacy_policy' => 'privacy policy.',
     'gdpr_link' => 'https://docs.google.com/document/d/1O3iRjWAtG5vbJRsWHcZT6EhdvAhVbFymqHZqh1GRvjM',
-    'read_the' => 'Read the',
+    'read_the' => 'I have read the',
     'gdpr_compliance_statement' => 'GDPR Compliance Statement.',
     'image_label' => 'image',
     'negative_image_label' => 'negative image (optional) <h6>To help people with low vision</h6>',
