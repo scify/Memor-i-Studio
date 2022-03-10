@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row margin-bottom-30 padding-left-30">
+    <div class="row padding-left-30" style="margin-bottom: 400px">
         <div class="col-md-8 centeredVertically">
             <div class="panel">
                 <div class="panel-heading">

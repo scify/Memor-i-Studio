@@ -98,8 +98,10 @@
                             <div class="icheckbox">
                                 <label>
                                     <input type="checkbox" name="terms" required>
-                                    {!! __('messages.i_accept_the') !!} <a href="{{ __('messages.terms_link') }}"
-                                                                           target="_blank"> {!! __('messages.terms_and_conditions') !!}</a>
+                                    {!! __('messages.i_agree_with_the') !!}
+                                    <a href="{{ route('termsOfUsePage') }}" target="_blank"> {!! __('messages.terms_of_use') !!}</a>
+                                    {!! __('messages.and') !!}
+                                    <a href="{{ route('privacyPolicyPage') }}" target="_blank"> {!! __('messages.privacy_policy') !!}</a>
                                 </label>
                             </div>
                         </div>

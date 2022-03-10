@@ -30,7 +30,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'local'),
-
+    'version' => env('APP_VERSION'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

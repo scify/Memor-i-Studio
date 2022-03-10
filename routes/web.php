@@ -15,7 +15,6 @@
 //    return view('welcome');
 //});
 
-use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\Auth\SHAPES\ShapesIntegrationController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -115,6 +114,13 @@ Route::get('flavor/{id}/downloadWin', 'GameFlavorController@downloadWindows')->n
 Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->name('downloadGameFlavorLinux');
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy.privacy_policy');
+})->name('privacyPolicyPage');
+Route::get('/terms-of-use', function () {
+    return view('terms_of_use');
+})->name('termsOfUsePage');
 
 // Route::get('test-email/{email}', function (\Illuminate\Http\Request $request) {
 //     $mailManager = new MailManager();

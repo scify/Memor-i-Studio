@@ -6,7 +6,30 @@
             <div class="row">
                 <h3 class="col-md-12 text-purple">{{$formTitle}}</h3><!--.col-md-12-->
             </div>
-            <div class="row">
+
+            <div class="row margin-top-10">
+                <div class="icheckbox">
+                    <label>
+                        <input type="checkbox" name="files_usage" required>
+                        {!! __('messages.game_confirm') !!}
+                    </label>
+                </div>
+            </div>
+            <div class="row margin-top-10">
+                <div class="icheckbox">
+                    <label>
+                        <input type="checkbox" name="terms" required>
+                        {!! __('messages.i_agree_with_the') !!}
+                        <a href="{{ route('termsOfUsePage') }}"
+                           target="_blank"> {!! __('messages.terms_of_use') !!}</a>
+                        {!! __('messages.and') !!}
+                        <a href="{{ route('privacyPolicyPage') }}"
+                           target="_blank"> {!! __('messages.privacy_policy') !!}</a>
+                    </label>
+                </div>
+            </div>
+            <hr>
+            <div class="row margin-top-20">
                 <div class="col-md-6">{{$formTitle}} {!! __('messages.image_label') !!}</div><!--.col-md-6-->
                 <div class="col-md-6">{{$formTitle}} {!! __('messages.negative_image_label') !!}</div><!--.col-md-6-->
             </div>
