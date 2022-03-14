@@ -8,17 +8,16 @@
                             <div class="footer-grp">
                                 <h3>Memor-i Studio</h3>
                                 <div>
-                                    <a href="{{ route('showAboutPage') }}">About</a>
+                                    <a href="{{ route('showAboutPage') }}">{!! __('messages.about') !!}</a>
                                 </div>
                                 <div>
-                                    <a href="https://scify.org/" target="_blank">The team</a>
+                                    <a href="https://scify.org/" target="_blank">{!! __('messages.the_team') !!}</a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('termsOfUsePage') }}">Terms of Use</a>
+                                    <a href="{{ route('termsOfUsePage') }}">{!! ucwords(__('messages.terms-of-use')) !!}</a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('privacyPolicyPage') }}">Privacy
-                                        Policy</a>
+                                    <a href="{{ route('privacyPolicyPage') }}">{!! ucwords(__('messages.privacy_policy_title')) !!}</a>
                                 </div>
                                 <div><a href="https://github.com/scify/memori-online-games-repository"
                                         target="_blank">Github</a></div>
@@ -26,22 +25,22 @@
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <div class="footer-grp">
-                                <h3>Get in touch</h3>
+                                <h3>{!! ucwords(strtolower(__('messages.contact'))) !!}</h3>
                                 <div>
-                                    <b>Phone:</b> +30 211 4004 192
+                                    <b>Tel:</b> +30 211 4004 192
                                 </div>
                                 <div>
                                     <b>E-mail:</b> info(at)scify.org
                                 </div>
                                 <div>
-                                    <a href="{{ route('showContactForm') }}" target="_blank">Contact us</a>
+                                    <a href="{{ route('showContactForm') }}" target="_blank">{!! ucfirst(__('messages.contact_us')) !!}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
-                            Copyright &copy; {{ date("Y") }} <a target=" _blank"
+                            {!! __('messages.copyright') !!} &copy; {{ date("Y") }} <a target=" _blank"
                                                                 href="https://scify.org">scify.org</a><br>
-                            All rights reserved. | Version {{ config("app.version")}}
+                            {!! __('messages.all_rights_reserved') !!}.<br>{!! __('messages.version') !!} <b>{{ config("app.version")}}</b>
                         </div>
                     </div>
                 </div>
