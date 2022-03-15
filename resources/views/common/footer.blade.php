@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <div class="footer-grp">
-                                <h3>{!! ucwords(strtolower(__('messages.contact'))) !!}</h3>
+                                <h3>{!! __('messages.contact') !!}</h3>
                                 <div>
                                     <b>Tel:</b> +30 211 4004 192
                                 </div>
@@ -33,7 +33,7 @@
                                     <b>E-mail:</b> info(at)scify.org
                                 </div>
                                 <div>
-                                    <a href="{{ route('showContactForm') }}" target="_blank">{!! ucfirst(__('messages.contact_us')) !!}</a>
+                                    <a href="{{ route('showContactForm') }}" target="_blank">{!! __('messages.contact_us_lower') !!}</a>
                                 </div>
                             </div>
                         </div>

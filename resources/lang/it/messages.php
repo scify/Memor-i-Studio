@@ -156,6 +156,7 @@ return [
     'copy_paste_url' => 'copia e incolla l\'URL qui sotto sul tuo web browser:',
     'all_rights_reserved' => 'Tutti I diritti riservati.',
     'contact_us' => 'Contatti',
+    'contact_us_lower' => 'Contatti',
     'subject' => 'Soggetto',
     'error_generic' => 'Qualcosa è andato storto. Riprova.',
     'game_card_created' => 'La carta da gioco è stata modificata',

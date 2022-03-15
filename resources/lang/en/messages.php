@@ -156,6 +156,7 @@ return [
     'copy_paste_url' => 'copy and paste the URL below into your web browser',
     'all_rights_reserved' => 'All rights reserved',
     'contact_us' => 'CONTACT US',
+    'contact_us_lower' => 'Contact us',
     'subject' => 'Subject',
     'error_generic' => 'Something went wrong. Please try again.',
     'game_card_created' => 'Game card edited',
@@ -217,6 +218,6 @@ return [
     'term-of-use-1' => '<a href="https://memoristudio.scify.org/" target="_blank"> Memor-i Studio </a> is an online application implemented and provided for free by the Non-Profit Organization <a href="https://www.scify.org/" target="_blank">  SciFY </a>, so that anyone can create and share with others free content for the Memor-i Game application.',
     'terms-of-use-prologue' => 'Using <a href="https://memoristudio.scify.org/" target="_blank"> Memor-i Studio </a> platform, I understand, agree and accept that:',
     'last-amendment' => 'Last Amendment',
-    'terms-of-use' => 'TERMS OF USE',
-    'version' => 'Versione'
+    'terms-of-use' => 'Terms of Use',
+    'version' => 'Version'
 ];
