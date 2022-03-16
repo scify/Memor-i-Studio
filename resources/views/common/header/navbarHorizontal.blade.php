@@ -1,23 +1,32 @@
 <nav class="navbar navbar-default navbar-fixed-top" id="app-horizontal-navbar">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-content" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="{{url('home')}}"><i class="fa fa-home" aria-hidden="true"></i> Memor-i Studio</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a
-                        href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad"
-                                                                  aria-hidden="true"></i> {!! __('messages.all_games') !!}
-                </a></li>
-            <li class="{{ (Route::current()->getName() == 'showGameVersionSelectionForm') ? 'active' : '' }}"><a
-                        href="{{route('showGameVersionSelectionForm')}}"><i class="fa fa-lightbulb-o"
-                                                                            aria-hidden="true"></i> {!! __('messages.create_new_game') !!}
-                </a></li>
-        </ul>
-        <div class="pull-right">
+        <div class="collapse navbar-collapse" id="navbar-collapse-content">
             <ul class="nav navbar-nav">
+                <li class="{{ (Route::current()->getName() == 'showAllGameFlavors') ? 'active' : '' }}"><a
+                            href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad"
+                                                                      aria-hidden="true"></i> {!! __('messages.all_games') !!}
+                    </a></li>
+                <li class="{{ (Route::current()->getName() == 'showGameVersionSelectionForm') ? 'active' : '' }}"><a
+                            href="{{route('showGameVersionSelectionForm')}}"><i class="fa fa-lightbulb-o"
+                                                                                aria-hidden="true"></i> {!! __('messages.create_new_game') !!}
+                    </a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
                 @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->isAdmin())
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ route('createGameVersionIndex') }}"><i class="fa fa-plus-square"
@@ -26,8 +35,9 @@
                             <li><a href="{{ route('showAllGameVersions') }}"><i class="fa fa-th-list"
                                                                                 aria-hidden="true"></i> {!! __('messages.all_base_versions') !!}
                                 </a></li>
-                            <li><a href="{{ route('showGameFlavorsSubmittedForApproval') }}"><i class="fa fa-th-list"
-                                                                                                aria-hidden="true"></i> {!! __('messages.games_submitted_for_approval') !!}
+                            <li><a href="{{ route('showGameFlavorsSubmittedForApproval') }}"><i
+                                            class="fa fa-th-list"
+                                            aria-hidden="true"></i> {!! __('messages.games_submitted_for_approval') !!}
                                 </a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ route('showAllGameFlavorReports') }}"><i class="fa fa-exclamation"

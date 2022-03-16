@@ -38,6 +38,16 @@
   margin: 15px auto;
 }
 
+@media (max-width: 960px) {
+  .memoriActionBtns .btn-title {
+    font-size: larger;
+  }
+
+  .memoriActionBtns a:first-child {
+    margin-bottom: 20px;
+  }
+}
+
 .onlineImg {
   height: 40px;
 }
@@ -480,6 +490,7 @@ body {
 
 footer {
   font-size: smaller;
+
   h3 {
     margin-top: 0;
     font-size: 18px;
@@ -540,12 +551,13 @@ footer {
   }
 }
 
-#terms-of-use-page{
+#terms-of-use-page {
   li {
     margin: 15pt;
     padding: 0;
     line-height: 1.5;
   }
+
   ul {
     padding: 10pt;
   }
