@@ -14,7 +14,6 @@
                     {!! __('messages.pre') !!}<i>Memor-i Studio</i> {!! __('messages.about_text_1') !!}
                     <br>
                     <ul class="list margin-bottom-20 margin-top-20">
-                        <li><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.about_text_1') !!}</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.about_text_2') !!}</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.about_text_3') !!}</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> {!! __('messages.about_text_4') !!}</li>
