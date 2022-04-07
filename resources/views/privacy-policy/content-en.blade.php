@@ -46,20 +46,21 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="margin-top-20 margin-bottom-20">2. What is the purpose and the legal basis for User’s data processing?</h2>
-                            <b>2.1.</b> Platform's operational purpose is to collect opinions of users via questionnaires. The opinions are processed in order to gain insights, gather and present valuable ideas and suggestions on the topics addressed in the questionnaires.
-                            Users can respond anonymously (without providing any personal information) or can
-                            voluntarily register
-                            in order to submit eponymous answers.
-                            User's answers are translated into English and are presented in Reports.
-                            For the specific purpose of processing, the legal basis is User's prior consent.
+                            <h2 class="margin-top-20 margin-bottom-20">2. What is the purpose and the legal basis for
+                                User’s data processing?</h2>
+                            <b>2.1.</b> Platform's operational purpose is to allow users to create additional content
+                            that will be used by the respective assistive application. The content uploaded by the users
+                            is then subject to inspection by an administrator in order to be published. For the specific
+                            purpose of processing, the legal basis is User's prior consent.
                             <br><br>
                             <b>2.2.</b> To send User informative emails with the purpose to inform him about
                             new activities, projects and other issues of interest of the Platform. For this purpose
                             of processing the legal basis is the User's prior consent.
                             <br><br>
                             <b>2.3</b> Processing of data for reasons related to Data Controller's compliance with
-                            legal obligations. In such cases processing of data takes place for only the necessary time period in order for Data Controller to comply with obligations imposed by various legal provisions.
+                            legal obligations. In such cases processing of data takes place for only the necessary time
+                            period in order for Data Controller to comply with obligations imposed by various legal
+                            provisions.
                             <br><br>
                             <b>In case of the above provisions where the legal basis is User's prior consent, the
                                 User can always withdraw his consent at any time without affecting the legitimacy of
@@ -76,10 +77,9 @@
                             In order for a User to voluntarily create an account in the Platform, the User should
                             fill in the necessary data: his nickname, email address, and password
                             <br><br>
-                            <b>3.1.2 Submitted questionnaire responses</b><br>
-                            The Platform collects user answers (that is opinions on various subjects) on questions
-                            made via Platform's questionnaires.
-                            These answers are analyzed and presented in a questionnaire results page.
+                            <b>3.1.2 Submitted content</b><br>
+                            The Platform collects user-generated content (text, images, and audio files) that are then
+                            used by the companion assistive app.
                             The User is strictly advised to conform the platform's "code of conduct for successful
                             participation" and avoid
                             posting publicly any personal data that do not wish to be publicly available on the
@@ -94,8 +94,10 @@
 
                             <h3 class="margin-top-20 margin-bottom-20">3.2 Usage data</h3>
                             We may also collect information how the webpage is accessed and used ("Usage Data").
-                            This Usage Data may include information such as your computer's Internet Protocol address (e.g. IP address),
-                            browser type, browser version, the pages of our webpage that you visit, the time and date of your visit,
+                            This Usage Data may include information such as your computer's Internet Protocol address
+                            (e.g. IP address),
+                            browser type, browser version, the pages of our webpage that you visit, the time and date of
+                            your visit,
                             the time spent on those pages, unique device identifiers and other diagnostic data.
 
 
@@ -106,7 +108,7 @@
                             <h2 class="margin-top-20 margin-bottom-20"> 4. How the Platform collects data</h2>
                             4.1 The information can be collected by the following ways: <br>
                             4.1.1 When the User registers and creates an account on the Platform. <br>
-                            4.1.2 When the User submits answer's on the Platform's questionnaires <br>
+                            4.1.2 When the User uploads content <br>
                             4.1.3 When the User visits the Platform and agrees to the installation of cookies (as
                             per the Platform's Cookie Policy in article 11 below) and the collection of the User’s
                             personal data such as the IP address, operation system, type and browser edition
@@ -116,7 +118,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="margin-top-20 margin-bottom-20">5. How long are User's data stored and when are they deleted?</h2>
+                            <h2 class="margin-top-20 margin-bottom-20">5. How long are User's data stored and when are
+                                they deleted?</h2>
                             <b>5.1. User's account data:</b><br>
                             Without prejudice to User's deletion/erasure right mentioned below, the Data registered
                             and stored in the User's account will be stored as long as the User wishes to make use
@@ -144,7 +147,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="margin-top-20 margin-bottom-20">6. What are User's rights ιn relation to the processing of his data and how can he exercise these rights?</h2>
+                            <h2 class="margin-top-20 margin-bottom-20">6. What are User's rights ιn relation to the
+                                processing of his data and how can he exercise these rights?</h2>
                             <b>6.1</b> The Data Controller respects User's right in relation to data processing.
                             <br><br>
                             <b>6.2</b> The User can exercise his rights by contacting the Data Controller at the
@@ -352,7 +356,8 @@
                             <b>8.1</b> The recipients of User's personal data are associate companies that provide
                             technical infrastructure for the operation of the Website, hosting provider as well as
                             the company that undertakes to send electronic communication related to the operation of
-                            the Platform to Users. Where necessary as per applicable laws, the Data Controller will sign agreements with such
+                            the Platform to Users. Where necessary as per applicable laws, the Data Controller will sign
+                            agreements with such
                             companies, which refer to the implementation and regular monitoring of security
                             measures. In case data are transferred outside ΕU all necessary guarantees are in place.
                             <br><br>
@@ -385,7 +390,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="margin-top-20 margin-bottom-20">10. Connection to other Websites/social media</h2>
+                            <h2 class="margin-top-20 margin-bottom-20">10. Connection to other Websites/social
+                                media</h2>
                             This Website connects with other websites through hyperlinks. These websites are not
                             related to Data Controller's Website and their content is neither checked nor
                             recommended by the Data Controller. Thus, the accuracy, legitimacy, completeness or
@@ -459,11 +465,8 @@
                                         request forgery. This cookie is essential for the security of the website
                                         and visitor. )
                                         <br><br>
-                                        ecas_lets_crowdsource_our_future_session (When the app needs to “remember” the logged in user while (s)he navigates to the Platform)
-
-                                        <br><br>
-                                        Crowdsourcing_anonymous_user_id (used to store anonymous answers on the questionnaires by assigning an integer number to user that is submitting the response)
-
+                                        memori_studio_session (When the app needs to “remember” the
+                                        logged in user while (s)he navigates to the Platform)
                                     </td>
                                     <td>1 year
                                         <br><br>
@@ -498,8 +501,10 @@
                                         messages from webpages). These cookies are used for statistical purposes and
                                         to improve the performance of a Platform.
                                     </td>
-                                    <td>_ga_4S9N5MK4VE, _gat,_ga, _gcl_au, _gid: Google Analytics cookies are used to measure traffic on the Platform.
-                                        A unique textstring is saved to identify browser, timestamp for interactions and the browser/sourcepage that led the user to the Platform.
+                                    <td>_ga_4S9N5MK4VE, _gat,_ga, _gcl_au, _gid: Google Analytics cookies are used to
+                                        measure traffic on the Platform.
+                                        A unique textstring is saved to identify browser, timestamp for interactions and
+                                        the browser/sourcepage that led the user to the Platform.
                                         No sensitive information is saved.
 
                                     </td>
@@ -522,11 +527,14 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2 class="margin-top-20 margin-bottom-20">12. Children's Privacy  </h2>
+                            <h2 class="margin-top-20 margin-bottom-20">12. Children's Privacy </h2>
                             Our project does not address anyone under the age of 18 ("Children").
-                            We do not knowingly collect personally identifiable information from anyone under the age of 18.
-                            If you are a parent or guardian and you are aware that your Children has provided us with Personal Data, please contact us.
-                            If we become aware that we have collected Personal Data from children without verification of parental consent,
+                            We do not knowingly collect personally identifiable information from anyone under the age of
+                            18.
+                            If you are a parent or guardian and you are aware that your Children has provided us with
+                            Personal Data, please contact us.
+                            If we become aware that we have collected Personal Data from children without verification
+                            of parental consent,
                             we take steps to remove that information from our servers.
 
 
