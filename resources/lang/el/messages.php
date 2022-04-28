@@ -219,5 +219,6 @@ return [
     'terms-of-use-prologue' => 'Χρησιμοποιώντας την πλατφόρμα Memor-i Studio καταλαβαίνω, συμφωνώ και αποδέχομαι ότι:',
     'last-amendment' => 'Τελευταία Τροποποίηση',
     'terms-of-use' => 'Όροι και προϋποθέσεις χρήσης',
-    'version' => 'Έκδοση'
+    'version' => 'Έκδοση',
+    'tutorial_video_link' => 'https://www.youtube.com/embed/XEaRwzaEsM4'
 ];

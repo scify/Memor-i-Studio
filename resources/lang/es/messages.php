@@ -219,5 +219,6 @@ return [
     'terms-of-use-prologue' => 'Usando la plataforma <a href="https://memoristudio.scify.org/" target="_blank"> Memor-i Studio </a> entiendo y acepto que:',
     'last-amendment' => 'Última modificación',
     'terms-of-use' => 'Términos y condiciones de uso',
-    'version' => 'Versión'
+    'version' => 'Versión',
+    'tutorial_video_link' => 'https://www.youtube.com/embed/OWdZDiJf5vw'
 ];

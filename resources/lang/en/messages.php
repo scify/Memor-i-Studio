@@ -219,5 +219,6 @@ return [
     'terms-of-use-prologue' => 'Using <a href="https://memoristudio.scify.org/" target="_blank"> Memor-i Studio </a> platform, I understand, agree and accept that:',
     'last-amendment' => 'Last Amendment',
     'terms-of-use' => 'Terms of Use',
-    'version' => 'Version'
+    'version' => 'Version',
+    'tutorial_video_link' => 'https://www.youtube.com/embed/hnxAtorp5vQ'
 ];
