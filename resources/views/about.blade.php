@@ -22,7 +22,7 @@
                     <b>{!! __('messages.who_can_use_memori_studio_title') !!}</b>
                     <br>
                     {!! __('messages.who_can_use_memori_studio_message') !!}
-                    <br>
+                    <br><br><br>
                     <iframe width="560" height="315" src="{{ __('messages.tutorial_video_link') }}"
                             title="YouTube video player" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
