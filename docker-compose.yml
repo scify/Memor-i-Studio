@@ -1,0 +1,45 @@
+version: "3.5"
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/apache_php/php.dockerfile
+      args:
+        DOCKER_GROUP_ID: ${DOCKER_GROUP_ID}
+    container_name: memori_studio_server
+    user: "${DOCKER_USER_ID}:${DOCKER_GROUP_ID}" # this is the Laravel user. We need to set it
+    # this way, so that the permissions are applied correctly.
+
+    ports:
+      - "89:80"
+    volumes:
+      - .:/var/www/html
+      - ~/.composer/auth.json:/root/.composer/auth.json
+    networks:
+      - docker_memori_studio_net
+
+  db:
+    build:
+      context: docker/db
+    container_name: memori_studio_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "3316:3306"
+    volumes:
+      - mydata:/var/lib/mysql
+    networks:
+      - docker_memori_studio_net
+
+
+volumes:
+  mydata:
+
+networks:
+  docker_memori_studio_net:
+    external: false
+    name: docker_memori_studio_net
