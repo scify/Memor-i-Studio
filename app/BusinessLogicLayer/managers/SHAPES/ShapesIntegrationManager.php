@@ -13,13 +13,14 @@ class ShapesIntegrationManager {
 
     protected $userStorage;
     protected $defaultHeaders = [
-        'X-Shapes-Key' => '7Msbb3w^SjVG%j',
+        'X-Shapes-Key' => null,
         'Accept' => "application/json"
     ];
     protected $apiBaseUrl = 'https://kubernetes.pasiphae.eu/shapes/asapa/auth/';
 
-    public function __construct(UserRepository       $userStorage) {
+    public function __construct(UserRepository $userStorage) {
         $this->userStorage = $userStorage;
+        $this->defaultHeaders['X-Shapes-Key'] = config('app.shapes_key');
     }
 
     /**
@@ -29,11 +30,11 @@ class ShapesIntegrationManager {
 
         $response = Http::withHeaders($this->defaultHeaders)
             ->post($this->apiBaseUrl . 'register', [
-            'email' => $request['email'],
-            'password' => $request['password'],
-            'first_name' => 'Tester',
-            'last_name' => 'Test',
-        ]);
+                'email' => $request['email'],
+                'password' => $request['password'],
+                'first_name' => 'Tester',
+                'last_name' => 'Test',
+            ]);
         if (!$response->ok()) {
             throw new Exception(json_decode($response->body())->error);
         }
@@ -93,18 +94,17 @@ class ShapesIntegrationManager {
      * @throws Exception
      */
     public function updateSHAPESAuthTokenForUser(User $user) {
-        $response = Http::withHeaders([
-            'X-Shapes-Key' => '7Msbb3w^SjVG%j',
-            'Accept' => "application/json",
+
+        $response = Http::withHeaders(array_merge($this->defaultHeaders, [
             'X-Pasiphae-Auth' => $user->shapes_auth_token
-        ])->post('https://kubernetes.pasiphae.eu/shapes/asapa/auth/token/refresh');
+        ]))->post($this->apiBaseUrl . 'token/refresh');
         if (!$response->ok()) {
             throw new Exception(json_decode($response->body())->error);
         }
         $response = $response->json();
         $new_token = $response['message'];
         // echo "\nUser: " . $user->id . "\t New token: " . $new_token . "\n";
-        $this->userStorage->update(['shapes_auth_token' => $new_token],  $user->id);
+        $this->userStorage->update(['shapes_auth_token' => $new_token], $user->id);
     }
 
 }

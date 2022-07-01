@@ -117,6 +117,7 @@ return [
     'firebase_app_id' => env('FIREBASE_APP_ID'),
     'firebase_measurement_id' => env('FIREBASE_MEASUREMENT_ID'),
     'firebase_messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
+    'shapes_key' => env('SHAPES_KEY'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
