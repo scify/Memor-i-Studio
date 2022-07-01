@@ -6,6 +6,7 @@ use App\Console\Commands\BuildGameFlavors;
 use App\Console\Commands\BuildGameFlavorsForVersion;
 use App\Console\Commands\CleanOldGames;
 use App\Console\Commands\DeleteGameVersion;
+use App\Console\Commands\UpdateShapesUsersTokens;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,7 +20,8 @@ class Kernel extends ConsoleKernel {
         CleanOldGames::class,
         DeleteGameVersion::class,
         BuildGameFlavors::class,
-        BuildGameFlavorsForVersion::class
+        BuildGameFlavorsForVersion::class,
+        UpdateShapesUsersTokens::class
     ];
 
     /**

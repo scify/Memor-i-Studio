@@ -25,7 +25,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'hashed_email',
+        'name', 'email', 'password', 'role_id', 'hashed_email', 'logout',
+        'shapes_auth_token'
     ];
 
     /**
@@ -44,8 +45,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * Get game versions this user has created
      */
-    public function gameVersions()
-    {
+    public function gameVersions() {
         return $this->hasMany('App\Models\GameFlavor', 'creator_id');
     }
 
@@ -54,11 +54,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @return bool
      */
-    public function isAdmin()
-    {
+    public function isAdmin() {
 
-        if ( $this->has('role') and ( $this->role->id ==2 ) )
-        {
+        if ($this->has('role') and ($this->role->id == 2)) {
             return true;
         }
 

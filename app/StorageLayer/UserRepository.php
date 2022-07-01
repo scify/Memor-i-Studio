@@ -3,6 +3,7 @@
 namespace App\StorageLayer;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class UserRepository extends Repository {
 
@@ -16,5 +17,9 @@ class UserRepository extends Repository {
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getAllShapesUsers(): Collection {
+        return User::whereNotNull('shapes_auth_token')->get();
     }
 }
