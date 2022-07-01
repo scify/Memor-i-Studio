@@ -5,9 +5,12 @@ namespace App\BusinessLogicLayer\managers\SHAPES;
 
 use App\Models\User;
 use App\StorageLayer\UserRepository;
+use Carbon\Carbon;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ShapesIntegrationManager {
 
@@ -17,10 +20,12 @@ class ShapesIntegrationManager {
         'Accept' => "application/json"
     ];
     protected $apiBaseUrl = 'https://kubernetes.pasiphae.eu/shapes/asapa/auth/';
+    protected $datalakeAPIUrl;
 
     public function __construct(UserRepository $userStorage) {
         $this->userStorage = $userStorage;
         $this->defaultHeaders['X-Shapes-Key'] = config('app.shapes_key');
+        $this->datalakeAPIUrl = config('app.shapes_datalake_api_url');
     }
 
     /**
@@ -105,6 +110,63 @@ class ShapesIntegrationManager {
         $new_token = $response['message'];
         // echo "\nUser: " . $user->id . "\t New token: " . $new_token . "\n";
         $this->userStorage->update(['shapes_auth_token' => $new_token], $user->id);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sendStudioUsageDataToDatalakeAPI(User $user, string $action, string $name) {
+        $response = Http::withHeaders([
+            'X-Authorisation' => $user->shapes_auth_token
+        ])
+            ->post($this->datalakeAPIUrl . '/memorstudio/web', [
+                'action' => $action,
+                'name' => $name,
+                'devId' => 'memori_studio',
+                'lang' => app()->getLocale(),
+                'source' => 'memori_studio',
+                'time' => Carbon::now()->format(DateTime::ATOM),
+                'version' => config('app.version')
+            ]);
+        if (!$response->ok()) {
+            throw new Exception(json_decode($response->body())->message);
+        }
+        Log::info('SHAPES Datalake response: ' . json_encode($response->json()));
+        return json_encode($response->json());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sendDesktopUsageDataToDatalakeAPI(string $source, string $token, string $action, string $name, string $game_level, int $game_duration_seconds = null, int $num_of_errors = null) {
+        $data = [
+            'action' => $action,
+            'name' => $name,
+            'game_level' => $game_level,
+            'devId' => 'memori_desktop',
+            'lang' => app()->getLocale(),
+            'source' => $source,
+            'time' => Carbon::now()->format(DateTime::ATOM),
+            'version' => config('app.version')
+        ];
+        if ($game_duration_seconds)
+            $data['game_duration_seconds'] = $game_duration_seconds;
+        if ($num_of_errors)
+            $data['num_of_errors'] = $num_of_errors;
+
+        $response = Http::withHeaders([
+            'X-Authorisation' => $token
+        ])
+            ->post($this->datalakeAPIUrl . '/memori/desktop', $data);
+        if (!$response->ok()) {
+            throw new Exception(json_decode($response->body())->message);
+        }
+        Log::info('SHAPES Datalake Desktop response: ' . json_encode($response->json()));
+        return json_encode($response->json());
+    }
+
+    public static function isEnabled(): bool {
+        return config('app.shapes_datalake_api_url') !== null && config('app.shapes_datalake_api_url') !== "";
     }
 
 }
