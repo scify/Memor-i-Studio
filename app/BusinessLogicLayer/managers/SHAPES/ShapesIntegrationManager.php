@@ -64,9 +64,9 @@ class ShapesIntegrationManager {
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
-        Log::info(json_encode($response));
+        Log::info($response->body());
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body()));
+            throw new Exception($response->body());
         }
         return $response->json();
     }
@@ -131,7 +131,7 @@ class ShapesIntegrationManager {
                 'version' => config('app.version')
             ]);
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body()));
+            throw new Exception($response->body());
         }
         Log::info('SHAPES Datalake response: ' . json_encode($response->json()));
         return json_encode($response->json());
@@ -162,7 +162,7 @@ class ShapesIntegrationManager {
         ])
             ->post($this->datalakeAPIUrl . '/memori/desktop', $data);
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body()));
+            throw new Exception($response->body());
         }
         Log::info('SHAPES Datalake Desktop response: ' . json_encode($response->json()));
         return json_encode($response->json());
