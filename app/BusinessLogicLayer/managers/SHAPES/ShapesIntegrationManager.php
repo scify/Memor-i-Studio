@@ -64,7 +64,6 @@ class ShapesIntegrationManager {
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
-        Log::info($this->apiBaseUrl . 'login');
         if (!$response->ok()) {
             throw new Exception($response->body());
         }

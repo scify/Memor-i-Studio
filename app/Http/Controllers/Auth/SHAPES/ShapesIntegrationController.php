@@ -75,7 +75,6 @@ class ShapesIntegrationController extends Controller {
             session()->flash('flash_message_success', trans('messages.welcome_to') . ' Memor-i Studio!');
             return $this->login($request);
         } catch (Exception $e) {
-            Log::error(json_encode($e));
             session()->flash('flash_message_failure', $e->getMessage());
             return redirect()->back();
         }
