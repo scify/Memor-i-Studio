@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ShapesIntegrationController extends Controller {
     use AuthenticatesUsers;
@@ -74,6 +75,7 @@ class ShapesIntegrationController extends Controller {
             session()->flash('flash_message_success', trans('messages.welcome_to') . ' Memor-i Studio!');
             return $this->login($request);
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             session()->flash('flash_message_failure', $e->getMessage());
             return redirect()->back();
         }
