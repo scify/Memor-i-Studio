@@ -64,8 +64,9 @@ class ShapesIntegrationManager {
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
+        Log::info(json_encode($response));
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body())->error);
+            throw new Exception(json_decode($response->body()));
         }
         return $response->json();
     }
