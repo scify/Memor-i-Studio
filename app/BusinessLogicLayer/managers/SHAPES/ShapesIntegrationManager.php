@@ -117,7 +117,8 @@ class ShapesIntegrationManager {
      */
     public function sendStudioUsageDataToDatalakeAPI(User $user, string $action, string $name) {
         $response = Http::withHeaders([
-            'X-Authorisation' => $user->shapes_auth_token
+            'X-Authorisation' => $user->shapes_auth_token,
+            'Accept' => "application/json"
         ])
             ->post($this->datalakeAPIUrl . '/memorstudio/web', [
                 'action' => $action,
@@ -129,7 +130,7 @@ class ShapesIntegrationManager {
                 'version' => config('app.version')
             ]);
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body())->message);
+            throw new Exception(json_decode($response->body()));
         }
         Log::info('SHAPES Datalake response: ' . json_encode($response->json()));
         return json_encode($response->json());
@@ -155,11 +156,12 @@ class ShapesIntegrationManager {
             $data['num_of_errors'] = $num_of_errors;
 
         $response = Http::withHeaders([
-            'X-Authorisation' => $token
+            'X-Authorisation' => $token,
+            'Accept' => "application/json"
         ])
             ->post($this->datalakeAPIUrl . '/memori/desktop', $data);
         if (!$response->ok()) {
-            throw new Exception(json_decode($response->body())->message);
+            throw new Exception(json_decode($response->body()));
         }
         Log::info('SHAPES Datalake Desktop response: ' . json_encode($response->json()));
         return json_encode($response->json());
