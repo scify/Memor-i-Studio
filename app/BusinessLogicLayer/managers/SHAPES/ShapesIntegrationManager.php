@@ -126,7 +126,7 @@ class ShapesIntegrationManager {
                 'devId' => 'memori_studio',
                 'lang' => app()->getLocale(),
                 'source' => 'memori_studio',
-                'time' => Carbon::now()->format(DateTime::ATOM),
+                'time' => Carbon::now()->format(DateTime::RFC3339),
                 'version' => config('app.version')
             ]);
         if (!$response->ok()) {
@@ -147,7 +147,7 @@ class ShapesIntegrationManager {
             'devId' => 'memori_desktop',
             'lang' => app()->getLocale(),
             'source' => $source,
-            'time' => Carbon::now()->format(DateTime::ATOM),
+            'time' => Carbon::now()->format(DateTime::RFC3339),
             'version' => config('app.version')
         ];
         if ($game_duration_seconds)
