@@ -143,7 +143,7 @@ class ShapesIntegrationManager {
         $data = [
             'action' => $action,
             'name' => $name,
-            'game_level' => $game_level,
+            'gameLevel' => $game_level,
             'devId' => 'memori_desktop',
             'lang' => app()->getLocale(),
             'source' => $source,
@@ -151,15 +151,15 @@ class ShapesIntegrationManager {
             'version' => config('app.version')
         ];
         if ($game_duration_seconds)
-            $data['game_duration_seconds'] = $game_duration_seconds;
+            $data['gameDuration'] = $game_duration_seconds;
         if ($num_of_errors)
-            $data['num_of_errors'] = $num_of_errors;
+            $data['numOfErrors'] = $num_of_errors;
 
         $response = Http::withHeaders([
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
-            ->post($this->datalakeAPIUrl . '/memori/desktop', $data);
+            ->post($this->datalakeAPIUrl . '/memorstudio/desktop', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
         }
