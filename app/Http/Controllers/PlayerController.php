@@ -13,8 +13,8 @@ class PlayerController extends Controller
 
     private $playerManager;
 
-    function __construct() {
-        $this->playerManager = new PlayerManager();
+    function __construct(PlayerManager $playerManager) {
+        $this->playerManager = $playerManager;
     }
 
 
