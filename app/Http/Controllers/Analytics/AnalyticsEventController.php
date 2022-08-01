@@ -23,9 +23,10 @@ class AnalyticsEventController extends Controller {
             'name' => 'required',
             'source' => 'required'
         ]);
-        $res = ShapesIntegrationManager::isEnabled() && isset($request->game_name);
+        $res = ShapesIntegrationManager::isEnabled();
         $converted_res = $res ? 'true' : 'false';
         Log::info("integration enabled: " . $converted_res);
+        Log::info("request game name: " . $request->game_name);
         if (ShapesIntegrationManager::isEnabled() && isset($request->game_name)) {
             $game_duration_seconds = null;
             $num_of_errors = null;
