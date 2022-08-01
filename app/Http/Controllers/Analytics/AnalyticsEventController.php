@@ -6,6 +6,7 @@ use App\BusinessLogicLayer\managers\SHAPES\ShapesIntegrationManager;
 use App\Http\Controllers\Controller;
 use App\StorageLayer\Analytics\AnalyticsEventStorage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsEventController extends Controller {
     protected $analyticsEventStorage;
@@ -22,6 +23,7 @@ class AnalyticsEventController extends Controller {
             'name' => 'required',
             'source' => 'required'
         ]);
+        Log::info("integration enabled: " . ShapesIntegrationManager::isEnabled() && isset($request->game_name));
         if (ShapesIntegrationManager::isEnabled() && isset($request->game_name)) {
             $game_duration_seconds = null;
             $num_of_errors = null;
