@@ -139,7 +139,7 @@ class ShapesIntegrationManager {
     /**
      * @throws Exception
      */
-    public function sendDesktopUsageDataToDatalakeAPI(string $source, string $token, string $action, $name, string $game_level, int $game_duration_seconds = null, int $num_of_errors = null) {
+    public function sendDesktopUsageDataToDatalakeAPI(string $source, $token, string $action, $name, string $game_level, int $game_duration_seconds = null, int $num_of_errors = null) {
         $data = [
             'action' => $action,
             'name' => $name,

@@ -6,7 +6,6 @@ use App\BusinessLogicLayer\managers\SHAPES\ShapesIntegrationManager;
 use App\Http\Controllers\Controller;
 use App\StorageLayer\Analytics\AnalyticsEventStorage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AnalyticsEventController extends Controller {
     protected $analyticsEventStorage;
@@ -31,7 +30,7 @@ class AnalyticsEventController extends Controller {
             if (isset($request->num_of_errors))
                 $num_of_errors = $request->num_of_errors;
 
-            $this->shapesIntegrationManager->sendDesktopUsageDataToDatalakeAPI(
+            $response = $this->shapesIntegrationManager->sendDesktopUsageDataToDatalakeAPI(
                 $request->source,
                 $request->token,
                 $request->name,
@@ -44,7 +43,8 @@ class AnalyticsEventController extends Controller {
         return $this->analyticsEventStorage->create([
             'name' => $request->name,
             'source' => $request->source,
-            'payload' => json_encode($request->all())
+            'payload' => json_encode($request->all()),
+            'response' => $response
         ]);
     }
 }
