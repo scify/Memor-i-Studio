@@ -76,6 +76,12 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'sentry' => [
+            'driver' => 'sentry',
+            'level'  => null,
+            'bubble' => true,
+        ],
     ],
 
 ];

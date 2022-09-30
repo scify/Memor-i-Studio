@@ -11,7 +11,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^7.0",
         "laravel/ui": "^2.0",
-        "sentry/sentry-laravel": "^1.1.0"
+        "sentry/sentry-laravel": "^2.13"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
