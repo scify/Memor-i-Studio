@@ -189,7 +189,6 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
-            ->withoutVerifying()
             ->post($this->datalakeAPIUrl . 'icsee/mobile', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
