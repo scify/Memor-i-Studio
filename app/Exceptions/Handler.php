@@ -37,7 +37,6 @@ class Handler extends ExceptionHandler {
      * @throws Exception|Throwable
      */
     public function report(Throwable $throwable) {
-        Log::info("APP BOUND TO SENTRY: " . app()->bound('sentry'));
         if ($this->shouldReport($throwable) && app()->bound('sentry')) {
             app('sentry')->captureException($throwable);
         }

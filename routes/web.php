@@ -126,3 +126,7 @@ Route::get('/terms-of-use', function () {
 //     $mailManager = new MailManager();
 //     $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
 // });
+
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
