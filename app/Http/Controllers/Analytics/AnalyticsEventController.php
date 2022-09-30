@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Analytics;
 
 use App\BusinessLogicLayer\managers\SHAPES\ShapesIntegrationManager;
 use App\Http\Controllers\Controller;
-use App\StorageLayer\Analytics\AnalyticsEventStorage;
+use App\StorageLayer\Analytics\AnalyticsEventRepository;
 use Illuminate\Http\Request;
 
 class AnalyticsEventController extends Controller {
-    protected $analyticsEventStorage;
+    protected $analyticsEventRepository;
     private $shapesIntegrationManager;
 
-    public function __construct(AnalyticsEventStorage    $analyticsEventStorage,
+    public function __construct(AnalyticsEventRepository $analyticsEventRepository,
                                 ShapesIntegrationManager $shapesIntegrationManager) {
-        $this->analyticsEventStorage = $analyticsEventStorage;
+        $this->analyticsEventRepository = $analyticsEventRepository;
         $this->shapesIntegrationManager = $shapesIntegrationManager;
     }
 
@@ -40,7 +40,7 @@ class AnalyticsEventController extends Controller {
                 $num_of_errors
             );
         }
-        return $this->analyticsEventStorage->create([
+        return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),
@@ -60,7 +60,7 @@ class AnalyticsEventController extends Controller {
                 $request->token
             );
         }
-        return $this->analyticsEventStorage->create([
+        return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),
@@ -80,7 +80,7 @@ class AnalyticsEventController extends Controller {
                 $request->token
             );
         }
-        return $this->analyticsEventStorage->create([
+        return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),

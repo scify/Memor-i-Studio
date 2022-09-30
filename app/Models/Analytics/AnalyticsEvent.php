@@ -23,6 +23,7 @@ class AnalyticsEvent extends Model
     protected $fillable = [
         'name',
         'source',
-        'payload'
+        'payload',
+        'response'
     ];
 }
