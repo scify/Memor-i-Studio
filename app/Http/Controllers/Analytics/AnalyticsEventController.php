@@ -47,4 +47,44 @@ class AnalyticsEventController extends Controller {
             'response' => $response
         ]);
     }
+
+    public function storeICSeeEvent(Request $request) {
+        $request->validate([
+            'name' => 'required',
+            'source' => 'required'
+        ]);
+        if (ShapesIntegrationManager::isEnabled() && isset($request->token)) {
+            $response = $this->shapesIntegrationManager->sendICSeeUsageDataToDatalakeAPI(
+                $request->action,
+                $request->value,
+                $request->token
+            );
+        }
+        return $this->analyticsEventStorage->create([
+            'name' => $request->name,
+            'source' => $request->source,
+            'payload' => json_encode($request->all()),
+            'response' => $response
+        ]);
+    }
+
+    public function storeNewsumEvent(Request $request) {
+        $request->validate([
+            'name' => 'required',
+            'source' => 'required'
+        ]);
+        if (ShapesIntegrationManager::isEnabled() && isset($request->token)) {
+            $response = $this->shapesIntegrationManager->sendNewsumUsageDataToDatalakeAPI(
+                $request->action,
+                $request->value,
+                $request->token
+            );
+        }
+        return $this->analyticsEventStorage->create([
+            'name' => $request->name,
+            'source' => $request->source,
+            'payload' => json_encode($request->all()),
+            'response' => $response
+        ]);
+    }
 }

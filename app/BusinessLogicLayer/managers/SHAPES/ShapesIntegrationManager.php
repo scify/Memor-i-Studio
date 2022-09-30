@@ -6,7 +6,7 @@ namespace App\BusinessLogicLayer\managers\SHAPES;
 use App\Models\User;
 use App\StorageLayer\UserRepository;
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -126,7 +126,7 @@ class ShapesIntegrationManager {
                 'devId' => 'memori_studio',
                 'lang' => app()->getLocale(),
                 'source' => 'memori_studio',
-                'time' => Carbon::now()->format(DateTime::RFC3339),
+                'time' => Carbon::now()->format(DateTimeInterface::RFC3339),
                 'version' => config('app.version')
             ]);
         if (!$response->ok()) {
@@ -147,7 +147,7 @@ class ShapesIntegrationManager {
             'devId' => 'memori_desktop',
             'lang' => app()->getLocale(),
             'source' => $source,
-            'time' => Carbon::now()->format(DateTime::RFC3339),
+            'time' => Carbon::now()->format(DateTimeInterface::RFC3339),
             'version' => config('app.version')
         ];
         if ($game_duration_seconds)
@@ -169,6 +169,52 @@ class ShapesIntegrationManager {
 
     public static function isEnabled(): bool {
         return config('app.shapes_datalake_api_url') !== null && config('app.shapes_datalake_api_url') !== "";
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sendICSeeUsageDataToDatalakeAPI($action, $value, $token) {
+        $data = [
+            'action' => $action,
+            'payload' => $value,
+            'devId' => 'icsee_mobile',
+            'time' => Carbon::now()->format(DateTimeInterface::RFC3339),
+        ];
+
+        $response = Http::withHeaders([
+            'X-Authorisation' => $token,
+            'Accept' => "application/json"
+        ])
+            ->post($this->datalakeAPIUrl . '/icsee/mobile', $data);
+        if (!$response->ok()) {
+            throw new Exception($response->body());
+        }
+        Log::info('SHAPES Datalake ICSee response: ' . json_encode($response->json()));
+        return json_encode($response->json());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sendNewsumUsageDataToDatalakeAPI($action, $value, $token) {
+        $data = [
+            'action' => $action,
+            'payload' => $value,
+            'devId' => 'newsum_mobile',
+            'time' => Carbon::now()->format(DateTimeInterface::RFC3339),
+        ];
+
+        $response = Http::withHeaders([
+            'X-Authorisation' => $token,
+            'Accept' => "application/json"
+        ])
+            ->post($this->datalakeAPIUrl . '/newsum/mobile', $data);
+        if (!$response->ok()) {
+            throw new Exception($response->body());
+        }
+        Log::info('SHAPES Datalake Newsum response: ' . json_encode($response->json()));
+        return json_encode($response->json());
     }
 
 }
