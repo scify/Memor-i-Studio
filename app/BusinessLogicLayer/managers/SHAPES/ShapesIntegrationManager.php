@@ -120,7 +120,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $user->shapes_auth_token,
             'Accept' => "application/json"
         ])
-            ->post($this->datalakeAPIUrl . '/memor/web', [
+            ->post($this->datalakeAPIUrl . 'memor/web', [
                 'action' => $action,
                 'name' => $name,
                 'devId' => 'memori_studio',
@@ -159,7 +159,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
-            ->post($this->datalakeAPIUrl . '/memor/desktop', $data);
+            ->post($this->datalakeAPIUrl . 'memor/desktop', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
         }
@@ -186,7 +186,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
-            ->post($this->datalakeAPIUrl . '/icsee/mobile', $data);
+            ->post($this->datalakeAPIUrl . 'icsee/mobile', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
         }
@@ -209,7 +209,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
-            ->post($this->datalakeAPIUrl . '/newsum/mobile', $data);
+            ->post($this->datalakeAPIUrl . 'newsum/mobile', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
         }
