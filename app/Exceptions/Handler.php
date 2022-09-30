@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler {
@@ -36,6 +37,7 @@ class Handler extends ExceptionHandler {
      * @throws Exception|Throwable
      */
     public function report(Throwable $throwable) {
+        Log::info("APP BOUND TO SENTRY: " . app()->bound('sentry'));
         if ($this->shouldReport($throwable) && app()->bound('sentry')) {
             app('sentry')->captureException($throwable);
         }
