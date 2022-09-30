@@ -34,6 +34,7 @@ class ShapesIntegrationManager {
     public function createShapes(Request $request) {
 
         $response = Http::withHeaders($this->defaultHeaders)
+            ->withoutVerifying()
             ->post($this->apiBaseUrl . 'register', [
                 'email' => $request['email'],
                 'password' => $request['password'],
@@ -60,7 +61,7 @@ class ShapesIntegrationManager {
     public function loginShapes(Request $request) {
         $response = Http::withHeaders(
             $this->defaultHeaders
-        )->post($this->apiBaseUrl . 'login', [
+        )->withoutVerifying()->post($this->apiBaseUrl . 'login', [
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
@@ -102,7 +103,7 @@ class ShapesIntegrationManager {
 
         $response = Http::withHeaders(array_merge($this->defaultHeaders, [
             'X-Pasiphae-Auth' => $user->shapes_auth_token
-        ]))->post($this->apiBaseUrl . 'token/refresh');
+        ]))->withoutVerifying()->post($this->apiBaseUrl . 'token/refresh');
         if (!$response->ok()) {
             throw new Exception(json_decode($response->body())->error);
         }
@@ -120,6 +121,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $user->shapes_auth_token,
             'Accept' => "application/json"
         ])
+            ->withoutVerifying()
             ->post($this->datalakeAPIUrl . 'memor/web', [
                 'action' => $action,
                 'name' => $name,
@@ -159,6 +161,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
+            ->withoutVerifying()
             ->post($this->datalakeAPIUrl . 'memor/desktop', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
@@ -186,6 +189,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
+            ->withoutVerifying()
             ->post($this->datalakeAPIUrl . 'icsee/mobile', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
@@ -209,6 +213,7 @@ class ShapesIntegrationManager {
             'X-Authorisation' => $token,
             'Accept' => "application/json"
         ])
+            ->withoutVerifying()
             ->post($this->datalakeAPIUrl . 'newsum/mobile', $data);
         if (!$response->ok()) {
             throw new Exception($response->body());
