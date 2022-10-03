@@ -22,6 +22,7 @@ class AnalyticsEventController extends Controller {
             'name' => 'required',
             'source' => 'required'
         ]);
+        $response = "";
         if (ShapesIntegrationManager::isEnabled() && isset($request->token)) {
             $game_duration_seconds = null;
             $num_of_errors = null;
@@ -53,6 +54,7 @@ class AnalyticsEventController extends Controller {
             'name' => 'required',
             'source' => 'required'
         ]);
+        $response = "";
         if (ShapesIntegrationManager::isEnabled() && isset($request->token)) {
             $response = $this->shapesIntegrationManager->sendICSeeUsageDataToDatalakeAPI(
                 $request->action,
@@ -73,6 +75,7 @@ class AnalyticsEventController extends Controller {
             'name' => 'required',
             'source' => 'required'
         ]);
+        $response = "";
         if (ShapesIntegrationManager::isEnabled() && isset($request->token)) {
             $response = $this->shapesIntegrationManager->sendNewsumUsageDataToDatalakeAPI(
                 $request->action,
