@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-sm-6">
+                        <div class="col-md-4 col-sm-6">
                             <div class="copyright">
                                 <p style="margin: 0">Created by <a href="https://www.scify.gr/site/en/">SciFY</a>
                                     @ {{ now()->year }}
