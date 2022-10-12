@@ -3,7 +3,7 @@
         <div class="row" id="sitemap">
             <div class="col-md-6 col-sm-11 col-centered">
                 <div class="container-fluid p-0">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 30px">
                         <div class="col-md-4 col-sm-12">
                             <div class="footer-grp">
                                 <h3>Memor-i Studio</h3>
@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
                             <div class="copyright">
-                                <p class="m-0">Created by <a href="https://www.scify.gr/site/en/">SciFY</a>
+                                <p style="margin: 0">Created by <a href="https://www.scify.gr/site/en/">SciFY</a>
                                     @ {{ now()->year }}
                                 </p>
                                 <p>version <b>{{ config('app.version') }}</b></p>
@@ -60,7 +60,7 @@
                                 <img alt="Shapes Logo" title="" src="{{ asset('assets/img/shapes.png') }}"
                                      style="width:70px;height:50px; float: right; display: block; background: white; margin-right:10px;">
                             </div>
-                            <p style="font-size: small; color:white!important">This project has received funding from
+                            <p style="font-size: small;">This project has received funding from
                                 the
                                 European Union's Horizon 2020 research and innovation programme under grant agreement
                                 No.
