@@ -33,14 +33,38 @@
                                     <b>E-mail:</b> info(at)scify.org
                                 </div>
                                 <div>
-                                    <a href="{{ route('showContactForm') }}" target="_blank">{!! __('messages.contact_us_lower') !!}</a>
+                                    <a href="{{ route('showContactForm') }}"
+                                       target="_blank">{!! __('messages.contact_us_lower') !!}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
                             {!! __('messages.copyright') !!} &copy; {{ date("Y") }} <a target=" _blank"
-                                                                href="https://scify.org">scify.org</a><br>
-                            {!! __('messages.all_rights_reserved') !!}.<br>{!! __('messages.version') !!} <b>{{ config("app.version")}}</b>
+                                                                                       href="https://scify.org">scify.org</a><br>
+                            {!! __('messages.all_rights_reserved') !!}.<br>{!! __('messages.version') !!}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="copyright">
+                                <p class="m-0">Created by <a href="https://www.scify.gr/site/en/">SciFY</a>
+                                    @ {{ now()->year }}
+                                </p>
+                                <p>version <b>{{ config('app.version') }}</b></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6" style="margin-left: auto; margin-right: 0;">
+                            <div>
+                                <img alt="EU Logo" title="" src="{{ asset('assets/img/EULogo.jpg') }}"
+                                     style="width:70px;height:50px;float:right;display:block;margin-right:100px">
+                                <img alt="Shapes Logo" title="" src="{{ asset('assets/img/shapes.png') }}"
+                                     style="width:70px;height:50px; float: right; display: block; background: white; margin-right:10px;">
+                            </div>
+                            <p style="font-size: small; color:white!important">This project has received funding from
+                                the
+                                European Union's Horizon 2020 research and innovation programme under grant agreement
+                                No.
+                                857159.</p>
                         </div>
                     </div>
                 </div>
