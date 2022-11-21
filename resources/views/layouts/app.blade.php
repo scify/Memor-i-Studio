@@ -48,6 +48,7 @@
 </div>
 <!-- Footer -->
 @stack('modals')
+<x-laravel-cookies-consent></x-laravel-cookies-consent>
 @include('common.footer')
 </body>
 </html>
