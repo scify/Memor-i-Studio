@@ -480,16 +480,14 @@
                                         funzionamento della Piattaforma non è possibile.
 
                                     </td>
-                                    <td>CookieConsent (memorizza lo stato di consenso dei cookie dell'utente per il
-                                        dominio corrente )
+                                    <td>memori_studio_cookies_consent_selection, memori_studio_cookies_consent_targeting (memorizza lo stato di consenso dei cookie dell'utente per il dominio corrente )
 
                                         <br><br>
-                                        XSRF-TOKEN (Assicura la sicurezza della navigazione del visitatore impedendo la
-                                        falsificazione della richiesta cross-site. Questo cookie è essenziale per la
-                                        sicurezza del sito web e del visitatore. )
+                                        XSRF-TOKEN (Assicura la sicurezza della navigazione del visitatore impedendo la falsificazione della richiesta cross-site. Questo cookie è essenziale per la sicurezza del sito web e del visitatore. )
                                         <br><br>
-                                        memori_studio_session (Quando l'app ha bisogno di "ricordare" il file
-                                        utente loggato mentre naviga sulla Piattaforma)
+                                        remember_web_*, memori_studio_session (quando l'app ha bisogno di "ricordare" l'utente loggato mentre naviga nella piattaforma)
+                                        <br><br>
+                                        lang (Memorizza la preferenza della lingua dell'utente)
                                     </td>
                                     <td>1 anno
                                         <br><br>

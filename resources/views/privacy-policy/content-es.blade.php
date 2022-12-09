@@ -468,17 +468,17 @@
                                         cookies no reconocen la identidad individual del Usuario y sin ellas no es
                                         posible el buen funcionamiento de la Plataforma.
                                     </td>
-                                    <td>Almacena el estado de consentimiento de cookies del usuario para el dominio
-                                        actual
+                                    <td>Almacena el estado de consentimiento de cookies del usuario para el dominio actual
 
                                         <br><br>
-                                        XSRF-TOKEN (Garantiza la seguridad de la navegación de los visitantes evitando
-                                        la falsificación de solicitudes entre sitios. Esta cookie es esencial para la
-                                        seguridad del sitio web y del visitante).
+                                        XSRF-TOKEN (Garantiza la seguridad de la navegación de los visitantes evitando la falsificación de solicitudes entre sitios. Esta cookie es esencial para la seguridad del sitio web y del visitante).
+                                        <br>memori_studio_session (Cuando la aplicación necesita "recordar" al usuario conectado mientras navega a la Plataforma)<br>
+                                        memori_studio_cookies_consent_selection, memori_studio_cookies_consent_targeting (Almacena el estado de consentimiento de cookies del usuario para el dominio actual)
                                         <br><br>
-                                        memori_studio_session (Cuando la aplicación necesita "recordar" el
-                                        usuario registrado mientras navega a la Plataforma)
-                                   </td>
+                                        remember_web_*, memori_studio_session (When the app needs to “remember” the logged in user while (s)he navigates to the Platform)
+                                        <br><br>
+                                        lang (Almacena la preferencia de idioma del usuario)
+                                    </td>
                                     <td>1 año
                                         <br><br>
                                         <br><br>
