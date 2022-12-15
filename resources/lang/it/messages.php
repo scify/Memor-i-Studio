@@ -221,4 +221,5 @@ return [
     'terms-of-use' => 'Termini e condizioni d\'uso',
     'tutorial_video_link' => 'https://www.youtube.com/embed/hnxAtorp5vQ',
     'platform_statistics' => 'Statistiche della piattaforma',
+    'meta_tags_description' => 'Crea la tua versione di Memor-i anche senza particolari competenze di programmazione! Sebbene sia una piattaforma online facile e divertente, le persone di tutto il mondo possono creare nuovi giochi e condividerli gratuitamente e ovviamente senza costi! In questo modo il nostro lavoro crea attraverso di te ancora più impatto e risultati!'
 ];

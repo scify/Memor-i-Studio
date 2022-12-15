@@ -222,4 +222,6 @@ return [
     'version' => 'Versión',
     'tutorial_video_link' => 'https://www.youtube.com/embed/OWdZDiJf5vw',
     'platform_statistics' => 'Estadísticas de la plataforma',
+    'meta_tags_description' => '¡Cree su versión de Memor-i incluso sin conocimientos especiales de programación! Aunque es una plataforma en línea fácil y divertida, personas de todo el mundo pueden crear nuevos juegos y compartirlos de forma gratuita y, por supuesto, ¡sin costo alguno! ¡De esta manera, nuestro trabajo crea a través de usted aún más impacto y resultados!'
+
 ];
