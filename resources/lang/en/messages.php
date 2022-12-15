@@ -220,5 +220,6 @@ return [
     'last-amendment' => 'Last Amendment',
     'terms-of-use' => 'Terms of Use',
     'version' => 'Version',
-    'tutorial_video_link' => 'https://www.youtube.com/embed/hnxAtorp5vQ'
+    'tutorial_video_link' => 'https://www.youtube.com/embed/hnxAtorp5vQ',
+    'platform_statistics' => 'Platform Statistics',
 ];

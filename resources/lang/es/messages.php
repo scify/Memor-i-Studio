@@ -220,5 +220,6 @@ return [
     'last-amendment' => 'Última modificación',
     'terms-of-use' => 'Términos y condiciones de uso',
     'version' => 'Versión',
-    'tutorial_video_link' => 'https://www.youtube.com/embed/OWdZDiJf5vw'
+    'tutorial_video_link' => 'https://www.youtube.com/embed/OWdZDiJf5vw',
+    'platform_statistics' => 'Estadísticas de la plataforma',
 ];

@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <nav class="navbar navbar-default navbar-fixed-top" id="app-horizontal-navbar">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -23,7 +24,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->isAdmin())
+                @if(Auth::check() && Auth::user()->isAdmin())
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-haspopup="true"
@@ -43,6 +44,9 @@
                             <li><a href="{{ route('showAllGameFlavorReports') }}"><i class="fa fa-exclamation"
                                                                                      aria-hidden="true"></i> {!! __('messages.user_reports') !!}
                                 </a></li>
+                            <li><a href="{{ route('platform_statistics') }}"><i class="fa fa-sort-numeric-asc"
+                                                                                   aria-hidden="true"></i> {!! __('messages.platform_statistics') !!}
+                                </a></li>
                         </ul>
                     </li>
                 @endif
@@ -52,7 +56,7 @@
                             href="{{route('showContactForm')}}">{!! __('messages.contact') !!}</a></li>
                 <li><a href="{{ __('messages.help_link') }}" target="_blank">{!! __('messages.help') !!}</a></li>
                 <li>
-                    @if(\Illuminate\Support\Facades\Auth::check())
+                    @if(Auth::check())
                         <a class="pull-right" href="{{ url('/logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="fa fa-sign-out" aria-hidden="true"></i> {!! __('auth.logout') !!}</a>

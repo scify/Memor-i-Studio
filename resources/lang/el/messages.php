@@ -220,5 +220,6 @@ return [
     'last-amendment' => 'Τελευταία Τροποποίηση',
     'terms-of-use' => 'Όροι και προϋποθέσεις χρήσης',
     'version' => 'Έκδοση',
-    'tutorial_video_link' => 'https://www.youtube.com/embed/XEaRwzaEsM4'
+    'tutorial_video_link' => 'https://www.youtube.com/embed/XEaRwzaEsM4',
+    'platform_statistics' => 'Στατιστικά Πλατφόρμας',
 ];

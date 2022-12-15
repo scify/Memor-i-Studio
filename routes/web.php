@@ -15,8 +15,11 @@
 //    return view('welcome');
 //});
 
+use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\Auth\SHAPES\ShapesIntegrationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlatformStatisticsController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +77,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->name('addGameVersionLanguageIndex');
     Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
 
+    Route::get('test-email/{email}', function (Request $request) {
+        $mailManager = new MailManager();
+        $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
+    });
+
+    Route::get('/platform-statistics', [PlatformStatisticsController::class, 'show_platform_statistics'])->name('platform_statistics');
+
     //Game Flavor routes
     Route::get('gameFlavor/selectVersion', 'GameFlavorController@showGameVersionSelectionForm')->name('showGameVersionSelectionForm');
     Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
@@ -121,11 +131,6 @@ Route::get('/privacy-policy', function () {
 Route::get('/terms-of-use', function () {
     return view('terms_of_use');
 })->name('termsOfUsePage');
-
-// Route::get('test-email/{email}', function (\Illuminate\Http\Request $request) {
-//     $mailManager = new MailManager();
-//     $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
-// });
 
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
