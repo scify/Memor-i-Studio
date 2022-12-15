@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <!-- Header -->
 @include('common.header.header')
 @include('common.header.navbarHorizontal')

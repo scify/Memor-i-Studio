@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\Auth; @endphp
+@php use Illuminate\Support\Facades\App;use Illuminate\Support\Facades\Auth; @endphp
 <nav class="navbar navbar-default navbar-fixed-top" id="app-horizontal-navbar">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -45,7 +45,7 @@
                                                                                      aria-hidden="true"></i> {!! __('messages.user_reports') !!}
                                 </a></li>
                             <li><a href="{{ route('platform_statistics') }}"><i class="fa fa-sort-numeric-asc"
-                                                                                   aria-hidden="true"></i> {!! __('messages.platform_statistics') !!}
+                                                                                aria-hidden="true"></i> {!! __('messages.platform_statistics') !!}
                                 </a></li>
                         </ul>
                     </li>
@@ -72,8 +72,8 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" id="lang-dropdown">
                         <img
                                 loading="lazy"
-                                src="{{ asset('assets/img/' . \Illuminate\Support\Facades\App::getLocale() . '.png') }}"
-                                height="20px" alt="Language">
+                                src="{{ asset('assets/img/' . App::getLocale() . '.png') }}"
+                                height="20px" width="33.3px" alt="Language">
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="lang-dropdown">
                         <li><a class="dropdown-item" href="{{ route('set-lang-locale', 'en') }}">
@@ -81,7 +81,7 @@
                                         loading="lazy"
                                         class="mr-2"
                                         src="{{ asset('assets/img/en.png') }}"
-                                        height="20px" alt="English">
+                                        height="20px" width="33.3px" alt="English">
                                 English
                             </a>
                         </li>
@@ -90,7 +90,7 @@
                                         loading="lazy"
                                         class="mr-2"
                                         src="{{ asset('assets/img/el.png') }}"
-                                        height="20px" alt="Ελληνικά">
+                                        height="20px" width="33.3px" alt="Ελληνικά">
                                 Ελληνικά
                             </a>
                         </li>
@@ -99,7 +99,7 @@
                                         loading="lazy"
                                         class="mr-2"
                                         src="{{ asset('assets/img/es.png') }}"
-                                        height="20px" alt="Español">
+                                        height="20px" width="33.3px" alt="Español">
                                 Español
                             </a>
                         </li>
@@ -108,7 +108,7 @@
                                         loading="lazy"
                                         class="margin-right-5"
                                         src="{{ asset('assets/img/it.png') }}"
-                                        width="30px" alt="Italiano">
+                                        height="20px" width="33.3px" alt="Italiano">
                                 Italiano
                             </a>
                         </li>

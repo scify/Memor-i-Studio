@@ -38,7 +38,7 @@
         </div><!--.col-md-6-->
         <div class="col-md-3 col-centered text-center">
             <a href="https://www.scify.gr/site/en/">
-                <img loading="lazy" src="{{asset("/assets/img/scify_logo_108.png")}}"
+                <img width="90px" height="108px" loading="lazy" src="{{asset("/assets/img/scify_logo_108.png")}}"
                      alt="Logo Image">
             </a>
         </div>
