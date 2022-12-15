@@ -69,7 +69,7 @@
                     @endif
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" id="lang-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="lang-dropdown">
                         <img
                                 loading="lazy"
                                 src="{{ asset('assets/img/' . App::getLocale() . '.png') }}"
