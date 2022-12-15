@@ -41,10 +41,10 @@ class PlatformStatisticsRepository {
     public function getGameFlavorsPerLanguageStatistics(): Collection {
         return collect(DB::select('
             select count(game_flavor.id) as num, language.name from game_flavor
-                inner join language on language.id = game_flavor.interface_lang_id
+                inner join language on language.id = game_flavor.lang_id
             where game_flavor.deleted_at is null
             and game_flavor.published = 1
-            group by game_flavor.interface_lang_id
+            group by game_flavor.lang_id
         '))->flatten();
     }
 
