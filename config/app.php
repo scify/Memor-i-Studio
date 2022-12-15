@@ -119,6 +119,7 @@ return [
     'firebase_messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
     'shapes_key' => env('SHAPES_KEY'),
     'shapes_datalake_api_url' => env('SHAPES_DATALAKE_API_URL'),
+    'userway_id' => env('USERWAY_ID'),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -78,4 +78,14 @@
 <script src="{{ mix('js/app.js') }}"></script> {{-- our application common code --}}
 <script src="{{ mix('js/equivalenceSetsController.js') }}"></script>
 @include('common.analytics')
+@if(config('app.userway_id'))
+    <script>(function (d) {
+            var s = d.createElement("script");
+            s.setAttribute("data-account", "{{config('app.userway_id')}}");
+            s.setAttribute("src", "https://cdn.userway.org/widget.js");
+            (d.body || d.head).appendChild(s);
+        })(document)</script>
+    <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website
+            accessibility</a></noscript>
+@endif
 @stack('scripts')
