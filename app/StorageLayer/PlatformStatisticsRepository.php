@@ -59,6 +59,7 @@ class PlatformStatisticsRepository {
             and game_flavor.published = 1
 
             group by users.id, users.name
+            order by game_flavors_num desc
             limit 10
         '));
     }
