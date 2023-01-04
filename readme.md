@@ -44,38 +44,55 @@ This project assumes working installations of the following technologies / compo
 
 3. Install laravel/back-end dependencies
 
-    ```bash
-    composer install
-    composer dump-autoload
-    ```
+```bash
+composer install
 
-4. Install front-end dependencies
+composer dump-autoload
+```
 
-    ```bash
-    npm install
-    ```
+4. Front-end dependencies
+
+If you are using [`nvm`](https://github.com/nvm-sh/nvm), run this command in order to sync to the correct NodeJS version
+for the project:
+
+```bash
+nvm use
+```
+
+Then, install and compile the front-end dependencies:
+
+```bash
+npm install
+
+npm run dev
+```
 
 5. Create the database schema:
-    ```bash
-    php artisan config:clear
- 
-    php artisan migrate
-    ```
+```bash
+php artisan config:clear
+
+php artisan migrate
+```
 
 6. Fix permissions for storage directory:
 
-   ```bash
-   sudo chown -R ${USER}:www-data storage
-   sudo chmod -R 755 storage bootstrap/cache
-   cd storage/
-   sudo find . -type f -exec chmod 664 {} \;
-   sudo find . -type d -exec chmod 775 {} \;
-   ```
+```bash
+sudo chown -R ${USER}:www-data storage
+
+sudo chmod -R 755 storage bootstrap/cache
+
+cd storage/
+
+sudo find . -type f -exec chmod 664 {} \;
+
+sudo find . -type d -exec chmod 775 {} \;
+```
 
 ## Apache configuration (optional)
 
 ```
-% cat /etc/apache2/sites-available/memoristudio.conf
+cat /etc/apache2/sites-available/memoristudio.conf
+
 <VirtualHost *:80>
     ServerName dev.memoristudio
     DocumentRoot "/path/to/memoristudio/public"
@@ -87,21 +104,22 @@ This project assumes working installations of the following technologies / compo
 
 Make the symbolic link:
 
-```
-% cd /etc/apache2/sites-enabled && sudo ln -s ../sites-available/memoristudio.conf
+```bash
+cd /etc/apache2/sites-enabled && sudo ln -s ../sites-available/memoristudio.conf
 ```
 
 Enable mod_rewrite and restart apache:
 
-```
-% sudo a2enmod rewrite && sudo service apache2 restart
+```bash
+sudo a2enmod rewrite && sudo service apache2 restart
 ```
 
 ## Without apache custom configuration
 
 Navigate to the root directory of the project and run:
-```
-% php artisan serve
+
+```bash
+php artisan serve
 ```
 
 and navigate to [localhost:8000](http://localhost:8000/).
@@ -123,7 +141,7 @@ After cloning the project, create an .env file (should be a copy of .env.example
 database name and credentials. After that, download all Laravel dependencies
 through [Composer](https://laravel.com/docs/6.x/installation), by running
 
-```
+```bash
 composer install
 
 composer update
@@ -147,7 +165,7 @@ $ npm -v
 
 So, when in project root directory, and after npm has been installed correctly, run
 
-```
+```bash
 npm install
 ```
 
@@ -229,7 +247,8 @@ navigate to http://localhost/{yourLinkName}
 This project is open-sourced software licensed under
 the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Memor-i studio has been created by [Science For You (SciFY)](https://www.scify.org), a Greek not-for-profit organization.
+Memor-i studio has been created by [Science For You (SciFY)](https://www.scify.org), a Greek not-for-profit
+organization.
 
 The Memor-i Studio project has been funded
 by [Public Benefit Foundation John S. Latsis](https://www.latsis-foundation.org/eng)
