@@ -132,26 +132,33 @@ class WindowsBuilder {
         return $output;
     }
 
+    /**
+     * @throws Exception
+     */
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor) {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
-
-        $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
-
-        $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
-
-        $currentSystemUser = config('app.SYSTEM_USER');
-        if ($currentSystemUser == null)
-            throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
-        //empty log file
-        File::put($file, "");
-        $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
-        shell_exec($command);
+        try {
+            $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
-        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-        File::append($file, "\nExecuted command: \n" . $command . " \n");
+            $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
 
+            $currentSystemUser = config('app.SYSTEM_USER');
+            if ($currentSystemUser == null)
+                throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
+            //empty log file
+            File::put($file, "");
+            $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
+            shell_exec($command);
+
+            File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+            File::append($file, "\nExecuted command: \n" . $command . " \n");
+
+        } catch (\Exception $e) {
+            File::append($file, "EXCEPTION: " . $e->getMessage() . "\n");
+            throw $e;
+        }
     }
 
     public function getInnoSetupFilePathForGameFlavor($gameFlavorId) {
