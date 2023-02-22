@@ -9,6 +9,7 @@ echo "Wine base dir: $WINEPREFIX"
 
 SCRIPTNAME=$2
 INNO_BIN="Inno Setup 5/ISCC.exe"
+echo "Number of args:  $#" ;
 # Get inno setup path
 if $# -gt 2; then
   INNO_PATH=$3
