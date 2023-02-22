@@ -149,7 +149,7 @@ class WindowsBuilder {
                 throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
             //empty log file
             File::put($file, "");
-            $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
+            $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' ' . config("app.innosetup_path") . ' > ' . $file . ' 2>&1 ';
             shell_exec($command);
 
             File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");

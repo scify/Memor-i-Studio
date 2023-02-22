@@ -29,7 +29,7 @@ echo "Program files translated as linux path: $PROGFILES_PATH"
 
 
 # Get inno setup path
-INNO_PATH="${PROGFILES_PATH%?}/${INNO_BIN}"
+INNO_PATH=$3
 # pwd
 echo "Looking inno setup in : $INNO_PATH";
 
