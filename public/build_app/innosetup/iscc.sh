@@ -11,7 +11,7 @@ SCRIPTNAME=$2
 INNO_BIN="Inno Setup 5/ISCC.exe"
 echo "Number of args:  $#" ;
 # Get inno setup path
-if $# -gt 2; then
+if (($# > 2)) then
   INNO_PATH=$3
 else
   INNO_PATH="${PROGFILES_PATH%?}/${INNO_BIN}"
