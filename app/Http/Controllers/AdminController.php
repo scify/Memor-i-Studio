@@ -26,13 +26,20 @@ class AdminController extends Controller {
     }
 
     public function buildGameFlavorsForVersion(int $id) {
-        $result = Artisan::call(BuildGameFlavorsForVersion::$COMMAND, [
-            'id' => $id
-        ]);
-        return response()->json([
-            "command" => BuildGameFlavorsForVersion::$COMMAND . ' ' . $id,
-            "result" => $result
-        ]);
+        try {
+            $result = Artisan::call(BuildGameFlavorsForVersion::$COMMAND, [
+                'id' => $id
+            ]);
+            return response()->json([
+                "command" => BuildGameFlavorsForVersion::$COMMAND . ' ' . $id,
+                "result" => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString()
+            ]);
+        }
     }
 
 }
