@@ -120,8 +120,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
         Route::get('gameFlavors/submittedForApproval', 'GameFlavorController@showGameFlavorsSubmittedForApproval')->name('showGameFlavorsSubmittedForApproval');
         Route::get('gameFlavors/userReports', 'GameFlavorReportController@showAllGameFlavorReports')->name('showAllGameFlavorReports');
-        Route::get('commands/build-flavors/{id}', 'AdminController@buildGameFlavors')->name('buildGameFlavors');
-        Route::get('commands/build-version/{id}', 'AdminController@buildGameFlavorsForVersion')->name('buildGameFlavorsForVersion');
+        Route::get('gameFlavor/build/{id}', 'AdminController@buildGameFlavors')->name('buildGameFlavors');
+        Route::get('gameVersion/build/{id}', 'AdminController@buildGameFlavorsForVersion')->name('buildGameFlavorsForVersion');
     });
 });
 
