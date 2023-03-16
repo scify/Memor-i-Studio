@@ -9,13 +9,20 @@ use Illuminate\Support\Facades\Artisan;
 class AdminController extends Controller {
 
     public function buildGameFlavors(int $id) {
-        $result = Artisan::call(BuildGameFlavors::$COMMAND, [
-            'id' => $id
-        ]);
-        return response()->json([
-            "command" => BuildGameFlavors::$COMMAND . ' ' . $id,
-            "result" => $result
-        ]);
+        try {
+            $result = Artisan::call(BuildGameFlavors::$COMMAND, [
+                'id' => $id
+            ]);
+            return response()->json([
+                "command" => BuildGameFlavors::$COMMAND . ' ' . $id,
+                "result" => $result
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString()
+            ]);
+        }
     }
 
     public function buildGameFlavorsForVersion(int $id) {
