@@ -10,6 +10,15 @@ echo "Wine base dir: $WINEPREFIX"
 SCRIPTNAME=$2
 INNO_BIN="Inno Setup 5/ISCC.exe"
 echo "Number of args:  $#" ;
+
+# Get Program Files path via wine command prompt
+PROGRAMFILES=$(wine cmd /c 'echo %PROGRAMFILES%' )
+echo "Got program files path as: $PROGRAMFILES"
+
+# Translate windows path to absolute unix path
+PROGFILES_PATH=$(winepath -u "${PROGRAMFILES}" )
+echo "Program files translated as linux path: $PROGFILES_PATH"
+
 # Get inno setup path
 if (($# > 2))
 then
@@ -28,14 +37,6 @@ echo "Looking inno setup in : $INNO_PATH";
 
 # Check if wine is present
 command -v wine >/dev/null 2>&1 || { echo >&2 "I require wine but it's not installed. Aborting."; echo; exit 1; }
-
-# Get Program Files path via wine command prompt
-PROGRAMFILES=$(wine cmd /c 'echo %PROGRAMFILES%' )
-echo "Got program files path as: $PROGRAMFILES"
-
-# Translate windows path to absolute unix path
-PROGFILES_PATH=$(winepath -u "${PROGRAMFILES}" )
-echo "Program files translated as linux path: $PROGFILES_PATH"
 
 # Translate unix script path to windows path
 SCRIPTNAME=$(winepath -w "$SCRIPTNAME" )
