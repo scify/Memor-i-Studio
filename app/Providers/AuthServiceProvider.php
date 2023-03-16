@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use App\BusinessLogicLayer\managers\UserRoleManager;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -20,11 +21,13 @@ class AuthServiceProvider extends ServiceProvider
      * Register any authentication / authorization services.
      *
      * @return void
+     * @throws BindingResolutionException
      */
     public function boot()
     {
         $this->registerPolicies();
 
-        //
+        $userRoleManager = $this->app->make(UserRoleManager::class);
+        $userRoleManager->registerUserPolicies();
     }
 }

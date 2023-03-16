@@ -9,12 +9,15 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class BuildGameFlavors extends Command {
+
+    public static $COMMAND = 'games:build';
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'games:build {id}';
+    protected $signature;
 
     /**
      * The console command description.
@@ -29,6 +32,7 @@ class BuildGameFlavors extends Command {
      * @return void
      */
     public function __construct() {
+        $this->signature = self::$COMMAND . ' {id';
         parent::__construct();
     }
 

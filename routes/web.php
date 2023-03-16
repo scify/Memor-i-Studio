@@ -67,22 +67,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Game Version routes
     Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
-    Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
-    Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
-    Route::get('gameVersion/{id}/edit', 'GameVersionController@editIndex')->name('editGameVersionIndex');
-    Route::post('gameVersion/{id}/edit', 'GameVersionController@edit')->name('editGameVersion');
-    Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
+
     Route::get('gameVersion/{id}/resources', 'GameVersionController@showGameVersionResources')->name('showGameVersionResources');
     Route::get('gameVersion/resourcesForLanguage', 'GameVersionController@showGameVersionResourcesForLanguage')->name('showGameVersionResourcesForLanguage');
     Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->name('addGameVersionLanguageIndex');
     Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
-
-    Route::get('test-email/{email}', function (Request $request) {
-        $mailManager = new MailManager();
-        $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
-    });
-
-    Route::get('/platform-statistics', [PlatformStatisticsController::class, 'show_platform_statistics'])->name('platform_statistics');
 
     //Game Flavor routes
     Route::get('gameFlavor/selectVersion', 'GameFlavorController@showGameVersionSelectionForm')->name('showGameVersionSelectionForm');
@@ -101,7 +90,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('gameFlavor/changeVersionIndex/{id}', 'GameFlavorController@changeGameVersionIndex')->name('changeGameVersionIndex');
     Route::get('gameFlavor/changeVersion/{id}', 'GameFlavorController@assignGameFlavorToGameVersion')->name('changeGameVersion');
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
-    Route::get('gameFlavors/submittedForApproval', 'GameFlavorController@showGameFlavorsSubmittedForApproval')->name('showGameFlavorsSubmittedForApproval');
 
     //Game Resources
     Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->name('updateGameResourcesTranslations');
@@ -114,9 +102,29 @@ Route::group(['middleware' => 'auth'], function () {
     //Card routes
     Route::post('card/edit', 'CardController@edit')->name('editCard');
 
-    Route::get('gameFlavors/userReports', 'GameFlavorReportController@showAllGameFlavorReports')->name('showAllGameFlavorReports');
 
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('administration')->middleware('can:manage-platform')->group(function () {
+        Route::get('test-email/{email}', function (Request $request) {
+            $mailManager = new MailManager();
+            $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
+        });
+
+        Route::get('/platform-statistics', [PlatformStatisticsController::class, 'show_platform_statistics'])->name('platform_statistics');
+        Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
+        Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
+        Route::get('gameVersion/{id}/edit', 'GameVersionController@editIndex')->name('editGameVersionIndex');
+        Route::post('gameVersion/{id}/edit', 'GameVersionController@edit')->name('editGameVersion');
+        Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
+        Route::get('gameFlavors/submittedForApproval', 'GameFlavorController@showGameFlavorsSubmittedForApproval')->name('showGameFlavorsSubmittedForApproval');
+        Route::get('gameFlavors/userReports', 'GameFlavorReportController@showAllGameFlavorReports')->name('showAllGameFlavorReports');
+        Route::get('commands/build-flavors/{id}', 'AdminController@buildGameFlavors')->name('buildGameFlavors');
+        Route::get('commands/build-version/{id}', 'AdminController@buildGameFlavorsForVersion')->name('buildGameFlavorsForVersion');
+    });
+});
+
 Route::get('contact', 'HomeController@showContactForm')->name('showContactForm');
 Route::post('contact', 'HomeController@sendContactEmail')->name('sendContactEmail');
 Route::get('flavor/{id}/cards', 'EquivalenceSetController@showEquivalenceSetsForGameFlavor')->name('showEquivalenceSetsForGameFlavor');
