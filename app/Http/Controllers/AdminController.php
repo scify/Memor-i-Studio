@@ -12,6 +12,7 @@ class AdminController extends Controller {
             'id' => $gameFlavorId
         ]);
         return response()->json([
+            "command" => BuildGameFlavorsForVersion::$COMMAND . ' ' . $gameFlavorId,
             "result" => $result
         ]);
     }
