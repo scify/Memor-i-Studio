@@ -27,7 +27,7 @@
     "jquery-ui-dist": "^1.12.1",
     "laravel-mix": "^6.0.49",
     "lodash": "^4.16.2",
-    "modernizr": "^3.3.1",
+    "modernizr": "^3.12.0",
     "moment": "^2.29.4",
     "npm-modernizr": "^2.8.3",
     "popper.js": "^1.12",
