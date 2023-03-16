@@ -32,7 +32,7 @@ class BuildGameFlavors extends Command {
      * @return void
      */
     public function __construct() {
-        $this->signature = self::$COMMAND . ' {id';
+        $this->signature = self::$COMMAND . ' {id}';
         parent::__construct();
     }
 
