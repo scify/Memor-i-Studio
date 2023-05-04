@@ -11,7 +11,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^7.0",
         "laravel/ui": "^2.0",
-        "scify/laravel-cookies-consent": "^0.9.3",
+        "scify/laravel-cookies-consent": "^1.0.1",
         "sentry/sentry-laravel": "^2.13"
     },
     "require-dev": {
