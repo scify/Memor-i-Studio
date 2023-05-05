@@ -20,7 +20,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV NODE_VERSION=14.19.2
+ENV NODE_VERSION=16.19.0
 ENV NVM_DIR=/usr/local/.nvm
 RUN mkdir "$NVM_DIR"
 RUN apt install -y curl
