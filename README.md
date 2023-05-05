@@ -1,7 +1,7 @@
 # Memor-i Studio
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/memori.png" width="400">
+<img src="https://raw.githubusercontent.com/scify/Memor-i/master/src/main/resources/img/memori.png" width="400" alt="game logo">
 </p>
 <br>
 
@@ -11,13 +11,15 @@ blind people.
 [Memor-i Studio](https://memoristudio.scify.org/), is an online games repository that people can use in order to create
 their own flavors of Memor-i game!
 
-# Installation Instructions:
+## Installation Instructions
+
+Please read thoroughly the following guid/steps, to set up Memor-i Studio.
 
 ## Pre-installation requirements
 
 This project assumes working installations of the following technologies / components:
 
-1. [PHP](https://php.net/) (version >= 7.2)
+1. [PHP](https://php.net/) (version >= `7.2`)
 
 2. [MySQL](https://www.mysql.com/)
 
@@ -31,26 +33,40 @@ This project assumes working installations of the following technologies / compo
 
 ## First time install (setup database and install dependencies)
 
-0. Make sure php 7.2 (or newer) is installed.
+### Language and Framework Dependencies
 
-1. Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation) dependencies:
+Make sure php `7.2` is installed.
 
-   ```bash
-   sudo apt-get install php*-imap php*-mbstring php*-mcrypt && sudo apache2ctl graceful
-   ```
+Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation) dependencies:
 
-2. After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information
-   about your database name and credentials.
+```bash
+sudo apt-get install php*-imap php*-mbstring php*-mcrypt && sudo apache2ctl graceful
+```
 
-3. Install laravel/back-end dependencies
+After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about your database name and credentials.
+
+### Environment file, Laravel/backend dependencies
+
+After cloning the project, create an .env file (should be a copy of .env.example), containing the information about your
+database name and credentials. After that, download all Laravel dependencies
+through [Composer](https://laravel.com/docs/7.x/installation), by running
 
 ```bash
 composer install
 
-composer dump-autoload
+composer update
 ```
 
-4. Front-end dependencies
+### Front-end dependencies
+
+
+After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. We
+achieve that by using nodejs and its package manager, [npm](https://www.npmjs.com/).
+
+A convenient way of installing multiple versions of nodejs and npm on a machine, is by installing and using Node Version
+Manager, [nvm](https://github.com/nvm-sh/nvm).
+
+So, when in project root directory, and after npm has been installed correctly, run
 
 It is very easy to install multiple versions of NodeJS and npm, by using [Node Version Manager (nvm)](https://github.com/creationix/nvm).
 
@@ -58,25 +74,48 @@ If you are using [`nvm`](https://github.com/nvm-sh/nvm), run this command in ord
 for the project:
 
 ```bash
-nvm use
+nvm install
+
+nvm use 
+
+npm install
 ```
 
-Then, install and compile the front-end dependencies:
+To download and install all libraries and dependencies.
+
+### Compiling front-end assets
+
+This project uses [Webpack and Laravel Mix](https://laravel.com/docs/7.x/mix) which is a popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and
+minification.
+
+Since it is built upon webpack, you can use the following commands to compile the front-end assets:
 
 ```bash
-npm install
+npm run dev #for dev builds
 
-npm run dev
+npm run prod #for production builds
+
+npm run watch #for dev builds, also enables hot changes on the files 
 ```
 
-5. Create the database schema:
+### Database
+
+Create the database schema:
+
 ```bash
 php artisan config:clear
 
 php artisan migrate
 ```
 
-6. Fix permissions for storage directory:
+#### Add seed data to DB
+
+Run ```php artisan db:seed``` in order to insert the starter data to the DB by
+using [Laravel seeder](https://laravel.com/docs/7.x/seeding)
+
+### Permissions
+
+Fix permissions for storage directory:
 
 ```bash
 sudo chown -R ${USER}:www-data storage
@@ -89,6 +128,16 @@ sudo find . -type f -exec chmod 664 {} \;
 
 sudo find . -type d -exec chmod 775 {} \;
 ```
+
+The commands above are also available with the permissions script, in the root directory of the project. 
+
+You can use it like this:
+
+```bash
+sudo ./set-file-permissions.sh www-data project_memori .
+```
+
+**Note:** `project_memori` should be the name of the server user.
 
 ## Apache configuration (optional)
 
@@ -125,68 +174,6 @@ php artisan serve
 ```
 
 and navigate to [localhost:8000](http://localhost:8000/).
-
-## Setup DB
-
-Laravel provides a simple yet powerful mechanism for creating the DB schema,
-called [Migrations](https://laravel.com/docs/6.x/migrations)
-Simply run ```php artisan migrate``` to create the appropriate DB schema.
-
-## Add seed data to DB
-
-Run ```php artisan db:seed``` in order to insert the starter data to the DB by
-using [Laravel seeder](https://laravel.com/docs/6.x/seeding)
-
-## Building project
-
-After cloning the project, create an .env file (should be a copy of .env.example), containing the information about your
-database name and credentials. After that, download all Laravel dependencies
-through [Composer](https://laravel.com/docs/6.x/installation), by running
-
-```bash
-composer install
-
-composer update
-```
-
-After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. We
-achieve that by using nodejs and its package manager, [npm](https://www.npmjs.com/).
-
-A convenient way of installing multiple versions of nodejs and npm on a machine, is by installing and using Node Version
-Manager, [nvm](https://github.com/nvm-sh/nvm).
-
-This project was built with the following nodejs and npm versions:
-
-```
-$ node -v
-v14.18.1
-
-$ npm -v
-6.14.15
-```
-
-So, when in project root directory, and after npm has been installed correctly, run
-
-```bash
-npm install
-```
-
-To download and install all libraries and dependencies.
-
-## Compiling assets
-
-This project uses [Elixir](https://laravel.com/docs/5.3/elixir) which is a tool built on [Gulp](http://gulpjs.com/), a
-popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and
-minification.
-
-To install gulp and gulp-cli (command line interface), please
-read [this](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md).
-
-Then, when in project root directory, run
-```gulp --local```
-In order for the assets to compile. Also, by running
-```gulp watch --local```
-A watcher is set for when a file is changed to be compiled automatically.
 
 ## Converting audio files to mpr with CBR (constant bit rate)
 
@@ -230,14 +217,14 @@ And have write access to ```/home``` directory.
 
 ## Installing wine
 
-- Setup a user where wine will be installed (non-system user), e.g. project_memori
-- Run isccBaseSetup.sh in a shell allowing X server connections (Use e.g. ssh -X project_memori@myserver.gr to get such
+- Setup a user where wine will be installed (non-system user), e.g. `project_memori`
+- Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. ssh -X project_memori@myserver.gr to get such
   a shell)
   example: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
-- Change the owner of the user's .wine subdirectory to www-data (e.g. chown -R www-data /home/project_memori/.wine/)
-- The user www-data can now run the iscc.sh script with the following arguments to package project_memori: the user
+- Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
+- The user `www-data` can now run the `public/build_app/innosetup/iscc.sh` script with the following arguments to package project_memori: the user
   name (eg project_memori)
-  and the .iss script file path of the game flavor
+  and the `.iss` script file path of the game flavor
 
 ## Deploying
 
@@ -256,5 +243,5 @@ The Memor-i Studio project has been funded
 by [Public Benefit Foundation John S. Latsis](https://www.latsis-foundation.org/eng)
 <br>
 <p align="center">
-<img src="https://raw.githubusercontent.com/scify/memori-online-games-repository/master/public/assets/img/latsis_logo.jpg" width="300">
+<img src="https://raw.githubusercontent.com/scify/memori-online-games-repository/master/public/assets/img/latsis_logo.jpg" width="300" alt="logo">
 </p>
