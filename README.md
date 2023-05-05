@@ -218,7 +218,7 @@ And have write access to ```/home``` directory.
 ## Installing wine
 
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
-- Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. ssh -X project_memori@myserver.gr to get such
+- Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. `ssh -X -p 22 project_memori@myserver.org` to get such
   a shell)
   example: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
 - Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
