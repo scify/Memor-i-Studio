@@ -19,7 +19,7 @@ Please read thoroughly the following guid/steps, to set up Memor-i Studio.
 
 This project assumes working installations of the following technologies / components:
 
-1. [PHP](https://php.net/) (version >= `8.0`)
+1. [PHP](https://php.net/) (version >= `8.1`)
 
 2. [MySQL](https://www.mysql.com/)
 
@@ -55,7 +55,7 @@ And from there, you can run all the `php artisan`, `composer`, and `npm` command
 
 ### Language and Framework Dependencies
 
-Make sure php `8.0` is installed.
+Make sure php `8.1` is installed.
 
 Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation) dependencies:
 
@@ -240,9 +240,11 @@ And have write access to ```/home``` directory.
 - Make sure you have run `xhost +`
 - Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
+- Install wine with `sudo apt install wine`.
 - Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. `ssh -X -p 22 project_memori@myserver.org` to get such
   a shell)
   example: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
+- If you encounter any architecture errors, remove the entire wine dir `rm -rf ~/.wine/` and run `winecfg`
 - Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
 - The user `www-data` can now run the `public/build_app/innosetup/iscc.sh` script with the following arguments to package project_memori: the user
   name (eg project_memori)
