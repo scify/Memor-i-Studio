@@ -16,7 +16,6 @@ mix.sass('resources/assets/sass/login-page-shapes.scss', 'public/dist/css/login-
 mix.styles([
     'resources/assets/pleasure-admin-panel/css/admin1.css',
     'resources/assets/pleasure-admin-panel/css/elements.css',
-    'node_modules/sweetalert/dist/sweetalert.css',
     'node_modules/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
     'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
     'node_modules/datatables/media/css/jquery.dataTables.min.css',
@@ -39,8 +38,7 @@ for (const directory in fontDirectories) {
 
 const files = {
     'node_modules/icheck/skins/flat/*.png': 'public/build/css',
-    'node_modules/chosen-js/*.png': 'public/build/css',
-    'resources/assets/pleasure-admin-panel/img/*.png': 'public/build/css'
+    'node_modules/chosen-js/*.png': 'public/build/css'
 };
 
 for (const file in files) {
@@ -53,10 +51,9 @@ mix.js([
         'node_modules/moment/moment.js',
         'node_modules/toastr/toastr.js',
         'node_modules/scrollmonitor/scrollMonitor.js',
-        'node_modules/textarea-autosize/dist/jquery.textarea_autosize.min.js',
+        'node_modules/textarea-autosize/dist/textarea-autosize.js',
         'node_modules/fastclick/lib/fastclick.js',
         'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
-        'node_modules/sweetalert/dist/sweetalert.min.js',
         'node_modules/datatables/media/js/jquery.dataTables.min.js',
         'node_modules/icheck/icheck.min.js',
         'resources/assets/pleasure-admin-panel/js/sliders.js',

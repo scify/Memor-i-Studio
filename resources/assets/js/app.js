@@ -15,6 +15,14 @@ require('bootstrap-select');
  * code may be modified to fit the specific needs of your application.
  */
 
+import * as Sentry from "@sentry/browser";
+
+if (process.env.MIX_SENTRY_DSN_PUBLIC) {
+    Sentry.init({
+        dsn: process.env.MIX_SENTRY_DSN_PUBLIC,
+    });
+}
+
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = $ = require('jquery');

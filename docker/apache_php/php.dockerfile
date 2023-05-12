@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:8.0-apache
 
 ARG DOCKER_GROUP_ID
 
@@ -8,10 +8,11 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
+    libzip-dev \
     gnupg2 \
     zip \
     git \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
 RUN docker-php-ext-configure zip
@@ -20,7 +21,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV NODE_VERSION=16.19.0
+ENV NODE_VERSION=18.16.0
 ENV NVM_DIR=/usr/local/.nvm
 RUN mkdir "$NVM_DIR"
 RUN apt install -y curl
@@ -43,6 +44,9 @@ COPY ./docker/apache_php/apache_config.prod.conf /etc/apache2/sites-enabled/000-
 COPY ./docker/apache_php/php.ini /usr/local/etc/php/php.ini
 
 COPY ./docker/apache_php/run.sh /var/www/html/run.sh
+
+# Apache gets grumpy about PID files pre-existing
+RUN rm -f /var/run/apache2/apache2.pid
 
 WORKDIR /var/www/html
 

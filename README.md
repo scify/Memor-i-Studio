@@ -19,7 +19,7 @@ Please read thoroughly the following guid/steps, to set up Memor-i Studio.
 
 This project assumes working installations of the following technologies / components:
 
-1. [PHP](https://php.net/) (version >= `7.2`)
+1. [PHP](https://php.net/) (version >= `8.0`)
 
 2. [MySQL](https://www.mysql.com/)
 
@@ -33,9 +33,29 @@ This project assumes working installations of the following technologies / compo
 
 ## First time install (setup database and install dependencies)
 
+## Docker option
+
+You can use the `docker-compose.yml` file that exists at project roo, to quickly set up a docker container.
+
+Just run
+
+```bash
+docker compose up
+```
+
+To fire up the container.
+
+Then, you can enter the container by running
+
+```bash
+docker exec -it memori_studio_server bash
+```
+
+And from there, you can run all the `php artisan`, `composer`, and `npm` commands.
+
 ### Language and Framework Dependencies
 
-Make sure php `7.2` is installed.
+Make sure php `8.0` is installed.
 
 Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation) dependencies:
 
@@ -217,6 +237,8 @@ And have write access to ```/home``` directory.
 
 ## Installing wine
 
+- Make sure you have run `xhost +`
+- Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
 - Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. `ssh -X -p 22 project_memori@myserver.org` to get such
   a shell)
