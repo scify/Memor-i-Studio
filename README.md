@@ -238,19 +238,16 @@ use [ImageMagick tool](https://github.com/ImageMagick/ImageMagick). ImageMagick 
 like this:
 ```apt-get install imagemagick```
 
-### 4. Building Windows executables for game flavors
+### 4. Building Windows executables - Installing wine
 
-When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application
+When an admin user publishes a game flavor, A `.jar` file is built for this game flavor. In addition, this application
 uses
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable
-and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: `5.5.9`). 
+and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: `5.5.9`).
 
 The launch4J
 application is included in ```public/build_app/launch4j``` as a standalone application. Make sure you also install Wine
 on your server via [WINE for Linux](https://www.winehq.org/)
-
-
-### 5. Installing wine
 
 - Make sure you have run `xhost +`
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
