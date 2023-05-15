@@ -195,7 +195,31 @@ php artisan serve
 
 and navigate to [localhost:8000](http://localhost:8000/).
 
-## Converting audio files to mpr with CBR (constant bit rate)
+And have write access to ```/home``` directory.
+
+<hr>
+
+## Required steps for the server
+
+### 1. Allow the uploading large files
+
+In order for the app to work as expected, max size of files and timeout time must be set on the appropriate configuration files for `php-fpm` and `nginx`.
+
+1. For nginx
+
+   edit the `/etc/nginx/sites-enabled/memoristudio.server.org` file and add `fastcgi_read_timeout 300;`
+2. For php-fpm
+
+   edit `/etc/php/8.1/fpm/` (or the corresponding php version) and change:
+```text
+ max_input_time = 300
+ 
+ post_max_size = 200M
+ 
+ upload_max_filesize = 200M
+```
+
+### 2. Converting audio files to mpr with CBR (constant bit rate)
 
 This project allows users to upload audio files. In order for the desktop application of Memor-i to operate correctly,
 these files need to me in .mp3 format and have a CBR (constant bit rate), not a VBR (variable bit rate)
@@ -206,36 +230,27 @@ check [this post](http://askubuntu.com/questions/391357/how-do-you-install-avcon
 
 You can see and modify the command we use for coverting the files in ```public/convert_to_mp3.sh```.
 
-## Converting image files to .ico files
+### 3. Converting image files to .ico files
 
 This project includes special functionality to convert a game flavor cover image file into a .ico file, for usage when
 the game runs. In order to accomplish this, we
-use [ImageMagick tool](https://github.com/ImageMagick/ImageMagick/blob/master/LICENSE). ImageMagick can be installed
+use [ImageMagick tool](https://github.com/ImageMagick/ImageMagick). ImageMagick can be installed
 like this:
 ```apt-get install imagemagick```
 
-## Building Windows executables for game flavors
+### 4. Building Windows executables for game flavors
 
 When an admin user publishes a game flavor, A .jar file is built for this game flavor. In addition, this application
 uses
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable
-and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: 5.5.9). The launch4J
+and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: `5.5.9`). 
+
+The launch4J
 application is included in ```public/build_app/launch4j``` as a standalone application. Make sure you also install Wine
 on your server via [WINE for Linux](https://www.winehq.org/)
 
-When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current
-system user. This user has to be set in .env file:
 
-```
-APP_LOG_LEVEL=debug
-APP_URL=http://localhost
-SYSTEM_USER=user
-...
-```
-
-And have write access to ```/home``` directory.
-
-## Installing wine
+### 5. Installing wine
 
 - Make sure you have run `xhost +`
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
@@ -248,7 +263,14 @@ And have write access to ```/home``` directory.
   a shell), giving the path of the uploaded Innosetup exe file as the parameter: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
 - If you encounter any architecture errors, remove the entire wine dir `rm -rf ~/.wine/` and run `winecfg`
 - Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
-- Make sure that the file `public/build_app/innosetup/iscc.sh` is executable by the group `www-data`.
+- Make sure that the file `public/build_app/innosetup/iscc.sh` is executable by the group `www-data`. 
+- When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current system user. This user has to be set in `.env`:
+
+```
+SYSTEM_USER=user
+```
+
+<hr>
 
 ## Deploying
 
