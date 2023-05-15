@@ -238,17 +238,17 @@ And have write access to ```/home``` directory.
 ## Installing wine
 
 - Make sure you have run `xhost +`
-- Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
 - Setup a user where wine will be installed (non-system user), e.g. `project_memori`
 - Install wine with `sudo apt install wine`.
+- Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
+- Download [Innosetup](https://jrsoftware.org/isdl.php) .exe file, and upload it to the server.
+- Go into the `build_app` directory of the project, where the innosetup file are located: `cd public/build_app/innosetup`
+- Make sure the file `public/build_app/innosetup/isccBaseSetup.sh` is executable.
 - Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. `ssh -X -p 22 project_memori@myserver.org` to get such
-  a shell)
-  example: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
+  a shell), giving the path of the uploaded Innosetup exe file as the parameter: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
 - If you encounter any architecture errors, remove the entire wine dir `rm -rf ~/.wine/` and run `winecfg`
 - Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
-- The user `www-data` can now run the `public/build_app/innosetup/iscc.sh` script with the following arguments to package project_memori: the user
-  name (eg project_memori)
-  and the `.iss` script file path of the game flavor
+- Make sure that the file `public/build_app/innosetup/iscc.sh` is executable by the group `www-data`.
 
 ## Deploying
 
