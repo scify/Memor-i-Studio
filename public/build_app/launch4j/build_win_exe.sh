@@ -8,4 +8,4 @@ if [ -n "$JAVA_HOME" ]; then
 fi
 echo -e "${COMMAND[0]}"
 
-eval -e "${COMMAND[0]}"
+eval "${COMMAND[0]}"
