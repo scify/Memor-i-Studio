@@ -9,3 +9,5 @@ fi
 echo -e "${COMMAND[0]}"
 
 eval "${COMMAND[0]}"
+
+return 0
