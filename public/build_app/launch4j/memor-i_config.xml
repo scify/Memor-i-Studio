@@ -16,10 +16,13 @@
   <icon></icon>
   <jre>
     <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
     <bundledJre64Bit>false</bundledJre64Bit>
-    <bundledJreAsFallback>true</bundledJreAsFallback>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>1.8.0</minVersion>
-    <jdkPreference>preferJdk</jdkPreference>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
     <opt>-Djdk.gtk.version=2</opt>
   </jre>

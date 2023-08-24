@@ -249,7 +249,15 @@ The launch4J
 application is included in ```public/build_app/launch4j``` as a standalone application. Make sure you also install Wine
 on your server via [WINE for Linux](https://www.winehq.org/)
 
+In order to then run Launch4J, you will also need to install Java.
+
+Also, you will need to install the `zip` and `unzip` commands in Linux:
+
+- `sudo apt install zip`
+- `sudo apt install unzip`
+
 - Make sure you have run `xhost +`
+- Install the required libraries for Launch4J: `sudo apt-get install libxrender1 libxtst6 libxi6 libxext6`
 - Set up a user where wine will be installed (non-system user), e.g. `project_memori`
 - Install wine with `sudo apt install wine`.
 - Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
@@ -265,13 +273,6 @@ on your server via [WINE for Linux](https://www.winehq.org/)
 ```
 SYSTEM_USER=user
 ```
-
-In order to then run Launch4J, you will also need to install Java.
-
-Also, you will need to install the `zip` and `unzip` commands in Linux:
-
-- `sudo apt install zip`
-- `sudo apt install unzip`
 
 <hr>
 
