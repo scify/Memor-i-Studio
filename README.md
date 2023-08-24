@@ -262,10 +262,14 @@ on your server via [WINE for Linux](https://www.winehq.org/)
 - Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
 - Make sure that the file `public/build_app/innosetup/iscc.sh` is executable by the group `www-data`. 
 - When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current system user. This user has to be set in `.env`:
-
 ```
 SYSTEM_USER=user
 ```
+
+Also, you will need to install the `zip` and `unzip` commands in Linux:
+
+- `sudo apt install zip`
+- `sudo apt install unzip`
 
 <hr>
 
