@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DOMDocument;
 use Illuminate\Support\Facades\File;
 use \Exception;
+use Illuminate\Support\Facades\Log;
 
 include_once 'managers/functions.php';
 
@@ -22,10 +23,10 @@ include_once 'managers/functions.php';
  */
 class WindowsBuilder {
 
-    private $LAUNCH4J_BASE_FILE;
-    private $INNOSETUP_BASE_FILE;
-    private $LICENCE_BASE_FILE;
-    private $fileManager;
+    private string $LAUNCH4J_BASE_FILE;
+    private string $INNOSETUP_BASE_FILE;
+    private string $LICENCE_BASE_FILE;
+    private FileManager $fileManager;
 
     public function __construct(FileManager $fileManager) {
         $this->LAUNCH4J_BASE_FILE = public_path('build_app/launch4j/memor-i_config.xml');
@@ -37,7 +38,7 @@ class WindowsBuilder {
     /**
      * @throws Exception
      */
-    public function buildGameFlavorForWindows(GameFlavor $gameFlavor, $gameFlavorJarFile) {
+    public function buildGameFlavorForWindows(GameFlavor $gameFlavor, $gameFlavorJarFile): void {
         $this->copyLaunch4JBaseFileToDataPackDir($gameFlavor->id);
         $launch4JConfigFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavor->id);
         $this->updateLaunch4jFile($gameFlavorJarFile, $launch4JConfigFile, $gameFlavor);
@@ -52,10 +53,11 @@ class WindowsBuilder {
      * Copies the main scaffolded launch4j configuration file into the gameFlavor path
      *
      * @param $gameFlavorId
-     * @internal param string $destinationFile the path of the file tat is going to be created
+     * @throws Exception
      * @internal param int $gameFlavorId the game flavor id
+     * @internal param string $destinationFile the path of the file tat is going to be created
      */
-    public function copyLaunch4JBaseFileToDataPackDir($gameFlavorId) {
+    public function copyLaunch4JBaseFileToDataPackDir($gameFlavorId): void {
         $sourceFile = $this->LAUNCH4J_BASE_FILE;
         $destinationFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavorId);
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
@@ -65,20 +67,21 @@ class WindowsBuilder {
      * Copies the main scaffolded launch4j configuration file into the gameFlavor path
      *
      * @param $gameFlavorId
-     * @internal param string $destinationFile the path of the file tat is going to be created
+     * @throws Exception
      * @internal param int $gameFlavorId the game flavor id
+     * @internal param string $destinationFile the path of the file tat is going to be created
      */
-    public function copyLicenceBaseFileToDataPackDir($gameFlavorId) {
+    public function copyLicenceBaseFileToDataPackDir($gameFlavorId): void {
         $sourceFile = $this->LICENCE_BASE_FILE;
         $destinationFile = $this->getLicenceFilePathForGameFlavor($gameFlavorId);
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
     }
 
-    public function getLaunch4JFilePathForGameFlavor($gameFlavorId) {
+    public function getLaunch4JFilePathForGameFlavor($gameFlavorId): string {
         return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
     }
 
-    public function getLicenceFilePathForGameFlavor($gameFlavorId) {
+    public function getLicenceFilePathForGameFlavor($gameFlavorId): string {
         return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/LICENCE.md';
     }
 
@@ -89,7 +92,7 @@ class WindowsBuilder {
      * @param $launch4JConfigFile string the file path for the launch4J config file for this game flavor
      * @param GameFlavor $gameFlavor
      */
-    public function updateLaunch4jFile($gameFlavorJarFilePath, $launch4JConfigFile, GameFlavor $gameFlavor) {
+    public function updateLaunch4jFile(string $gameFlavorJarFilePath, string $launch4JConfigFile, GameFlavor $gameFlavor): void {
         $dom = new DOMDocument();
         $dom->load($launch4JConfigFile);
         $root = $dom->documentElement;
@@ -110,7 +113,7 @@ class WindowsBuilder {
         $dom->save($launch4JConfigFile);
     }
 
-    public function getWindowsExeFilePathForGameFlavor($gameFlavorId) {
+    public function getWindowsExeFilePathForGameFlavor($gameFlavorId): string {
         return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori-win.exe';
     }
 
@@ -120,22 +123,24 @@ class WindowsBuilder {
      * @param $gameFlavorId int the id of the game flavor
      * @return string the output from the building process
      */
-    public function buildWindowsExecutable($gameFlavorId) {
+    public function buildWindowsExecutable($gameFlavorId): string {
+        Log::info("Building Win exe for game flavor: " . $gameFlavorId);
         $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
-        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
-        $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $file . ' 2>&1 ';
+        $launch4JLogFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
+        Log::info("Launch4J config file: " . $launch4JConfigFile);
+        $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $launch4JLogFile . ' 2>&1 ';
         //empty log file
-        File::put($file, "");
+        File::put($launch4JLogFile, "");
         $output = shell_exec($command);
-        File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-        File::append($file, "\nExecuted command: \n" . $command . " \n");
+        File::append($launch4JLogFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+        File::append($launch4JLogFile, "\nExecuted command: \n" . $command . " \n");
         return $output;
     }
 
     /**
      * @throws Exception
      */
-    public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor) {
+    public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor): void {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
         $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
@@ -161,11 +166,14 @@ class WindowsBuilder {
         }
     }
 
-    public function getInnoSetupFilePathForGameFlavor($gameFlavorId) {
+    public function getInnoSetupFilePathForGameFlavor($gameFlavorId): string {
         return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_config.iss';
     }
 
-    private function prepareInnoSetupFileForGameFlavor($innoSetupConfFile, GameFlavor $gameFlavor) {
+    /**
+     * @throws Exception
+     */
+    private function prepareInnoSetupFileForGameFlavor($innoSetupConfFile, GameFlavor $gameFlavor): void {
         if (!File::exists($innoSetupConfFile)) {
             throw new \Exception("InnoSetup copy file for game flavor not found. Looked in: " . $innoSetupConfFile);
         }

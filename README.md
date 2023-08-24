@@ -266,6 +266,8 @@ on your server via [WINE for Linux](https://www.winehq.org/)
 SYSTEM_USER=user
 ```
 
+In order to then run Launch4J, you will also need to install Java.
+
 Also, you will need to install the `zip` and `unzip` commands in Linux:
 
 - `sudo apt install zip`
