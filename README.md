@@ -250,7 +250,7 @@ application is included in ```public/build_app/launch4j``` as a standalone appli
 on your server via [WINE for Linux](https://www.winehq.org/)
 
 - Make sure you have run `xhost +`
-- Setup a user where wine will be installed (non-system user), e.g. `project_memori`
+- Set up a user where wine will be installed (non-system user), e.g. `project_memori`
 - Install wine with `sudo apt install wine`.
 - Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
 - Download [Innosetup](https://jrsoftware.org/isdl.php) .exe file, and upload it to the server.

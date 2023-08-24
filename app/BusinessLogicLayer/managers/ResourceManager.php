@@ -333,7 +333,7 @@ class ResourceManager {
         $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . 'resources_map.properties';
         //initialise file (will overwrite all contents)
 
-        Storage::put($pathToMapFile, null);
+        Storage::put($pathToMapFile, "");
         foreach ($gameStaticResources as $gameStaticResource) {
             $resourceFileNameNoFile = substr($gameStaticResource->name, 0, strripos($gameStaticResource->name, '/'));
             $resourceFileValueNoPath = substr($gameStaticResource->file_path, strrpos($gameStaticResource->file_path, '/') + 1);
@@ -344,7 +344,7 @@ class ResourceManager {
 
     public function createAdditionalPropertiesFile($gameFlavor) {
         $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavor->id . '/' . 'project_additional.properties';
-        Storage::put($pathToPropsFile, null);
+        Storage::put($pathToPropsFile, "");
         Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
         // we need to set up the game text resources language.
         // the game supports greek and english texts
