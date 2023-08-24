@@ -15,6 +15,7 @@
   <manifest></manifest>
   <icon></icon>
   <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>true</bundledJreAsFallback>
     <minVersion>1.8.0</minVersion>
