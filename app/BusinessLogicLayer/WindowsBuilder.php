@@ -123,7 +123,7 @@ class WindowsBuilder {
      * @param $gameFlavorId int the id of the game flavor
      * @return string the output from the building process
      */
-    public function buildWindowsExecutable($gameFlavorId): string {
+    public function buildWindowsExecutable(int $gameFlavorId): string {
         Log::info("Building Win exe for game flavor: " . $gameFlavorId);
         $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
         $launch4JLogFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memor-i_launch4j.log';
@@ -134,7 +134,7 @@ class WindowsBuilder {
         $output = shell_exec($command);
         File::append($launch4JLogFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
         File::append($launch4JLogFile, "\nExecuted command: \n" . $command . " \n");
-        return $output;
+        return $output || "";
     }
 
     /**
