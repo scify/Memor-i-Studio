@@ -1,6 +1,4 @@
-#launch4j_application/launch4j.sh $1
-
-#!/bin/sh
+#!/bin/bash
 LAUNCH4J="$(dirname "$0")"/launch4j_application/launch4j.jar
 echo LAUNCH4J: "$LAUNCH4J"
 COMMAND=("java -jar $LAUNCH4J $@")
