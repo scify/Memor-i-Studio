@@ -1,7 +1,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Memor-i Studio</title>
     <meta name="description" content="{{ __('messages.meta_tags_description') }}">
     <meta name="keywords" content="memori studio, blind games, games for the blind, memori game, memory game">
