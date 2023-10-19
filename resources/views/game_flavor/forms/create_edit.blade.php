@@ -5,7 +5,7 @@
     <div class="panelContainer">
         <div class="panel">
             <div class="panel-heading">
-                <div class="panel-title"><h4>{!! __('messages.create_new_flavor') !!}</h4></div>
+                <div class="panel-title"><h4>{!! $gameFlavor->id == null ? __('messages.create_new_flavor') : __('messages.edit') !!}</h4></div>
             </div><!--.panel-heading-->
             <div class="panel-body">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
