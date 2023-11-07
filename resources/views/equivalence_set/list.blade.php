@@ -2,15 +2,20 @@
 @section('content')
     <div class="">
         <ol class="breadcrumb col-md-12">
-            <li class="breadcrumb-item"><a href="{{route('showHomePage')}}"><i class="fa fa-home" aria-hidden="true"></i> {!! __('messages.home') !!}</a>
+            <li class="breadcrumb-item"><a href="{{route('showHomePage')}}"><i class="fa fa-home"
+                                                                               aria-hidden="true"></i> {!! __('messages.home') !!}
+                </a>
             </li>
-            <li class="breadcrumb-item"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad" aria-hidden="true"></i>  {!! __('messages.all_games') !!}</a>
+            <li class="breadcrumb-item"><a href="{{route('showAllGameFlavors')}}"><i class="fa fa-gamepad"
+                                                                                     aria-hidden="true"></i> {!! __('messages.all_games') !!}
+                </a>
             </li>
             <li class="breadcrumb-item active">{{$gameFlavor->name}}</li>
         </ol>
     </div>
-    @if($gameFlavor->accessed_by_user)
-        <div class="row">
+
+    <div class="row">
+        @if($gameFlavor->accessed_by_user)
             @if(count($equivalenceSets) == 0)
                 <div class="col-md-6">
                     <div class="alert alert-warning noFloatAlert">
@@ -44,14 +49,14 @@
                         </form>
                     @endif
                 </div>
-                <div class="col-md-2 margin-bottom-20">
-                    @if($gameFlavor->is_built)
-                        <a class="width-percent-100 btn btn-primary btn-ripple padding-15" data-toggle="modal"
-                           data-target="#downloadLinksModal">{!! __('messages.download') !!}</a>
-                    @endif
-                </div>
-        </div>
-    @endif
+            @endif
+            <div class="col-md-2 margin-bottom-20">
+                @if($gameFlavor->is_built)
+                    <a class="width-percent-100 btn btn-primary btn-ripple padding-15" data-toggle="modal"
+                       data-target="#downloadLinksModal">{!! __('messages.download') !!}</a>
+                @endif
+            </div>
+    </div>
     @endif
     <div class="row">
         <div class="col-md-12 p-0">
