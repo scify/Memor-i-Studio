@@ -50,14 +50,14 @@
                     @endif
                 </div>
             @endif
-            <div class="col-md-2 margin-bottom-20">
-                @if($gameFlavor->is_built)
-                    <a class="width-percent-100 btn btn-primary btn-ripple padding-15" data-toggle="modal"
-                       data-target="#downloadLinksModal">{!! __('messages.download') !!}</a>
-                @endif
-            </div>
+        @endif
+        <div class="col-md-2 margin-bottom-20">
+            @if($gameFlavor->is_built)
+                <a class="width-percent-100 btn btn-primary btn-ripple padding-15" data-toggle="modal"
+                   data-target="#downloadLinksModal">{!! __('messages.download') !!}</a>
+            @endif
+        </div>
     </div>
-    @endif
     <div class="row">
         <div class="col-md-12 p-0">
             @if($gameFlavor->accessed_by_user)
