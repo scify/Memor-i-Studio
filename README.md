@@ -281,12 +281,34 @@ SYSTEM_USER=user
 You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and
 navigate to http://localhost/{yourLinkName}
 
+## Required steps for Production server
+
+### Required steps for uploading large files
+
+In order for the app to work as expected, max size of files and timeout time must be set on the appropriate configuration files for `php-fpm` and `nginx`.
+
+1. For nginx
+
+   edit the `/etc/nginx/sites-enabled/memoristudio.scify.org` file and add `fastcgi_read_timeout 300;`
+2. For php-fpm
+
+   edit `/etc/php/VERSION/fpm/` (or the corresponding php version) and change:
+    * max*input*time = 300
+    * post*max*size = 200M
+    * upload_max_filesize = 200M
+
+3. Make sure that the `project_memori` user belongs to group `www-data`
+
+### Mailgun Considerations
+
+Make sure that the production server IP is whitelisted in Mailgun.
+
 ## License
 
 This project is open-sourced software licensed under
 the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Memor-i studio has been created by [Science For You (SciFY)](https://www.scify.org), a Greek not-for-profit
+Memor-i Studio has been created by [Science For You (SciFY)](https://www.scify.org), a Greek not-for-profit
 organization.
 
 The Memor-i Studio project has been funded
