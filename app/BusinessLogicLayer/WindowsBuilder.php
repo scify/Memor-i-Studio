@@ -19,18 +19,18 @@ include_once 'managers/functions.php';
  * 1) Construct and edit a Launch4J configuration file
  * 2) Build the game .exe file using Launch4J cli (command line interface)
  * 3) Construct and edit a InnoSetup configuration file
- * 4) Build a setup .exe (installer) file, conatining the .exe file, created in step 2
+ * 4) Build a setup .exe (installer) file, containing the .exe file, created in step 2 (using docker)
  */
 class WindowsBuilder {
 
-    private string $LAUNCH4J_BASE_FILE;
-    private string $INNOSETUP_BASE_FILE;
+    private string $LAUNCH4J_BASE_CONFIG_FILE;
+    private string $INNOSETUP_BASE_CONFIG_FILE;
     private string $LICENCE_BASE_FILE;
     private FileManager $fileManager;
 
     public function __construct(FileManager $fileManager) {
-        $this->LAUNCH4J_BASE_FILE = public_path('build_app/launch4j/memor-i_config.xml');
-        $this->INNOSETUP_BASE_FILE = public_path('build_app/innosetup/memor-i_config.iss');
+        $this->LAUNCH4J_BASE_CONFIG_FILE = public_path('build_app/launch4j/memor-i_config.xml');
+        $this->INNOSETUP_BASE_CONFIG_FILE = public_path('build_app/innosetup/memor-i_config.iss');
         $this->LICENCE_BASE_FILE = public_path('build_app/innosetup/LICENCE.md');
         $this->fileManager = $fileManager;
     }
@@ -58,7 +58,7 @@ class WindowsBuilder {
      * @internal param string $destinationFile the path of the file tat is going to be created
      */
     public function copyLaunch4JBaseFileToDataPackDir($gameFlavorId): void {
-        $sourceFile = $this->LAUNCH4J_BASE_FILE;
+        $sourceFile = $this->LAUNCH4J_BASE_CONFIG_FILE;
         $destinationFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavorId);
         $this->fileManager->copyFileToDestinationAndReplace($sourceFile, $destinationFile);
     }
@@ -141,7 +141,7 @@ class WindowsBuilder {
      * @throws Exception
      */
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor): void {
-        $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_FILE;
+        $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_CONFIG_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
         $workingPath = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
         $logFile = $workingPath . '/memor-i_innosetup.log';

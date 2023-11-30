@@ -17,7 +17,6 @@ return [
     'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
 
     'SYSTEM_USER' => env('SYSTEM_USER', null),
-    'innosetup_path' => env('INNOSETUP_SETUP_FILE'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
