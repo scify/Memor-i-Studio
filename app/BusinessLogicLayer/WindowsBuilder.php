@@ -143,7 +143,8 @@ class WindowsBuilder {
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor): void {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
-        $file = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/memor-i_innosetup.log';
+        $workingPath = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
+        $logFile = $workingPath . '/memor-i_innosetup.log';
         try {
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
@@ -153,15 +154,16 @@ class WindowsBuilder {
             if ($currentSystemUser == null)
                 throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
             //empty log file
-            File::put($file, "");
-            $command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
+            File::put($logFile, "");
+            //$command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
+            $command = public_path('build_app/innosetup') . '/innosetup_docker.sh ' . $workingPath . ' ' . $innoSetupConfigFile . ' > ' . $logFile . ' 2>&1 ';
             shell_exec($command);
 
-            File::append($file, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-            File::append($file, "\nExecuted command: \n" . $command . " \n");
+            File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+            File::append($logFile, "\nExecuted command: \n" . $command . " \n");
 
         } catch (\Exception $e) {
-            File::append($file, "EXCEPTION: " . $e->getMessage() . "\n");
+            File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             throw $e;
         }
     }

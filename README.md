@@ -238,40 +238,72 @@ use [ImageMagick tool](https://github.com/ImageMagick/ImageMagick). ImageMagick 
 like this:
 ```apt-get install imagemagick```
 
-### 4. Building Windows executables - Installing wine
+### 4. Building Windows executables
 
 When an admin user publishes a game flavor, A `.jar` file is built for this game flavor. In addition, this application
 uses
 [Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable
-and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer (version used: `5.5.9`).
+and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
 
 The launch4J
-application is included in ```public/build_app/launch4j``` as a standalone application. Make sure you also install Wine
-on your server via [WINE for Linux](https://www.winehq.org/)
-
-In order to then run Launch4J, you will also need to install Java.
+application is included in ```public/build_app/launch4j``` as a standalone application.
+In order to run Launch4J, you will also need to install Java.
 
 Also, you will need to install the `zip` and `unzip` commands in Linux:
 
 - `sudo apt install zip`
 - `sudo apt install unzip`
 
-- Make sure you have run `xhost +`
-- Install the required libraries for Launch4J: `sudo apt-get install libxrender1 libxtst6 libxi6 libxext6`
-- Set up a user where wine will be installed (non-system user), e.g. `project_memori`
-- Install wine with `sudo apt install wine`.
-- Make sure the `WINE_BASE_DIR` has the `www-data` as an owner with full access
-- Download [Innosetup](https://jrsoftware.org/isdl.php) .exe file, and upload it to the server.
-- Go into the `build_app` directory of the project, where the innosetup file are located: `cd public/build_app/innosetup`
-- Make sure the file `public/build_app/innosetup/isccBaseSetup.sh` is executable.
-- Run `isccBaseSetup.sh` in a shell allowing X server connections (Use e.g. `ssh -X -p 22 project_memori@myserver.org` to get such
-  a shell), giving the path of the uploaded Innosetup exe file as the parameter: ```./isccBaseSetup.sh ~/Downloads/innosetup-5.5.9.exe```
-- If you encounter any architecture errors, remove the entire wine dir `rm -rf ~/.wine/` and run `winecfg`
-- Change the owner of the user's `.wine` subdirectory to `www-data` (e.g. `chown -R www-data /home/project_memori/.wine/`)
-- Make sure that the file `public/build_app/innosetup/iscc.sh` is executable by the group `www-data`. 
-- When calling the innosetup script located in ```public/build_app/innosetup/iscc.sh``` we pass as a parameter the current system user. This user has to be set in `.env`:
+### Creating Windows Installers with Docker
+
+To create the installers for the Memor-i game flavor, we will utilize a Docker container. 
+This approach allows us to run commands within the container and generate the installer in the mounted directory.
+
+#### Setup Instructions
+
+1. Install Docker by following the instructions provided in the [official Docker documentation](https://docs.docker.com/engine/install/ubuntu/).
+2. Add your user to the Docker group to ensure proper permissions.
+3. Pull the required Docker image by executing the following command:
+    ```
+    docker pull amake/innosetup:innosetup6
+    ```
+4. Test that the Docker image is working correctly by running the following commands:
+    ```
+    su - project_memori
+    cd /path/to/dir/with/iss-file
+    docker run --rm -i -v $PWD:/work amake/innosetup:innosetup6 <iss-file-name>
+    ```
+
+   **Note:** Make sure to include the Docker image tag to avoid inconsistent results.
+
+#### Bash Script for Convenience
+
 ```
-SYSTEM_USER=user
+#!/usr/bin/env bash
+
+exec docker run --rm -i -v $PWD:/work amake/innosetup:innosetup6 "$@"
+```
+
+##### Access problems when creating file
+
+Depending on configured permissions on current directory, the container may not have write access to the mounted folder. This means, that will not be able to create the "Output" folder, and would not be able to create files inside.
+
+To mitigate that we could expand our script to:
+1. create a folder "Output"
+2. Add write permission to any 777
+3. Create executable
+4. Change back the permissions
+
+```
+#!/usr/bin/env bash
+
+# Create the Output directory if it doesn't exist
+if [ ! -d "Output" ]; then
+  mkdir Output
+  chmod 777 Output
+fi
+exec docker run --rm -i -v $PWD:/work amake/innosetup:innosetup6 "$@"
+chmod 775 Output
 ```
 
 <hr>
