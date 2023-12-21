@@ -67,7 +67,7 @@ class BuildGameFlavors extends Command {
             try {
                 $this->buildGameFlavors($gameFlavors);
             } catch (Exception $e) {
-                echo "Could not build game flavor: " . $e->getTraceAsString() . "\n";
+                echo "Could not build game flavor: " . $e->getMessage() . "\n";
             }
     }
 

@@ -308,9 +308,9 @@ class GameFlavorManager {
     public function buildGameFlavor(int $gameFlavorId) {
         $this->packageFlavor($gameFlavorId);
         $this->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
-        //try to get setup files for windows and linux executables.
-        //if an executable is not found, then an exception will be thrown
-        //and the congratulations email will not be sent to the creator.
+        // try to get setup files for windows and linux executables.
+        // if an executable is not found, then an exception will be thrown
+        // and the congratulations email will not be sent to the creator.
         $this->getWindowsSetupFileForGameFlavor($gameFlavorId);
         $this->getLinuxSetupFileForGameFlavor($gameFlavorId);
         $this->markGameFlavorAsBuilt($gameFlavorId);

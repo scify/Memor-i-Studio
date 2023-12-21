@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DOMDocument;
 use Illuminate\Support\Facades\File;
 use \Exception;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 include_once 'managers/functions.php';
@@ -39,6 +40,7 @@ class WindowsBuilder {
      * @throws Exception
      */
     public function buildGameFlavorForWindows(GameFlavor $gameFlavor, $gameFlavorJarFile): void {
+        Log::info("buildGameFlavorForWindows");
         $this->copyLaunch4JBaseFileToDataPackDir($gameFlavor->id);
         $launch4JConfigFile = $this->getLaunch4JFilePathForGameFlavor($gameFlavor->id);
         $this->updateLaunch4jFile($gameFlavorJarFile, $launch4JConfigFile, $gameFlavor);
@@ -149,19 +151,21 @@ class WindowsBuilder {
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
             $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
-
-            $currentSystemUser = config('app.SYSTEM_USER');
-            if ($currentSystemUser == null)
-                throw new Exception("There is no system user set in .env file, so the Innosetup script cannot be executed.");
             //empty log file
             File::put($logFile, "");
-            //$command = public_path('build_app/innosetup') . '/iscc.sh ' . $currentSystemUser . ' ' . $innoSetupConfigFile . ' > ' . $file . ' 2>&1 ';
-            $command = public_path('build_app/innosetup') . '/innosetup_docker.sh ' . $workingPath . ' ' . $innoSetupConfigFile . ' > ' . $logFile . ' 2>&1 ';
-            shell_exec($command);
-
+            File::put($logFile, "Building Executable for path: " . $workingPath);
+            $response = Http::withHeaders([
+                'Content-Type' => 'multipart/form-data',
+                'Accept' => "application/json"
+            ])
+                ->asForm()->withoutVerifying()
+                ->post(config("app.WINDOWS_SETUP_SERVICE_URL"), [
+                    'path' => $workingPath,
+                ]);
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-            File::append($logFile, "\nExecuted command: \n" . $command . " \n");
-
+            File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
+            if (!$response->ok())
+                throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             throw $e;

@@ -16,7 +16,7 @@ return [
 
     'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
 
-    'SYSTEM_USER' => env('SYSTEM_USER', null),
+    'WINDOWS_SETUP_SERVICE_URL' => env('WINDOWS_SETUP_SERVICE_URL', null),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Athens',
 
     /*
     |--------------------------------------------------------------------------
