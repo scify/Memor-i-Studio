@@ -147,6 +147,9 @@ class WindowsBuilder {
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
         $workingPath = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
         $logFile = $workingPath . '/memor-i_innosetup.log';
+        // create Output directory for innosetup installer
+        $outputDirPath = $workingPath . '/Output';
+        mkdir($outputDirPath, 0777, true) || chmod($outputDirPath, 0777);
         try {
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
@@ -162,13 +165,14 @@ class WindowsBuilder {
                 ->post(config("app.WINDOWS_SETUP_SERVICE_URL"), [
                     'path' => $workingPath,
                 ]);
-            File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             throw $e;
+        } finally {
+            File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
         }
     }
 
