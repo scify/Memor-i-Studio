@@ -169,6 +169,7 @@ class WindowsBuilder {
                     'path' => $workingPath,
                 ]);
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
+            chmod($outputDirPath, 0755);
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
