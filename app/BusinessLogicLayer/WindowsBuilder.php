@@ -149,7 +149,7 @@ class WindowsBuilder {
         $logFile = $workingPath . '/memor-i_innosetup.log';
         // create Output directory for innosetup installer
         $outputDirPath = $workingPath . '/Output';
-        if(file_exists($outputDirPath))
+        if (file_exists($outputDirPath))
             rmdir($outputDirPath);
         mkdir($outputDirPath, 0777, true);
         chmod($outputDirPath, 0777);
@@ -169,7 +169,7 @@ class WindowsBuilder {
                     'path' => $workingPath,
                 ]);
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            if(chmod($outputDirPath, 0755)) {
+            if (chmod($outputDirPath, 0755)) {
                 File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
             } else {
                 File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
@@ -180,6 +180,7 @@ class WindowsBuilder {
         } catch (\Exception $e) {
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+            chmod($outputDirPath, 0755);
             throw $e;
         }
     }
