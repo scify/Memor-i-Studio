@@ -149,7 +149,8 @@ class WindowsBuilder {
         $logFile = $workingPath . '/memor-i_innosetup.log';
         // create Output directory for innosetup installer
         $outputDirPath = $workingPath . '/Output';
-        mkdir($outputDirPath, 0777, true) || chmod($outputDirPath, 0777);
+        mkdir($outputDirPath, 0777, true);
+        chmod($outputDirPath, 0777);
         try {
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
