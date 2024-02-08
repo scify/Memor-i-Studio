@@ -174,13 +174,13 @@ class WindowsBuilder {
             } else {
                 File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
             }
+            File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
-            throw $e;
-        } finally {
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
+            throw $e;
         }
     }
 
