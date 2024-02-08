@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'MemoriBackend',
+    'name' => 'Memor-i Studio',
 
     'KEYSTORE_PASS' => env('KEYSTORE_PASS', null),
 
