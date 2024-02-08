@@ -63,7 +63,8 @@ Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation)
 sudo apt-get install php*-imap php*-mbstring php*-mcrypt && sudo apache2ctl graceful
 ```
 
-After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about your database name and credentials.
+After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about
+your database name and credentials.
 
 ### Environment file, Laravel/backend dependencies
 
@@ -79,7 +80,6 @@ composer update
 
 ### Front-end dependencies
 
-
 After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. We
 achieve that by using nodejs and its package manager, [npm](https://www.npmjs.com/).
 
@@ -88,7 +88,8 @@ Manager, [nvm](https://github.com/nvm-sh/nvm).
 
 So, when in project root directory, and after npm has been installed correctly, run
 
-It is very easy to install multiple versions of NodeJS and npm, by using [Node Version Manager (nvm)](https://github.com/creationix/nvm).
+It is very easy to install multiple versions of NodeJS and npm, by
+using [Node Version Manager (nvm)](https://github.com/creationix/nvm).
 
 If you are using [`nvm`](https://github.com/nvm-sh/nvm), run this command in order to sync to the correct NodeJS version
 for the project:
@@ -105,7 +106,8 @@ To download and install all libraries and dependencies.
 
 ### Compiling front-end assets
 
-This project uses [Webpack and Laravel Mix](https://laravel.com/docs/7.x/mix) which is a popular toolkit for automating painful or time-consuming tasks, like SASS compiling and js/css concatenation and
+This project uses [Webpack and Laravel Mix](https://laravel.com/docs/7.x/mix) which is a popular toolkit for automating
+painful or time-consuming tasks, like SASS compiling and js/css concatenation and
 minification.
 
 Since it is built upon webpack, you can use the following commands to compile the front-end assets:
@@ -149,7 +151,7 @@ sudo find . -type f -exec chmod 664 {} \;
 sudo find . -type d -exec chmod 775 {} \;
 ```
 
-The commands above are also available with the permissions script, in the root directory of the project. 
+The commands above are also available with the permissions script, in the root directory of the project.
 
 You can use it like this:
 
@@ -203,7 +205,8 @@ And have write access to ```/home``` directory.
 
 ### 1. Allow the uploading large files
 
-In order for the app to work as expected, max size of files and timeout time must be set on the appropriate configuration files for `php-fpm` and `nginx`.
+In order for the app to work as expected, max size of files and timeout time must be set on the appropriate
+configuration files for `php-fpm` and `nginx`.
 
 1. For nginx
 
@@ -211,6 +214,7 @@ In order for the app to work as expected, max size of files and timeout time mus
 2. For php-fpm
 
    edit `/etc/php/8.1/fpm/` (or the corresponding php version) and change:
+
 ```text
  max_input_time = 300
  
@@ -254,6 +258,12 @@ Also, you will need to install the `zip` and `unzip` commands in Linux:
 - `sudo apt install zip`
 - `sudo apt install unzip`
 
+For building the Windows installer for the .exe that Launch4J built, this project
+uses [Inno Setup-exe-builder](https://github.com/scify/innosetup-exe-builder?tab=readme-ov-file#inno-setup-exe-builder),
+an external service for compiling executables to Windows installers.
+
+So you will need to setup and have this service running, and then change the `WINDOWS_SETUP_SERVICE_URL` variable in `.env`. 
+
 <hr>
 
 ## Deploying
@@ -265,7 +275,8 @@ navigate to http://localhost/{yourLinkName}
 
 ### Required steps for uploading large files
 
-In order for the app to work as expected, max size of files and timeout time must be set on the appropriate configuration files for `php-fpm` and `nginx`.
+In order for the app to work as expected, max size of files and timeout time must be set on the appropriate
+configuration files for `php-fpm` and `nginx`.
 
 1. For nginx
 
