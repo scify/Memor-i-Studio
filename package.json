@@ -24,7 +24,7 @@
         "webpack": "^5.94.0"
     },
     "dependencies": {
-        "@sentry/browser": "^7.83.0",
+        "@sentry/browser": "^7.119.1",
         "bootstrap": "^3.4.1",
         "bootstrap-sass": "^3.4.3",
         "bootstrap-select": "^1.13.18",
