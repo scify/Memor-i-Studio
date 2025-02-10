@@ -11,10 +11,6 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
 use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\Auth\SHAPES\ShapesIntegrationController;
 use App\Http\Controllers\HomeController;
@@ -26,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'HomeController@showHomePage')->name('showHomePage');
-Route::get('home', 'HomeController@showHomePage')->name('showHomePage');
+Route::get('home', 'HomeController@showHomePage')->name('showHomePageHome');
 Route::get('about', 'HomeController@showAboutPage')->name('showAboutPage');
 Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGameFlavors');
 Route::post('games/flavors', 'GameFlavorController@getGameFlavorsForUser')->name('getGameFlavorsForUser');
