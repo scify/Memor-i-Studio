@@ -1,6 +1,9 @@
-@if(isset($_COOKIE[config('cookies_consent.cookie_prefix')
-. 'cookies_consent_targeting']))
-    @if(config('app.firebase_api_key'))
+@if(isset($_COOKIE[config('cookies_consent.cookie_prefix') . 'cookies_consent']))
+    @php
+        $cookiesConsent = json_decode($_COOKIE[config('cookies_consent.cookie_prefix') . 'cookies_consent'], true);
+    @endphp
+    @if(isset($cookiesConsent['targeting']) && $cookiesConsent['targeting'] && config('app.firebase_api_key'))
+
         <script type="module">
             // Import the functions you need from the SDKs you need
             import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
@@ -25,7 +28,7 @@
             const analytics = getAnalytics(app);
         </script>
     @endif
-    @if(config('app.google_analytics_id'))
+    @if(isset($cookiesConsent['targeting']) && $cookiesConsent['targeting'] && config('app.google_analytics_id'))
         <script>
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;

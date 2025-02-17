@@ -11,7 +11,7 @@
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.0",
         "laravel/ui": "^4.6",
-        "scify/laravel-cookies-consent": "^3.1.3",
+        "scify/laravel-cookies-consent": "^4.0",
         "sentry/sentry-laravel": "^4.12",
         "spatie/laravel-sitemap": "^7.3",
         "symfony/http-client": "^6.2",
