@@ -16,15 +16,15 @@
         "modernizr": "^3.13.1",
         "moment": "^2.30.1",
         "npm-modernizr": "^2.8.3",
-        "postcss": "^8.5.1",
+        "postcss": "^8.5.3",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.84.0",
+        "sass": "^1.85.0",
         "sass-loader": "^13.3.2",
         "vue-resource": "^1.5.3",
-        "webpack": "^5.97.1"
+        "webpack": "^5.98.0"
     },
     "dependencies": {
-        "@sentry/browser": "^8.54.0",
+        "@sentry/browser": "^9.1.0",
         "bootstrap": "^3.4.1",
         "bootstrap-sass": "^3.4.3",
         "bootstrap-select": "^1.13.18",
