@@ -14,10 +14,13 @@
                                     <a href="https://scify.org/" target="_blank">{!! __('messages.the_team') !!}</a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('termsOfUsePage') }}">{!! ucwords(__('messages.terms-of-use')) !!}</a>
+                                    <a href="{{ __('messages.terms-of-service-link') }}">{!! ucwords(__('messages.terms-of-use')) !!}</a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('privacyPolicyPage') }}">{!! ucwords(__('messages.privacy_policy_title')) !!}</a>
+                                    <a href="{{ __('messages.privacy-policy-link') }}">{!! ucwords(__('messages.privacy_policy_title')) !!}</a>
+                                </div>
+                                <div>
+                                    <a href="{{ __('messages.cookies-policy-link') }}">{!! ucwords(__('messages.cookies-policy')) !!}</a>
                                 </div>
                                 <div><a href="https://github.com/scify/memori-online-games-repository"
                                         target="_blank">Github</a></div>

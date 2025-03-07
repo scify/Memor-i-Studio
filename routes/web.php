@@ -129,13 +129,6 @@ Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->nam
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
 
-Route::get('/privacy-policy', function () {
-    return view('privacy-policy.privacy_policy');
-})->name('privacyPolicyPage');
-Route::get('/terms-of-use', function () {
-    return view('terms_of_use');
-})->name('termsOfUsePage');
-
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
 });
