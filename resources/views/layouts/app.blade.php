@@ -37,7 +37,7 @@
 @endif
     <!-- Main content -->
     <section class="content" style="padding: 0 !important;">
-        <div class="container-fluid p-0">
+        <div class="container-fluid padding-top-5 padding-bottom-5">
             <div class="row p-0">
                 <div class="col-lg-11 col-md-11 col-sm-12 col-centered">
                     @yield('content')
