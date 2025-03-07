@@ -36,10 +36,6 @@ class Handler extends ExceptionHandler {
      * @throws Exception|Throwable
      */
     public function report(Throwable $e) {
-        if ($this->shouldReport($e) && app()->bound('sentry')) {
-            $eventId = app('sentry')->captureException($e);
-            app('log')->error('Submitted exception to Sentry with id:' . $eventId);
-        }
         parent::report($e);
     }
 
@@ -48,7 +44,7 @@ class Handler extends ExceptionHandler {
      *
      * @param Request $request
      * @param Throwable $e
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws Exception|Throwable
      */
     public function render($request, Throwable $e) {
