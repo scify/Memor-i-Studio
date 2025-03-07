@@ -101,7 +101,7 @@
                                     {!! __('messages.i_agree_with_the') !!}
                                     <a href="{{ __('messages.terms-of-service-link') }}" target="_blank"> {!! __('messages.terms_of_use') !!}</a>
                                     {!! __('messages.and') !!}
-                                    <a href="{{ route('privacyPolicyPage') }}" target="_blank"> {!! __('messages.privacy_policy') !!}</a>
+                                    <a href="{{ __('messages.privacy-policy-link') }}" target="_blank"> {!! __('messages.privacy_policy') !!}</a>
                                 </label>
                             </div>
                         </div>
