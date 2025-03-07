@@ -20,7 +20,7 @@
                     <label>
                         <input type="checkbox" name="terms" required>
                         {!! __('messages.i_agree_with_the') !!}
-                        <a href="{{ route('termsOfUsePage') }}"
+                        <a href="{{ __('messages.terms-of-service-link') }}"
                            target="_blank"> {!! __('messages.terms_of_use') !!}</a>
                         {!! __('messages.and') !!}
                         <a href="{{ route('privacyPolicyPage') }}"

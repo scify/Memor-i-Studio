@@ -92,7 +92,7 @@
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="privacy_policy" required>
                     <label class="form-check-label" for="privacy_policy">{!! __('messages.info_text_2') !!} <a
-                                href="{{ route('termsOfUsePage') }}"
+                                href="{{ __('messages.terms-of-service-link') }}"
                                 target="_blank">{!! __('messages.terms_of_use') !!}</a> {!! __('messages.and') !!}
                     <a href="{{ route('privacyPolicyPage') }}"> {!! __('messages.privacy_policy') !!}</a></label>
                 </div>
