@@ -32,6 +32,4 @@ return [
     'already_account' => 'Ya tengo una cuenta',
     'sign_in' => 'Acceder',
     'with' => 'con',
-    'shapes_create_account' => 'Cree una cuenta compartida en todas las plataformas impulsadas por SHAPES',
-    'shapes_create_account_prompt' => 'Iniciar sesión/Registrarse con una cuenta SHAPES'
 ];

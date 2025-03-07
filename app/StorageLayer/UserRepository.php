@@ -18,8 +18,4 @@ class UserRepository extends Repository {
             'password' => bcrypt($data['password']),
         ]);
     }
-
-    public function getAllShapesUsers(): Collection {
-        return User::whereNotNull('shapes_auth_token')->get();
-    }
 }

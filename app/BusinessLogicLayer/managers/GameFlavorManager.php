@@ -2,7 +2,6 @@
 
 namespace App\BusinessLogicLayer\managers;
 
-use App\BusinessLogicLayer\managers\SHAPES\ShapesIntegrationManager;
 use App\BusinessLogicLayer\WindowsBuilder;
 use App\Models\GameFlavor;
 use App\Models\ResourceFile;
@@ -40,15 +39,13 @@ class GameFlavorManager {
     private $windowsBuilder;
     private $languageStorage;
     private $imgManager;
-    private $shapesIntegrationManager;
 
     public function __construct(GameFlavorStorage        $gameFlavorStorage, FileManager $fileManager,
                                 UserRepository           $userStorage, ResourceCategoryManager $resourceCategoryManager,
                                 ResourceManager          $resourceManager, GameVersionLanguageManager $gameVersionLanguageManager,
                                 GameVersionManager       $gameVersionManager, EquivalenceSetManager $equivalenceSetManager,
                                 WindowsBuilder           $windowsBuilder, LanguageStorage $languageStorage,
-                                ImgManager               $imgManager,
-                                ShapesIntegrationManager $shapesIntegrationManager) {
+                                ImgManager               $imgManager) {
         $this->gameFlavorStorage = $gameFlavorStorage;
         $this->fileManager = $fileManager;
         $this->userStorage = $userStorage;
@@ -60,7 +57,6 @@ class GameFlavorManager {
         $this->windowsBuilder = $windowsBuilder;
         $this->languageStorage = $languageStorage;
         $this->imgManager = $imgManager;
-        $this->shapesIntegrationManager = $shapesIntegrationManager;
     }
 
     public function getJarFilePathForGameFlavor($gameFlavorId): string {
@@ -83,9 +79,6 @@ class GameFlavorManager {
             $gameFlavor = $this->assignValuesToGameFlavor($gameFlavor, $inputFields);
             $gameFlavor->game_version_id = $inputFields['game_version_id'];
             $gameFlavor->creator_id = $inputFields['creator_id'];
-            if ($user->shapes_auth_token && ShapesIntegrationManager::isEnabled()) {
-                $this->shapesIntegrationManager->sendStudioUsageDataToDatalakeAPI($user, "game_created", $gameFlavor->name);
-            }
         } else {
             //edit existing
             $gameFlavor = $this->getGameFlavor($gameFlavorId);

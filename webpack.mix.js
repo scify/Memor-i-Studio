@@ -12,7 +12,6 @@ mix.disableSuccessNotifications();
  */
 
 mix.sass('resources/assets/sass/app.scss', 'public/css/app.css').version();
-mix.sass('resources/assets/sass/login-page-shapes.scss', 'public/dist/css/login-page-shapes.css')
 mix.styles([
     'resources/assets/pleasure-admin-panel/css/admin1.css',
     'resources/assets/pleasure-admin-panel/css/elements.css',
