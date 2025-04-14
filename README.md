@@ -53,23 +53,10 @@ docker exec -it memori_studio_server bash
 
 And from there, you can run all the `php artisan`, `composer`, and `npm` commands.
 
-### Language and Framework Dependencies
-
-Make sure php `8.1` is installed.
-
-Install the [Laravel IMAP](https://github.com/Webklex/laravel-imap#installation) dependencies:
-
-```bash
-sudo apt-get install php*-imap php*-mbstring php*-mcrypt && sudo apache2ctl graceful
-```
-
-After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about
-your database name and credentials.
-
 ### Environment file, Laravel/backend dependencies
 
-After cloning the project, create an .env file (should be a copy of .env.example), containing the information about your
-database name and credentials. After that, download all Laravel dependencies
+After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about
+your database name and credentials. After that, download all Laravel dependencies
 through [Composer](https://laravel.com/docs/7.x/installation), by running
 
 ```bash

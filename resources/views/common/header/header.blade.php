@@ -26,4 +26,5 @@
     <link rel="stylesheet" href="{{mix('css/vendors.css')}}">
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <link rel="manifest" href="{{ asset('mix-manifest.json') }}">
+    {!! RecaptchaV3::initJs() !!}
 </head>

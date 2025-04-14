@@ -37,7 +37,8 @@ class HomeController extends Controller {
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email',
-            'subject' => 'required'
+            'subject' => 'required',
+            'g-recaptcha-response' => 'required|recaptchav3:contact,0.5'
         ]);
         $input = $request->all();
         $mailManager = new MailManager();

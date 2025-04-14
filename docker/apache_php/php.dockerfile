@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ARG DOCKER_GROUP_ID
 
@@ -21,7 +21,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV NODE_VERSION=18.16.0
+ENV NODE_VERSION=22.14.0
 ENV NVM_DIR=/usr/local/.nvm
 RUN mkdir "$NVM_DIR"
 RUN apt install -y curl
