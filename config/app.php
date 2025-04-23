@@ -171,7 +171,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
-        Madnest\Madzipper\MadzipperServiceProvider::class
+        Madnest\Madzipper\MadzipperServiceProvider::class,
+        Lunaweb\RecaptchaV3\Providers\RecaptchaV3ServiceProvider::class
 
     ],
 

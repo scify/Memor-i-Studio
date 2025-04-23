@@ -10,7 +10,7 @@
                     <form id="gameVersion-handling-form" class="memoriForm" method="POST"
                           action="{{route('sendContactEmail')}}"
                           enctype="multipart/form-data">
-                        {!! RecaptchaV3::field('contact') !!}
+                        {!! RecaptchaV3::field('contact', ['name' => 'g-recaptcha-response']) !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row">
                             <div class="inputer floating-label">
