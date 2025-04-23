@@ -6,6 +6,7 @@ use App\Console\Commands\BuildGameFlavors;
 use App\Console\Commands\BuildGameFlavorsForVersion;
 use App\Console\Commands\CleanOldGames;
 use App\Console\Commands\DeleteGameVersion;
+use App\Console\Commands\SetupLogPermissions;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel {
         DeleteGameVersion::class,
         BuildGameFlavors::class,
         BuildGameFlavorsForVersion::class,
+        SetupLogPermissions::class,
     ];
 
     /**
