@@ -59,3 +59,14 @@ storage/*.jar
 .idea/
 public/mix-manifest.json
 storage/logs
+
+
+.vscode/
+.idea/
+.cursor/
+.cursorignore
+.cursorrules
+.cursorignorerules
+.cursorignorerules
+.cursorignorerules
+.cursorignorerules
