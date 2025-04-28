@@ -78,24 +78,26 @@ window.EquivalenceSetsController.prototype = function () {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
 
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Games',
-                    eventAction: 'download',
-                    eventLabel: 'Windows | game id: ' + gameFlavorId
-                });
+                if (typeof ga === "function")
+                    ga('send', {
+                        hitType: 'event',
+                        eventCategory: 'Games',
+                        eventAction: 'download',
+                        eventLabel: 'Windows | game id: ' + gameFlavorId
+                    });
                 window.location = this.href;
             });
 
             $("body").on("click", ".downloadBtnLinux", function (e) {
                 e.preventDefault();
                 var gameFlavorId = $(this).attr("data-gameFlavorId");
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Games',
-                    eventAction: 'download',
-                    eventLabel: 'Linux | game id: ' + gameFlavorId
-                });
+                if (typeof ga === "function")
+                    ga('send', {
+                        hitType: 'event',
+                        eventCategory: 'Games',
+                        eventAction: 'download',
+                        eventLabel: 'Linux | game id: ' + gameFlavorId
+                    });
                 window.location = this.href;
             });
         },

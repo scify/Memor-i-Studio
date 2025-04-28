@@ -26,12 +26,13 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
     let downloadGame = function (event, element, platformName) {
         event.preventDefault();
         const gameFlavorId = element.attr("data-gameFlavorId");
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Games',
-            eventAction: 'download',
-            eventLabel: platformName + ' | game id: ' + gameFlavorId
-        });
+        if (typeof ga === "function")
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'Games',
+                eventAction: 'download',
+                eventLabel: platformName + ' | game id: ' + gameFlavorId
+            });
         window.location = element.attr('href');
     };
     let getGamesWithFiltersHandler = function () {
