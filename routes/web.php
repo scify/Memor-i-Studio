@@ -28,7 +28,6 @@ Route::post('games/flavors', 'GameFlavorController@getGameFlavorsForUser')->name
 
 
 Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
-Route::get('test', 'CardController@test')->name('test');
 Route::get('storeUserAction', 'CardController@storeUserAction')->name('storeUserAction');
 Route::get('/lang/{lang}', [HomeController::class, 'setLangLocaleCookie'])->name('set-lang-locale');
 Route::group(['prefix' => 'api'], function () {
