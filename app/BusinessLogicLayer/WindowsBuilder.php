@@ -175,11 +175,11 @@ class WindowsBuilder {
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            if (chmod($outputDirPath, 0755)) {
-                File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
-            } else {
-                File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
-            }
+//            if (chmod($outputDirPath, 0755)) {
+//                File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
+//            } else {
+//                File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
+//            }
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
