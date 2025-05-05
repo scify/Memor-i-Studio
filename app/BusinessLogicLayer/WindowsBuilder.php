@@ -157,8 +157,10 @@ class WindowsBuilder {
         try {
             Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
+            Log::info("InnoSetup config file: " . $innoSetupConfigFile);
 
             $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
+            Log::info("Prepared InnoSetup config file: " . $innoSetupConfigFile);
             //empty log file
             File::put($logFile, "");
             File::put($logFile, "Building Executable for path: " . $workingPath);

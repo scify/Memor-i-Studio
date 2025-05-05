@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Exception;
 
@@ -300,6 +301,7 @@ class GameFlavorManager {
      */
     public function buildGameFlavor(int $gameFlavorId) {
         $this->packageFlavor($gameFlavorId);
+        Log::info("Game flavor " . $gameFlavorId . " packaged successfully");
         $this->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
         // try to get setup files for windows and linux executables.
         // if an executable is not found, then an exception will be thrown
