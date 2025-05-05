@@ -162,6 +162,7 @@ class WindowsBuilder {
             //empty log file
             File::put($logFile, "");
             File::put($logFile, "Building Executable for path: " . $workingPath);
+            Log::info("InnoSetup config file: " . $innoSetupConfigFile);
             $response = Http::withHeaders([
                 'Content-Type' => 'multipart/form-data',
                 'Accept' => "application/json"
@@ -170,6 +171,7 @@ class WindowsBuilder {
                 ->post(config("app.WINDOWS_SETUP_SERVICE_URL"), [
                     'path' => $workingPath,
                 ]);
+            Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
             if (chmod($outputDirPath, 0755)) {
                 File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
