@@ -133,6 +133,7 @@ class WindowsBuilder {
         $command = public_path('build_app/launch4j') . '/build_win_exe.sh ' . $launch4JConfigFile . ' > ' . $launch4JLogFile . ' 2>&1 ';
         //empty log file
         File::put($launch4JLogFile, "");
+        Log::info("Executing command: " . $command);
         $output = shell_exec($command);
         File::append($launch4JLogFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
         File::append($launch4JLogFile, "\nExecuted command: \n" . $command . " \n");
@@ -154,6 +155,7 @@ class WindowsBuilder {
         mkdir($outputDirPath, 0777, true);
         chmod($outputDirPath, 0777);
         try {
+            Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
 
             $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
@@ -178,6 +180,7 @@ class WindowsBuilder {
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
+            Log::error("Error building InnoSetup installer for game flavor: " . $gameFlavor->id);
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             chmod($outputDirPath, 0755);
