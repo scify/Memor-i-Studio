@@ -155,7 +155,6 @@ class WindowsBuilder {
             $this->deleteDirectory($outputDirPath);
         mkdir($outputDirPath, 0777, true);
         chmod($outputDirPath, 0777);
-        chmod($workingPath, 0777);
         try {
             Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
@@ -166,7 +165,7 @@ class WindowsBuilder {
             //empty log file
             File::put($logFile, "");
             File::put($logFile, "Building Executable for path: " . $workingPath);
-            Log::info("InnoSetup config file: " . $innoSetupConfigFile);
+            Log::info("Building Executable for path: " . $workingPath);
             $response = Http::withHeaders([
                 'Content-Type' => 'multipart/form-data',
                 'Accept' => "application/json"
@@ -178,11 +177,7 @@ class WindowsBuilder {
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            if ($this->chmodRecursive($outputDirPath, 0755) || chmod($workingPath, 0755)) {
-                File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
-            } else {
-                File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
-            }
+            $this->chmodRecursive($outputDirPath, 0755);
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
