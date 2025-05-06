@@ -156,7 +156,7 @@ class WindowsBuilder {
         chmod($outputDirPath, 0777);
         try {
             Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
-            $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
+            //$this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
             Log::info("InnoSetup config file: " . $innoSetupConfigFile);
 
             $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
