@@ -3,6 +3,7 @@
 namespace App\BusinessLogicLayer;
 
 use App\BusinessLogicLayer\managers\FileManager;
+use App\BusinessLogicLayer\managers\ImgManager;
 use App\Models\GameFlavor;
 use Carbon\Carbon;
 use DOMDocument;
@@ -29,11 +30,12 @@ class WindowsBuilder {
     private string $LICENCE_BASE_FILE;
     private FileManager $fileManager;
 
-    public function __construct(FileManager $fileManager) {
+    public function __construct(FileManager $fileManager, ImgManager $imgManager) {
         $this->LAUNCH4J_BASE_CONFIG_FILE = public_path('build_app/launch4j/memor-i_config.xml');
         $this->INNOSETUP_BASE_CONFIG_FILE = public_path('build_app/innosetup/memor-i_config.iss');
         $this->LICENCE_BASE_FILE = public_path('build_app/innosetup/LICENCE.md');
         $this->fileManager = $fileManager;
+        $this->imgManager = $imgManager;
     }
 
     /**
@@ -208,12 +210,14 @@ class WindowsBuilder {
         $coverImgFilePath = $this->getGameFlavorCoverImgFilePath($gameFlavor);
 
         if ($coverImgFilePath) {
+            Log::info("Found cover image for game flavor: " . $gameFlavor->id);
             $coverImgFullFilePath = storage_path('app/' . $coverImgFilePath);
             $coverImgFileName = substr($coverImgFullFilePath, strrpos($coverImgFullFilePath, '/') + 1);
             $coverImgFileDirectory = substr($coverImgFullFilePath, 0, strrpos($coverImgFullFilePath, '/'));
 
             // Convert the uploaded image to an .ico file
             $this->imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
+            Log::info("Converted cover image for game flavor: " . $gameFlavor->id . " to ICO format. Path: " . $coverImgFileDirectory . "/game_icon.ico");
         }
 
         $stringsToBeReplaced = array(
