@@ -3,7 +3,6 @@
 namespace App\BusinessLogicLayer;
 
 use App\BusinessLogicLayer\managers\FileManager;
-use App\BusinessLogicLayer\managers\ImgManager;
 use App\Models\GameFlavor;
 use Carbon\Carbon;
 use DOMDocument;
@@ -30,12 +29,11 @@ class WindowsBuilder {
     private string $LICENCE_BASE_FILE;
     private FileManager $fileManager;
 
-    public function __construct(FileManager $fileManager, ImgManager $imgManager) {
+    public function __construct(FileManager $fileManager) {
         $this->LAUNCH4J_BASE_CONFIG_FILE = public_path('build_app/launch4j/memor-i_config.xml');
         $this->INNOSETUP_BASE_CONFIG_FILE = public_path('build_app/innosetup/memor-i_config.iss');
         $this->LICENCE_BASE_FILE = public_path('build_app/innosetup/LICENCE.md');
         $this->fileManager = $fileManager;
-        $this->imgManager = $imgManager;
     }
 
     /**
@@ -206,20 +204,6 @@ class WindowsBuilder {
             throw new \Exception("InnoSetup copy file for game flavor not found. Looked in: " . $innoSetupConfFile);
         }
         $gameName = greeklish($gameFlavor->name);
-
-        $coverImgFilePath = $this->getGameFlavorCoverImgFilePath($gameFlavor);
-
-        if ($coverImgFilePath) {
-            Log::info("Found cover image for game flavor: " . $gameFlavor->id);
-            $coverImgFullFilePath = storage_path('app/' . $coverImgFilePath);
-            $coverImgFileName = substr($coverImgFullFilePath, strrpos($coverImgFullFilePath, '/') + 1);
-            $coverImgFileDirectory = substr($coverImgFullFilePath, 0, strrpos($coverImgFullFilePath, '/'));
-
-            // Convert the uploaded image to an .ico file
-            $this->imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
-            Log::info("Converted cover image for game flavor: " . $gameFlavor->id . " to ICO format. Path: " . $coverImgFileDirectory . "/game_icon.ico");
-        }
-
         $stringsToBeReplaced = array(
             'Source: "memori.exe"' => 'Source: "memori-win.exe"',
             '#define MyAppExeName "MyProg.exe"' => '#define MyAppExeName "memori-win.exe"',
@@ -239,16 +223,4 @@ class WindowsBuilder {
     }
 
 
-    private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor): ?string {
-        $coverImgPath = 'data_packs/additional_pack_' . $gameFlavor->id . '/data/img/game_cover/';
-        $coverImgFileName = $gameFlavor->cover_img_file_name ?? null;
-
-        if ($coverImgFileName && File::exists(storage_path('app/' . $coverImgPath . $coverImgFileName))) {
-            return $coverImgPath . $coverImgFileName;
-        }
-
-        Log::info("Game flavor cover image file not found for game flavor: " . $gameFlavor->id);
-
-        return null; // Return null if the file does not exist
-    }
 }

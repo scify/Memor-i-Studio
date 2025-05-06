@@ -300,6 +300,8 @@ class GameFlavorManager {
      * @throws \Exception
      */
     public function buildGameFlavor(int $gameFlavorId) {
+        $gameFlavorImgCoverFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
+        $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
         $this->packageFlavor($gameFlavorId);
         Log::info("Game flavor " . $gameFlavorId . " packaged successfully");
         $this->markGameFlavorAsNotSubmittedForApproval($gameFlavorId);
