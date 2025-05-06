@@ -178,7 +178,7 @@ class WindowsBuilder {
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            $this->chmodRecursive($outputDirPath, 0755);
+            //$this->chmodRecursive($outputDirPath, 0755);
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             if (!$response->ok())
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
@@ -187,7 +187,7 @@ class WindowsBuilder {
             Log::error("Exception: " . $e->getMessage());
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-            $this->chmodRecursive($outputDirPath, 0755);
+            //$this->chmodRecursive($outputDirPath, 0755);
             throw $e;
         }
     }
