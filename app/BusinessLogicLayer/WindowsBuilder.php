@@ -47,7 +47,7 @@ class WindowsBuilder {
         //notice: licence file in .iss not working - the .exe is never built if we add it
         //so for now we skip the step
         //$this->copyLicenceBaseFileToDataPackDir($gameFlavor->id);
-        $this->buildWindowsExecutable($gameFlavor->id);
+        //$this->buildWindowsExecutable($gameFlavor->id);
         $this->buildWindowsExecutableInstaller($gameFlavor);
     }
 
