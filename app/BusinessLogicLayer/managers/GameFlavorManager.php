@@ -301,6 +301,8 @@ class GameFlavorManager {
      */
     public function buildGameFlavor(int $gameFlavorId) {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
+        if ($gameFlavor == null)
+            throw new \Exception("Game flavor not found. Id queried: " . $gameFlavorId);
         $gameFlavorImgCoverFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
         $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
         $this->packageFlavor($gameFlavorId);
