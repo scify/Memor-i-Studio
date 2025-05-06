@@ -231,21 +231,7 @@ like this:
 
 ### 4. Building Windows executables
 
-When an admin user publishes a game flavor, A `.jar` file is built for this game flavor. In addition, this application
-uses
-[Launch4J](http://launch4j.sourceforge.net/) in order to build also the windows executable
-and [Inno setup](http://www.jrsoftware.org/isinfo.php) to build the installer.
-
-The launch4J
-application is included in ```public/build_app/launch4j``` as a standalone application.
-In order to run Launch4J, you will also need to install Java.
-
-Also, you will need to install the `zip` and `unzip` commands in Linux:
-
-- `sudo apt install zip`
-- `sudo apt install unzip`
-
-For building the Windows installer for the .exe that Launch4J built, this project
+For building the Windows installer for a game, this project
 uses [Inno Setup-exe-builder](https://github.com/scify/innosetup-exe-builder?tab=readme-ov-file#inno-setup-exe-builder),
 an external service for compiling executables to Windows installers.
 
