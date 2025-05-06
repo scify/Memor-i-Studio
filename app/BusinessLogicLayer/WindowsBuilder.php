@@ -146,7 +146,7 @@ class WindowsBuilder {
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor): void {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_CONFIG_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
-        $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
+        $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id . '/launch4j-config.xml';
         $workingPath = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
         $logFile = $workingPath . '/memor-i_innosetup.log';
         // create Output directory for innosetup installer
