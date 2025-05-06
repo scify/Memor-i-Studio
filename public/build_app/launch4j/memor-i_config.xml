@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>/work/memori.jar</jar>
-  <outfile>/work/memori.exe</outfile>
+  <outfile>/work/memori-win.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
