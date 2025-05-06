@@ -154,6 +154,7 @@ class WindowsBuilder {
             rmdir($outputDirPath);
         mkdir($outputDirPath, 0777, true);
         chmod($outputDirPath, 0777);
+        chmod($workingPath, 0777);
         try {
             Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
             $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
@@ -175,7 +176,7 @@ class WindowsBuilder {
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            if (chmod($outputDirPath, 0755)) {
+            if (chmod($outputDirPath, 0755) || chmod($workingPath, 0755)) {
                 File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
             } else {
                 File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
