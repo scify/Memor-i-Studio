@@ -247,6 +247,8 @@ class WindowsBuilder {
             return $coverImgPath . $coverImgFileName;
         }
 
+        Log::info("Game flavor cover image file not found for game flavor: " . $gameFlavor->id);
+
         return null; // Return null if the file does not exist
     }
 }
