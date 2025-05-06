@@ -156,7 +156,7 @@ class WindowsBuilder {
         chmod($outputDirPath, 0777);
         try {
             Log::info("Building InnoSetup installer for game flavor: " . $gameFlavor->id);
-            //$this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
+            $this->fileManager->copyFileToDestinationAndReplace($innoSetupConfigBaseFile, $innoSetupConfigFile);
             Log::info("InnoSetup config file: " . $innoSetupConfigFile);
 
             $this->prepareInnoSetupFileForGameFlavor($innoSetupConfigFile, $gameFlavor);
@@ -204,6 +204,18 @@ class WindowsBuilder {
             throw new \Exception("InnoSetup copy file for game flavor not found. Looked in: " . $innoSetupConfFile);
         }
         $gameName = greeklish($gameFlavor->name);
+
+        $coverImgFilePath = $this->getGameFlavorCoverImgFilePath($gameFlavor);
+
+        if ($coverImgFilePath) {
+            $coverImgFullFilePath = storage_path('app/' . $coverImgFilePath);
+            $coverImgFileName = substr($coverImgFullFilePath, strrpos($coverImgFullFilePath, '/') + 1);
+            $coverImgFileDirectory = substr($coverImgFullFilePath, 0, strrpos($coverImgFullFilePath, '/'));
+
+            // Convert the uploaded image to an .ico file
+            $this->imgManager->covertImgToIco($coverImgFileDirectory, $coverImgFileName, "game_icon.ico");
+        }
+
         $stringsToBeReplaced = array(
             'Source: "memori.exe"' => 'Source: "memori-win.exe"',
             '#define MyAppExeName "MyProg.exe"' => '#define MyAppExeName "memori-win.exe"',
@@ -223,4 +235,14 @@ class WindowsBuilder {
     }
 
 
+    private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor): ?string {
+        $coverImgPath = 'data_packs/additional_pack_' . $gameFlavor->id . '/data/img/game_cover/';
+        $coverImgFileName = $gameFlavor->cover_img_file_name ?? null;
+
+        if ($coverImgFileName && File::exists(storage_path('app/' . $coverImgPath . $coverImgFileName))) {
+            return $coverImgPath . $coverImgFileName;
+        }
+
+        return null; // Return null if the file does not exist
+    }
 }
