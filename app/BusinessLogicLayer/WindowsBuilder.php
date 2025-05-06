@@ -166,7 +166,8 @@ class WindowsBuilder {
             File::put($logFile, "");
             File::put($logFile, "Building Executable for path: " . $workingPath);
             Log::info("Building Executable for path: " . $workingPath);
-            $response = Http::withHeaders([
+            $response = Http::timeout(60) // Set timeout to 60 seconds
+            ->withHeaders([
                 'Content-Type' => 'multipart/form-data',
                 'Accept' => "application/json"
             ])
