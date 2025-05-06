@@ -300,6 +300,7 @@ class GameFlavorManager {
      * @throws \Exception
      */
     public function buildGameFlavor(int $gameFlavorId) {
+        $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $gameFlavorImgCoverFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
         $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
         $this->packageFlavor($gameFlavorId);
