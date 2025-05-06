@@ -172,7 +172,7 @@ class WindowsBuilder {
                 ->asForm()->withoutVerifying()
                 ->post(config("app.WINDOWS_SETUP_SERVICE_URL"), [
                     'path' => $workingPath,
-                    'file_name' => $innoSetupConfigBaseFile
+                    'file_name' => $innoSetupConfigFile
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
