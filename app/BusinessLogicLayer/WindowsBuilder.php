@@ -183,6 +183,7 @@ class WindowsBuilder {
                 throw new Exception("Windows executable service returned non-OK response: " . json_encode($response->json()));
         } catch (\Exception $e) {
             Log::error("Error building InnoSetup installer for game flavor: " . $gameFlavor->id);
+            Log::error("Exception: " . $e->getMessage());
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
             $this->chmodRecursive($outputDirPath, 0755);
