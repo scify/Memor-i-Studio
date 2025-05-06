@@ -152,7 +152,7 @@ class WindowsBuilder {
         // create Output directory for innosetup installer
         $outputDirPath = $workingPath . '/Output';
         if (file_exists($outputDirPath))
-            rmdir($outputDirPath);
+            $this->deleteDirectory($outputDirPath);
         mkdir($outputDirPath, 0777, true);
         chmod($outputDirPath, 0777);
         chmod($workingPath, 0777);
@@ -193,6 +193,18 @@ class WindowsBuilder {
             chmod($outputDirPath, 0755);
             throw $e;
         }
+    }
+
+    private function deleteDirectory($dirPath): void {
+        if (!is_dir($dirPath)) {
+            return;
+        }
+        $files = array_diff(scandir($dirPath), ['.', '..']);
+        foreach ($files as $file) {
+            $filePath = $dirPath . DIRECTORY_SEPARATOR . $file;
+            is_dir($filePath) ? $this->deleteDirectory($filePath) : unlink($filePath);
+        }
+        rmdir($dirPath);
     }
 
     public function getInnoSetupFilePathForGameFlavor($gameFlavorId): string {
