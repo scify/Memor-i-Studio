@@ -178,7 +178,7 @@ class WindowsBuilder {
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
-            if (chmod($outputDirPath, 0755) || chmod($workingPath, 0755)) {
+            if ($this->chmodRecursive($outputDirPath, 0755) || chmod($workingPath, 0755)) {
                 File::append($logFile, "\nChanged permissions of directory: \n" . $outputDirPath . " \n");
             } else {
                 File::append($logFile, "\nFailed to change permissions of directory: \n" . $outputDirPath . " \n");
@@ -190,7 +190,7 @@ class WindowsBuilder {
             Log::error("Error building InnoSetup installer for game flavor: " . $gameFlavor->id);
             File::append($logFile, "EXCEPTION: " . $e->getMessage() . "\n");
             File::append($logFile, "\nDate: " . Carbon::now()->toDateTimeString() . "\n");
-            chmod($outputDirPath, 0755);
+            $this->chmodRecursive($outputDirPath, 0755);
             throw $e;
         }
     }
@@ -205,6 +205,21 @@ class WindowsBuilder {
             is_dir($filePath) ? $this->deleteDirectory($filePath) : unlink($filePath);
         }
         rmdir($dirPath);
+    }
+
+    private function chmodRecursive($path, $permissions): void {
+        if (!file_exists($path)) {
+            return;
+        }
+
+        chmod($path, $permissions);
+
+        if (is_dir($path)) {
+            $files = array_diff(scandir($path), ['.', '..']);
+            foreach ($files as $file) {
+                $this->chmodRecursive($path . DIRECTORY_SEPARATOR . $file, $permissions);
+            }
+        }
     }
 
     public function getInnoSetupFilePathForGameFlavor($gameFlavorId): string {
