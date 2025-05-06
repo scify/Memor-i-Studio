@@ -146,6 +146,7 @@ class WindowsBuilder {
     public function buildWindowsExecutableInstaller(GameFlavor $gameFlavor): void {
         $innoSetupConfigBaseFile = $this->INNOSETUP_BASE_CONFIG_FILE;
         $innoSetupConfigFile = $this->getInnoSetupFilePathForGameFlavor($gameFlavor->id);
+        $launch4JConfigFile = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/launch4j-config.xml';
         $workingPath = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
         $logFile = $workingPath . '/memor-i_innosetup.log';
         // create Output directory for innosetup installer
@@ -172,7 +173,8 @@ class WindowsBuilder {
             ])
                 ->asForm()->withoutVerifying()
                 ->post(config("app.WINDOWS_SETUP_SERVICE_URL"), [
-                    'iss_path' => $innoSetupConfigFile
+                    'iss_path' => $innoSetupConfigFile,
+                    'launch4j_config_path' => $launch4JConfigFile,
                 ]);
             Log::info("Windows setup service response: " . json_encode($response->json()));
             File::append($logFile, "\nWindows setup service response: \n" . json_encode($response->json()) . " \n");
