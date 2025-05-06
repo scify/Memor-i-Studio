@@ -60,10 +60,6 @@ class GameFlavorManager {
         $this->imgManager = $imgManager;
     }
 
-    public function getJarFilePathForGameFlavor($gameFlavorId): string {
-        return storage_path() . '/app/data_packs/additional_pack_' . $gameFlavorId . '/memori.jar';
-    }
-
     /**
      * @param $gameFlavorId int|null id of the game flavor
      * @param array $inputFields contain the game flavor parameters
@@ -320,7 +316,7 @@ class GameFlavorManager {
      * @throws \Exception
      */
     protected function packageFlavor(int $gameFlavorId) {
-        //create resources map file
+        //create the resources map file
         $this->resourceManager->createStaticResourcesMapFile($gameFlavorId);
         $this->resourceManager->createAdditionalPropertiesFile($this->gameFlavorStorage->getGameFlavorById($gameFlavorId));
         //create card .json files (for equivalent sets)
@@ -330,7 +326,7 @@ class GameFlavorManager {
         $gameFlavor = $this->getGameFlavorViewModel($gameFlavorId);
         $this->copyGameVersionJarFileToDataPackDir($gameFlavor);
         $this->addDataPackIntoJar($gameFlavorId);
-        $this->windowsBuilder->buildGameFlavorForWindows($gameFlavor, $this->getJarFilePathForGameFlavor($gameFlavorId));
+        $this->windowsBuilder->buildGameFlavorForWindows($gameFlavor);
     }
 
     /**
