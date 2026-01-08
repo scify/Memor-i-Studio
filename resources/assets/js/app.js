@@ -1,6 +1,6 @@
 const {Pleasure} = require("../pleasure-admin-panel/js/pleasure");
 const {Layout} = require("../pleasure-admin-panel/js/layout");
-window._ = require('lodash');
+// window._ = require('lodash'); // Removed: conflicts with vendor scripts and is not used
 let $ = require("jquery");
 require('jquery-ui');
 require('jquery-ui/ui/widgets/sortable');
