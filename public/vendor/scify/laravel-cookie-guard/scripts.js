@@ -340,7 +340,7 @@ function setCookie(name, value, days) {
 		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
 		expires = "; expires=" + date.toUTCString();
 	}
-	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+	document.cookie = name + "=" + encodeURIComponent(value || "") + expires + "; path=/";
 }
 
 function getCookie(name) {
@@ -349,7 +349,8 @@ function getCookie(name) {
 	for (const c of ca) {
 		const cookie = c.trim();
 		if (cookie.startsWith(nameEQ)) {
-			return cookie.substring(nameEQ.length, cookie.length);
+            console.log("Found cookie:", cookie);
+			return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length));
 		}
 	}
 	return null;
