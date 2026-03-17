@@ -21,7 +21,7 @@
         "sass": "^1.92.1",
         "sass-loader": "^13.3.2",
         "vue-resource": "^1.5.3",
-        "webpack": "^5.101.3"
+        "webpack": "^5.105.4"
     },
     "dependencies": {
         "@sentry/browser": "^10.11.0",
