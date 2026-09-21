@@ -12,7 +12,7 @@
         "josiasmontag/laravel-recaptchav3": "^1.0",
         "laravel/framework": "^12.61",
         "laravel/ui": "^4.6",
-        "scify/laravel-cookie-guard": "^4.1",
+        "scify/laravel-cookie-guard": "^5.1.0",
         "sentry/sentry-laravel": "^4.12",
         "spatie/laravel-sitemap": "^7.3",
         "symfony/http-client": "^6.2",
@@ -51,7 +51,8 @@
             "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan vendor:publish --tag=cookies-consent-public --force"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
