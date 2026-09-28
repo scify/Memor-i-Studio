@@ -1,47 +1,82 @@
 # Dependabot configuration — https://docs.github.com/code-security/dependabot
 #
-# Strategy: keep PR noise low while staying current and secure.
-#   - minor/patch updates are grouped into a single PR per ecosystem
-#   - major updates stay ungrouped so breaking changes get individual review
-#   - `cooldown` delays brand-new releases, reducing supply-chain risk from
-#     a compromised or broken just-published version
-#   - GitHub Actions are kept patched (a compromised action runs in CI)
+# Strategy: security updates only.
+#   - `open-pull-requests-limit: 0` disables scheduled version updates for
+#     each ecosystem. Security (advisory-driven) PRs are not subject to this
+#     limit, so this file only customises how those PRs look.
+#   - Security PRs per ecosystem are grouped into a single PR
+#   - No `ignore` block: a security fix that exists only in a new major must
+#     still be proposed. The auto-merge workflow leaves majors to manual review.
+#   - No `cooldown`: it applies to version updates only, security updates
+#     bypass it
+#   - `schedule` is required by the schema but produces no PRs at limit 0
 #
-# Security (advisory-driven) updates also require "Dependabot security updates"
-# to be enabled in the repository's Security settings.
+# Security updates also require "Dependabot security updates" to be enabled
+# in the repository's Security settings.
+#
+# Every setting is explained in full in the composer block. The npm and
+# github-actions blocks only comment on what differs.
 
+# Config file format. `2` is the only supported value.
 version: 2
 
 updates:
     # ---- PHP / Composer -------------------------------------------------
+    # Which package manager this block configures. Dependabot reads
+    # composer.json and composer.lock.
     - package-ecosystem: composer
+      # Where the manifest lives, relative to the repository root.
       directory: /
+      # When Dependabot checks for *version* updates. The schema requires
+      # this key even though version updates are disabled below, so it never
+      # produces a PR here. Security updates ignore it and open as soon as an
+      # advisory is published.
       schedule:
           interval: weekly
           day: monday
           time: '06:00'
           timezone: Etc/UTC
-      open-pull-requests-limit: 10
+      # Maximum number of open version-update PRs. `0` switches version
+      # updates off entirely. Security-update PRs do not count toward this
+      # limit and are not blocked by it. This single key is what makes the
+      # config security-only.
+      open-pull-requests-limit: 0
+      # How the version constraint in composer.json is changed. `increase`
+      # raises the constraint to the new version, not only the lock file.
+      # For a security fix this stops a later `composer update` from
+      # resolving back to the vulnerable version.
       versioning-strategy: increase
-      cooldown:
-          default-days: 7
+      # Labels added to every PR from this block. They must already exist
+      # in the repository, otherwise Dependabot creates them.
       labels:
           - dependencies
           - php
-      # Routine updates: minor/patch only. Major bumps are skipped here, but
-      # security updates can still propose a major if that's the only fix.
-      ignore:
-          - dependency-name: '*'
-            update-types:
-                - version-update:semver-major
+      # Commit message and PR title prefix, in Conventional Commits style.
+      # `prefix` is used for `require` packages. `prefix-development` is
+      # used when every updated package is in `require-dev`.
+      commit-message:
+          prefix: 'chore(deps)'
+          prefix-development: 'chore(deps-dev)'
+      # Combine several updates into one PR instead of one PR per package.
       groups:
-          composer-minor-patch:
-              applies-to: version-updates
-              update-types:
-                  - minor
-                  - patch
+          # Group name. You choose it. It appears in the PR title and branch
+          # name, and the fetch-metadata action returns it as
+          # `dependency-group` in the auto-merge workflow.
+          composer-security:
+              # Which kind of update this group collects. The default is
+              # `version-updates`, which would never match here because
+              # version updates are disabled. `security-updates` makes the
+              # group apply to advisory-driven PRs.
+              applies-to: security-updates
+              # Package name globs that belong to the group. `*` matches
+              # every package, so all security fixes found in one run land
+              # in one PR. A package that matches no group would get its own
+              # PR, which cannot happen with `*`.
+              patterns:
+                  - '*'
 
     # ---- JavaScript / npm ----------------------------------------------
+    # Reads package.json and package-lock.json.
     - package-ecosystem: npm
       directory: /
       schedule:
@@ -49,48 +84,44 @@ updates:
           day: monday
           time: '06:00'
           timezone: Etc/UTC
-      open-pull-requests-limit: 10
+      open-pull-requests-limit: 0
+      # Raises the range in package.json, not only package-lock.json.
       versioning-strategy: increase
-      cooldown:
-          default-days: 7
       labels:
           - dependencies
           - javascript
-      # Routine updates: minor/patch only. Major bumps are skipped here, but
-      # security updates can still propose a major if that's the only fix.
-      ignore:
-          - dependency-name: '*'
-            update-types:
-                - version-update:semver-major
+      # `prefix-development` applies when every updated package is in
+      # `devDependencies`.
+      commit-message:
+          prefix: 'chore(deps)'
+          prefix-development: 'chore(deps-dev)'
       groups:
-          npm-minor-patch:
-              applies-to: version-updates
-              update-types:
-                  - minor
-                  - patch
+          npm-security:
+              applies-to: security-updates
+              patterns:
+                  - '*'
 
     # ---- GitHub Actions ------------------------------------------------
+    # Reads `uses:` lines in .github/workflows/*.yml. A compromised action
+    # runs inside CI with access to the GITHUB_TOKEN, so advisories against
+    # actions matter as much as advisories against code dependencies.
     - package-ecosystem: github-actions
+      # For github-actions `/` means .github/workflows, not the repo root.
       directory: /
       schedule:
           interval: weekly
           day: monday
           time: '06:00'
           timezone: Etc/UTC
-      open-pull-requests-limit: 10
-      cooldown:
-          default-days: 3
+      open-pull-requests-limit: 0
+      # No `versioning-strategy`: actions have no manifest constraint.
       labels:
           - dependencies
           - github-actions
-      # Routine updates: minor/patch only. NOTE: many actions release via major
-      # tags (v4 -> v5), so this keeps you on the current major. Remove this
-      # ignore block if you want major action bumps proposed automatically.
-      ignore:
-          - dependency-name: '*'
-            update-types:
-                - version-update:semver-major
+      # No `commit-message`: this ecosystem has no development dependencies,
+      # so `prefix-development` is not supported, and no prefix was wanted.
       groups:
-          github-actions:
+          github-actions-security:
+              applies-to: security-updates
               patterns:
                   - '*'
