@@ -70,3 +70,4 @@ storage/logs
 .cursorignorerules
 .cursorignorerules
 .cursorignorerules
+/.phpunit.cache
