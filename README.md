@@ -179,6 +179,19 @@ The `post-autoload-dump` script publishes the cookie-consent assets into `public
 track. Without them every page answers 500, so do not use `--no-scripts`, and give the deploy user write access to
 `public/vendor`.
 
+Then build the frontend:
+
+```bash
+npm ci
+npm run build
+```
+
+- `npm ci` must install the devDependencies (do not use `--omit=dev`): Vite and Sass are devDependencies.
+- Every page answers 500 until `public/build/manifest.json` exists, so build before the site serves the new code, or
+  use maintenance mode (`php artisan down` / `php artisan up`).
+- Vite reads `VITE_*` values from `.env` at build time. Set them before `npm run build`; for example
+  `VITE_SENTRY_DSN_PUBLIC` enables browser error reports to Sentry.
+
 ## Required steps for Production server
 
 ### Required steps for uploading large files
