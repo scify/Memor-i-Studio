@@ -59,6 +59,16 @@ their own flavors of Memor-i game!
 | Open Mailpit (all outgoing mail) | `ddev mailpit` |
 | Show URLs and services | `ddev describe` |
 
+### npm supply-chain settings
+
+`.npmrc` hardens npm for this project:
+
+- `ignore-scripts=true`: npm does not run install scripts of dependencies
+- `min-release-age=7`: npm installs only package versions that are at least 7 days old
+- `engine-strict=true`: npm refuses to install with a Node or npm version outside `engines` in `package.json`
+
+Use `npm ci` to install exactly what `package-lock.json` specifies (`composer setup` does this).
+
 ## Tests
 
 ```bash
