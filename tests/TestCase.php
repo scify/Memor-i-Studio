@@ -1,25 +1,38 @@
 <?php
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
+
+abstract class TestCase extends BaseTestCase
 {
-    /**
-     * The base URL to use while testing the application.
-     *
-     * @var string
-     */
-    protected $baseUrl = 'http://localhost';
+    use CreatesApplication;
 
     /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
+     * The database traits wipe the database, and any test can write to it.
+     * DDEV container variables can point the tests at a real database, so
+     * refuse anything other than SQLite in memory before the traits run.
      */
-    public function createApplication()
+    protected function setUpTraits()
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        $this->ensureTestDatabaseIsInMemory();
 
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        return parent::setUpTraits();
+    }
 
-        return $app;
+    protected function ensureTestDatabaseIsInMemory(): void
+    {
+        $connection = DB::connection();
+        $driver = $connection->getConfig('driver');
+        $database = $connection->getConfig('database');
+
+        if ($driver !== 'sqlite' || $database !== ':memory:') {
+            throw new RuntimeException(
+                "Tests must use SQLite in memory, not [{$driver}] database [{$database}]. "
+                .'Check the DB_* lines in phpunit.xml.'
+            );
+        }
     }
 }
