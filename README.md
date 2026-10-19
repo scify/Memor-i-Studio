@@ -11,116 +11,68 @@ blind people.
 [Memor-i Studio](https://memoristudio.scify.org/), is an online games repository that people can use in order to create
 their own flavors of Memor-i game!
 
-## Installation Instructions
+## Requirements
 
-Please read thoroughly the following guid/steps, to set up Memor-i Studio.
+- [DDEV](https://ddev.readthedocs.io/) with Docker. DDEV provides PHP 8.4, MySQL 8.0, Node (version from `.nvmrc`),
+  Composer, ImageMagick and ffmpeg.
 
-## Pre-installation requirements
+## Getting started
 
-This project assumes working installations of the following technologies / components:
+1. Clone the repository and start DDEV:
 
-1. [PHP](https://php.net/) (version >= `8.1`)
+   ```bash
+   git clone https://github.com/scify/Memor-i-Studio.git
+   cd Memor-i-Studio
+   ddev start
+   ```
 
-2. [MySQL](https://www.mysql.com/)
+   Every `ddev start` runs `composer setup` and then the database migrations. `composer setup` creates `.env` from
+   `.env.example` (only if `.env` is missing), installs the PHP dependencies and, when `package-lock.json` changed, the
+   npm dependencies (`npm ci`), generates `APP_KEY` (only if it is empty) and builds the frontend. It is safe to run
+   again at any time, also by hand: `ddev composer setup`. DDEV writes the database and `APP_URL` settings into
+   `.env`.
 
-3. [composer](https://getcomposer.org/) (PHP package manager)
+2. Edit `.env` if you need the external services (`WINDOWS_SETUP_SERVICE_URL`, Sentry, Firebase). DDEV catches all
+   mail in [Mailpit](https://mailpit.axllent.org/) (`ddev mailpit`).
 
-4. [npm](https://www.npmjs.com/get-npm) (Front-end dependencies package manager)
+3. Create the starter data:
 
-5. [Laravel](https://laravel.com/)
+   ```bash
+   ddev artisan db:seed
+   ```
 
-6. [Apache Web Server](https://httpd.apache.org/) (or any other Web Server you are comfortable with)
+4. For frontend work, rebuild the assets when files change:
 
-## First time install (setup database and install dependencies)
+   ```bash
+   ddev npm run watch
+   ```
 
-## Docker option
+5. Open <https://memori-studio.ddev.site:8443>.
 
-You can use the `docker-compose.yml` file that exists at project roo, to quickly set up a docker container.
+### Everyday commands
 
-Just run
+| Task | Command |
+|---|---|
+| Start or stop the environment | `ddev start`, `ddev stop` |
+| Run Artisan, Composer or npm in the container | `ddev artisan ...`, `ddev composer ...`, `ddev npm ...` |
+| Open a MySQL shell | `ddev mysql` |
+| Open Mailpit (all outgoing mail) | `ddev mailpit` |
+| Show URLs and services | `ddev describe` |
 
-```bash
-docker compose up
-```
-
-To fire up the container.
-
-Then, you can enter the container by running
-
-```bash
-docker exec -it memori_studio_server bash
-```
-
-And from there, you can run all the `php artisan`, `composer`, and `npm` commands.
-
-### Environment file, Laravel/backend dependencies
-
-After cloning the project, create an `.env` file (should be a copy of `.env.example`), containing the information about
-your database name and credentials. After that, download all Laravel dependencies
-through [Composer](https://laravel.com/docs/7.x/installation), by running
-
-```bash
-composer install
-
-composer update
-```
-
-### Front-end dependencies
-
-After all Laravel dependencies have been downloaded, it's time to download all Javascript libraries and dependencies. We
-achieve that by using nodejs and its package manager, [npm](https://www.npmjs.com/).
-
-A convenient way of installing multiple versions of nodejs and npm on a machine, is by installing and using Node Version
-Manager, [nvm](https://github.com/nvm-sh/nvm).
-
-So, when in project root directory, and after npm has been installed correctly, run
-
-It is very easy to install multiple versions of NodeJS and npm, by
-using [Node Version Manager (nvm)](https://github.com/creationix/nvm).
-
-If you are using [`nvm`](https://github.com/nvm-sh/nvm), run this command in order to sync to the correct NodeJS version
-for the project:
+## Tests
 
 ```bash
-nvm install
-
-nvm use 
-
-npm install
+ddev composer test   # run the test suite
+ddev coverage        # the same, with a coverage summary and an HTML report in coverage/
 ```
 
-To download and install all libraries and dependencies.
+The tests run on SQLite in memory (see the `<server>` values in `phpunit.xml`). They never use the DDEV MySQL database:
+`<server>` values override the database variables that DDEV sets in the container, `tests/TestCase.php` refuses any
+database except SQLite in memory, and the tests refuse to start with a cached configuration (`composer test` clears it
+first). `ddev coverage` turns Xdebug on for the run and then restores its previous state (also when a test fails),
+because Xdebug slows down every request.
 
-### Compiling front-end assets
-
-This project uses [Webpack and Laravel Mix](https://laravel.com/docs/7.x/mix) which is a popular toolkit for automating
-painful or time-consuming tasks, like SASS compiling and js/css concatenation and
-minification.
-
-Since it is built upon webpack, you can use the following commands to compile the front-end assets:
-
-```bash
-npm run dev #for dev builds
-
-npm run prod #for production builds
-
-npm run watch #for dev builds, also enables hot changes on the files 
-```
-
-### Database
-
-Create the database schema:
-
-```bash
-php artisan config:clear
-
-php artisan migrate
-```
-
-#### Add seed data to DB
-
-Run ```php artisan db:seed``` in order to insert the starter data to the DB by
-using [Laravel seeder](https://laravel.com/docs/7.x/seeding)
+## Server setup
 
 ### Permissions
 
@@ -148,46 +100,6 @@ sudo ./set-file-permissions.sh www-data project_memori .
 
 **Note:** `project_memori` should be the name of the server user.
 
-## Apache configuration (optional)
-
-```
-cat /etc/apache2/sites-available/memoristudio.conf
-
-<VirtualHost *:80>
-    ServerName dev.memoristudio
-    DocumentRoot "/path/to/memoristudio/public"
-    <Directory "/path/to/memoristudio/public">
-        AllowOverride all
-    </Directory>
-</VirtualHost>
-```
-
-Make the symbolic link:
-
-```bash
-cd /etc/apache2/sites-enabled && sudo ln -s ../sites-available/memoristudio.conf
-```
-
-Enable mod_rewrite and restart apache:
-
-```bash
-sudo a2enmod rewrite && sudo service apache2 restart
-```
-
-## Without apache custom configuration
-
-Navigate to the root directory of the project and run:
-
-```bash
-php artisan serve
-```
-
-and navigate to [localhost:8000](http://localhost:8000/).
-
-And have write access to ```/home``` directory.
-
-<hr>
-
 ## Required steps for the server
 
 ### 1. Allow the uploading large files
@@ -200,7 +112,7 @@ configuration files for `php-fpm` and `nginx`.
    edit the `/etc/nginx/sites-enabled/memoristudio.server.org` file and add `fastcgi_read_timeout 300;`
 2. For php-fpm
 
-   edit `/etc/php/8.1/fpm/` (or the corresponding php version) and change:
+   edit `/etc/php/8.4/fpm/` (or the corresponding php version) and change:
 
 ```text
  max_input_time = 300
@@ -215,11 +127,11 @@ configuration files for `php-fpm` and `nginx`.
 This project allows users to upload audio files. In order for the desktop application of Memor-i to operate correctly,
 these files need to me in .mp3 format and have a CBR (constant bit rate), not a VBR (variable bit rate)
 . [See more](https://www.lifewire.com/difference-between-cbr-and-vbr-encoding-2438423)
-This project converts uploaded audio files appropriately, on the fly. For this to happen, we
-use [avconv](https://libav.org/avconv.html) library. To install this library in a Unix-based machine,
-check [this post](http://askubuntu.com/questions/391357/how-do-you-install-avconv-on-ubuntu-server-13-04).
+This project converts uploaded audio files appropriately, on the fly. For this to happen, the server needs
+[ffmpeg](https://ffmpeg.org/) (`apt-get install ffmpeg`) or the older `avconv`; the script uses `avconv` when it is
+installed. DDEV installs ffmpeg.
 
-You can see and modify the command we use for coverting the files in ```public/convert_to_mp3.sh```.
+You can see and modify the command we use for converting the files in `public/convert_file_to_mp3.sh`.
 
 ### 3. Converting image files to .ico files
 
@@ -241,8 +153,18 @@ So you will need to setup and have this service running, and then change the `WI
 
 ## Deploying
 
-You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and
-navigate to http://localhost/{yourLinkName}
+The server needs PHP 8.4 or newer (`composer.lock` requires it), MySQL 8.0, and Node with the version from `.nvmrc`.
+Point the web server to the `public` directory.
+
+After every `git pull`, install the PHP dependencies with Composer scripts enabled:
+
+```bash
+composer install --no-dev --optimize-autoloader
+```
+
+The `post-autoload-dump` script publishes the cookie-consent assets into `public/vendor/scify`, which git does not
+track. Without them every page answers 500, so do not use `--no-scripts`, and give the deploy user write access to
+`public/vendor`.
 
 ## Required steps for Production server
 

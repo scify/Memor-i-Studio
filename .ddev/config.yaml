@@ -1,0 +1,49 @@
+name: memori-studio
+type: laravel
+docroot: public
+php_version: "8.4"
+webserver_type: nginx-fpm
+router_http_port: "8080"
+router_https_port: "8443"
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns: []
+database:
+  type: mysql
+  version: "8.0"
+nodejs_version: "22"
+# convert (ImageMagick) makes the game .ico files; public/convert_file_to_mp3.sh needs ffmpeg.
+webimage_extra_packages: [ffmpeg, imagemagick]
+web_extra_exposed_ports:
+  - name: vite
+    container_port: 5176
+    http_port: 5175
+    https_port: 5176
+hooks:
+  post-start:
+    # Keep nodejs_version in sync with .nvmrc
+    - exec: bash .ddev/scripts/sync-node-version.sh
+    # Create directories if they don't exist
+    - exec: mkdir -p storage/framework/{cache,sessions,views}
+    - exec: mkdir -p storage/logs
+    - exec: mkdir -p bootstrap/cache
+    # Set permissions
+    - exec: chmod -R ugo+rw storage bootstrap/cache
+    # Install dependencies and set up Laravel. composer setup is safe to re-run: it keeps
+    # .env and APP_KEY, installs exactly the lock files and builds the frontend.
+    - exec: composer setup --no-interaction
+    # Clear caches
+    - exec: php artisan config:clear
+    - exec: php artisan cache:clear
+    - exec: php artisan view:clear
+    - exec: php artisan migrate --no-interaction
+  post-import-db:
+    - exec: php artisan migrate --no-interaction
+web_environment:
+  - APP_ENV=local
+  - DB_CONNECTION=mysql
+  - DB_HOST=db
+  - DB_DATABASE=db
+  - DB_USERNAME=db
+  - DB_PASSWORD=db
+nginx_full_override: false

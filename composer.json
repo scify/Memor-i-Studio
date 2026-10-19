@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "doctrine/dbal": "^3.0",
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
@@ -24,6 +24,7 @@
         "laracasts/utilities": "~3.2.4",
         "madnest/madzipper": "^1.6",
         "mockery/mockery": "^1.5",
+        "nunomaduro/collision": "^8.8",
         "phpunit/phpunit": "^11.0",
         "symfony/css-selector": "^6.2",
         "symfony/dom-crawler": "^6.2"
@@ -51,13 +52,36 @@
             "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan vendor:publish --tag=cookies-consent-public --force"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover",
+            "@php artisan vendor:publish --tag=cookies-consent-public --force"
+        ],
+        "setup": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@composer install",
+            "@php -r \"require 'vendor/autoload.php'; empty(Dotenv\\Dotenv::parse(file_get_contents('.env'))['APP_KEY'] ?? null) && exit(pclose(popen(escapeshellarg(PHP_BINARY) . ' artisan key:generate --ansi', 'w')));\"",
+            "@php -r \"file_exists('node_modules/.package-lock.json') && filemtime('node_modules/.package-lock.json') >= filemtime('package-lock.json') || exit(pclose(popen('npm ci', 'w')));\"",
+            "npm run build"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
+        ],
+        "test:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "@putenv XDEBUG_MODE=coverage",
+            "@php artisan config:clear --ansi",
+            "@php artisan test --coverage --coverage-html=coverage"
         ]
+    },
+    "scripts-descriptions": {
+        "setup": "Create .env if missing, install PHP dependencies and (when package-lock.json changed) npm dependencies, generate APP_KEY if empty and build the frontend.",
+        "test": "Run the test suite (SQLite in memory).",
+        "test:coverage": "Run the test suite with a coverage summary and an HTML report in coverage/ (needs PCOV or Xdebug)."
     },
     "config": {
         "preferred-install": "dist",
