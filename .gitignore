@@ -1,9 +1,7 @@
 /node_modules
 /bower_components
 /public/build
-/public/js
-/public/css
-/public/dist
+/public/hot
 /public/node_modules
 /public/storage
 /public/vendor/scify
@@ -58,7 +56,6 @@ npm-debug.log
 storage/*.jar
 *.exe
 .idea/
-public/mix-manifest.json
 storage/logs
 
 

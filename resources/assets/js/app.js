@@ -1,33 +1,16 @@
-const {Pleasure} = require("../pleasure-admin-panel/js/pleasure");
-const {Layout} = require("../pleasure-admin-panel/js/layout");
-// window._ = require('lodash'); // Removed: conflicts with vendor scripts and is not used
-let $ = require("jquery");
-require('jquery-ui');
-require('jquery-ui/ui/widgets/sortable');
-require('jquery-ui/ui/disable-selection');
-require('icheck');
-require('bootstrap');
-require('bootstrap-select');
-
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-
+import $ from "./jquery-global";
+import "bootstrap-sass";
+import "bootstrap-select";
+import "icheck";
+import "jasny-bootstrap/dist/js/jasny-bootstrap.js";
+import {Pleasure} from "../pleasure-admin-panel/js/pleasure";
+import {Layout} from "../pleasure-admin-panel/js/layout";
 import * as Sentry from "@sentry/browser";
 
-if (process.env.MIX_SENTRY_DSN_PUBLIC) {
+if (import.meta.env.VITE_SENTRY_DSN_PUBLIC) {
     Sentry.init({
-        dsn: process.env.MIX_SENTRY_DSN_PUBLIC,
+        dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
     });
-}
-
-try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = $ = require('jquery');
-} catch (e) {
-    console.error(e);
 }
 
 $(document).ready(function () {

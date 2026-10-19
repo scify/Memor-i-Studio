@@ -1,12 +1,18 @@
-import FastClick from 'fastclick';
-require('jquery-ui');
-require('jquery-ui/ui/widgets/sortable');
-require('jquery-ui/ui/disable-selection');
-require('bootstrap');
-require('bootstrap-select');
-require('bootstrap-select');
-require('fastclick');
-require('velocity-animate');
+import "../../js/jquery-global";
+import {FastClick} from 'fastclick';
+// The jQuery UI files load their dependencies only through AMD, so import them in order.
+import 'jquery-ui/ui/version';
+import 'jquery-ui/ui/widget';
+import 'jquery-ui/ui/data';
+import 'jquery-ui/ui/scroll-parent';
+import 'jquery-ui/ui/widgets/mouse';
+import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui/ui/disable-selection';
+import 'bootstrap-sass';
+import 'bootstrap-select';
+import 'velocity-animate';
+import toastr from 'toastr';
+import scrollMonitor from 'scrollmonitor';
 export const Pleasure = {
 
 	// Pleasure Theme Settings

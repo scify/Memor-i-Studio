@@ -41,11 +41,14 @@ their own flavors of Memor-i game!
    ddev artisan db:seed
    ```
 
-4. For frontend work, rebuild the assets when files change:
+4. For frontend work, start the Vite dev server (hot reload through port 5176):
 
    ```bash
-   ddev npm run watch
+   ddev npm run dev
    ```
+
+   `ddev composer setup` (and every `ddev start`) builds the assets for production with `npm run build`.
+   `VITE_*` values in `.env` are read at build time, so set them before you build.
 
 5. Open <https://memori-studio.ddev.site:8443>.
 
@@ -175,6 +178,19 @@ composer install --no-dev --optimize-autoloader
 The `post-autoload-dump` script publishes the cookie-consent assets into `public/vendor/scify`, which git does not
 track. Without them every page answers 500, so do not use `--no-scripts`, and give the deploy user write access to
 `public/vendor`.
+
+Then build the frontend:
+
+```bash
+npm ci
+npm run build
+```
+
+- `npm ci` must install the devDependencies (do not use `--omit=dev`): Vite and Sass are devDependencies.
+- Every page answers 500 until `public/build/manifest.json` exists, so build before the site serves the new code, or
+  use maintenance mode (`php artisan down` / `php artisan up`).
+- Vite reads `VITE_*` values from `.env` at build time. Set them before `npm run build`; for example
+  `VITE_SENTRY_DSN_PUBLIC` enables browser error reports to Sentry.
 
 ## Required steps for Production server
 

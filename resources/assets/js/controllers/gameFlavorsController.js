@@ -1,3 +1,5 @@
+/* global user, gameFlavorsRoute -- declared by the inline script in game_flavor/all_games.blade.php */
+import $ from "../jquery-global";
 import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
 
 (function () {
@@ -37,7 +39,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
     };
     let getGamesWithFiltersHandler = function () {
         const body = $("body");
-        body.on("click", "#getGames", function (e) {
+        body.on("click", "#getGames", function () {
             getGamesWithFilters();
         });
     };

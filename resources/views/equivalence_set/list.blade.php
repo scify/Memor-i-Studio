@@ -118,7 +118,8 @@
     @include('equivalence_set.modals')
 @endsection
 @push('scripts')
-    <script>
+    @vite('resources/assets/js/controllers/equivalenceSetsController.js')
+    <script type="module">
         $(function () {
             var controller = new window.EquivalenceSetsController(cards, editCardRoute);
             controller.init();
