@@ -8,7 +8,7 @@ export default [
 		languageOptions: {
 			ecmaVersion: "latest",
 			sourceType: "module",
-			globals: { ...globals.browser, ...globals.jquery, ga: "readonly" },
+			globals: { ...globals.browser, ga: "readonly" },
 		},
 	},
 	{ files: ["vite.config.js", "eslint.config.js"], languageOptions: { globals: globals.node } },
