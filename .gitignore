@@ -6,6 +6,7 @@
 /public/dist
 /public/node_modules
 /public/storage
+/public/vendor/scify
 /storage/*.key
 /vendor
 /.idea/workspace.xml
