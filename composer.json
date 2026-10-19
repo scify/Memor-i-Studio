@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "doctrine/dbal": "^3.0",
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
@@ -24,6 +24,7 @@
         "laracasts/utilities": "~3.2.4",
         "madnest/madzipper": "^1.6",
         "mockery/mockery": "^1.5",
+        "nunomaduro/collision": "^8.8",
         "phpunit/phpunit": "^11.0",
         "symfony/css-selector": "^6.2",
         "symfony/dom-crawler": "^6.2"
