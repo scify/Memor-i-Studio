@@ -112,7 +112,7 @@ configuration files for `php-fpm` and `nginx`.
    edit the `/etc/nginx/sites-enabled/memoristudio.server.org` file and add `fastcgi_read_timeout 300;`
 2. For php-fpm
 
-   edit `/etc/php/8.1/fpm/` (or the corresponding php version) and change:
+   edit `/etc/php/8.4/fpm/` (or the corresponding php version) and change:
 
 ```text
  max_input_time = 300
@@ -153,8 +153,18 @@ So you will need to setup and have this service running, and then change the `WI
 
 ## Deploying
 
-You can run either  ```php artisan serve``` or set up a symbolic link to ```/path/to/project/public``` directory and
-navigate to http://localhost/{yourLinkName}
+The server needs PHP 8.4 or newer (`composer.lock` requires it), MySQL 8.0, and Node with the version from `.nvmrc`.
+Point the web server to the `public` directory.
+
+After every `git pull`, install the PHP dependencies with Composer scripts enabled:
+
+```bash
+composer install --no-dev --optimize-autoloader
+```
+
+The `post-autoload-dump` script publishes the cookie-consent assets into `public/vendor/scify`, which git does not
+track. Without them every page answers 500, so do not use `--no-scripts`, and give the deploy user write access to
+`public/vendor`.
 
 ## Required steps for Production server
 
