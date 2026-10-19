@@ -75,11 +75,7 @@
         </div>
     </div>
 </footer>
-<script src="{{ mix('js/manifest.js') }}"></script>
-<script src="{{ mix('js/vendor.js') }}"></script> {{-- Vendor libraries like jQuery, bootstrap --}}
-<script src="{{ mix('js/libs.js') }}"></script> {{-- Vendor libraries like jQuery, bootstrap --}}
-<script src="{{ mix('js/app.js') }}"></script> {{-- our application common code --}}
-<script src="{{ mix('js/equivalenceSetsController.js') }}"></script>
+@vite('resources/assets/js/app.js')
 @include('common.analytics')
 @if(config('app.userway_id'))
     <script>(function (d) {

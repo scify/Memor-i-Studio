@@ -67,5 +67,5 @@
         const user = {!!  json_encode($loggedInUser) !!};
         const gameFlavorsRoute = {!!  json_encode($gameFlavorsRoute) !!};
     </script>
-    <script src="{{ mix('js/gameFlavorsController.js') }}"></script>
+    @vite('resources/assets/js/controllers/gameFlavorsController.js')
 @endpush

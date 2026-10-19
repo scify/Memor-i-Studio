@@ -1,3 +1,4 @@
+import $ from "../jquery-global";
 import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
 
 (function () {

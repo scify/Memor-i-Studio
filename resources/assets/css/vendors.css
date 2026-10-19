@@ -1,0 +1,6 @@
+/* Theme and plugin styles, in the order that Laravel Mix concatenated them. */
+@import "../pleasure-admin-panel/css/admin1.css";
+@import "../pleasure-admin-panel/css/elements.css";
+@import "jasny-bootstrap/dist/css/jasny-bootstrap.min.css";
+@import "bootstrap-select/dist/css/bootstrap-select.min.css";
+@import "icheck/skins/flat/_all.css";

@@ -1,3 +1,5 @@
+import $ from "../jquery-global";
+
 window.EquivalenceSetsController = function (cards, editCardRoute, createEquivalenceSetRoute) {
     this.cards = JSON.parse(cards);
     this.editCardRoute = editCardRoute;

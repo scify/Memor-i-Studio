@@ -41,11 +41,14 @@ their own flavors of Memor-i game!
    ddev artisan db:seed
    ```
 
-4. For frontend work, rebuild the assets when files change:
+4. For frontend work, start the Vite dev server (hot reload through port 5176):
 
    ```bash
-   ddev npm run watch
+   ddev npm run dev
    ```
+
+   `ddev composer setup` (and every `ddev start`) builds the assets for production with `npm run build`.
+   `VITE_*` values in `.env` are read at build time, so set them before you build.
 
 5. Open <https://memori-studio.ddev.site:8443>.
 

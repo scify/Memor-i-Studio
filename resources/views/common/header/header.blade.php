@@ -22,9 +22,6 @@
     <link rel="shortcut icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
     <link rel="icon" href="{{asset("/assets/img/favicon.ico")}}" type="image/x-icon">
 
-    <!--The elixir function takes as parameter a versioned file relative to the public folder-->
-    <link rel="stylesheet" href="{{mix('css/vendors.css')}}">
-    <link rel="stylesheet" href="{{mix('css/app.css')}}">
-    <link rel="manifest" href="{{ asset('mix-manifest.json') }}">
+    @vite(['resources/assets/css/vendors.css', 'resources/assets/sass/app.scss'])
     {!! RecaptchaV3::initJs() !!}
 </head>
