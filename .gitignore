@@ -72,3 +72,4 @@ storage/logs
 .cursorignorerules
 .cursorignorerules
 /.phpunit.cache
+/coverage
