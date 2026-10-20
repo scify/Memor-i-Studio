@@ -101,4 +101,12 @@ class PlayerApiTest extends TestCase {
             ->assertOk()
             ->assertJsonPath('code', ServerResponses::$VALIDATION_ERROR);
     }
+
+    public function test_registration_with_an_unknown_game_creates_no_player(): void {
+        $this->postJson('/api/player/register', ['user_name' => 'newplayer', 'password' => 'secret', 'game_flavor_pack_identifier' => 'unknown-game'])
+            ->assertOk()
+            ->assertJsonPath('code', ServerResponses::$RESPONSE_ERROR);
+
+        $this->assertDatabaseMissing('player', ['user_name' => 'newplayer']);
+    }
 }

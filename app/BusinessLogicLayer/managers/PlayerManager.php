@@ -74,6 +74,8 @@ class PlayerManager {
             if ($this->playerWithUserNameExists($username)) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'user_name_taken', '');
             } else {
+                // Check the game first, so an unknown identifier leaves no player behind.
+                $this->gameFlavorManager->getFlavorIdFromIdentifier($gameFlavorPackIdentifier);
                 $newPlayer = new Player([
                     'user_name' => $username,
                     'password' => Hash::make($password),
