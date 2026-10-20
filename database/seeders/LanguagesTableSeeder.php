@@ -40,7 +40,7 @@ class LanguagesTableSeeder extends Seeder {
             ],
         ];
         foreach ($data as $datum) {
-            echo "\nProcessing language: " . $datum['name'] . "\n";
+            $this->command?->info('Processing language: ' . $datum['name']);
             Language::updateOrCreate(
                 ['id' => $datum['id']],
                 array_merge($datum, ['flag_img_path' => $datum['code'] . '.png'])
