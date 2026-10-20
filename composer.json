@@ -22,6 +22,7 @@
         "barryvdh/laravel-debugbar": "^3.15",
         "filp/whoops": "~2.18",
         "laracasts/utilities": "~3.2.4",
+        "larastan/larastan": "^3",
         "laravel/pint": "^1.30",
         "madnest/madzipper": "^1.6",
         "mockery/mockery": "^1.5",
