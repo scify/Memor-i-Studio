@@ -7,32 +7,8 @@ parameters:
 			path: app/BusinessLogicLayer/managers/CardManager.php
 
 		-
-			message: '#^Instantiated class League\\Flysystem\\Exception not found\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/BusinessLogicLayer/managers/CardManager.php
-
-		-
-			message: '#^Throwing object of an unknown class League\\Flysystem\\Exception\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/BusinessLogicLayer/managers/CardManager.php
-
-		-
-			message: '#^Instantiated class League\\Flysystem\\Exception not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
 			message: '#^PHPDoc tag @return has invalid value \(bool\. True if the game version was deleted successfully, false if the user has no access\)\: Unexpected token "\.", expected TOKEN_HORIZONTAL_WS at offset 96 on line 3$#'
 			identifier: phpDoc.parseError
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
-			message: '#^Throwing object of an unknown class League\\Flysystem\\Exception\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
 
