@@ -7,6 +7,7 @@ use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\Concerns\CreatesGameData;
@@ -64,6 +65,32 @@ class GameFlavorAuthorizationTest extends TestCase {
     #[DataProvider('gameActions')]
     public function test_the_owner_can_run_a_game_action(string $url): void {
         $this->actingAs($this->owner)->get(sprintf($url, $this->gameId))->assertRedirect();
+    }
+
+    public function test_the_owner_can_publish_a_built_game(): void {
+        DB::table('game_flavor')->where('id', $this->gameId)->update(['is_built' => true]);
+        $this->mock(GameFlavorManager::class, fn (MockInterface $mock) => $mock->shouldIgnoreMissing()
+            ->shouldReceive('toggleGameFlavorPublishedState')->andReturn(true));
+
+        $this->actingAs($this->owner)->get("/gameFlavor/publish/{$this->gameId}")->assertRedirect();
+    }
+
+    public function test_the_owner_cannot_publish_a_game_that_is_not_built(): void {
+        $this->actingAs($this->owner)->get("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
+    }
+
+    public function test_another_member_cannot_publish_or_unpublish(): void {
+        DB::table('game_flavor')->where('id', $this->gameId)->update(['is_built' => true]);
+
+        $this->actingAs($this->otherMember)->get("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->otherMember)->get("/gameFlavor/unpublish/{$this->gameId}")->assertForbidden();
+    }
+
+    public function test_the_owner_can_unpublish(): void {
+        $this->mock(GameFlavorManager::class, fn (MockInterface $mock) => $mock->shouldIgnoreMissing()
+            ->shouldReceive('toggleGameFlavorPublishedState')->andReturn(true));
+
+        $this->actingAs($this->owner)->get("/gameFlavor/unpublish/{$this->gameId}")->assertRedirect();
     }
 
     public function test_another_member_cannot_clone_a_private_game(): void {

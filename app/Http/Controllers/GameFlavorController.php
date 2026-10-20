@@ -185,6 +185,7 @@ class GameFlavorController extends Controller {
     }
 
     public function publish($id) {
+        $this->authorize('publish', GameFlavor::findOrFail($id));
         try {
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
@@ -201,6 +202,7 @@ class GameFlavorController extends Controller {
     }
 
     public function unPublish($id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         try {
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);

@@ -14,6 +14,13 @@ class GameFlavorPolicy {
     }
 
     /**
+     * Make the game public; only a built game can be published.
+     */
+    public function publish(User $user, GameFlavor $gameFlavor): bool {
+        return $this->manage($user, $gameFlavor) && (bool) $gameFlavor->is_built;
+    }
+
+    /**
      * Copy the game into the user's own games.
      */
     public function clone(User $user, GameFlavor $gameFlavor): bool {
