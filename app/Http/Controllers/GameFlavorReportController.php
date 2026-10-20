@@ -35,6 +35,9 @@ class GameFlavorReportController extends Controller {
      */
     public function createGameFlavorReport(Request $request) {
         $this->validate($request, [
+            'game_flavor_id' => 'required|integer|exists:game_flavor,id',
+            'user_name' => 'nullable|string|max:255',
+            'user_email' => 'nullable|email|max:255',
             'user_comment' => 'required',
         ]);
 

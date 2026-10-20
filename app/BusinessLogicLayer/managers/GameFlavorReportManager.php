@@ -29,10 +29,10 @@ class GameFlavorReportManager {
         $gameFlavorReport->game_flavor_id = $gameFlavorReportFields['game_flavor_id'];
         $gameFlavorReport->user_comment = $gameFlavorReportFields['user_comment'];
         if (isset($gameFlavorReportFields['user_name'])) {
-            $gameFlavorReport->user_comment = $gameFlavorReportFields['user_name'];
+            $gameFlavorReport->user_name = $gameFlavorReportFields['user_name'];
         }
         if (isset($gameFlavorReportFields['user_email'])) {
-            $gameFlavorReport->user_comment = $gameFlavorReportFields['user_email'];
+            $gameFlavorReport->user_email = $gameFlavorReportFields['user_email'];
         }
 
         return $gameFlavorReport;

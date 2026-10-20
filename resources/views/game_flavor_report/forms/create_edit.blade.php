@@ -15,7 +15,7 @@
                         <div class="inputer">
                             {{ __('messages.your_name') }} <span class="required">*</span>
                             <div class="input-wrapper">
-                                <input name="name" type="text"
+                                <input name="user_name" type="text"
                                        class="maxlength maxlength-position form-control" maxlength="50"
                                        placeholder="{{ __('messages.your_name') }}"
                                        value="{{$loggedInUser != null ? $loggedInUser->name : ''}}" required>
@@ -29,7 +29,7 @@
                         <div class="inputer">
                             {{ __('messages.your_email') }} <span class="required">*</span>
                             <div class="input-wrapper">
-                                <input name="name" type="email"
+                                <input name="user_email" type="email"
                                        class="maxlength maxlength-position form-control" maxlength="50"
                                        placeholder="{{ __('messages.your_email') }}"
                                        value="{{$loggedInUser != null ? $loggedInUser->email : ''}}" required>
