@@ -75,6 +75,19 @@ class GameFlavorAuthorizationTest extends TestCase {
         }
     }
 
+    public function test_a_failed_build_shows_the_error_and_sends_no_congratulations(): void {
+        $this->mock(GameFlavorManager::class, function (MockInterface $mock) {
+            $mock->shouldReceive('buildGameFlavor')->andThrow(new \Exception('Build service unavailable'));
+            $mock->shouldNotReceive('sendCongratulationsEmailToGameCreator');
+        });
+
+        $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))
+            ->post("/gameFlavor/build/{$this->gameId}")
+            ->assertViewIs('common.error_message')
+            ->assertSee('Build service unavailable')
+            ->assertSessionMissing('flash_message_success');
+    }
+
     public function test_another_member_cannot_submit_the_game_for_approval(): void {
         $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/submitForApproval")->assertForbidden();
     }

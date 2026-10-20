@@ -339,15 +339,11 @@ class GameFlavorController extends Controller {
         return redirect()->back();
     }
 
-    protected function buildExecutables(int $gameFlavorId) {
-        try {
-            $this->gameFlavorManager->buildGameFlavor($gameFlavorId);
-        } catch (Exception $e) {
-            return view('common.error_message', ['message' => $e->getMessage()]);
-        }
-        session()->flash('flash_message_success', trans('messages.game_was_built'));
-
-        return redirect()->back();
+    /**
+     * Throws when the build fails; the callers show the error and do not report success.
+     */
+    protected function buildExecutables(int $gameFlavorId): void {
+        $this->gameFlavorManager->buildGameFlavor($gameFlavorId);
     }
 
     public function assignGameFlavorToGameVersion($gameFlavorId, Request $request) {
