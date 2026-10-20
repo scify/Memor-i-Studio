@@ -9,20 +9,18 @@
                      src="{{route('resolveDataPath', ['filePath' => $gameFlavor->cover_img_file_path])}}">
             @endif
             @if($loggedInUser != null && $gameFlavor->allow_clone)
-                <a class="actionBtn btn btn-purple btn-ripple" href="{{route('cloneGameFlavor', $gameFlavor->id)}}"><i
-                            class="fa fa-files-o" aria-hidden="true"></i> {!! __('messages.clone') !!}</a>
+                <form method="POST" action="{{route('cloneGameFlavor', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="actionBtn btn btn-purple btn-ripple"><i
+                            class="fa fa-files-o" aria-hidden="true"></i> {!! __('messages.clone') !!}</button></form>
             @endif
             @if($gameFlavor->accessed_by_user && $gameFlavor->is_built)
                 @if(!$gameFlavor->published)
-                    <a class="actionBtn btn btn-green btn-ripple" style="top:45px;"
-                       href="{{route('publishGameFlavor', $gameFlavor->id)}}">
+                    <form method="POST" action="{{route('publishGameFlavor', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="actionBtn btn btn-green btn-ripple" style="top:45px;">
                         <i class="fa fa-globe" aria-hidden="true"></i> {!! __('messages.make_it_public') !!}
-                    </a>
+                    </button></form>
                 @else
-                    <a class="actionBtn btn btn-danger btn-ripple" style="top:45px;"
-                       href="{{route('unPublishGameFlavor', $gameFlavor->id)}}">
+                    <form method="POST" action="{{route('unPublishGameFlavor', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="actionBtn btn btn-danger btn-ripple" style="top:45px;">
                         <i class="fa fa-eye-slash" aria-hidden="true"></i> {!! __('messages.make_it_private') !!}
-                    </a>
+                    </button></form>
                 @endif
             @endif
             @if($gameFlavor->internationally_available)
@@ -48,46 +46,39 @@
                                 <li><a href="{{url('gameFlavor/edit', $gameFlavor->id)}}"
                                        class="btn btn-flat btn-ripple"><i class="fa fa-pencil" aria-hidden="true"></i>
                                         {!! __('messages.edit') !!}</a></li>
-                                <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}"
-                                       class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        {!! __('messages.delete') !!}</a></li>
+                                <li><form method="POST" action="{{url('gameFlavor/delete', $gameFlavor->id)}}" style="display: inline">@csrf @method('DELETE')<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        {!! __('messages.delete') !!}</button></form></li>
                                 @if($loggedInUser->isAdmin() && $gameFlavor->is_built)
                                     @if(!$gameFlavor->published)
-                                        <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}"
-                                               class="btn btn-flat btn-ripple"><i class="fa fa-check"
+                                        <li><form method="POST" action="{{url('gameFlavor/publish', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-check"
                                                                                   aria-hidden="true"></i> {!! __('messages.publish') !!}
-                                            </a>
+                                            </button></form>
                                         </li>
                                     @else
-                                        <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}"
-                                               class="btn btn-flat btn-ripple"><i class="fa fa-ban"
+                                        <li><form method="POST" action="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-ban"
                                                                                   aria-hidden="true"></i> {!! __('messages.unpublish') !!}
-                                            </a>
+                                            </button></form>
                                         </li>
                                     @endif
                                 @endif
                                 @if($gameFlavor->is_built)
                                     @if(!$gameFlavor->published)
-                                        <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}"
-                                               class="btn btn-flat btn-ripple"><i class="fa fa-globe"
+                                        <li><form method="POST" action="{{url('gameFlavor/publish', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-globe"
                                                                                   aria-hidden="true"></i> {!! __('messages.make_it_public') !!}
-                                            </a></li>
+                                            </button></form></li>
                                     @else
-                                        <li><a href="{{url('gameFlavor/unpublish', $gameFlavor->id)}}"
-                                               class="btn btn-flat btn-ripple"><i class="fa fa-eye-slash"
+                                        <li><form method="POST" action="{{url('gameFlavor/unpublish', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-eye-slash"
                                                                                   aria-hidden="true"></i> {!! __('messages.make_it_private') !!}
-                                            </a></li>
+                                            </button></form></li>
                                     @endif
                                 @endif
                             </div>
                             <div class="col-md-6">
                                 @if($loggedInUser->isAdmin())
-                                    <li><a href="{{url('gameFlavor/buildTest', $gameFlavor->id)}}"
-                                           class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i>
-                                            {!! __('messages.test_build') !!}</a></li>
-                                    <li><a href="{{url('gameFlavor/build', $gameFlavor->id)}}"
-                                           class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i>
-                                            {!! __('messages.build') !!}</a></li>
+                                    <li><form method="POST" action="{{url('gameFlavor/buildTest', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i>
+                                            {!! __('messages.test_build') !!}</button></form></li>
+                                    <li><form method="POST" action="{{url('gameFlavor/build', $gameFlavor->id)}}" style="display: inline">@csrf<button type="submit" class="btn btn-flat btn-ripple"><i class="fa fa-cogs" aria-hidden="true"></i>
+                                            {!! __('messages.build') !!}</button></form></li>
                                     <li><a href="{{url('gameFlavor/changeVersionIndex', $gameFlavor->id)}}"
                                            class="btn btn-flat btn-ripple"><i class="fa fa-wrench"
                                                                               aria-hidden="true"></i> {!! __('messages.change_base_version') !!}

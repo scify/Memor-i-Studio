@@ -41,7 +41,7 @@
                             {!! __('messages.submitted') !!}
                         </a>
                     @else
-                        <form method="GET" action="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}">
+                        <form method="POST" action="{{route('submitGameFlavorForApproval', $gameFlavor->id)}}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <button type="submit" class="width-percent-100 btn btn-success btn-ripple padding-15">
                                 {!! __('messages.submit_game_btn') !!}

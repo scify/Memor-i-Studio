@@ -67,16 +67,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('gameFlavor/create', 'GameFlavorController@create')->name('createGameFlavor');
     Route::get('gameFlavor/edit/{id}', 'GameFlavorController@editIndex')->name('editGameFlavorIndex');
     Route::post('gameFlavor/edit/{id}', 'GameFlavorController@edit')->name('editGameFlavor');
-    Route::get('gameFlavor/{id}/clone', 'GameFlavorController@cloneGameFlavorAndFiles')->name('cloneGameFlavor');
-    Route::get('gameFlavor/{id}/submitForApproval', 'GameFlavorController@submitGameFlavorForApproval')->name('submitGameFlavorForApproval');
-    Route::get('gameFlavor/delete/{id}', 'GameFlavorController@delete')->name('deleteGameFlavor');
-    Route::get('gameFlavor/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
+    Route::post('gameFlavor/{id}/clone', 'GameFlavorController@cloneGameFlavorAndFiles')->name('cloneGameFlavor');
+    Route::post('gameFlavor/{id}/submitForApproval', 'GameFlavorController@submitGameFlavorForApproval')->name('submitGameFlavorForApproval');
+    Route::delete('gameFlavor/delete/{id}', 'GameFlavorController@delete')->name('deleteGameFlavor');
+    Route::post('gameFlavor/publish/{id}', 'GameFlavorController@publish')->name('publishGameFlavor');
     Route::post('gameFlavor/report', 'GameFlavorReportController@createGameFlavorReport')->name('reportGameFlavor');
-    Route::get('gameFlavor/unpublish/{id}', 'GameFlavorController@unPublish')->name('unPublishGameFlavor');
-    Route::get('gameFlavor/buildTest/{id}', 'GameFlavorController@buildExecutablesForTesting')->name('buildGameFlavorExecutablesForTesting');
-    Route::get('gameFlavor/build/{id}', 'GameFlavorController@buildExecutablesAndCongratulate')->name('buildGameFlavorExecutables');
+    Route::post('gameFlavor/unpublish/{id}', 'GameFlavorController@unPublish')->name('unPublishGameFlavor');
+    Route::post('gameFlavor/buildTest/{id}', 'GameFlavorController@buildExecutablesForTesting')->name('buildGameFlavorExecutablesForTesting');
+    Route::post('gameFlavor/build/{id}', 'GameFlavorController@buildExecutablesAndCongratulate')->name('buildGameFlavorExecutables');
     Route::get('gameFlavor/changeVersionIndex/{id}', 'GameFlavorController@changeGameVersionIndex')->name('changeGameVersionIndex');
-    Route::get('gameFlavor/changeVersion/{id}', 'GameFlavorController@assignGameFlavorToGameVersion')->name('changeGameVersion');
+    Route::post('gameFlavor/changeVersion/{id}', 'GameFlavorController@assignGameFlavorToGameVersion')->name('changeGameVersion');
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
 
     // Game Resources
@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
-    Route::get('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
+    Route::delete('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
     Route::post('equivalenceSet/edit', 'EquivalenceSetController@edit')->name('editEquivalenceSet');
     // Card routes
     Route::post('card/edit', 'CardController@edit')->name('editCard');
@@ -103,11 +103,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
         Route::get('gameVersion/{id}/edit', 'GameVersionController@editIndex')->name('editGameVersionIndex');
         Route::post('gameVersion/{id}/edit', 'GameVersionController@edit')->name('editGameVersion');
-        Route::get('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
+        Route::delete('gameVersion/{id}/delete', 'GameVersionController@delete')->name('deleteGameVersion');
         Route::get('gameFlavors/submittedForApproval', 'GameFlavorController@showGameFlavorsSubmittedForApproval')->name('showGameFlavorsSubmittedForApproval');
         Route::get('gameFlavors/userReports', 'GameFlavorReportController@showAllGameFlavorReports')->name('showAllGameFlavorReports');
-        Route::get('gameFlavor/build/{id}', 'AdminController@buildGameFlavors')->name('buildGameFlavors');
-        Route::get('gameVersion/build/{id}', 'AdminController@buildGameFlavorsForVersion')->name('buildGameFlavorsForVersion');
+        Route::post('gameFlavor/build/{id}', 'AdminController@buildGameFlavors')->name('buildGameFlavors');
+        Route::post('gameVersion/build/{id}', 'AdminController@buildGameFlavorsForVersion')->name('buildGameFlavorsForVersion');
     });
 });
 

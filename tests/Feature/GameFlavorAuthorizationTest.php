@@ -51,31 +51,31 @@ class GameFlavorAuthorizationTest extends TestCase {
 
     public static function adminOnlyActions(): array {
         return [
-            'build for testing' => ['/gameFlavor/buildTest/%d'],
-            'build' => ['/gameFlavor/build/%d'],
-            'change version page' => ['/gameFlavor/changeVersionIndex/%d'],
-            'change version' => ['/gameFlavor/changeVersion/%d'],
+            'build for testing' => ['post', '/gameFlavor/buildTest/%d'],
+            'build' => ['post', '/gameFlavor/build/%d'],
+            'change version page' => ['get', '/gameFlavor/changeVersionIndex/%d'],
+            'change version' => ['post', '/gameFlavor/changeVersion/%d'],
         ];
     }
 
     #[DataProvider('adminOnlyActions')]
-    public function test_the_owner_cannot_run_an_admin_action(string $url): void {
-        $this->actingAs($this->owner)->get(sprintf($url, $this->gameId))->assertForbidden();
+    public function test_the_owner_cannot_run_an_admin_action(string $method, string $url): void {
+        $this->actingAs($this->owner)->{$method}(sprintf($url, $this->gameId))->assertForbidden();
     }
 
     #[DataProvider('adminOnlyActions')]
-    public function test_an_admin_can_run_an_admin_action(string $url): void {
-        $response = $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->get(sprintf($url, $this->gameId));
+    public function test_an_admin_can_run_an_admin_action(string $method, string $url): void {
+        $response = $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->{$method}(sprintf($url, $this->gameId));
 
         $this->assertNotSame(403, $response->status());
     }
 
     public function test_another_member_cannot_submit_the_game_for_approval(): void {
-        $this->actingAs($this->otherMember)->get("/gameFlavor/{$this->gameId}/submitForApproval")->assertForbidden();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/submitForApproval")->assertForbidden();
     }
 
     public function test_the_owner_can_submit_the_game_for_approval(): void {
-        $this->actingAs($this->owner)->get("/gameFlavor/{$this->gameId}/submitForApproval")->assertRedirect();
+        $this->actingAs($this->owner)->post("/gameFlavor/{$this->gameId}/submitForApproval")->assertRedirect();
     }
 
     public function test_the_owner_can_publish_a_built_game(): void {
@@ -83,35 +83,35 @@ class GameFlavorAuthorizationTest extends TestCase {
         $this->mock(GameFlavorManager::class, fn (MockInterface $mock) => $mock->shouldIgnoreMissing()
             ->shouldReceive('toggleGameFlavorPublishedState')->andReturn(true));
 
-        $this->actingAs($this->owner)->get("/gameFlavor/publish/{$this->gameId}")->assertRedirect();
+        $this->actingAs($this->owner)->post("/gameFlavor/publish/{$this->gameId}")->assertRedirect();
     }
 
     public function test_the_owner_cannot_publish_a_game_that_is_not_built(): void {
-        $this->actingAs($this->owner)->get("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->owner)->post("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
     }
 
     public function test_another_member_cannot_publish_or_unpublish(): void {
         DB::table('game_flavor')->where('id', $this->gameId)->update(['is_built' => true]);
 
-        $this->actingAs($this->otherMember)->get("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
-        $this->actingAs($this->otherMember)->get("/gameFlavor/unpublish/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/publish/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/unpublish/{$this->gameId}")->assertForbidden();
     }
 
     public function test_the_owner_can_unpublish(): void {
         $this->mock(GameFlavorManager::class, fn (MockInterface $mock) => $mock->shouldIgnoreMissing()
             ->shouldReceive('toggleGameFlavorPublishedState')->andReturn(true));
 
-        $this->actingAs($this->owner)->get("/gameFlavor/unpublish/{$this->gameId}")->assertRedirect();
+        $this->actingAs($this->owner)->post("/gameFlavor/unpublish/{$this->gameId}")->assertRedirect();
     }
 
     public function test_another_member_cannot_clone_a_private_game(): void {
-        $this->actingAs($this->otherMember)->get("/gameFlavor/{$this->gameId}/clone")->assertForbidden();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/clone")->assertForbidden();
     }
 
     public function test_another_member_can_clone_a_published_game_that_allows_it(): void {
         $publicGameId = $this->createGame($this->owner->id, published: true, allowClone: true);
 
-        $this->actingAs($this->otherMember)->get("/gameFlavor/{$publicGameId}/clone")->assertRedirect();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/{$publicGameId}/clone")->assertRedirect();
     }
 
     public function test_another_member_cannot_add_a_card_set(): void {
@@ -128,7 +128,7 @@ class GameFlavorAuthorizationTest extends TestCase {
 
     public function test_another_member_cannot_delete_a_card_set(): void {
         $this->actingAs($this->otherMember)
-            ->get("/flavor/{$this->gameId}/equivalenceSet/delete?id={$this->setId}")
+            ->delete("/flavor/{$this->gameId}/equivalenceSet/delete", ['id' => $this->setId])
             ->assertForbidden();
     }
 

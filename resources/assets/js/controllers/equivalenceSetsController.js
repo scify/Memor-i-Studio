@@ -12,7 +12,7 @@ window.EquivalenceSetsController.prototype = function () {
                 e.stopPropagation();
                 var setId = $(this).attr("data-equivalenceSetId");
                 $('#deleteEquivalenceSetModal').modal('toggle');
-                $('#deleteEquivalenceSetModal .submitLink').attr("href", "equivalenceSet/delete?id=" + setId);
+                $('#deleteEquivalenceSetModal input[name="id"]').val(setId);
             });
         },
         editEquivalenceSetBtnHandler = function () {
