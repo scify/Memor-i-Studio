@@ -43,12 +43,6 @@ parameters:
 			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
 
 		-
-			message: '#^Undefined variable\: \$playerManager$#'
-			identifier: variable.undefined
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameMovementManager.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$resources\.$#'
 			identifier: property.notFound
 			count: 1
