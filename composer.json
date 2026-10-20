@@ -78,12 +78,24 @@
             "@putenv XDEBUG_MODE=coverage",
             "@php artisan config:clear --ansi",
             "@php artisan test --coverage --coverage-html=coverage"
+        ],
+        "lint:check": [
+            "pint --test",
+            "phpstan analyse --no-progress",
+            "npm run lint"
+        ],
+        "lint:fix": [
+            "pint",
+            "npm run lint:fix",
+            "phpstan analyse --no-progress"
         ]
     },
     "scripts-descriptions": {
         "setup": "Create .env if missing, install PHP dependencies and (when package-lock.json changed) npm dependencies, generate APP_KEY if empty and build the frontend.",
         "test": "Run the test suite (SQLite in memory).",
-        "test:coverage": "Run the test suite with a coverage summary and an HTML report in coverage/ (needs PCOV or Xdebug)."
+        "test:coverage": "Run the test suite with a coverage summary and an HTML report in coverage/ (needs PCOV or Xdebug).",
+        "lint:check": "Check PHP style (Pint), run static analysis (PHPStan) and lint JavaScript (ESLint) without changing files.",
+        "lint:fix": "Fix PHP style (Pint) and JavaScript (ESLint --fix), then report what PHPStan still finds."
     },
     "config": {
         "preferred-install": "dist",
