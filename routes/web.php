@@ -50,12 +50,12 @@ Route::group(['prefix' => 'api'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     // Game Version routes
-    Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
+    Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->middleware('can:manage-platform')->name('showAllGameVersions');
 
-    Route::get('gameVersion/{id}/resources', 'GameVersionController@showGameVersionResources')->name('showGameVersionResources');
-    Route::get('gameVersion/resourcesForLanguage', 'GameVersionController@showGameVersionResourcesForLanguage')->name('showGameVersionResourcesForLanguage');
-    Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->name('addGameVersionLanguageIndex');
-    Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
+    Route::get('gameVersion/{id}/resources', 'GameVersionController@showGameVersionResources')->middleware('can:manage-platform')->name('showGameVersionResources');
+    Route::get('gameVersion/resourcesForLanguage', 'GameVersionController@showGameVersionResourcesForLanguage')->middleware('can:manage-platform')->name('showGameVersionResourcesForLanguage');
+    Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->middleware('can:manage-platform')->name('addGameVersionLanguageIndex');
+    Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->middleware('can:manage-platform')->name('addGameVersionLanguage');
 
     // Game Flavor routes
     Route::get('gameFlavor/selectVersion', 'GameFlavorController@showGameVersionSelectionForm')->name('showGameVersionSelectionForm');
@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
 
     // Game Resources
-    Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->name('updateGameResourcesTranslations');
+    Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->middleware('can:manage-platform')->name('updateGameResourcesTranslations');
     Route::post('gameResources/update', 'ResourceController@updateGameResourcesFiles')->name('updateGameResourcesFiles');
 
     // Equivalence set routes
