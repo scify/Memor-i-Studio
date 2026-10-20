@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,13 +9,16 @@
 
 namespace App\BusinessLogicLayer;
 
-
-abstract class GameRequestStatus
-{
+abstract class GameRequestStatus {
     const REQUEST_SENT = 1;
+
     const ACCEPTED_BY_OPPONENT = 2;
+
     const REJECTED_BY_OPPONENT = 3;
+
     const IN_PROGRESS = 4;
+
     const COMPLETED = 5;
+
     const CANCELED = 6;
 }

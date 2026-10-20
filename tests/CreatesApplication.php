@@ -6,16 +6,14 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
 use RuntimeException;
 
-trait CreatesApplication
-{
+trait CreatesApplication {
     /**
      * Creates the application.
      *
      * @return Application
      */
-    public function createApplication()
-    {
-        $app = require __DIR__.'/../bootstrap/app.php';
+    public function createApplication() {
+        $app = require __DIR__ . '/../bootstrap/app.php';
 
         // A cached config replaces every <server> line in phpunit.xml.
         if (file_exists($app->getCachedConfigPath())) {

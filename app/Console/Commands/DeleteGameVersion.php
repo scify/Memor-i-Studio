@@ -40,11 +40,13 @@ class DeleteGameVersion extends Command {
      * Execute the console command.
      *
      * @return int
+     *
      * @throws Exception
      */
     public function handle(): int {
         $gameVersionId = $this->argument('id');
         $this->deleteGameVersion($gameVersionId);
+
         return 0;
     }
 
@@ -54,8 +56,9 @@ class DeleteGameVersion extends Command {
     protected function deleteGameVersion($id) {
         $gameVersion = GameVersion::withTrashed()->findOrFail($id);
         $gameFlavors = $gameVersion->gameFlavors;
-        if ($gameFlavors->count())
-            throw new Exception("Cannot delete a game version that has flavors");
+        if ($gameFlavors->count()) {
+            throw new Exception('Cannot delete a game version that has flavors');
+        }
         $resourceCategories = ResourceCategory::withTrashed()->where(['game_version_id' => $id])->get();
         $resourceCategoriesCount = $resourceCategories->count();
         $resourceCategoryTranslationsCount = 0;
@@ -114,10 +117,12 @@ class DeleteGameVersion extends Command {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (filetype($dir . "/" . $object) == "dir")
-                        $this->rrmdir($dir . "/" . $object);
-                    else unlink($dir . "/" . $object);
+                if ($object != '.' && $object != '..') {
+                    if (filetype($dir . '/' . $object) == 'dir') {
+                        $this->rrmdir($dir . '/' . $object);
+                    } else {
+                        unlink($dir . '/' . $object);
+                    }
                 }
             }
             reset($objects);

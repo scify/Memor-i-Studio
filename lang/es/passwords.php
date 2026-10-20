@@ -17,6 +17,6 @@ return [
     'reset' => 'Tu contraseña ha sido reestablecida!',
     'sent' => '¡Hemos enviado tu enlace de restablecimiento de contraseña por correo electrónico!',
     'token' => 'Este parámetro de restablecimiento de contraseña no es válido.',
-    'user' => "No podemos encontrar a un usuario con esa dirección de correo electrónico.",
+    'user' => 'No podemos encontrar a un usuario con esa dirección de correo electrónico.',
 
 ];

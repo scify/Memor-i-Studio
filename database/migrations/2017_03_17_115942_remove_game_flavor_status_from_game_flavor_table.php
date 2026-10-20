@@ -1,20 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class RemoveGameFlavorStatusFromGameFlavorTable extends Migration
-{
+class RemoveGameFlavorStatusFromGameFlavorTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('game_flavor', function(Blueprint $table){
-            $table->dropForeign('game_flavor_game_status_id_foreign');
+    public function up() {
+        Schema::table('game_flavor', function (Blueprint $table) {
+            $table->dropForeign(['game_status_id']);
             $table->dropColumn('game_status_id');
         });
     }
@@ -24,8 +22,7 @@ class RemoveGameFlavorStatusFromGameFlavorTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('game_flavor', function ($table) {
             $table->integer('game_status_id')->unsigned()->nullable();
         });

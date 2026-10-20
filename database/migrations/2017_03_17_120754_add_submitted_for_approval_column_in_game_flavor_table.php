@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddSubmittedForApprovalColumnInGameFlavorTable extends Migration
-{
+class AddSubmittedForApprovalColumnInGameFlavorTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('game_flavor', function ($table) {
             $table->boolean('submitted_for_approval')->nullable();
         });
@@ -23,9 +21,8 @@ class AddSubmittedForApprovalColumnInGameFlavorTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('game_flavor', function(Blueprint $table){
+    public function down() {
+        Schema::table('game_flavor', function (Blueprint $table) {
             $table->dropColumn('submitted_for_approval');
         });
     }

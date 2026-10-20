@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateGameVersionLanguageTable extends Migration
-{
+class CreateGameVersionLanguageTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('game_version_language', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 300);
@@ -30,8 +28,7 @@ class CreateGameVersionLanguageTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('game_version_language');
     }
 }

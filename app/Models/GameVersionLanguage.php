@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GameVersionLanguage extends Model
-{
+class GameVersionLanguage extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'game_version_language';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,5 +35,4 @@ class GameVersionLanguage extends Model
     public function gameVersion() {
         return $this->belongsTo('App\Models\GameVersion', 'game_version_id', 'id');
     }
-
 }

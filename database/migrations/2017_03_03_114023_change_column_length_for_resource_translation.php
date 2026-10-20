@@ -1,18 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
-class ChangeColumnLengthForResourceTranslation extends Migration
-{
+class ChangeColumnLengthForResourceTranslation extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('resource_translation', function ($table) {
             $table->text('resource_name')->nullable()->change();
             $table->text('resource_description')->nullable()->change();
@@ -24,8 +21,7 @@ class ChangeColumnLengthForResourceTranslation extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
     }
 }

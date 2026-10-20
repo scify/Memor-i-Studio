@@ -10,7 +10,7 @@ class PlatformStatisticsController extends Controller {
     protected $platformStatisticsRepository;
 
     /**
-     * @param PlatformStatisticsRepository $platformStatisticsRepository
+     * @param  PlatformStatisticsRepository  $platformStatisticsRepository
      */
     public function __construct(PlatformStatisticsRepository $platformStatisticsRepository) {
         $this->platformStatisticsRepository = $platformStatisticsRepository;
@@ -22,6 +22,7 @@ class PlatformStatisticsController extends Controller {
             $this->platformStatisticsRepository->getGameFlavorsPerLanguageStatistics(),
             $this->platformStatisticsRepository->getNumOfGameFlavorsPerUser()
         );
+
         return view('admin.platform-statistics', compact('viewModel'));
     }
 }

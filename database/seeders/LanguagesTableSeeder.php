@@ -1,5 +1,7 @@
 <?php
+
 namespace Database\Seeders;
+
 use App\Models\Language;
 use Illuminate\Database\Seeder;
 
@@ -14,28 +16,28 @@ class LanguagesTableSeeder extends Seeder {
             [
                 'id' => 1,
                 'name' => 'Greek',
-                'code' => 'el'
+                'code' => 'el',
             ],
             [
                 'id' => 2,
                 'name' => 'English',
-                'code' => 'en'
+                'code' => 'en',
             ],
             [
                 'id' => 3,
                 'name' => 'Español',
-                'code' => 'es'
+                'code' => 'es',
             ],
             [
                 'id' => 4,
                 'name' => 'Italiano',
-                'code' => 'it'
+                'code' => 'it',
             ],
             [
                 'id' => 5,
                 'name' => 'Norwegian',
-                'code' => 'no'
-            ]
+                'code' => 'no',
+            ],
         ];
         foreach ($data as $datum) {
             echo "\nProcessing language: " . $datum['name'] . "\n";

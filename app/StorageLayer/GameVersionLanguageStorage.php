@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,11 +9,9 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\GameVersionLanguage;
 
 class GameVersionLanguageStorage {
-
     public function getGameVersionLanguages($id) {
         return GameVersionLanguage::where(['game_version_id' => $id])->get();
     }

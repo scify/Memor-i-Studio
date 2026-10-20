@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -13,12 +14,12 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * Class SoundManager handles the sound files of the dynamic resources (eg the card sounds)
- * @package App\BusinessLogicLayer\managers
  */
 class SoundManager {
-
     private $resourceManager;
+
     private $CARD_SOUND_PATH = 'audios/card_sounds/';
+
     // The equivalence set description sound must be stored in the directory card_description_sounds
     // because in the game application it is refer to as "card description sound" and not "equivalence set description sound"
     // So it it expected to appear in this specific folder.
@@ -31,8 +32,8 @@ class SoundManager {
     /**
      * Creates a new @see Resource for the card image and stores the file.
      *
-     * @param $gameFlavorId int the id of the game flavor
-     * @param UploadedFile $sound the sound file uploaded
+     * @param  $gameFlavorId  int the id of the game flavor
+     * @param  UploadedFile  $sound  the sound file uploaded
      * @return int the id of the resource created
      */
     public function uploadCardSound($gameFlavorId, UploadedFile $sound) {
@@ -42,8 +43,8 @@ class SoundManager {
     /**
      * Creates a new @see Resource for the equivalence set description sound and stores the file.
      *
-     * @param $gameFlavorId int the id of the game flavor
-     * @param UploadedFile $sound the sound file uploaded
+     * @param  $gameFlavorId  int the id of the game flavor
+     * @param  UploadedFile  $sound  the sound file uploaded
      * @return int the id of the resource created
      */
     public function uploadEquivalenceSetDescriptionSound($gameFlavorId, UploadedFile $sound) {
@@ -54,7 +55,7 @@ class SoundManager {
         $soundPath = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . $pathToStore;
         $newResourceId = $this->resourceManager->createNewResource($pathToStore);
         $this->resourceManager->createAndStoreResourceFile($sound, $soundPath, $newResourceId, $gameFlavorId);
+
         return $newResourceId;
     }
-
 }

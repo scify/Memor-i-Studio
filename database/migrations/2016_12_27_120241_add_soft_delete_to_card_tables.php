@@ -1,19 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
-class AddSoftDeleteToCardTables extends Migration
-{
+class AddSoftDeleteToCardTables extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table("card", function ($table) {
+    public function up() {
+        Schema::table('card', function ($table) {
             $table->softDeletes();
         });
     }
@@ -23,8 +20,7 @@ class AddSoftDeleteToCardTables extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
     }
 }

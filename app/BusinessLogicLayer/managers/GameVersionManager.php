@@ -16,46 +16,56 @@ use Madnest\Madzipper\Madzipper;
 use ZipArchive;
 
 class GameVersionManager {
-
     private $gameVersionStorage;
+
     private $fileStorage;
+
     private $coverImgStoragePath = 'game_versions/img/';
+
     private $gameJarStoragePath = 'game_versions/jar/';
+
     private $gameExeStoragePath = 'game_versions/exe/';
+
     private $gameResourcesDirsSchema;
+
     private $gameResourcesFilesSchema;
+
     private $resourceCategoryManager;
+
     private $resourceManager;
 
-    public function __construct(GameVersionStorage      $gameVersionStorage, FileStorage $fileStorage,
-                                ResourceCategoryManager $resourceCategoryManager, ResourceManager $resourceManager) {
+    public function __construct(GameVersionStorage $gameVersionStorage, FileStorage $fileStorage,
+        ResourceCategoryManager $resourceCategoryManager, ResourceManager $resourceManager) {
         $this->gameVersionStorage = $gameVersionStorage;
         $this->fileStorage = $fileStorage;
         $this->resourceCategoryManager = $resourceCategoryManager;
         $this->resourceManager = $resourceManager;
-        $this->gameResourcesDirsSchema = array();
-        $this->gameResourcesFilesSchema = array();
+        $this->gameResourcesDirsSchema = [];
+        $this->gameResourcesFilesSchema = [];
     }
 
     /**
      * Creates a new @param array $input the input parameters
-     * @param User $user the user creating the Game version
-     * @return GameVersion the newly created GameVersion instance
-     * @throws Exception
-     * @see GameVersion, stores the resources zip/jar file, and creates the resources schema
      *
+     * @param  User  $user  the user creating the Game version
+     * @return GameVersion the newly created GameVersion instance
+     *
+     * @throws Exception
+     *
+     * @see GameVersion, stores the resources zip/jar file, and creates the resources schema
      */
     public function createGameVersion(array $input, User $user): GameVersion {
-        $newGameVersion = new GameVersion();
+        $newGameVersion = new GameVersion;
         $newGameVersion->name = $input['name'];
         $newGameVersion->data_pack_dir_name = $input['data_pack_dir_name'];
         $newGameVersion->version_code = $input['version_code'];
         $newGameVersion->description = $input['description'];
         $newGameVersion->creator_id = $user->id;
-        if (isset($input['online']))
+        if (isset($input['online'])) {
             $newGameVersion->online = true;
-        else
+        } else {
             $newGameVersion->online = false;
+        }
 
         if (isset($input['cover_img'])) {
             $newGameVersion->cover_img_path = $this->fileStorage->storeFile($input['cover_img'], $this->coverImgStoragePath);
@@ -69,34 +79,37 @@ class GameVersionManager {
             $this->resourceCategoryManager->createResourceCategoriesFromResourcesArray($this->gameResourcesDirsSchema, $newGameVersion->id);
             $this->resourceManager->createResourcesFromResourcesArray($this->gameResourcesFilesSchema, $newGameVersion->id);
         }
+
         return $newGameVersion;
     }
 
     public function getResourcesForGameVersion(GameVersion $gameVersion): Collection {
         $resourceCategoriesForGameVersion = $gameVersion->resourceCategories;
-        $resources = new Collection();
+        $resources = new Collection;
         foreach ($resourceCategoriesForGameVersion as $resourceCategory) {
             foreach ($resourceCategory->resources as $resource) {
                 $resources->add($resource);
             }
         }
+
         return $resources;
     }
 
     /**
      * Fetches all the @return Collection with all the instances
-     * @see GameVersion instances
      *
+     * @see GameVersion instances
      */
     public function getAllGameVersions(): Collection {
-        return $this->gameVersionStorage->getAllGameVersions()->sortBy("created_at");
+        return $this->gameVersionStorage->getAllGameVersions()->sortBy('created_at');
     }
 
     /**
      * Fetches a particular @param $id
-     * @return mixed the instance meeting the criteria, or null
-     * @see GameVersion instance (or null)
      *
+     * @return mixed the instance meeting the criteria, or null
+     *
+     * @see GameVersion instance (or null)
      */
     public function getGameVersion($id) {
         return $this->gameVersionStorage->getGameVersionById($id);
@@ -104,11 +117,13 @@ class GameVersionManager {
 
     /**
      * Sets the parameters to a @param $id int the id of the @see GameVersion to be updated.
-     * @param array $input the input parameters
-     * @return GameVersion the newly updated game version instance
-     * @throws Exception
-     * @see GameVersion and updates
      *
+     * @param  array  $input  the input parameters
+     * @return GameVersion the newly updated game version instance
+     *
+     * @throws Exception
+     *
+     * @see GameVersion and updates
      */
     public function editGameVersion(int $id, array $input): GameVersion {
         $gameVersionToBeUpdated = $this->getGameVersion($id);
@@ -116,10 +131,11 @@ class GameVersionManager {
         $gameVersionToBeUpdated->version_code = $input['version_code'];
         $gameVersionToBeUpdated->description = $input['description'];
         $gameVersionToBeUpdated->data_pack_dir_name = $input['data_pack_dir_name'];
-        if (isset($input['online']))
+        if (isset($input['online'])) {
             $gameVersionToBeUpdated->online = true;
-        else
+        } else {
             $gameVersionToBeUpdated->online = false;
+        }
         if (isset($input['cover_img'])) {
             $gameVersionToBeUpdated->cover_img_path = $this->fileStorage->storeFile($input['cover_img'], $this->coverImgStoragePath);
         }
@@ -138,18 +154,19 @@ class GameVersionManager {
             }
             $this->resourceManager->updateResourceOrdering($this->getResourcesForGameVersion($editedGameVersion));
         });
+
         return $editedGameVersion;
     }
 
-
     /**
-     * @param $id int the @see GameVersion id
-     * @param UploadedFile $gameJarFile the file to be uploaded
+     * @param  $id  int the @see GameVersion id
+     * @param  UploadedFile  $gameJarFile  the file to be uploaded
      * @return string the path of the uploaded file
      */
     private function storeZipFile(int $id, UploadedFile $gameJarFile): string {
         $filePath = storage_path('app/' . $this->gameJarStoragePath . $id . '/' . 'memori.jar');
         $gameJarFile->storeAs($this->gameJarStoragePath . $id . '/', 'memori.jar');
+
         return $filePath;
     }
 
@@ -160,15 +177,17 @@ class GameVersionManager {
     /**
      * Given a zip file path, extracts it's game resources
      *
-     * @param string $filePath
-     * @param GameVersion $gameVersion
+     * @param  string  $filePath
+     * @param  GameVersion  $gameVersion
+     *
      * @throws Exception if the zip file cannot be opened
      */
     private function extractResourceDirectoriesFromZipFile(string $filePath, GameVersion $gameVersion) {
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
         $res = $zip->open($filePath);
-        if (!$res)
-            throw new Exception("Zip file could not be opened");
+        if (!$res) {
+            throw new Exception('Zip file could not be opened');
+        }
 
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $stat = $zip->statIndex($i);
@@ -183,7 +202,7 @@ class GameVersionManager {
      * @throws Exception
      */
     private function extractFilesFromZipFile($zipFilePath, GameVersion $gameVersion) {
-        $zipper = new Madzipper();
+        $zipper = new Madzipper;
         File::makeDirectory($this->getPathForGameVersionDataFiles($gameVersion->id), 0777, true);
         $zipper->make($zipFilePath)->folder($gameVersion->data_pack_dir_name)
             ->extractTo(storage_path('app/game_versions/data/' . $gameVersion->id));
@@ -200,22 +219,22 @@ class GameVersionManager {
     /**
      * Decides whether the entry should be considered as a resource
      *
-     * @param $isDir bool if the current entry is a directory or a file
-     * @param $entryName string the current file or folder in the .zip
+     * @param  $isDir  bool if the current entry is a directory or a file
+     * @param  $entryName  string the current file or folder in the .zip
      */
     private function parseEntry(bool $isDir, string $entryName, GameVersion $gameVersion) {
         if ($this->entryIsApplicableForAudioResource($entryName, $gameVersion)) {
-            if ($isDir)
-                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
-            else {
-                $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
+            if ($isDir) {
+                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . '/'), strlen($entryName));
+            } else {
+                $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . '/'), strlen($entryName));
                 $this->gameResourcesFilesSchema[$fileName] = $this->stringUntilLastSlash($fileName);
             }
-        } else if ($this->entryIsApplicableForImageResource($entryName, $gameVersion)) {
-            if ($isDir)
-                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
-            else {
-                $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . "/"), strlen($entryName));
+        } elseif ($this->entryIsApplicableForImageResource($entryName, $gameVersion)) {
+            if ($isDir) {
+                $this->gameResourcesDirsSchema[] = substr($entryName, strlen($gameVersion->data_pack_dir_name . '/'), strlen($entryName));
+            } else {
+                $fileName = substr($entryName, strlen($gameVersion->data_pack_dir_name . '/'), strlen($entryName));
                 $this->gameResourcesFilesSchema[$fileName] = $this->stringUntilLastSlash($fileName);
             }
         }
@@ -224,8 +243,8 @@ class GameVersionManager {
     /**
      * Checks if an entry is part of the audios resources directory in the zip file
      *
-     * @param $entryName string the directory or file name
-     * @param GameVersion $gameVersion
+     * @param  $entryName  string the directory or file name
+     * @param  GameVersion  $gameVersion
      * @return bool
      */
     private function entryIsApplicableForAudioResource(string $entryName, GameVersion $gameVersion): bool {
@@ -236,22 +255,20 @@ class GameVersionManager {
     /**
      * Checks if an entry is part of the images resources directory in the zip file
      *
-     * @param $entryName string the directory or file name
-     * @param GameVersion $gameVersion
+     * @param  $entryName  string the directory or file name
+     * @param  GameVersion  $gameVersion
      * @return bool
      */
     private function entryIsApplicableForImageResource(string $entryName, GameVersion $gameVersion): bool {
-        return (StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/img/')
-            && ($entryName !== $gameVersion->data_pack_dir_name . '/img/'));
+        return StringHelpers::startsWith($entryName, $gameVersion->data_pack_dir_name . '/img/')
+            && ($entryName !== $gameVersion->data_pack_dir_name . '/img/');
     }
 
     /**
-     * @param $str string the given string
+     * @param  $str  string the given string
      * @return string the string without the part after the last slash
      */
     private function stringUntilLastSlash(string $str): string {
         return substr($str, 0, strrpos($str, '/')) . '/';
     }
-
-
 }

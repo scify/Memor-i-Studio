@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,19 +9,19 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\GameVersion;
 use Illuminate\Database\Eloquent\Collection;
 
 class GameVersionStorage {
-
     /**
      * Stores @see GameFlavor object to DB
-     * @param GameVersion $gameVersion the object to be stored
+     *
+     * @param  GameVersion  $gameVersion  the object to be stored
      * @return GameVersion the newly created game version
      */
     public function storeGameVersion(GameVersion $gameVersion) {
         $gameVersion->save();
+
         return $gameVersion;
     }
 
@@ -36,11 +37,10 @@ class GameVersionStorage {
     /**
      * Fetches a particular @see GameVersion instance (or null)
      *
-     * @param $id
+     * @param  $id
      * @return mixed the instance meeting the criteria, or null
      */
     public function getGameVersionById($id) {
         return GameVersion::find($id);
     }
-
 }

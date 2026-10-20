@@ -38,10 +38,12 @@ class CleanOldGames extends Command {
      */
     public function handle(): int {
         $gameFlavorId = $this->argument('id');
-        if ($gameFlavorId)
+        if ($gameFlavorId) {
             $this->cleanGameFlavor($gameFlavorId);
-        else
+        } else {
             $this->cleanAllSuitableGameFlavors();
+        }
+
         return 0;
     }
 
@@ -51,28 +53,31 @@ class CleanOldGames extends Command {
                 return $q->withTrashed();
             }])
             ->having('equivalence_sets_count', '<', 3)->get();
-        if (!$gameFlavors->isEmpty())
+        if (!$gameFlavors->isEmpty()) {
             $this->cleanGameFlavors($gameFlavors);
+        }
         $gameFlavors = GameFlavor::onlyTrashed()->withCount(['equivalenceSets' => function ($q) {
             return $q->withTrashed();
         }])->get();
-        if (!$gameFlavors->isEmpty())
+        if (!$gameFlavors->isEmpty()) {
             $this->cleanGameFlavors($gameFlavors);
+        }
     }
 
     protected function cleanGameFlavor(int $gameFlavorId) {
-        $gameFlavors = new Collection();
+        $gameFlavors = new Collection;
         $gameFlavors->add(GameFlavor::withTrashed()->withCount(['equivalenceSets' => function ($q) {
             return $q->withTrashed();
         }])->find($gameFlavorId));
-        if ($gameFlavors->get(0))
+        if ($gameFlavors->get(0)) {
             $this->cleanGameFlavors($gameFlavors);
+        }
     }
 
     protected function cleanGameFlavors(Collection $gameFlavors) {
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
-            echo "Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "\thas num of sets: " . $gameFlavor->equivalence_sets_count . "\n";
+            echo 'Game Flavor: ' . $gameFlavor->name . "\tid: " . $gameFlavor->id . "\thas num of sets: " . $gameFlavor->equivalence_sets_count . "\n";
             $setsRelationship = $gameFlavor->equivalenceSets();
 
             if ($setsRelationship) {
@@ -91,25 +96,27 @@ class CleanOldGames extends Command {
             if ($resourceFilesRelationship) {
                 $resourceFiles = $resourceFilesRelationship->withTrashed()->get();
 
-                if ($resourceFiles)
+                if ($resourceFiles) {
                     foreach ($resourceFiles as $file) {
                         echo "\nDeleting resource file:\t" . $file->file_path . " with id:\t" . $file->id;
                         $file->forceDelete();
                     }
+                }
             }
             $reportsRelationship = $gameFlavor->reports();
             if ($reportsRelationship) {
                 $reports = $reportsRelationship->withTrashed()->get();
-                if ($reports)
+                if ($reports) {
                     foreach ($reports as $report) {
                         echo "\nDeleting report:\t" . $report->user_comment . " with id:\t" . $report->id;
                         $report->forceDelete();
                     }
+                }
             }
             $requestsRelationship = $gameFlavor->gameRequests();
             if ($requestsRelationship) {
                 $requests = $requestsRelationship->withTrashed()->get();
-                if ($requests)
+                if ($requests) {
                     foreach ($requests as $request) {
                         $movements = $request->gameMovements()->withTrashed()->get();
                         foreach ($movements as $movement) {
@@ -118,21 +125,23 @@ class CleanOldGames extends Command {
                         }
                         $request->forceDelete();
                     }
+                }
             }
             $dataPackDir = storage_path() . '/app/data_packs/additional_pack_' . $gameFlavor->id;
             if (file_exists($dataPackDir) && is_dir($dataPackDir)) {
-                echo "Deleting: " . $dataPackDir . " ...\n";
+                echo 'Deleting: ' . $dataPackDir . " ...\n";
                 $this->rrmdir($dataPackDir);
             }
             $currentPlayersRelationship = $gameFlavor->currentPlayers();
             if ($currentPlayersRelationship) {
                 $currentPlayers = $currentPlayersRelationship->withTrashed()->get();
-                if ($currentPlayers)
+                if ($currentPlayers) {
                     foreach ($currentPlayers as $currentPlayer) {
                         echo "\nRemoving current player:\t" . $currentPlayer->user_name;
                         $currentPlayer->game_flavor_playing = null;
                         $currentPlayer->save();
                     }
+                }
             }
             $gameFlavor->forceDelete();
         }
@@ -143,10 +152,12 @@ class CleanOldGames extends Command {
         $translations = $resource->translations;
         $resourceFile = $resource->file;
         $resourceFilePath = storage_path() . '/app/' . $resourceFile->file_path;
-        if (file_exists($resourceFilePath))
+        if (file_exists($resourceFilePath)) {
             unlink($resourceFilePath);
-        foreach ($translations as $translation)
+        }
+        foreach ($translations as $translation) {
             $translation->forceDelete();
+        }
         $resourceFile->forceDelete();
         $resource->forceDelete();
     }
@@ -155,10 +166,12 @@ class CleanOldGames extends Command {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (filetype($dir . "/" . $object) == "dir")
-                        $this->rrmdir($dir . "/" . $object);
-                    else unlink($dir . "/" . $object);
+                if ($object != '.' && $object != '..') {
+                    if (filetype($dir . '/' . $object) == 'dir') {
+                        $this->rrmdir($dir . '/' . $object);
+                    } else {
+                        unlink($dir . '/' . $object);
+                    }
                 }
             }
             reset($objects);

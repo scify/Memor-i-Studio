@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class GameVersionLanguageManager {
     private $gameVersionLanguageStorage;
+
     private $languageManager;
 
     public function __construct(GameVersionLanguageStorage $gameVersionLanguageStorage, LanguageManager $languageManager) {
@@ -18,15 +19,16 @@ class GameVersionLanguageManager {
     /**
      * Gets the languages the game version has
      *
-     * @param $gameVersionId int the id of the game version
+     * @param  $gameVersionId  int the id of the game version
      * @return Collection a set of @see Language instances
      */
     public function getGameVersionLanguages($gameVersionId) {
-        $gameVersionLanguages =  $this->gameVersionLanguageStorage->getGameVersionLanguages($gameVersionId);
-        $languages = new Collection();
+        $gameVersionLanguages = $this->gameVersionLanguageStorage->getGameVersionLanguages($gameVersionId);
+        $languages = new Collection;
         foreach ($gameVersionLanguages as $gameVersionLanguage) {
             $languages->add($this->languageManager->getLanguage($gameVersionLanguage->lang_id));
         }
+
         return $languages;
     }
 
@@ -37,25 +39,27 @@ class GameVersionLanguageManager {
     /**
      * Checks if a given game version has a specified language
      *
-     * @param $gameVersionId int the id of the game version
-     * @param $langId int the id of the language
+     * @param  $gameVersionId  int the id of the game version
+     * @param  $langId  int the id of the language
      * @return bool true if the game version has the selected language, otherwise false
      */
     public function gameVersionHasLanguage($gameVersionId, $langId) {
         $gameVersionLanguage = $this->gameVersionLanguageStorage->getLanguageForGameVersion($gameVersionId, $langId);
-        if($gameVersionLanguage == null)
+        if ($gameVersionLanguage == null) {
             return false;
+        }
+
         return true;
     }
 
     /**
      * Adds a given language to a Game version
      *
-     * @param $gameVersionId int the id of the game version
-     * @param $langId int the id of the language
+     * @param  $gameVersionId  int the id of the game version
+     * @param  $langId  int the id of the language
      */
     public function addGameVersionLanguage($gameVersionId, $langId) {
-        $gameVersionLanguage = new GameVersionLanguage();
+        $gameVersionLanguage = new GameVersionLanguage;
         $gameVersionLanguage->lang_id = $langId;
         $gameVersionLanguage->game_version_id = $gameVersionId;
         $this->gameVersionLanguageStorage->storeGameVersionLanguage($gameVersionLanguage);

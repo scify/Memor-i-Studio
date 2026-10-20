@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ResourceTranslation extends Model
-{
+class ResourceTranslation extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'resource_translation';
+
     /**
      * The attributes that are mass assignable.
      *

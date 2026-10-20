@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddDescriptionToResourceTranslationTable extends Migration
-{
+class AddDescriptionToResourceTranslationTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('resource_translation', function ($table) {
             $table->string('resource_description')->nullable();
         });
@@ -23,9 +21,8 @@ class AddDescriptionToResourceTranslationTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('resource_translation', function(Blueprint $table){
+    public function down() {
+        Schema::table('resource_translation', function (Blueprint $table) {
             $table->dropColumn('resource_description');
         });
     }

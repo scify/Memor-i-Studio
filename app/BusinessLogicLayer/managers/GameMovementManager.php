@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -15,13 +16,14 @@ use App\Utils\ServerResponses;
 use Exception;
 
 class GameMovementManager {
-
     private $gameMovementStorage;
+
     private $gameRequestManager;
+
     private $playerManager;
 
-    function __construct(GameMovementStorage $gameMovementStorage, GameRequestManager $gameRequestManager,
-                         PlayerManager $playerManager) {
+    public function __construct(GameMovementStorage $gameMovementStorage, GameRequestManager $gameRequestManager,
+        PlayerManager $playerManager) {
         $this->gameMovementStorage = $gameMovementStorage;
         $this->gameRequestManager = $gameRequestManager;
         $this->playerManager = $playerManager;
@@ -31,7 +33,8 @@ class GameMovementManager {
         try {
             $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
             $newGameMovement = $this->create($input['player_id'], $input['movement_json'], $gameRequest->id, $input['timestamp']);
-            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_movement_created', ["game_movement_id" => $newGameMovement->id]);
+
+            return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_movement_created', ['game_movement_id' => $newGameMovement->id]);
         } catch (Exception $e) {
             return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }
@@ -42,7 +45,7 @@ class GameMovementManager {
             'player_id' => $playerId,
             'movement_json' => $movementJson,
             'game_request_id' => $gameRequestId,
-            'timestamp' => $timestamp
+            'timestamp' => $timestamp,
         ]);
 
         return $this->gameMovementStorage->saveGameMovement($gameMovement);
@@ -52,20 +55,20 @@ class GameMovementManager {
         try {
             $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
             $opponent = $this->playerManager->getPlayerById($input['opponent_id']);
-            if(!$playerManager->isPlayerOnline($opponent))
-                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', "");
+            if (!$playerManager->isPlayerOnline($opponent)) {
+                return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', '');
+            }
 
             $gameMovement = $this->gameMovementStorage->getNextGameMovementOfPlayer($gameRequest->id, $input['opponent_id'], $input['last_timestamp']);
-            if($gameMovement) {
+            if ($gameMovement) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'new_movement',
                     [
-                        "game_movement_json" => json_decode($gameMovement->movement_json),
-                        "timestamp" => $gameMovement->timestamp
+                        'game_movement_json' => json_decode($gameMovement->movement_json),
+                        'timestamp' => $gameMovement->timestamp,
                     ]);
+            } else {
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'no_movement', '');
             }
-            else
-                return new ApiOperationResponse(ServerResponses::$RESPONSE_EMPTY, 'no_movement', "");
-
         } catch (Exception $e) {
             return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'error', $e->getMessage());
         }

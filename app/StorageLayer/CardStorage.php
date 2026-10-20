@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,13 +9,12 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\Card;
 
 class CardStorage {
-
     public function saveCard(Card $card) {
         $card->save();
+
         return $card;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -11,25 +12,26 @@ namespace App\StorageLayer;
 use App\Models\ResourceFile;
 
 class ResourceFileStorage {
-
     /**
      * Saves a @see ResourceFile instance
      *
-     * @param ResourceFile $resource
+     * @param  ResourceFile  $resource
      * @return null
      */
     public function storeResource(ResourceFile $resource) {
         $newResource = $resource->save();
-        if($newResource)
+        if ($newResource) {
             return $resource->id;
+        }
+
         return null;
     }
 
     /**
      * Gets the file for a given resource, for a given game flavor
      *
-     * @param $resourceId int the resource id
-     * @param $gameFlavorId int the game flavor id
+     * @param  $resourceId  int the resource id
+     * @param  $gameFlavorId  int the game flavor id
      * @return mixed
      */
     public function getFileForGameFlavorResource($resourceId, $gameFlavorId) {

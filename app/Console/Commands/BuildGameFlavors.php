@@ -9,7 +9,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class BuildGameFlavors extends Command {
-
     public static $COMMAND = 'games:build';
 
     /**
@@ -43,32 +42,36 @@ class BuildGameFlavors extends Command {
      */
     public function handle(): int {
         $gameFlavorId = $this->argument('id');
-        if ($gameFlavorId)
+        if ($gameFlavorId) {
             $this->buildGameFlavor($gameFlavorId);
-        else
+        } else {
             $this->buildAllSuitableGameFlavors();
+        }
+
         return 0;
     }
 
     protected function buildAllSuitableGameFlavors() {
         $gameFlavors = GameFlavor::where(['published' => true])->get();
-        if (!$gameFlavors->isEmpty())
+        if (!$gameFlavors->isEmpty()) {
             try {
                 $this->buildGameFlavors($gameFlavors);
             } catch (Exception $e) {
-                echo "Could not build game flavor: " . $e->getMessage() . "\n";
+                echo 'Could not build game flavor: ' . $e->getMessage() . "\n";
             }
+        }
     }
 
     protected function buildGameFlavor(int $gameFlavorId) {
-        $gameFlavors = new Collection();
+        $gameFlavors = new Collection;
         $gameFlavors->add(GameFlavor::findOrFail($gameFlavorId));
-        if ($gameFlavors->get(0))
+        if ($gameFlavors->get(0)) {
             try {
                 $this->buildGameFlavors($gameFlavors);
             } catch (Exception $e) {
-                echo "Could not build game flavor: " . $e->getMessage() . "\n";
+                echo 'Could not build game flavor: ' . $e->getMessage() . "\n";
             }
+        }
     }
 
     /**
@@ -78,7 +81,7 @@ class BuildGameFlavors extends Command {
         $gameFlavorManager = app()->make(GameFlavorManager::class);
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
-            echo "Building Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
+            echo 'Building Game Flavor: ' . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
             $gameFlavorManager->buildGameFlavor($gameFlavor->id);
             echo "Game Flavor was built!\n";
         }

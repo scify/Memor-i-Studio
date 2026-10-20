@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\User;
+use Faker\Generator;
+use Illuminate\Database\Eloquent\Factory;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -11,8 +15,8 @@
 |
 */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+/** @var Factory $factory */
+$factory->define(User::class, function (Generator $faker) {
     static $password;
 
     return [

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,17 +9,16 @@
 
 namespace App\Models\api;
 
-
 class ApiOperationResponse {
-
     public $code;
+
     public $message;
+
     public $parameters;
 
-    function __construct($code, $message, $parameters) {
+    public function __construct($code, $message, $parameters) {
         $this->code = $code;
         $this->message = $message;
         $this->parameters = $parameters;
     }
-
 }

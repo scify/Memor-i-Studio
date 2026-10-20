@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddInterfaceLangIdOnGameFlavor extends Migration
-{
+class AddInterfaceLangIdOnGameFlavor extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('game_flavor', function ($table) {
             $table->integer('interface_lang_id')->unsigned()->default(1);
         });
@@ -27,9 +25,8 @@ class AddInterfaceLangIdOnGameFlavor extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('game_flavor', function(Blueprint $table){
+    public function down() {
+        Schema::table('game_flavor', function (Blueprint $table) {
             $table->dropForeign('game_flavor_interface_lang_id_foreign');
             $table->dropColumn('interface_lang_id');
         });

@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
@@ -25,7 +25,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'hashed_email', 'logout'
+        'name', 'email', 'password', 'role_id', 'hashed_email', 'logout',
     ];
 
     /**
@@ -54,7 +54,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return bool
      */
     public function isAdmin() {
-
         if ($this->has('role') and ($this->role->id == 2)) {
             return true;
         }

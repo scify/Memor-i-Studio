@@ -1,4 +1,5 @@
 <?php
+
 namespace App\BusinessLogicLayer\managers;
 
 use App\Models\GameVersion;
@@ -7,7 +8,6 @@ use App\Models\ResourceCategory;
 use App\Models\ResourceCategoryTranslation;
 use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceCategoryTranslationStorage;
-use App\StorageLayer\ResourceFileStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Collection;
  * Class containing the Business logic for Resource Categories
  */
 class ResourceCategoryManager {
-
     private $resourceCategoryStorage;
+
     private $resourceCategoryTranslationStorage;
 
     /**
@@ -28,7 +28,7 @@ class ResourceCategoryManager {
      *
      * @var array
      */
-    private $resourceCategoryOrdering = array(
+    private $resourceCategoryOrdering = [
         'audios/game_instructions/' => 1,
         'audios/storyline_audios/' => 2,
         'audios/level_intro_sounds/' => 3,
@@ -39,10 +39,10 @@ class ResourceCategoryManager {
         'audios/miscellaneous/' => 9,
         'audios/letters/' => 10,
         'audios/numbers/' => 11,
-    );
+    ];
 
     public function __construct(ResourceCategoryStorage $resourceCategoryStorage,
-                                ResourceCategoryTranslationStorage $resourceCategoryTranslationStorage) {
+        ResourceCategoryTranslationStorage $resourceCategoryTranslationStorage) {
         $this->resourceCategoryStorage = $resourceCategoryStorage;
         $this->resourceCategoryTranslationStorage = $resourceCategoryTranslationStorage;
     }
@@ -50,8 +50,8 @@ class ResourceCategoryManager {
     /**
      * Given an array of resources paths, parse each path as a new @see ResourceCategory
      *
-     * @param array $resources the array containing the resourcesPath
-     * @param $gameVersionId int the id of the GameVersion these ResourceCategory instances will belong to
+     * @param  array  $resources  the array containing the resourcesPath
+     * @param  $gameVersionId  int the id of the GameVersion these ResourceCategory instances will belong to
      */
     public function createResourceCategoriesFromResourcesArray(array $resources, $gameVersionId) {
         foreach ($resources as $resource) {
@@ -61,41 +61,47 @@ class ResourceCategoryManager {
 
     public function editResourceCategoriesFromResourcesArray(array $newResourceCategories, $gameVersionId) {
         $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId, true);
-        $resourceCategoryPaths = array();
+        $resourceCategoryPaths = [];
         foreach ($gameVersionResourceCategories as $gameVersionResourceCategory) {
             $resourceCategoryPaths[] = $gameVersionResourceCategory->path;
         }
         // delete any resource categories that font exist in the new .jar file
         foreach ($gameVersionResourceCategories as $gameVersionResourceCategory) {
-            if(!in_array($gameVersionResourceCategory->path, $newResourceCategories))
+            if (!in_array($gameVersionResourceCategory->path, $newResourceCategories)) {
                 $gameVersionResourceCategory->delete();
+            }
         }
 
         // create new resource category for any new path that is not in the old resource categories schema
         foreach ($newResourceCategories as $newResourceCategoryPath) {
-            if(!in_array($newResourceCategoryPath, $resourceCategoryPaths))
+            if (!in_array($newResourceCategoryPath, $resourceCategoryPaths)) {
                 $this->createNewResourceCategory($newResourceCategoryPath, $gameVersionId);
+            }
         }
     }
 
     /**
      * Given a category path and a @param $categoryPath string the application path of the resource category
-     * @param $gameVersionId int the id of the GameVersion these ResourceCategory instance will belong to
-     * @return mixed|null the newly crated ResourceCategory instance, or null if an error occurred.
-     *@see GameVersion id, create a new @see ResourceCategory instance
      *
+     * @param  $gameVersionId  int the id of the GameVersion these ResourceCategory instance will belong to
+     * @return mixed|null the newly crated ResourceCategory instance, or null if an error occurred.
+     *
+     *@see GameVersion id, create a new @see ResourceCategory instance
      */
     public function createNewResourceCategory(string $categoryPath, int $gameVersionId) {
-        $resourceCategory = new ResourceCategory();
+        $resourceCategory = new ResourceCategory;
         $resourceCategory->path = $categoryPath;
         $resourceCategory->game_version_id = $gameVersionId;
-        $resourceCategory->description = trim($categoryPath, "/");
-        if(isset($this->resourceCategoryOrdering[$categoryPath]))
+        $resourceCategory->description = trim($categoryPath, '/');
+        if (isset($this->resourceCategoryOrdering[$categoryPath])) {
             $resourceCategory->order_id = $this->resourceCategoryOrdering[$categoryPath];
-        if($this->isResourceCategoryStatic($categoryPath))
+        }
+        if ($this->isResourceCategoryStatic($categoryPath)) {
             $resourceCategory->type_id = 1;
-        else
+        } else {
             $resourceCategory->type_id = 2;
+        }
+
         return $this->resourceCategoryStorage->storeResourceCategory($resourceCategory);
     }
 
@@ -108,11 +114,12 @@ class ResourceCategoryManager {
     /**
      * Gets a @see Collection of @see ResourceCategory instances for the Game Version
      *
-     * @param $gameVersionId int the GameVersion id
+     * @param  $gameVersionId  int the GameVersion id
      * @return Collection a set of the ResourceCategory instances
      */
     public function getResourceCategoriesForGameVersion(int $gameVersionId, $staticResources, $langId = null): Collection {
         $resourceTypeId = $staticResources ? 1 : 2;
+
         return $this->resourceCategoryStorage->getResourceCategoriesForGameVersion($gameVersionId, $resourceTypeId, $langId);
     }
 
@@ -120,47 +127,47 @@ class ResourceCategoryManager {
      * For a given game version id and a language id, get the corresponding @see ResourceCategory instances,
      * each containing @see Resource instances
      *
-     * @param $gameVersionId int the game version id
-     * @param $langId int the language id
+     * @param  $gameVersionId  int the game version id
+     * @param  $langId  int the language id
      * @return Collection set of ResourceCategories containing resource instances
      */
     public function getResourceCategoriesForGameVersionForLanguage(int $gameVersionId, int $langId): Collection {
         $gameVersionResourceCategories = $this->getResourceCategoriesForGameVersion($gameVersionId, true, $langId);
-        $resourceTranslationStorage = new ResourceTranslationStorage();
-        $resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage();
+        $resourceTranslationStorage = new ResourceTranslationStorage;
+        $resourceCategoryTranslationStorage = new ResourceCategoryTranslationStorage;
         foreach ($gameVersionResourceCategories as $category) {
             $translationForResourceCategory = $resourceCategoryTranslationStorage->getTranslationForResourceCategory($category->id, $langId);
-            if($translationForResourceCategory != null) {
+            if ($translationForResourceCategory != null) {
                 $category->description = $translationForResourceCategory->description;
             }
 
             $currCatResources = $category->resources;
             foreach ($currCatResources as $resource) {
                 $translationForResource = $resourceTranslationStorage->getTranslationForResource($resource->id, $langId);
-                if($translationForResource != null) {
+                if ($translationForResource != null) {
                     $resource->default_text = $translationForResource->resource_name;
                     $resource->default_description = $translationForResource->resource_description;
                 }
             }
         }
+
         return $gameVersionResourceCategories;
     }
-
 
     /**
      * Updates or creates new resource category translation
      *
-     * @param $resourceCategoryId int the id of the resource category
-     * @param $langId int the language id for the translation
-     * @param $translationText string the translation string
+     * @param  $resourceCategoryId  int the id of the resource category
+     * @param  $langId  int the language id for the translation
+     * @param  $translationText  string the translation string
      */
     public function createOrUpdateResourceCategoryTranslation(int $resourceCategoryId, int $langId, string $translationText) {
         $existingResourceCategoryTranslation = $this->resourceCategoryTranslationStorage->getTranslationForResourceCategory($resourceCategoryId, $langId);
-        if($existingResourceCategoryTranslation == null) {
-            //create  new resource translation
+        if ($existingResourceCategoryTranslation == null) {
+            // create  new resource translation
             $this->createNewTranslationForResourceCategory($translationText, $resourceCategoryId, $langId);
         } else {
-            //update the existing translation
+            // update the existing translation
             $this->updateTranslationForResourceCategory($existingResourceCategoryTranslation, $translationText);
         }
     }
@@ -168,12 +175,12 @@ class ResourceCategoryManager {
     /**
      * Creates a new @see ResourceTranslation instance
      *
-     * @param $translationText string the translation message
-     * @param $resourceId int the resource id
-     * @param $langId int the language id
+     * @param  $translationText  string the translation message
+     * @param  $resourceId  int the resource id
+     * @param  $langId  int the language id
      */
     private function createNewTranslationForResourceCategory(string $translationText, int $resourceId, int $langId) {
-        $resourceTranslationCategory = new ResourceCategoryTranslation();
+        $resourceTranslationCategory = new ResourceCategoryTranslation;
         $resourceTranslationCategory->description = $translationText;
         $resourceTranslationCategory->resource_category_id = $resourceId;
         $resourceTranslationCategory->lang_id = $langId;
@@ -183,12 +190,11 @@ class ResourceCategoryManager {
     /**
      * Updates the description of the resource translation
      *
-     * @param ResourceCategoryTranslation $existingResourceCategoryTranslation the resource category translation instance
-     * @param $translationText string the translation message
+     * @param  ResourceCategoryTranslation  $existingResourceCategoryTranslation  the resource category translation instance
+     * @param  $translationText  string the translation message
      */
     private function updateTranslationForResourceCategory(ResourceCategoryTranslation $existingResourceCategoryTranslation, string $translationText) {
         $existingResourceCategoryTranslation->description = $translationText;
         $this->resourceCategoryTranslationStorage->saveResourceCategoryTranslation($existingResourceCategoryTranslation);
     }
-
 }
