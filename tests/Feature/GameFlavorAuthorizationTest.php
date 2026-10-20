@@ -67,8 +67,12 @@ class GameFlavorAuthorizationTest extends TestCase {
     public function test_an_admin_can_run_an_admin_action(string $method, string $url): void {
         $response = $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->{$method}(sprintf($url, $this->gameId));
 
-        // Success only: a 403, 419 or 500 must fail this test.
-        $this->assertContains($response->status(), [200, 302]);
+        // The controllers render an error view with status 200 when an action fails, so check the real result.
+        if ($method === 'get') {
+            $response->assertOk()->assertViewIs('game_flavor.forms.select_game_version');
+        } else {
+            $response->assertRedirect()->assertSessionMissing('flash_message_failure');
+        }
     }
 
     public function test_another_member_cannot_submit_the_game_for_approval(): void {
