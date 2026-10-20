@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class DropFilePathOnResourcesTable extends Migration
-{
+class DropFilePathOnResourcesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('resource', function(Blueprint $table){
+    public function up() {
+        Schema::table('resource', function (Blueprint $table) {
             $table->dropColumn('file_path');
         });
     }
@@ -23,9 +21,8 @@ class DropFilePathOnResourcesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('resource', function(Blueprint $table){
+    public function down() {
+        Schema::table('resource', function (Blueprint $table) {
             $table->string('file_path', 500);
         });
     }

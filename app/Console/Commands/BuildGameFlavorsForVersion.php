@@ -9,7 +9,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class BuildGameFlavorsForVersion extends Command {
-
     public static $COMMAND = 'games:build-for-version';
 
     /**
@@ -44,17 +43,19 @@ class BuildGameFlavorsForVersion extends Command {
     public function handle(): int {
         $gameVersionId = $this->argument('id');
         $this->buildAllSuitableGameFlavors($gameVersionId);
+
         return 0;
     }
 
     protected function buildAllSuitableGameFlavors(int $gameVersionId) {
         $gameFlavors = GameFlavor::where(['game_version_id' => $gameVersionId])->get();
-        if (!$gameFlavors->isEmpty())
+        if (!$gameFlavors->isEmpty()) {
             try {
                 $this->buildGameFlavors($gameFlavors);
             } catch (Exception $e) {
-                echo "Could not build game flavor: " . $e->getMessage() . "\n";
+                echo 'Could not build game flavor: ' . $e->getMessage() . "\n";
             }
+        }
     }
 
     /**
@@ -64,7 +65,7 @@ class BuildGameFlavorsForVersion extends Command {
         $gameFlavorManager = app()->make(GameFlavorManager::class);
         echo "\n";
         foreach ($gameFlavors as $gameFlavor) {
-            echo "Building Game Flavor: " . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
+            echo 'Building Game Flavor: ' . $gameFlavor->name . "\tid: " . $gameFlavor->id . "...\n";
             $gameFlavorManager->buildGameFlavor($gameFlavor->id);
             echo "Game Flavor was built!\n\n";
         }

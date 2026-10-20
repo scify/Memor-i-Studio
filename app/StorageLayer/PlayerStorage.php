@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,14 +9,13 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\Player;
 use DateTime;
 
 class PlayerStorage {
-
     public function savePlayer(Player $player) {
         $player->save();
+
         return $player;
     }
 
@@ -25,14 +25,14 @@ class PlayerStorage {
 
     public function getPlayerByUserName($userName) {
         return Player::where([
-            ['user_name', (string)$userName]
+            ['user_name', (string) $userName],
         ])->get();
     }
 
     public function getPlayerByUserNameAndId($userName, $playerId) {
         return Player::where([
-            ['user_name', (string)$userName],
-            ['id', $playerId]
+            ['user_name', (string) $userName],
+            ['id', $playerId],
         ])->first();
     }
 
@@ -40,10 +40,11 @@ class PlayerStorage {
         $date = new DateTime;
         $date->modify('-10 seconds');
         $formatted_date = $date->format('Y-m-d H:i:s');
+
         return Player::where([
             ['last_seen_online', '>=', $formatted_date],
             ['in_game', false],
-            ['id', '<>' , $playerId]
+            ['id', '<>', $playerId],
         ])->get();
     }
 
@@ -51,12 +52,12 @@ class PlayerStorage {
         $date = new DateTime;
         $date->modify('-10 seconds');
         $formatted_date = $date->format('Y-m-d H:i:s');
+
         return Player::where([
             ['last_seen_online', '>=', $formatted_date],
             ['in_game', false],
             ['game_flavor_playing', $gameFlavorId],
-            ['id', '<>' , $playerId]
+            ['id', '<>', $playerId],
         ])->get();
     }
-
 }

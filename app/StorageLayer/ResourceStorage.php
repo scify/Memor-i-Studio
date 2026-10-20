@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -14,27 +15,27 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class ResourceStorage
- * @package App\StorageLayer
  */
 class ResourceStorage {
-
     /**
      * Saves a @see Resource instance
      *
-     * @param Resource $resource
+     * @param  resource  $resource
      * @return null
      */
     public function storeResource(Resource $resource) {
         $newResource = $resource->save();
-        if($newResource)
+        if ($newResource) {
             return $resource->id;
+        }
+
         return null;
     }
 
     /**
      * Gets a @see Resource instance by id
      *
-     * @param $id int the id of the resource
+     * @param  $id  int the id of the resource
      * @return mixed the instance if found, otherwise null
      */
     public function getResourceById($id) {
@@ -43,7 +44,9 @@ class ResourceStorage {
 
     /**
      * Gets a @see Resource instance by id
+     *
      * @return mixed the instance if found, otherwise null
+     *
      * @internal param int $id the id of the resource
      */
     public function getResourceByCategoryId($resourceCategoryId) {
@@ -53,21 +56,23 @@ class ResourceStorage {
     /**
      * Saves a @see ResourceFile instance
      *
-     * @param ResourceFile $resource
+     * @param  ResourceFile  $resource
      * @return mixed|null the @see ResourceFile instance if correctly created, null otherwise.
      */
     public function storeResourceFile(ResourceFile $resource) {
         $newResource = $resource->save();
-        if($newResource)
+        if ($newResource) {
             return $resource->id;
+        }
+
         return null;
     }
 
     /**
      * Gets a resource file belonging to a given resource and game flavor
      *
-     * @param $resourceId int the is of the resource instance
-     * @param $gameFlavorId int the id of the game flavor
+     * @param  $resourceId  int the is of the resource instance
+     * @param  $gameFlavorId  int the id of the game flavor
      * @return mixed the @see ResourceFile instance if found, null otherwise.
      */
     public function getFileForResourceForGameFlavor($resourceId, $gameFlavorId) {
@@ -75,8 +80,8 @@ class ResourceStorage {
     }
 
     /**
-     * @param $gameFlavorId int the id of the game flavor
-     * @param $typeId int the resource category type (1 for static resources, 2 for dynamic resources)
+     * @param  $gameFlavorId  int the id of the game flavor
+     * @param  $typeId  int the resource category type (1 for static resources, 2 for dynamic resources)
      * @return mixed set of results
      */
     public function getResourcesForGameFlavorByResourceType($gameFlavorId, $typeId) {
@@ -93,6 +98,4 @@ class ResourceStorage {
     public function getReourceByNameForCategory($gameResourceFilePath, $categoryId) {
         return Resource::where(['category_id' => $categoryId, 'name' => $gameResourceFilePath])->first();
     }
-
-
 }

@@ -27,7 +27,7 @@ return [
         'numeric' => 'Το :attribute πρέπει να είναι ανάμεσα σε :min και :max.',
         'file'    => 'Το :attribute πρέπει να είναι ανάμεσα σε :min και :max kilobytes.',
         'string'  => 'Το :attribute πρέπει να είναι ανάμεσα σε :min και :max χαρακτήρες.',
-        'array'   => 'Το :attribute πρέπει να είναι ανάμεσα σε :min και :max στοιχεία.'
+        'array'   => 'Το :attribute πρέπει να είναι ανάμεσα σε :min και :max στοιχεία.',
     ],
     'boolean'              => 'Το πεδίο :attribute πρέπει να είναι σωστό ή λάθος.',
     'confirmed'            => 'Η επιβεβαίωση  :attribute δεν είναι ίδια.',
@@ -106,7 +106,7 @@ return [
         ],
         'card.*.sound' => [
             'required' => 'Κάθε εικόνα θα έπρεπε να έχει ένα αρχείο ήχου',
-        ]
+        ],
     ],
 
     /*

@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Represents the resource instance for a game
  *
  * Class Resource
- * @package App\Models
  */
-class Resource extends Model
-{
+class Resource extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'resource';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,8 +34,7 @@ class Resource extends Model
     /**
      * Get the translations of this resource
      */
-    public function translations()
-    {
+    public function translations() {
         return $this->hasMany('App\Models\ResourceTranslation', 'resource_id', 'id');
     }
 
@@ -49,13 +48,11 @@ class Resource extends Model
      * @param $value
      * @return mixed
      */
-    public function getFilePathAttribute($value)
-    {
+    public function getFilePathAttribute($value) {
         return $value;
     }
 
-    public function setFilePathAttribute($value)
-    {
+    public function setFilePathAttribute($value) {
         $this->attributes['file_path'] = $value;
     }
 }

@@ -53,8 +53,7 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
-    //Game Version routes
+    // Game Version routes
     Route::get('gameVersions/all', 'GameVersionController@showAllGameVersions')->name('showAllGameVersions');
 
     Route::get('gameVersion/{id}/resources', 'GameVersionController@showGameVersionResources')->name('showGameVersionResources');
@@ -62,7 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('gameVersion/{id}/addLanguage', 'GameVersionController@addGameVersionLanguageIndex')->name('addGameVersionLanguageIndex');
     Route::post('gameVersion/addLanguage', 'GameVersionController@addGameVersionLanguage')->name('addGameVersionLanguage');
 
-    //Game Flavor routes
+    // Game Flavor routes
     Route::get('gameFlavor/selectVersion', 'GameFlavorController@showGameVersionSelectionForm')->name('showGameVersionSelectionForm');
     Route::get('gameFlavor/create', 'GameFlavorController@createIndex')->name('createGameFlavorIndex');
     Route::post('gameFlavor/create', 'GameFlavorController@create')->name('createGameFlavor');
@@ -80,24 +79,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('gameFlavor/changeVersion/{id}', 'GameFlavorController@assignGameFlavorToGameVersion')->name('changeGameVersion');
     Route::get('gameFlavor/{id}/resources', 'ResourceController@getResourcesForGameFlavor')->name('getResourcesForGameFlavor');
 
-    //Game Resources
+    // Game Resources
     Route::post('gameVersion/updateResources', 'ResourceController@updateGameResourcesTranslations')->name('updateGameResourcesTranslations');
     Route::post('gameResources/update', 'ResourceController@updateGameResourcesFiles')->name('updateGameResourcesFiles');
 
-    //Equivalence set routes
+    // Equivalence set routes
     Route::post('set/create', 'EquivalenceSetController@create')->name('createEquivalenceSet');
     Route::get('flavor/{id}/equivalenceSet/delete', 'EquivalenceSetController@delete')->name('deleteEquivalenceSet');
     Route::post('equivalenceSet/edit', 'EquivalenceSetController@edit')->name('editEquivalenceSet');
-    //Card routes
+    // Card routes
     Route::post('card/edit', 'CardController@edit')->name('editCard');
-
-
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('administration')->middleware('can:manage-platform')->group(function () {
         Route::get('test-email/{email}', function (Request $request) {
-            $mailManager = new MailManager();
+            $mailManager = new MailManager;
             $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
         });
 

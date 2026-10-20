@@ -11,14 +11,12 @@ use Tests\TestCase;
  * migrate:fresh. Nothing listens on 127.0.0.1:1, so without the guard the
  * migration fails fast with a QueryException instead of the guard's message.
  */
-class TestDatabaseGuardSetUpTest extends TestCase
-{
+class TestDatabaseGuardSetUpTest extends TestCase {
     use RefreshDatabase;
 
     private ?RuntimeException $setUpException = null;
 
-    public function createApplication()
-    {
+    public function createApplication() {
         $app = parent::createApplication();
 
         $app['config']->set([
@@ -30,8 +28,7 @@ class TestDatabaseGuardSetUpTest extends TestCase
         return $app;
     }
 
-    protected function setUp(): void
-    {
+    protected function setUp(): void {
         try {
             parent::setUp();
         } catch (RuntimeException $exception) {
@@ -39,8 +36,7 @@ class TestDatabaseGuardSetUpTest extends TestCase
         }
     }
 
-    public function test_set_up_refuses_a_mysql_connection_before_migrating(): void
-    {
+    public function test_set_up_refuses_a_mysql_connection_before_migrating(): void {
         $this->assertNotNull($this->setUpException);
         $this->assertStringStartsWith('Tests must use SQLite in memory, not [mysql]', $this->setUpException->getMessage());
     }

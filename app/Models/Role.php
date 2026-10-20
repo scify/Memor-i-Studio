@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,8 +9,8 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Role extends Model {
     /**
@@ -18,6 +19,7 @@ class Role extends Model {
      * @var string
      */
     protected $table = 'role';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,10 +28,9 @@ class Role extends Model {
     protected $fillable = ['id', 'name', 'description'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsTo('App\Models\User', 'role_id', 'id');
     }
 }

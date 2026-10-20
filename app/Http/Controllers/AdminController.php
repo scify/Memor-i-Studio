@@ -7,20 +7,20 @@ use App\Console\Commands\BuildGameFlavorsForVersion;
 use Illuminate\Support\Facades\Artisan;
 
 class AdminController extends Controller {
-
     public function buildGameFlavors(int $id) {
         try {
             $result = Artisan::call(BuildGameFlavors::$COMMAND, [
-                'id' => $id
+                'id' => $id,
             ]);
+
             return response()->json([
-                "command" => BuildGameFlavors::$COMMAND . ' ' . $id,
-                "result" => $result
+                'command' => BuildGameFlavors::$COMMAND . ' ' . $id,
+                'result' => $result,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage(),
-                'stack' => $e->getTraceAsString()
+                'stack' => $e->getTraceAsString(),
             ]);
         }
     }
@@ -28,18 +28,18 @@ class AdminController extends Controller {
     public function buildGameFlavorsForVersion(int $id) {
         try {
             $result = Artisan::call(BuildGameFlavorsForVersion::$COMMAND, [
-                'id' => $id
+                'id' => $id,
             ]);
+
             return response()->json([
-                "command" => BuildGameFlavorsForVersion::$COMMAND . ' ' . $id,
-                "result" => $result
+                'command' => BuildGameFlavorsForVersion::$COMMAND . ' ' . $id,
+                'result' => $result,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage(),
-                'stack' => $e->getTraceAsString()
+                'stack' => $e->getTraceAsString(),
             ]);
         }
     }
-
 }

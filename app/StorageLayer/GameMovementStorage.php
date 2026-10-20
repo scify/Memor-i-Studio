@@ -2,13 +2,12 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\GameMovement;
 
 class GameMovementStorage {
-
     public function saveGameMovement(GameMovement $gameMovement) {
         $gameMovement->save();
+
         return $gameMovement;
     }
 
@@ -19,7 +18,7 @@ class GameMovementStorage {
     public function getLatestGameMovementForGameByPlayerId($gameRequestId, $playerId) {
         return GameMovement::where([
             ['player_id', $playerId],
-            ['game_request_id', $gameRequestId]
+            ['game_request_id', $gameRequestId],
         ])->orderBy('timestamp', 'desc')->first();
     }
 
@@ -28,7 +27,7 @@ class GameMovementStorage {
             ['game_request_id', $gameRequestId],
             ['player_id', $opponentId],
             ['game_request_id', $gameRequestId],
-            ['timestamp', '>', intval($lastTimestamp)]
+            ['timestamp', '>', intval($lastTimestamp)],
         ])->orderBy('timestamp', 'asc')->first();
     }
 }

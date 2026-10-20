@@ -106,7 +106,7 @@ return [
         ],
         'card.*.sound' => [
             'required' => 'Each card should have a sound file',
-        ]
+        ],
     ],
 
     /*

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,7 +9,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\BusinessLogicLayer\managers\GameMovementManager;
 use App\Models\api\ApiOperationResponse;
 use App\Utils\ServerResponses;
@@ -16,10 +16,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class GameMovementController {
-
     private $gameMovementManager;
 
-    function __construct(GameMovementManager $gameMovementManager) {
+    public function __construct(GameMovementManager $gameMovementManager) {
         $this->gameMovementManager = $gameMovementManager;
     }
 
@@ -36,6 +35,7 @@ class GameMovementController {
             $input = $request->all();
             $response = $this->gameMovementManager->createGameMovement($input);
         }
+
         return json_encode($response);
     }
 
@@ -51,6 +51,7 @@ class GameMovementController {
             $input = $request->all();
             $response = $this->gameMovementManager->getLatestOpponentGameMovement($input);
         }
+
         return json_encode($response);
     }
 }

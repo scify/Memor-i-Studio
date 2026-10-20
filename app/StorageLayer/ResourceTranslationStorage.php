@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,11 +9,9 @@
 
 namespace App\StorageLayer;
 
-
 use App\Models\ResourceTranslation;
 
 class ResourceTranslationStorage {
-
     public function getTranslationForResource($resourceId, $langId) {
         return ResourceTranslation::where(['resource_id' => $resourceId, 'lang_id' => $langId])->first();
     }

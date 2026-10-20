@@ -5,7 +5,6 @@ namespace App\BusinessLogicLayer\managers;
 use App\StorageLayer\EquivalentSetStorage;
 
 class EquivalenceSetViewModelProvider {
-
     private $equivalenceSetStorage;
 
     public function __construct(EquivalentSetStorage $equivalenceSetStorage) {
@@ -19,7 +18,7 @@ class EquivalenceSetViewModelProvider {
                 $equivalenceSet->descriptionSoundPath = url('resolveData/' . $equivalenceSet->descriptionSound->file->file_path);
             }
         }
+
         return $equivalenceSets;
     }
-
 }

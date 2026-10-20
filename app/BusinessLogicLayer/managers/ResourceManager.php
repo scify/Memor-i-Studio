@@ -17,25 +17,26 @@ include_once 'functions.php';
  * Handles the @see Resource instances and business logic methods
  */
 class ResourceManager {
-
     private $resourceStorage;
+
     private $resourceCategoryStorage;
+
     private $resourceTranslationStorage;
 
-    public function __construct(ResourceStorage            $resourceStorage,
-                                ResourceCategoryStorage    $resourceCategoryStorage,
-                                ResourceTranslationStorage $resourceTranslationStorage) {
+    public function __construct(ResourceStorage $resourceStorage,
+        ResourceCategoryStorage $resourceCategoryStorage,
+        ResourceTranslationStorage $resourceTranslationStorage) {
         $this->resourceStorage = $resourceStorage;
         $this->resourceCategoryStorage = $resourceCategoryStorage;
         $this->resourceTranslationStorage = $resourceTranslationStorage;
 
-        //add number audio files to array
+        // add number audio files to array
         for ($i = 1; $i <= 60; $i++) {
             $this->resourceOrdering['audios/numbers/' . $i . '.mp3'] = $i;
         }
     }
 
-    private $resourceOrdering = array(
+    private $resourceOrdering = [
         'audios/game_instructions/tutorial_intro_step_1.mp3' => 1,
         'audios/game_instructions/tutorial_intro_step_2.mp3' => 2,
         'audios/game_instructions/press_right.mp3' => 3,
@@ -87,7 +88,7 @@ class ResourceManager {
         'audios/letters/6.mp3' => 6,
         'audios/letters/7.mp3' => 7,
         'audios/letters/8.mp3' => 8,
-    );
+    ];
 
     public function updateResourceOrdering($resourcesArray) {
         foreach ($resourcesArray as $resource) {
@@ -100,14 +101,15 @@ class ResourceManager {
 
     /**
      * Given an @param $pathToStore string the path to store the file
-     * @return int the newly created instance id
-     * @see UploadedFile, stores the file and creates a new @see Resource instance
      *
+     * @return int the newly created instance id
+     *
+     * @see UploadedFile, stores the file and creates a new @see Resource instance
      */
     public function createNewResource($pathToStore) {
         $resourceCategory = $this->resourceCategoryStorage->getResourceCategoryByPath($pathToStore);
 
-        $resource = new Resource();
+        $resource = new Resource;
         $resource->category_id = $resourceCategory->id;
 
         return $this->resourceStorage->storeResource($resource);
@@ -115,20 +117,22 @@ class ResourceManager {
 
     /**
      * Given an @param UploadedFile $file the file to be stored (eg image or audio)
-     * @param $pathToStore string the path to store the file
-     * @param $resourceId int the id if the @see Resource instance
-     * @param $gameFlavorId int the id of the game flavor this resource belongs
-     * @return Resource the newly created instance
-     * @see UploadedFile, stores the file and creates a new @see Resource instance
      *
+     * @param  $pathToStore  string the path to store the file
+     * @param  $resourceId  int the id if the @see Resource instance
+     * @param  $gameFlavorId  int the id of the game flavor this resource belongs
+     * @return resource the newly created instance
+     *
+     * @see UploadedFile, stores the file and creates a new @see Resource instance
      */
     public function createAndStoreResourceFile(UploadedFile $file, $pathToStore, $resourceId, $gameFlavorId) {
         $filename = $this->storeFileToPath($file, $pathToStore);
 
-        $resourceFile = new ResourceFile();
+        $resourceFile = new ResourceFile;
         $resourceFile->file_path = $pathToStore . $filename;
         $resourceFile->resource_id = $resourceId;
         $resourceFile->game_flavor_id = $gameFlavorId;
+
         return $this->resourceStorage->storeResourceFile($resourceFile);
     }
 
@@ -136,15 +140,16 @@ class ResourceManager {
         $fileNamePrefix = 'res_' . milliseconds() . '_' . generateRandomString(6) . '_';
         $fileName = $fileNamePrefix . $file->getClientOriginalName();
         $fileName = $this->slugifyFileName($fileName);
-        //temporarily store the file in order to be able to convert it
+        // temporarily store the file in order to be able to convert it
         $file->storeAs($pathToStore, $fileName);
         $mime = mime_content_type(storage_path('app/' . $pathToStore . $fileName));
-        if (strstr($mime, "audio/")) {
+        if (strstr($mime, 'audio/')) {
             $convertedFileName = $fileNamePrefix . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_converted.mp3';
             $convertedFileName = $this->slugifyFileName($convertedFileName);
             $this->convertFileToMp3AndStore(storage_path('app/' . $pathToStore . $fileName), storage_path('app/' . $pathToStore . $convertedFileName));
-            //delete old temp file
+            // delete old temp file
             Storage::delete($pathToStore . $fileName);
+
             return $convertedFileName;
         }
 
@@ -156,6 +161,7 @@ class ResourceManager {
         $only_name = $str_arr[0];
         $extension = $str_arr[1];
         $converted = greeklish($only_name);
+
         return $converted . '.' . $extension;
     }
 
@@ -165,22 +171,21 @@ class ResourceManager {
         $command = './convert_file_to_mp3.sh ' . $filePath . ' ' . $newFilePath;
         $output = shell_exec($command);
         chdir($old_path);
+
         return $output;
     }
 
     /**
      * Given an array with the resource file names, create corresponding resources
      *
-     * @param $gameResourcesFilesSchema array containing resource file names (full resource path)
-     * @param $gameVersionId int the game version id
+     * @param  $gameResourcesFilesSchema  array containing resource file names (full resource path)
+     * @param  $gameVersionId  int the game version id
      */
     public function createResourcesFromResourcesArray($gameResourcesFilesSchema, $gameVersionId) {
-
         foreach ($gameResourcesFilesSchema as $gameResourceFile => $resourceCategoryName) {
-
             $resourceCategory = $this->resourceCategoryStorage->getResourceCategoryByPathForGameVersion($resourceCategoryName, $gameVersionId);
 
-            //if resource category exists and it is not a dynamic resource category
+            // if resource category exists and it is not a dynamic resource category
             if ($resourceCategory != null && $resourceCategory->type_id != 2) {
                 $this->createNewResourceForCategory($resourceCategory, $gameResourceFile);
             }
@@ -190,14 +195,13 @@ class ResourceManager {
     /**
      * Given an array with the resource file names, edit corresponding resources
      *
-     * @param $gameResourcesFilesSchema array containing resource file names (full resource path)
-     * @param $gameVersionId int the game version id
+     * @param  $gameResourcesFilesSchema  array containing resource file names (full resource path)
+     * @param  $gameVersionId  int the game version id
      */
     public function editResourcesFromResourcesArray($gameResourcesFilesSchema, $gameVersionId) {
-
         foreach ($gameResourcesFilesSchema as $gameResourceFile => $resourceCategoryName) {
             $resourceCategory = $this->resourceCategoryStorage->getResourceCategoryByPathForGameVersion($resourceCategoryName, $gameVersionId);
-            //if resource category exists and it is not a dynamic resource category
+            // if resource category exists and it is not a dynamic resource category
             if ($resourceCategory) {
                 $existingResource = $this->getResourceByNameForCategory($gameResourceFile, $resourceCategory);
                 if (!$existingResource && $resourceCategory->type_id != 2) {
@@ -207,13 +211,12 @@ class ResourceManager {
         }
     }
 
-
     private function getResourceByNameForCategory($gameResourceFilePath, $resourceCategory) {
         return $this->resourceStorage->getReourceByNameForCategory($gameResourceFilePath, $resourceCategory->id);
     }
 
     private function createNewResourceForCategory($resourceCategory, $gameResourceFile) {
-        $newResource = new Resource();
+        $newResource = new Resource;
         $newResource->category_id = $resourceCategory->id;
         $newResource->name = $gameResourceFile;
         $newResource->default_text = $gameResourceFile;
@@ -227,17 +230,17 @@ class ResourceManager {
     /**
      * Updates or creates new resources translations
      *
-     * @param $resources array of resource translation parameters
-     * @param $langId int the language id for the translation
+     * @param  $resources  array of resource translation parameters
+     * @param  $langId  int the language id for the translation
      */
     public function createOrUpdateResourceTranslations(array $resources, $langId) {
         foreach ($resources as $resource) {
             $existingResourceTranslation = $this->resourceTranslationStorage->getTranslationForResource($resource['id'], $langId);
             if ($existingResourceTranslation == null) {
-                //create  new resource translation
+                // create  new resource translation
                 $this->createNewTranslationForResource($resource['translation'], $resource['description_translation'], $resource['id'], $langId);
             } else {
-                //update the existing translation
+                // update the existing translation
                 $this->updateTranslationForResource($existingResourceTranslation, $resource['translation'], $resource['description_translation']);
             }
         }
@@ -245,13 +248,14 @@ class ResourceManager {
 
     /**
      * Creates a new @param $resourceNameTranslation string the translation message
-     * @param $resourceId int the resource id
-     * @param $langId int the language id
-     * @see ResourceTranslation instance
      *
+     * @param  $resourceId  int the resource id
+     * @param  $langId  int the language id
+     *
+     * @see ResourceTranslation instance
      */
     private function createNewTranslationForResource($resourceNameTranslation, $resourceDescriptionTranslation, $resourceId, $langId) {
-        $resourceTranslation = new ResourceTranslation();
+        $resourceTranslation = new ResourceTranslation;
         $resourceTranslation->resource_name = $resourceNameTranslation;
         $resourceTranslation->resource_description = $resourceDescriptionTranslation;
         $resourceTranslation->resource_id = $resourceId;
@@ -262,9 +266,9 @@ class ResourceManager {
     /**
      * Updates the description of the resource translation
      *
-     * @param ResourceTranslation $existingResourceTranslation the resource transation instance
-     * @param $resourceNameTranslation string the string fot the resource name translation
-     * @param $resourceDescriptionTranslation string the string fot the resource description translation
+     * @param  ResourceTranslation  $existingResourceTranslation  the resource transation instance
+     * @param  $resourceNameTranslation  string the string fot the resource name translation
+     * @param  $resourceDescriptionTranslation  string the string fot the resource description translation
      */
     private function updateTranslationForResource(ResourceTranslation $existingResourceTranslation, $resourceNameTranslation, $resourceDescriptionTranslation) {
         if ($resourceNameTranslation != null || $resourceDescriptionTranslation) {
@@ -277,8 +281,8 @@ class ResourceManager {
     /**
      * For a set of resources (in a given array) creates or updates their files (if uploaded)
      *
-     * @param $resourceInputs
-     * @param $gameFlavorId
+     * @param  $resourceInputs
+     * @param  $gameFlavorId
      */
     public function createOrUpdateResourceFiles($resourceInputs, $gameFlavorId) {
         foreach ($resourceInputs as $resourceInput) {
@@ -291,32 +295,34 @@ class ResourceManager {
     /**
      * For a given resource, checks if it exists and creates or updates, accordingly
      *
-     * @param UploadedFile $file
-     * @param $resourceId
-     * @param $gameFlavorId
+     * @param  UploadedFile  $file
+     * @param  $resourceId
+     * @param  $gameFlavorId
      * @return mixed
      */
     public function createOrUpdateResourceFile(UploadedFile $file, $resourceId, $gameFlavorId) {
         $existingResourceFile = $this->resourceStorage->getFileForResourceForGameFlavor($resourceId, $gameFlavorId);
         $resource = $this->resourceStorage->getResourceById($resourceId);
         $pathToStoreResourceFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . substr($resource->name, 0, strrpos($resource->name, '/')) . '/';
-        if ($existingResourceFile == null)
+        if ($existingResourceFile == null) {
             $this->createAndStoreResourceFile($file, $pathToStoreResourceFile, $resourceId, $gameFlavorId);
-        else
+        } else {
             $this->updateResourceFile($file, $existingResourceFile, $pathToStoreResourceFile);
+        }
+
         return $resource;
     }
 
     /**
      * Uploads and updates a resource file (deletes the old one)
      *
-     * @param UploadedFile $file
-     * @param ResourceFile $existingResourceFile
-     * @param $pathToStoreResourceFile
+     * @param  UploadedFile  $file
+     * @param  ResourceFile  $existingResourceFile
+     * @param  $pathToStoreResourceFile
      */
     private function updateResourceFile(UploadedFile $file, ResourceFile $existingResourceFile, $pathToStoreResourceFile) {
         $filename = $this->storeFileToPath($file, $pathToStoreResourceFile);
-        //delete the old file
+        // delete the old file
         Storage::delete($existingResourceFile->file_path);
         $existingResourceFile->file_path = $pathToStoreResourceFile . $filename;
         $this->resourceStorage->storeResourceFile($existingResourceFile);
@@ -326,41 +332,40 @@ class ResourceManager {
      * Gets the static resources for a game flavor (the ones that the user has edited)
      * Creates a map file containing the resource default file name and the uploaded file name
      *
-     * @param $gameFlavorId int the id of the game flavor
+     * @param  $gameFlavorId  int the id of the game flavor
      */
     public function createStaticResourcesMapFile(int $gameFlavorId) {
         $gameStaticResources = $this->resourceStorage->getResourcesForGameFlavorByResourceType($gameFlavorId, 1);
         $pathToMapFile = 'data_packs/additional_pack_' . $gameFlavorId . '/data/' . 'resources_map.properties';
-        //initialise file (will overwrite all contents)
+        // initialise file (will overwrite all contents)
 
-        Storage::put($pathToMapFile, "");
+        Storage::put($pathToMapFile, '');
         foreach ($gameStaticResources as $gameStaticResource) {
             $resourceFileNameNoFile = substr($gameStaticResource->name, 0, strripos($gameStaticResource->name, '/'));
             $resourceFileValueNoPath = substr($gameStaticResource->file_path, strrpos($gameStaticResource->file_path, '/') + 1);
-            Storage::append($pathToMapFile, $gameStaticResource->name . "=" . $resourceFileNameNoFile . '/' . $resourceFileValueNoPath);
+            Storage::append($pathToMapFile, $gameStaticResource->name . '=' . $resourceFileNameNoFile . '/' . $resourceFileValueNoPath);
         }
-
     }
 
     public function createAdditionalPropertiesFile($gameFlavor) {
         $pathToPropsFile = 'data_packs/additional_pack_' . $gameFlavor->id . '/' . 'project_additional.properties';
-        Storage::put($pathToPropsFile, "");
-        Storage::append($pathToPropsFile, "DATA_PACKAGE=" . 'data');
+        Storage::put($pathToPropsFile, '');
+        Storage::append($pathToPropsFile, 'DATA_PACKAGE=' . 'data');
         // we need to set up the game text resources language.
         // the game supports greek and english texts
         // default is greek, so if the lang_id of the game flavor is set to 2, we update it to be english.
         if ($gameFlavor->lang_id === 1) {
-            Storage::append($pathToPropsFile, "APP_LANG=" . 'el');
+            Storage::append($pathToPropsFile, 'APP_LANG=' . 'el');
         } else {
-            Storage::append($pathToPropsFile, "APP_LANG=" . 'en');
+            Storage::append($pathToPropsFile, 'APP_LANG=' . 'en');
         }
-        Storage::append($pathToPropsFile, "GAME_IDENTIFIER=" . $gameFlavor->game_identifier);
+        Storage::append($pathToPropsFile, 'GAME_IDENTIFIER=' . $gameFlavor->game_identifier);
     }
 
     public function cloneResource(Resource $resource, $oldGameFlavorId, $newGameFlavorId) {
         $newResource = $resource->replicate();
         $newResource->save();
-        //if the resource has a file associated with it, clone the resource file instance
+        // if the resource has a file associated with it, clone the resource file instance
         $resourceFile = $this->getFileForResourceForGameFlavor($resource, $oldGameFlavorId);
 
         if ($resourceFile != null) {
@@ -374,7 +379,7 @@ class ResourceManager {
         $newResourceFile = $resourceFile->replicate();
         $newResourceFile->game_flavor_id = $newGameFlavorId;
         $newResourceFile->resource_id = $newResource->id;
-        //replace the additional_pack_* in the file_path string
+        // replace the additional_pack_* in the file_path string
         $filePath = $newResourceFile->file_path;
         $oldGameFlavorId = $resourceFile->game_flavor_id;
         $newFilePath = str_replace('additional_pack_' . $oldGameFlavorId . '/', 'additional_pack_' . $newGameFlavorId . '/', $filePath);

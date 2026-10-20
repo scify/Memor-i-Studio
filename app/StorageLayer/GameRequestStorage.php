@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,14 +9,13 @@
 
 namespace App\StorageLayer;
 
-
 use App\BusinessLogicLayer\GameRequestStatus;
 use App\Models\GameRequest;
 
 class GameRequestStorage {
-
     public function saveGameRequest(GameRequest $gameRequest) {
         $gameRequest->save();
+
         return $gameRequest;
     }
 
@@ -26,14 +26,14 @@ class GameRequestStorage {
     public function getGameRequestsForOpponent($playerOpponentId) {
         return GameRequest::where([
             ['player_opponent_id', $playerOpponentId],
-            ['status_id', GameRequestStatus::REQUEST_SENT]
+            ['status_id', GameRequestStatus::REQUEST_SENT],
         ])->orderBy('created_at', 'desc')->get();
     }
 
     public function getGameRequestsForInitiatorOlderThan($initiatorPlayerId, $date) {
         return GameRequest::where([
             ['updated_at', '<=', $date],
-            ['player_initiator_id', $initiatorPlayerId]
+            ['player_initiator_id', $initiatorPlayerId],
         ])->orderBy('created_at', 'desc')->get();
     }
 
@@ -42,7 +42,7 @@ class GameRequestStorage {
             ['updated_at', '>=', $date],
             ['player_initiator_id', $initiatorPlayerId],
             ['player_opponent_id', $opponentPlayerId],
-            ['status_id', GameRequestStatus::REQUEST_SENT]
+            ['status_id', GameRequestStatus::REQUEST_SENT],
         ])->orderBy('created_at', 'desc')->get();
     }
 
@@ -50,8 +50,7 @@ class GameRequestStorage {
         return GameRequest::where([
             ['updated_at', '>=', $date],
             ['player_opponent_id', $opponentPlayerId],
-            ['status_id', GameRequestStatus::REQUEST_SENT]
+            ['status_id', GameRequestStatus::REQUEST_SENT],
         ])->orderBy('created_at', 'desc')->get();
     }
-
 }

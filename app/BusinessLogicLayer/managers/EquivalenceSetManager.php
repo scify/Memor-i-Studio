@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,7 +9,6 @@
 
 namespace App\BusinessLogicLayer\managers;
 
-
 use App\Models\EquivalenceSet;
 use App\StorageLayer\EquivalentSetStorage;
 use Illuminate\Support\Facades\File;
@@ -17,16 +17,19 @@ use Illuminate\Support\Facades\Storage;
 include_once 'functions.php';
 
 class EquivalenceSetManager {
-
     private $equivalenceSetStorage;
+
     private $soundManager;
+
     private $cardManager;
+
     private $equivalenceSetViewModelProvider;
+
     private $equivalenceSets;
 
-    public function __construct(EquivalentSetStorage            $equivalenceSetStorage, SoundManager $soundManager,
-                                EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider,
-                                CardManager                     $cardManager) {
+    public function __construct(EquivalentSetStorage $equivalenceSetStorage, SoundManager $soundManager,
+        EquivalenceSetViewModelProvider $equivalenceSetViewModelProvider,
+        CardManager $cardManager) {
         $this->equivalenceSetStorage = $equivalenceSetStorage;
         $this->soundManager = $soundManager;
         $this->equivalenceSetViewModelProvider = $equivalenceSetViewModelProvider;
@@ -38,7 +41,7 @@ class EquivalenceSetManager {
     }
 
     public function createEquivalenceSet($gameFlavorId, array $input) {
-        $newEquivalenceSet = new EquivalenceSet();
+        $newEquivalenceSet = new EquivalenceSet;
         $newEquivalenceSet->name = generateRandomString();
         $newEquivalenceSet->flavor_id = $gameFlavorId;
         if (isset($input['equivalence_set_description_sound'])) {
@@ -49,6 +52,7 @@ class EquivalenceSetManager {
                 }
             }
         }
+
         return $this->equivalenceSetStorage->saveEquivalenceSet($newEquivalenceSet);
     }
 
@@ -63,25 +67,24 @@ class EquivalenceSetManager {
     /**
      * Prepares the JSON file describing the equivalence sets
      *
-     * @param $gameFlavorId int the id of the @see GameFlavor
-     * @param bool $absoluteFilePaths whether to have the full path (with http:// in the file name)
+     * @param  $gameFlavorId  int the id of the @see GameFlavor
+     * @param  bool  $absoluteFilePaths  whether to have the full path (with http:// in the file name)
      * @return string
      */
     public function createEquivalenceSetsJSONFile(int $gameFlavorId, bool $absoluteFilePaths): string {
-
-        $equivalence_card_sets = array();
-        $equivalence_card_sets['equivalence_card_sets'] = array();
+        $equivalence_card_sets = [];
+        $equivalence_card_sets['equivalence_card_sets'] = [];
         foreach ($this->equivalenceSets as $equivalenceSet) {
-            $cards = array();
+            $cards = [];
             foreach ($equivalenceSet->cards as $card) {
-                $current_card = array();
+                $current_card = [];
                 $current_card['label'] = $card->label;
                 $current_card['category'] = $card->category;
                 $current_card['unique'] = $card->unique;
-                $current_card['sounds'] = array();
-                $current_card['images'] = array();
-                $current_card['description_sound'] = "";
-                $current_card['equivalenceCardSetHashCode'] = "";
+                $current_card['sounds'] = [];
+                $current_card['images'] = [];
+                $current_card['description_sound'] = '';
+                $current_card['equivalenceCardSetHashCode'] = '';
                 if ($equivalenceSet->descriptionSound != null) {
                     $fileName = $absoluteFilePaths ? $equivalenceSet->descriptionSound->file->file_path : substr($equivalenceSet->descriptionSound->file->file_path, strrpos($equivalenceSet->descriptionSound->file->file_path, '/') + 1);
                     $current_card['description_sound'] = $absoluteFilePaths ? route('resolveDataPath', ['filePath' => $fileName]) : $fileName;
@@ -119,7 +122,8 @@ class EquivalenceSetManager {
     public function getEquivalenceSetFilePath(int $gameFlavorId, $absoluteFilePaths = false): string {
         $fileName = 'equivalence_cards_sets';
         $fileName .= $absoluteFilePaths ? '_absolute' : '';
-        return 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/' . $fileName .'.json';
+
+        return 'data_packs/additional_pack_' . $gameFlavorId . '/data/json_DB/' . $fileName . '.json';
     }
 
     public function cloneEquivalenceSetsAndCardsForGameFlavor($gameFlavorId, $newGameFlavorId) {
@@ -144,6 +148,7 @@ class EquivalenceSetManager {
                 $equivalenceSet->description_sound_probability = $input['equivalence_set_description_sound_probability'];
             }
         }
+
         return $this->equivalenceSetStorage->saveEquivalenceSet($equivalenceSet);
     }
 

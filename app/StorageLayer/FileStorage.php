@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by IntelliJ IDEA.
  * User: pisaris
@@ -8,17 +9,16 @@
 
 namespace App\StorageLayer;
 
-
 use Illuminate\Http\UploadedFile;
 
-include_once(dirname(__DIR__).'/BusinessLogicLayer/managers/functions.php');
+include_once dirname(__DIR__) . '/BusinessLogicLayer/managers/functions.php';
 
 class FileStorage {
-
     public function storeFile(UploadedFile $file, $pathToStore) {
         $filename = 'file_' . milliseconds() . '_' . generateRandomString(6) . '_' . $file->getClientOriginalName();
 
         $file->storeAs($pathToStore, $filename);
+
         return $pathToStore . $filename;
     }
 }

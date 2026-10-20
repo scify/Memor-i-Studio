@@ -19,6 +19,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::get('games', 'GameFlavorController@getGameFlavorsForCriteria')->name('game_flavors.get');
-Route::post("/analytics/store", [AnalyticsEventController::class, 'store']);
-Route::post("/analytics/store/icsee", [AnalyticsEventController::class, 'storeICSeeEvent']);
-Route::post("/analytics/store/newsum", [AnalyticsEventController::class, 'storeNewsumEvent']);
+Route::post('/analytics/store', [AnalyticsEventController::class, 'store']);
+Route::post('/analytics/store/icsee', [AnalyticsEventController::class, 'storeICSeeEvent']);
+Route::post('/analytics/store/newsum', [AnalyticsEventController::class, 'storeNewsumEvent']);

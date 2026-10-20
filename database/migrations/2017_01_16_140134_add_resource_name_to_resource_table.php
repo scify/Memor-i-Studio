@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddResourceNameToResourceTable extends Migration
-{
+class AddResourceNameToResourceTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('resource', function ($table) {
             $table->string('name', 500);
         });
@@ -23,9 +21,8 @@ class AddResourceNameToResourceTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('resource', function(Blueprint $table){
+    public function down() {
+        Schema::table('resource', function (Blueprint $table) {
             $table->dropColumn('name');
         });
     }

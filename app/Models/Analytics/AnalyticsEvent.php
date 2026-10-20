@@ -5,9 +5,9 @@ namespace App\Models\Analytics;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AnalyticsEvent extends Model
-{
+class AnalyticsEvent extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -24,6 +24,6 @@ class AnalyticsEvent extends Model
         'name',
         'source',
         'payload',
-        'response'
+        'response',
     ];
 }

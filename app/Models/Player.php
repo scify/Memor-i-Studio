@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Player extends Model implements AuthenticatableContract{
-
+class Player extends Model implements AuthenticatableContract {
     use Authenticatable;
+
     use SoftDeletes;
 
     /**
@@ -25,7 +25,6 @@ class Player extends Model implements AuthenticatableContract{
      * @var array
      */
     protected $fillable = [
-        'user_name', 'app_id', 'last_seen_online', 'in_game', 'password', 'game_flavor_playing'
+        'user_name', 'app_id', 'last_seen_online', 'in_game', 'password', 'game_flavor_playing',
     ];
-
 }

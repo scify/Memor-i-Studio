@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PlatformStatisticsRepository {
-
     public function getPlatformStatistics(): Collection {
         $data = DB::select('
             select * from (
@@ -31,10 +30,11 @@ class PlatformStatisticsRepository {
                 game_flavor.published = 1
             ) published_game_flavor_stats;
         ');
+
         return collect([
             'Total number of users' => $data[0]->num,
             'Total number of games' => $data[1]->num,
-            'Total number of published games' => $data[2]->num
+            'Total number of published games' => $data[2]->num,
         ]);
     }
 

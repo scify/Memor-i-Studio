@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GameFlavor extends Model
-{
+class GameFlavor extends Model {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'game_flavor';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,6 +41,7 @@ class GameFlavor extends Model
     public function resourceFiles(): HasMany {
         return $this->hasMany('App\Models\ResourceFile', 'game_flavor_id', 'id');
     }
+
     /**
      * Get the Equivalence Sets for the card.
      */
@@ -53,6 +55,7 @@ class GameFlavor extends Model
     public function currentPlayers(): HasMany {
         return $this->hasMany('App\Models\Player', 'game_flavor_playing', 'id');
     }
+
     /**
      * Get the images for the card.
      */
@@ -92,24 +95,19 @@ class GameFlavor extends Model
      * @param $value
      * @return mixed
      */
-    public function getAccessedByUserAttribute($value)
-    {
+    public function getAccessedByUserAttribute($value) {
         return $value;
     }
 
-    public function setAccessedByUserAttribute($value)
-    {
+    public function setAccessedByUserAttribute($value) {
         $this->attributes['accessed_by_user'] = $value;
     }
 
-    public function getCoverImgFilePathAttribute($value)
-    {
+    public function getCoverImgFilePathAttribute($value) {
         return $value;
     }
 
-    public function setCoverImgFilePathAttribute($value)
-    {
+    public function setCoverImgFilePathAttribute($value) {
         $this->attributes['cover_img_file_path'] = $value;
     }
-
 }

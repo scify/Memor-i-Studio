@@ -29,6 +29,7 @@ class RegisterController extends Controller {
      * @var string
      */
     protected $redirectTo = '/home';
+
     protected $userStorage;
 
     /**
@@ -44,7 +45,7 @@ class RegisterController extends Controller {
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param array $data
+     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
@@ -58,13 +59,14 @@ class RegisterController extends Controller {
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     protected function create(array $data) {
         $newUser = $this->userStorage->create($data);
-        $mailManager = new MailManager();
+        $mailManager = new MailManager;
         $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $data['email']);
+
         return $newUser;
     }
 }

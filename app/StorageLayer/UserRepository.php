@@ -3,11 +3,9 @@
 namespace App\StorageLayer;
 
 use App\Models\User;
-use Illuminate\Support\Collection;
 
 class UserRepository extends Repository {
-
-    function getModelClassName(): string {
+    public function getModelClassName(): string {
         return User::class;
     }
 

@@ -16,42 +16,45 @@ class AnalyticsEventController extends Controller {
     public function store(Request $request) {
         $request->validate([
             'name' => 'required',
-            'source' => 'required'
+            'source' => 'required',
         ]);
         $response = json_encode([]);
+
         return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),
-            'response' => $response
+            'response' => $response,
         ]);
     }
 
     public function storeICSeeEvent(Request $request) {
         $request->validate([
             'name' => 'required',
-            'source' => 'required'
+            'source' => 'required',
         ]);
         $response = json_encode([]);
+
         return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),
-            'response' => $response
+            'response' => $response,
         ]);
     }
 
     public function storeNewsumEvent(Request $request) {
         $request->validate([
             'name' => 'required',
-            'source' => 'required'
+            'source' => 'required',
         ]);
         $response = json_encode([]);
+
         return $this->analyticsEventRepository->create([
             'name' => $request->name,
             'source' => $request->source,
             'payload' => json_encode($request->all()),
-            'response' => $response
+            'response' => $response,
         ]);
     }
 }

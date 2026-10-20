@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +16,7 @@ class GameVersion extends Model {
      * @var string
      */
     protected $table = 'game_version';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,6 +48,4 @@ class GameVersion extends Model {
     public function creator(): BelongsTo {
         return $this->belongsTo('App\Models\User', 'creator_id', 'id');
     }
-
-
 }

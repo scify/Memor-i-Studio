@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class Repository {
-
     /**
      * @var App
      */
@@ -16,12 +15,14 @@ abstract class Repository {
 
     /**
      * Query builder for this model
+     *
      * @var
      */
     protected $modelInstance;
 
     /**
-     * @param App $app
+     * @param  App  $app
+     *
      * @throws BindingResolutionException
      * @throws RepositoryException
      */
@@ -32,14 +33,16 @@ abstract class Repository {
 
     /**
      * @return Model
+     *
      * @throws BindingResolutionException
      * @throws RepositoryException
      */
     private function makeModelInstance(): Model {
         $tryToCreateModel = $this->app->make($this->getModelClassName());
 
-        if (!$tryToCreateModel instanceof Model)
+        if (!$tryToCreateModel instanceof Model) {
             throw new RepositoryException("Class {$this->getModelClassName()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+        }
 
         return $this->modelInstance = $tryToCreateModel;
     }
@@ -49,22 +52,25 @@ abstract class Repository {
      *
      * @return string
      */
-    abstract function getModelClassName(): string;
+    abstract public function getModelClassName(): string;
 
     protected function onlyFillable(array $items): array {
-        if (sizeof($this->modelInstance->getFillable()) === 0)
+        if (count($this->modelInstance->getFillable()) === 0) {
             return $items;
-
-        $qualified = array();
-        foreach ($items as $key => $val) {
-            if (in_array($key, $this->modelInstance->getFillable()))
-                $qualified[$key] = $val;
         }
+
+        $qualified = [];
+        foreach ($items as $key => $val) {
+            if (in_array($key, $this->modelInstance->getFillable())) {
+                $qualified[$key] = $val;
+            }
+        }
+
         return $qualified;
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     public function create(array $data) {
@@ -72,22 +78,23 @@ abstract class Repository {
     }
 
     /**
-     * @param array $data
-     * @param $id
-     * @param string $attribute
+     * @param  array  $data
+     * @param  $id
+     * @param  string  $attribute
      * @return mixed
      */
-    public function update(array $data, $id, string $attribute = "id") {
+    public function update(array $data, $id, string $attribute = 'id') {
         $this->modelInstance->where($attribute, '=', $id)->update($this->onlyFillable($data));
+
         return $this->find($id);
     }
 
     /**
-     * @param $id
-     * @param array $columns
+     * @param  $id
+     * @param  array  $columns
      * @return mixed
      */
-    public function find($id, array $columns = array('*')) {
+    public function find($id, array $columns = ['*']) {
         return $this->modelInstance->findOrFail($id, $columns);
     }
 
@@ -98,21 +105,24 @@ abstract class Repository {
         );
     }
 
-    public function findBy($attribute, $value, $columns = array('*'), $caseInsensitive = false, $withRelationships = []) {
-        if ($caseInsensitive)
-            $query = $this->modelInstance->whereRaw("LOWER(`" . $attribute . "`) LIKE '" .
+    public function findBy($attribute, $value, $columns = ['*'], $caseInsensitive = false, $withRelationships = []) {
+        if ($caseInsensitive) {
+            $query = $this->modelInstance->whereRaw('LOWER(`' . $attribute . "`) LIKE '" .
                 strtolower($value) . "'");
-        else
+        } else {
             $query = $this->modelInstance->where($attribute, '=', $value);
+        }
 
-        if (count($withRelationships) > 0)
+        if (count($withRelationships) > 0) {
             $query = $query->with($withRelationships);
+        }
 
         $model = $query->first();
 
-        if (!$model)
+        if (!$model) {
             throw new ModelNotFoundException("Model with criteria: '" . $attribute . "' equal to '" . $value . "' was not found.");
+        }
+
         return $model;
     }
-
 }

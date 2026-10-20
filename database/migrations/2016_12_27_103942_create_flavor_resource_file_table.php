@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateFlavorResourceFileTable extends Migration
-{
+class CreateFlavorResourceFileTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('resource_file', function (Blueprint $table) {
             $table->increments('id');
             $table->string('file_path', 500);
@@ -30,8 +28,7 @@ class CreateFlavorResourceFileTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('resource_file');
     }
 }

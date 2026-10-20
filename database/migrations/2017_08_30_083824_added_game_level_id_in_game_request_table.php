@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddedGameLevelIdInGameRequestTable extends Migration
-{
+class AddedGameLevelIdInGameRequestTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('game_request', function ($table) {
             $table->integer('game_level_id')->nullable()->unique();
         });
@@ -23,9 +21,8 @@ class AddedGameLevelIdInGameRequestTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('game_request', function(Blueprint $table){
+    public function down() {
+        Schema::table('game_request', function (Blueprint $table) {
             $table->dropColumn('game_level_id');
         });
     }
