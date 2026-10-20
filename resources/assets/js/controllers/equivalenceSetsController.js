@@ -44,14 +44,15 @@ window.EquivalenceSetsController.prototype = function () {
             if(card.imageObj.file_path != null && card.imageObj.file_path != '') {
                 $('.cardImage').removeClass("fileinput-new");
                 $('.cardImage').addClass("fileinput-exists");
-                $('.cardImage .fileinput-preview').append('<img src="' + card.imgPath +'" style="max-height: 170px;">');
+                // Build the element with attr(): a quote in a stored file name must stay text, not HTML.
+                $('.cardImage .fileinput-preview').append($('<img>').attr('src', card.imgPath).css('max-height', '170px'));
             }
 
             if(card.negativeImageObj != null) {
                 if (card.negativeImageObj.file_path != null && card.negativeImageObj.file_path != '') {
                     $('.cardNegativeImage').removeClass("fileinput-new");
                     $('.cardNegativeImage').addClass("fileinput-exists");
-                    $('.cardNegativeImage .fileinput-preview').append('<img src="' + card.negativeImgPath + '" style="max-height: 170px;">');
+                    $('.cardNegativeImage .fileinput-preview').append($('<img>').attr('src', card.negativeImgPath).css('max-height', '170px'));
                 }
             }
 
