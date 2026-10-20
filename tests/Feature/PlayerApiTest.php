@@ -87,4 +87,18 @@ class PlayerApiTest extends TestCase {
     private function movement(int|string $playerId): array {
         return ['player_id' => $playerId, 'movement_json' => '{}', 'game_request_id' => $this->gameRequestId, 'timestamp' => 1];
     }
+
+    public function test_player_login_is_throttled_per_address_across_user_names(): void {
+        for ($i = 0; $i < 30; $i++) {
+            $this->postJson('/api/player/login', ['user_name' => "player-{$i}", 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertOk();
+        }
+
+        $this->postJson('/api/player/login', ['user_name' => 'player-31', 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertTooManyRequests();
+    }
+
+    public function test_a_user_name_must_be_a_string(): void {
+        $this->postJson('/api/player/login', ['user_name' => ['a'], 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])
+            ->assertOk()
+            ->assertJsonPath('code', ServerResponses::$VALIDATION_ERROR);
+    }
 }

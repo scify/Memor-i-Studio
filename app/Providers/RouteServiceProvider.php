@@ -26,7 +26,15 @@ class RouteServiceProvider extends ServiceProvider {
     public function boot() {
         // Desktop game player login and registration: limit password guessing per address and user name.
         // The game polls other api/* routes several times per second, so those stay unlimited.
-        RateLimiter::for('player-auth', fn (Request $request) => Limit::perMinute(10)->by($request->ip() . '|' . $request->input('user_name')));
+        RateLimiter::for('player-auth', function (Request $request) {
+            $userName = $request->input('user_name');
+
+            return [
+                Limit::perMinute(10)->by($request->ip() . '|' . (is_string($userName) ? $userName : '')),
+                // Also per address, so trying one password against many user names is limited too.
+                Limit::perMinute(30)->by($request->ip()),
+            ];
+        });
 
         parent::boot();
     }
