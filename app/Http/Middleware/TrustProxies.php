@@ -20,6 +20,12 @@ class TrustProxies extends Middleware {
      * comes from CF-Connecting-IP, which only Cloudflare sets. Other senders cannot choose an address at all.
      */
     public function handle(Request $request, Closure $next) {
+        // A dual-stack socket reports IPv4 peers as ::ffff:a.b.c.d; compare them with the IPv4 ranges.
+        $peer = (string) $request->server->get('REMOTE_ADDR');
+        if (str_starts_with(strtolower($peer), '::ffff:') && filter_var(substr($peer, 7), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $request->server->set('REMOTE_ADDR', substr($peer, 7));
+        }
+
         if (IpUtils::checkIp((string) $request->server->get('REMOTE_ADDR'), $this->proxies())) {
             $clientAddress = $request->headers->get('CF-Connecting-IP');
             if (filter_var($clientAddress, FILTER_VALIDATE_IP)) {

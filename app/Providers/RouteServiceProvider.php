@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Support\RateLimitAddress;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\IpUtils;
 
 class RouteServiceProvider extends ServiceProvider {
     /**
@@ -29,8 +29,7 @@ class RouteServiceProvider extends ServiceProvider {
         // Desktop game player login and registration: limit password guessing per address and user name.
         // The game polls other api/* routes several times per second, so those stay unlimited.
         RateLimiter::for('player-auth', function (Request $request) {
-            // One IPv6 host owns a whole /64 network, so IPv6 addresses count per /64; IPv4 stays as it is.
-            $address = IpUtils::anonymize((string) $request->ip(), 0, 8);
+            $address = RateLimitAddress::of($request);
             $userName = $request->input('user_name');
 
             return [

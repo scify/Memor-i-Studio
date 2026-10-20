@@ -30,7 +30,7 @@ class PlayerController extends Controller {
     public function registerNewPlayer(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
-            'password' => 'required|min:2',
+            'password' => 'required|string|min:2',
             'game_flavor_pack_identifier' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -46,7 +46,7 @@ class PlayerController extends Controller {
     public function logInPlayer(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
-            'password' => 'required|min:2',
+            'password' => 'required|string|min:2',
             'game_flavor_pack_identifier' => 'required|string',
         ]);
         if ($validator->fails()) {

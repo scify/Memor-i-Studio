@@ -24,6 +24,12 @@ class TrustProxiesTest extends TestCase {
         $this->assertSame('203.0.113.7', $request->ip());
     }
 
+    public function test_an_ipv4_mapped_cloudflare_peer_is_recognised(): void {
+        $request = $this->handle('::ffff:' . self::CLOUDFLARE, ['HTTP_CF_CONNECTING_IP' => '203.0.113.7']);
+
+        $this->assertSame('203.0.113.7', $request->ip());
+    }
+
     public function test_a_cloudflare_request_without_the_cloudflare_header_cannot_choose_its_address(): void {
         $request = $this->handle(self::CLOUDFLARE, ['HTTP_X_FORWARDED_FOR' => '6.6.6.6']);
 

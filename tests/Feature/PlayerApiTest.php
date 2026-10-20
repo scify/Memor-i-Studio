@@ -134,4 +134,16 @@ class PlayerApiTest extends TestCase {
             ->assertOk()
             ->assertJsonPath('code', ServerResponses::$VALIDATION_ERROR);
     }
+
+    public function test_a_missing_client_address_does_not_break_the_login(): void {
+        $this->withServerVariables(['REMOTE_ADDR' => ''])
+            ->postJson('/api/player/login', ['user_name' => 'player1', 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])
+            ->assertOk();
+    }
+
+    public function test_a_password_must_be_a_string(): void {
+        $this->postJson('/api/player/login', ['user_name' => 'player1', 'password' => ['ab', 'cd'], 'game_flavor_pack_identifier' => 'x'])
+            ->assertOk()
+            ->assertJsonPath('code', ServerResponses::$VALIDATION_ERROR);
+    }
 }
