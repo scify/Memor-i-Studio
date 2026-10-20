@@ -71,7 +71,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
                 formLoader.addClass('display-none');
                 formButton.attr('disabled', false);
                 errorEl.removeClass('display-none');
-                errorEl.html(error.responseJSON.message);
+                errorEl.text(error.responseJSON.message);
                 console.error(error);
             }
         });
