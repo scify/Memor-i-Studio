@@ -125,6 +125,7 @@ class GameFlavorController extends Controller {
      * @return Application|Factory|View
      */
     public function editIndex(int $id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         try {
             $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
         } catch (Exception $e) {
@@ -149,6 +150,7 @@ class GameFlavorController extends Controller {
      * @throws ValidationException
      */
     public function edit(Request $request, $id): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         $this->validate($request, [
             'name' => 'required|max:255',
             'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
@@ -175,6 +177,7 @@ class GameFlavorController extends Controller {
      * @throws Exception
      */
     public function delete(int $id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if (!$result) {
             return view('common.error_message', ['message' => trans('messages.error_generic')]);

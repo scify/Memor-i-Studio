@@ -104,6 +104,12 @@ class GameFlavorAuthorizationTest extends TestCase {
         $this->actingAs($this->owner)->post("/gameFlavor/unpublish/{$this->gameId}")->assertRedirect();
     }
 
+    public function test_another_member_cannot_open_edit_or_delete_the_game(): void {
+        $this->actingAs($this->otherMember)->get("/gameFlavor/edit/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->otherMember)->post("/gameFlavor/edit/{$this->gameId}")->assertForbidden();
+        $this->actingAs($this->otherMember)->delete("/gameFlavor/delete/{$this->gameId}")->assertForbidden();
+    }
+
     public function test_another_member_cannot_clone_a_private_game(): void {
         $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/clone")->assertForbidden();
     }
