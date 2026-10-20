@@ -181,6 +181,9 @@ Production `.env`:
 - The site runs behind Cloudflare. The app takes the client address from `CF-Connecting-IP` when the request comes from
   a Cloudflare address listed in `config/proxies.php`. If another proxy (for example a local nginx or load balancer)
   sits between Cloudflare and PHP, add its address to that list; otherwise every player shares one login limit.
+  Then that proxy must accept only Cloudflare traffic (firewall or Authenticated Origin Pulls) or overwrite
+  `CF-Connecting-IP` for other senders; otherwise a direct request can choose its own address.
+- Update `config/proxies.php` when Cloudflare publishes new ranges (<https://www.cloudflare.com/ips/>).
 
 After every `git pull`, install the PHP dependencies with Composer scripts enabled:
 
