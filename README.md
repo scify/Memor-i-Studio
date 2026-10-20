@@ -249,7 +249,11 @@ Then build the frontend and run the migrations:
 npm ci
 npm run build
 php artisan migrate --force
+php artisan optimize:clear
 ```
+
+`optimize:clear` removes cached routes and config, so a release's route changes take effect. To cache again:
+`php artisan config:cache && php artisan route:cache && php artisan view:cache`.
 
 - `npm ci` must install the devDependencies (do not use `--omit=dev`): Vite and Sass are devDependencies.
 - Every page answers 500 until `public/build/manifest.json` exists, so build before the site serves the new code, or

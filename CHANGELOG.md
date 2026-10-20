@@ -12,38 +12,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Upgrade notes
 
-This release changes how the application is installed, built, configured and secured. Before you deploy it to a
-server that runs 2.0.0, in this order:
+This release changes how the application is installed, built, configured and secured. To update a server that runs
+2.0.0:
+
+Before the deploy:
 
 1. Back up the database and `storage/app`.
-2. Server software: PHP 8.4 or newer (`composer.lock` requires it), Node 24.21.0 or newer (`.nvmrc`; npm refuses older
-   versions), ffmpeg (or the older avconv) and ImageMagick.
-3. If the server's working tree has local changes in `public/vendor/scify`, run `git checkout -- public/vendor/scify`:
-   these files are no longer in git, and the pull deletes them.
-4. `.env`, before the build:
-   - set `VITE_SENTRY_DSN_PUBLIC` instead of `MIX_SENTRY_DSN_PUBLIC` (Vite reads it at build time);
-   - set `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://memoristudio.scify.org` (requests for other
-     hosts now get HTTP 400);
-   - delete `APP_VERSION` (the version comes from `package.json`) and `DOCKER_USER_ID`/`DOCKER_GROUP_ID`;
-   - set `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED` only where you run `db:seed` (the staff users are seeded only in
-     `local` and `testing`).
+2. Check the stored file paths: `resolveData` now serves only `data_packs/…` and `game_versions/…`. This query must
+   return only those two prefixes: `SELECT DISTINCT SUBSTRING_INDEX(file_path, '/', 2) FROM resource_file;`
+3. PHP 8.4 (`composer.lock` requires it): install php8.4-fpm with the same extensions, copy the upload limits into
+   `/etc/php/8.4/fpm/php.ini` (README "Deployment"), point nginx `fastcgi_pass` to the 8.4 socket, and make the CLI
+   `php` (Composer, cron) PHP 8.4.
+4. Node 24.21.0 or newer (`.nvmrc`; npm refuses older versions), ffmpeg (or the older avconv) and ImageMagick.
 5. Check the proxy setup: the app trusts only the Cloudflare ranges in `config/proxies.php` (README "Deployment"). If
    another proxy sits between Cloudflare and PHP, add it there and make it accept only Cloudflare traffic.
-6. Install and build, with Composer scripts enabled (they publish the cookie-consent assets; until then every page
-   answers HTTP 500, so consider maintenance mode):
+
+The deploy (the site answers HTTP 500 between the checkout and the build, so keep it in maintenance mode):
+
+6. `php artisan down` (on the old code).
+7. If the working tree has local changes in `public/vendor/scify`, run `git checkout -- public/vendor/scify`: these
+   files are no longer in git. Then `git fetch --tags && git checkout v3.0.0`.
+8. `.env`, before the build:
+   - set `VITE_SENTRY_DSN_PUBLIC` instead of `MIX_SENTRY_DSN_PUBLIC` (Vite reads it at build time);
+   - set `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://memoristudio.scify.org` (requests for other
+     hosts than this one and its subdomains now get HTTP 400);
+   - delete `APP_VERSION` (the version comes from `package.json`) and `DOCKER_USER_ID`/`DOCKER_GROUP_ID`;
+   - set `MAIL_FROM_ADDRESS` and `MAIL_FROM_NAME` if they are missing;
+   - set `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED` only where you run `db:seed` (the staff users are seeded only in
+     `local` and `testing`).
+9. Install, build and migrate:
 
    ```bash
    composer install --no-dev --optimize-autoloader
    npm ci
    npm run build
    php artisan migrate --force
+   php artisan optimize:clear
    ```
 
-   `npm ci` must install the devDependencies. There are no new migrations; `migrate` reports nothing to do.
-7. Delete the old Laravel Mix output: `public/js`, `public/css`, `public/mix-manifest.json`.
-8. Run `sudo ./set-file-permissions.sh www-data <server user> .` once, so storage folders get the setgid bit.
-9. Give every account that still uses the password of the old `UsersTableSeeder` a new password: its hash stays in
-   the git history.
+   - Do not use `--no-scripts`: Composer publishes the cookie-consent assets into `public/vendor`, so the deploy user
+     needs write access there.
+   - `npm ci` must install the devDependencies. Vite empties `public/build`, so the deploy user must own it.
+   - There are no new migrations; `migrate` reports nothing to do.
+   - `optimize:clear` removes cached routes and config; an old route cache would keep the removed routes and the old
+     GET actions. To cache again: `php artisan config:cache && php artisan route:cache && php artisan view:cache`.
+10. Delete the old Laravel Mix output: `public/js`, `public/css`, `public/dist` (if present), `public/mix-manifest.json`.
+11. Run `sudo ./set-file-permissions.sh www-data <server user> .` once, so storage folders get the setgid bit.
+12. Reload php-fpm, then `php artisan up`.
+13. Give every account that still uses the password of the old `UsersTableSeeder` a new password: its hash stays in
+    the git history.
 
 ### Security
 
@@ -61,7 +78,8 @@ server that runs 2.0.0, in this order:
   check.
 - The desktop player API no longer returns password hashes, checks that players belong to the game request, validates
   its input, and limits logins and registrations per address and user name. The polling routes stay unlimited.
-- Behind Cloudflare, the client address comes from `CF-Connecting-IP`; TrustHosts accepts only the `APP_URL` host.
+- Behind Cloudflare, the client address comes from `CF-Connecting-IP`; TrustHosts accepts only the `APP_URL` host and
+  its subdomains.
 - `role_id` is no longer mass-assignable; the games page no longer embeds the full user row.
 - The seeded staff users get the password from `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED` instead of a committed hash.
 - Card preview images and game list errors are no longer built as HTML strings.
@@ -79,9 +97,10 @@ server that runs 2.0.0, in this order:
 ### Changed
 
 - Laravel Mix is replaced by Vite 7; the dev server runs on the DDEV port 5176.
-- The JavaScript loads Bootstrap 3.4.1 from `bootstrap-sass`, as production did; unused npm packages are removed.
+- The JavaScript loads the Bootstrap 3.4.1 JavaScript from `bootstrap-sass` 3.4.3, as production did; unused npm
+  packages are removed.
 - PHP 8.4 and Node 24.21.0 are required.
-- The app version comes from `package.json`.
+- The app version comes from `package.json`; the footer shows `3.0.0` instead of `v2.0`.
 - The card set page passes its data with `@json`; `laracasts/utilities` is removed. `madnest/madzipper` is installed
   in production.
 - The code is formatted with Pint (one format-only commit, listed in `.git-blame-ignore-revs`).
@@ -94,10 +113,19 @@ server that runs 2.0.0, in this order:
 - Failed builds reported success and sent the congratulations email.
 - After a card edit, the card dialog posted the next new card set to the edit route.
 - Game reports lost the comment, name and email.
+- A failed card edit answered 500, and card creation and data pack copy errors became "Class not found".
+- Errors in the game list were hidden behind "Undefined variable".
+- `FastClick.attach` failed in the browser.
 - A failed card creation left an empty card set.
 - `db:seed` failed (missing `DB` imports), migration rollbacks failed on MySQL and SQLite, and SQLite could not run
   the migrations.
 - Audio conversion without `avconv` (ffmpeg fallback with the same constant bit rate).
+
+### Known issues
+
+- The desktop player API has no player authentication: any client can act as any player, and `gameRequest/end` and
+  `gameRequest/cancel` accept any request id. A fix needs a player token in the Memor-i desktop client.
+- The `jar`/`exe` files of base versions and the configuration files at the root of a game pack stay readable.
 
 ### Removed
 
