@@ -42,7 +42,7 @@ class CardController extends Controller {
             $editedCard = $this->cardManager->editCard($gameFlavorId, $request->all());
 
             if ($editedCard == null) {
-                throwException(new \Exception(trans('messages.error_generic')));
+                throw new \Exception(trans('messages.error_generic'));
             }
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . '  ' . $e->getMessage());

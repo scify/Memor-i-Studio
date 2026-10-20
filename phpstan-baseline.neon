@@ -109,12 +109,6 @@ parameters:
 			path: app/Exceptions/Handler.php
 
 		-
-			message: '#^Function throwException not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: app/Http/Controllers/CardController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\GameFlavorReportController\:\:createGameFlavorReport\(\) should return Illuminate\\Http\\Response but returns Illuminate\\Http\\RedirectResponse\.$#'
 			identifier: return.type
 			count: 2
