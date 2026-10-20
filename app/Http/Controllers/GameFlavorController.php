@@ -100,6 +100,8 @@ class GameFlavorController extends Controller {
     public function create(Request $request): RedirectResponse {
         $this->validate($request, [
             'name' => 'required|max:255',
+            'game_version_id' => 'required|integer|exists:game_version,id',
+            'lang_id' => 'required|integer|exists:language,id',
             'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
             'copyright_link' => 'url',
             'terms' => 'required',

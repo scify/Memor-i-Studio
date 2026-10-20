@@ -110,6 +110,12 @@ class GameFlavorAuthorizationTest extends TestCase {
         $this->actingAs($this->otherMember)->delete("/gameFlavor/delete/{$this->gameId}")->assertForbidden();
     }
 
+    public function test_creating_a_game_needs_an_existing_version_and_language(): void {
+        $this->actingAs($this->owner)->post('/gameFlavor/create', [
+            'name' => 'New game', 'terms' => 'on', 'files_usage' => 'on', 'game_version_id' => 999, 'lang_id' => 999,
+        ])->assertSessionHasErrors(['game_version_id', 'lang_id']);
+    }
+
     public function test_another_member_cannot_clone_a_private_game(): void {
         $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/clone")->assertForbidden();
     }
