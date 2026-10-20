@@ -18,60 +18,60 @@ class PageAccessTest extends TestCase {
 
     public static function publicPages(): array {
         return [
-            'home' => ['/'],
-            'home alias' => ['/home'],
-            'about' => ['/about'],
-            'all games' => ['/games'],
-            'contact' => ['/contact'],
-            'login' => ['/login'],
-            'register' => ['/register'],
+            'home' => ['/', 'home'],
+            'home alias' => ['/home', 'home'],
+            'about' => ['/about', 'about'],
+            'all games' => ['/games', 'game_flavor.all_games'],
+            'contact' => ['/contact', 'contact'],
+            'login' => ['/login', 'auth.login'],
+            'register' => ['/register', 'auth.register'],
         ];
     }
 
     public static function memberPages(): array {
         return [
-            'game versions' => ['/gameVersions/all'],
-            'select game version' => ['/gameFlavor/selectVersion'],
+            'game versions' => ['/gameVersions/all', 'game_version.list'],
+            'select game version' => ['/gameFlavor/selectVersion', 'game_flavor.forms.select_game_version'],
         ];
     }
 
     public static function administrationPages(): array {
         return [
-            'platform statistics' => ['/administration/platform-statistics'],
-            'create game version' => ['/administration/gameVersion/create'],
-            'games submitted for approval' => ['/administration/gameFlavors/submittedForApproval'],
-            'user reports' => ['/administration/gameFlavors/userReports'],
+            'platform statistics' => ['/administration/platform-statistics', 'admin.platform-statistics'],
+            'create game version' => ['/administration/gameVersion/create', 'game_version.create_edit_index'],
+            'games submitted for approval' => ['/administration/gameFlavors/submittedForApproval', 'game_flavor.list'],
+            'user reports' => ['/administration/gameFlavors/userReports', 'game_flavor_report.list_all'],
         ];
     }
 
     #[DataProvider('publicPages')]
-    public function test_guest_can_open_public_page(string $url): void {
-        $this->get($url)->assertOk();
+    public function test_guest_can_open_public_page(string $url, string $view): void {
+        $this->get($url)->assertOk()->assertViewIs($view);
     }
 
     public function test_guest_can_load_the_game_list(): void {
-        $this->post('/games/flavors')->assertOk();
+        $this->post('/games/flavors')->assertOk()->assertSee(__('messages.no_games_found'), false);
     }
 
     #[DataProvider('memberPages')]
     #[DataProvider('administrationPages')]
-    public function test_guest_is_redirected_to_login(string $url): void {
+    public function test_guest_is_redirected_to_login(string $url, string $view): void {
         $this->get($url)->assertRedirect('/login');
     }
 
     #[DataProvider('memberPages')]
-    public function test_member_can_open_member_page(string $url): void {
-        $this->actingAs($this->createUser(self::MEMBER_ROLE_ID))->get($url)->assertOk();
+    public function test_member_can_open_member_page(string $url, string $view): void {
+        $this->actingAs($this->createUser(self::MEMBER_ROLE_ID))->get($url)->assertOk()->assertViewIs($view);
     }
 
     #[DataProvider('administrationPages')]
-    public function test_member_cannot_open_administration_page(string $url): void {
+    public function test_member_cannot_open_administration_page(string $url, string $view): void {
         $this->actingAs($this->createUser(self::MEMBER_ROLE_ID))->get($url)->assertForbidden();
     }
 
     #[DataProvider('administrationPages')]
-    public function test_admin_can_open_administration_page(string $url): void {
-        $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->get($url)->assertOk();
+    public function test_admin_can_open_administration_page(string $url, string $view): void {
+        $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->get($url)->assertOk()->assertViewIs($view);
     }
 
     private function createUser(int $roleId): User {
