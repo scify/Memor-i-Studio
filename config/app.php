@@ -89,7 +89,8 @@ return [
     */
 
     'env' => env('APP_ENV', 'local'),
-    'version' => env('APP_VERSION', '1.0.0'),
+    // The version is defined only in package.json (see "Releasing" in README.md).
+    'version' => json_decode(file_get_contents(base_path('package.json')), true, flags: JSON_THROW_ON_ERROR)['version'],
 
     // Password of the users that database/seeders/UsersTableSeeder.php creates; no default on purpose.
     'default_admin_password_for_seed' => env('DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED'),
