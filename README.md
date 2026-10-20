@@ -116,8 +116,8 @@ The project uses three tools:
 - [Laravel Pint](https://laravel.com/docs/pint) for the PHP code style (rules in `pint.json`)
 - [Larastan](https://github.com/larastan/larastan) (PHPStan) for static analysis of `app/` (settings in `phpstan.neon`;
   known errors are in `phpstan-baseline.neon`, and new code must not add entries)
-- [ESLint](https://eslint.org/) for `resources/assets/js` (rules in `eslint.config.js`; the vendored theme JavaScript
-  is not linted)
+- [ESLint](https://eslint.org/) for `resources/assets/js`, `vite.config.js` and `eslint.config.js` (rules in
+  `eslint.config.js`; the vendored theme JavaScript is not linted)
 
 ```bash
 ddev composer lint:check   # run all three tools; report problems, change nothing
@@ -159,8 +159,8 @@ Large uploads need these limits:
   `upload_max_filesize = 200M`
 
 File permissions: the deploy user must belong to the web server group (for example `www-data`). The permissions script
-adds the user to that group and sets the owner, the group, the modes and the setgid bit on the storage and cache
-folders:
+adds the user to that group, sets the owner and the modes (775 folders, 664 files) of `storage`, and sets the group and
+the setgid bit on `storage` and `bootstrap/cache`:
 
 ```bash
 sudo ./set-file-permissions.sh www-data project_memori .
