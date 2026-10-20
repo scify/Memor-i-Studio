@@ -27,4 +27,14 @@ class RouteHardeningTest extends TestCase {
     public function test_debug_routes_are_gone(string $url): void {
         $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->get($url)->assertNotFound();
     }
+
+    public function test_the_games_page_does_not_embed_the_user_row(): void {
+        $member = $this->createUser(self::MEMBER_ROLE_ID);
+
+        // The report form may prefill the user's own email; the script must not carry the whole user row.
+        $this->actingAs($member)->get('/games')
+            ->assertOk()
+            ->assertDontSee('"hashed_email"', false)
+            ->assertDontSee('"role_id"', false);
+    }
 }

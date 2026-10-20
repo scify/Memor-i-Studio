@@ -1,4 +1,4 @@
-/* global user, gameFlavorsRoute -- declared by the inline script in game_flavor/all_games.blade.php */
+/* global gameFlavorsRoute -- declared by the inline script in game_flavor/all_games.blade.php */
 import $ from "../jquery-global";
 import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
 
@@ -45,7 +45,6 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
     };
     let getGamesWithFilters = function () {
         const languageId = $('select[name=language] option').filter(':selected').attr('value');
-        const userObj = user;
         const formLoader = $('#gamesLoader');
         const formButton = $('#getGames');
         const errorEl = $('#error');
@@ -55,7 +54,7 @@ import {Pleasure} from "../../pleasure-admin-panel/js/pleasure";
             method: "POST",
             url: gameFlavorsRoute,
             cache: false,
-            data: {user: userObj, _token: _token, language_id: languageId},
+            data: {_token: _token, language_id: languageId},
             beforeSend: function () {
                 errorEl.html('');
                 errorEl.addClass('display-none');
