@@ -11,6 +11,7 @@ use App\Models\GameFlavor;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Javascript;
 
@@ -90,8 +91,11 @@ class EquivalenceSetController extends Controller {
         $gameFlavorId = $input['card'][1]['game_flavor_id'];
 
         try {
-            $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
-            $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
+            // One transaction: a failed card must not leave a card set without its cards.
+            DB::transaction(function () use ($gameFlavorId, $input) {
+                $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
+                $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
+            });
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . '  ' . $e->getMessage());
 
