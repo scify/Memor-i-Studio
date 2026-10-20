@@ -40,8 +40,11 @@ class GameFlavorStorage {
             $query->where('game_flavor.creator_id', $created_by_user_id);
         }
         if ($language_id) {
-            $query->where('game_flavor.lang_id', $language_id)
-                ->orWhere(['internationally_available' => true]);
+            // Grouped, so the OR cannot bypass the published and creator conditions above.
+            $query->where(function ($query) use ($language_id) {
+                $query->where('game_flavor.lang_id', $language_id)
+                    ->orWhere('game_flavor.internationally_available', true);
+            });
         }
 
         return $query->join('language', 'game_flavor.lang_id', '=', 'language.id')

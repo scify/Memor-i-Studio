@@ -77,7 +77,8 @@ class GameFlavorController extends Controller {
      * @return string
      */
     public function getGameFlavorsForUser(Request $request): string {
-        $userId = $request->user ? $request->user['id'] : 0;
+        // Never take the user from the request body: an admin id there would list every unpublished game.
+        $userId = Auth::id() ?? 0;
         $language_id = $request->language_id ?: null;
 
         $gameFlavors = $this->gameFlavorManager->getGameFlavors($userId, $language_id);
