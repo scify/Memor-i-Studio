@@ -40,6 +40,6 @@ class ResolveDataTest extends TestCase {
 
     public function test_uploads_in_these_tests_go_to_the_temporary_folder(): void {
         $this->assertStringStartsWith(storage_path('app'), Storage::disk('local')->path('x'));
-        $this->assertStringStartsWith(sys_get_temp_dir(), Storage::disk('local')->path('x'));
+        $this->assertStringStartsWith(sys_get_temp_dir() . '/memori-test-storage-', Storage::disk('local')->path('x'));
     }
 }
