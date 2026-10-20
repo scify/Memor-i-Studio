@@ -8,7 +8,6 @@ use App\Models\EquivalenceSet;
 use App\Models\GameFlavor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class CardController handles the requests tied to the @see Card class
@@ -58,12 +57,5 @@ class CardController extends Controller {
         session()->flash('flash_message_success', trans('messages.game_card_created'));
 
         return redirect()->back();
-    }
-
-    public function storeUserAction(Request $request) {
-        $input = $request->all();
-        Storage::disk('local')->put('file.txt', $input['actions']);
-
-        return '{"actions":' . $input['actions'] . '}';
     }
 }

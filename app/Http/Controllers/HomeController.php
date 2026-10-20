@@ -50,10 +50,6 @@ class HomeController extends Controller {
         return redirect()->back();
     }
 
-    public function testEmail() {
-        return view('email.registration');
-    }
-
     public function setLangLocaleCookie(Request $request): RedirectResponse {
         if (!in_array($request->lang, ['en', 'el', 'es', 'it'])) {
             session()->flash('flash_message_failure', trans('messages.wrong_language'));

@@ -11,10 +11,8 @@
 |
 */
 
-use App\BusinessLogicLayer\managers\MailManager;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlatformStatisticsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +25,6 @@ Route::get('games', 'GameFlavorController@showAllGameFlavors')->name('showAllGam
 Route::post('games/flavors', 'GameFlavorController@getGameFlavorsForUser')->name('getGameFlavorsForUser');
 
 
-Route::get('testEmail', 'HomeController@testEmail')->name('testEmail');
-Route::get('storeUserAction', 'CardController@storeUserAction')->name('storeUserAction');
 Route::get('/lang/{lang}', [HomeController::class, 'setLangLocaleCookie'])->name('set-lang-locale');
 Route::group(['prefix' => 'api'], function () {
     Route::get('players/online', 'PlayerController@getOnlinePlayersExcept')->name('getOnlinePlayersExcept');
@@ -93,11 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('administration')->middleware('can:manage-platform')->group(function () {
-        Route::get('test-email/{email}', function (Request $request) {
-            $mailManager = new MailManager;
-            $mailManager->sendEmailToSpecificEmail('email.registration', [], trans('messages.welcome_to') . ' Memor-i Studio!', $request->email);
-        });
-
         Route::get('/platform-statistics', [PlatformStatisticsController::class, 'show_platform_statistics'])->name('platform_statistics');
         Route::get('gameVersion/create', 'GameVersionController@createIndex')->name('createGameVersionIndex');
         Route::post('gameVersion/create', 'GameVersionController@create')->name('createGameVersion');
@@ -118,7 +109,3 @@ Route::get('flavor/{id}/downloadWin', 'GameFlavorController@downloadWindows')->n
 Route::get('flavor/{id}/downloadLin', 'GameFlavorController@downloadLinux')->name('downloadGameFlavorLinux');
 
 Route::get('resolveData/{filePath}', 'DataController@resolvePath')->name('resolveDataPath')->where('filePath', '(.*)');
-
-Route::get('/debug-sentry', function () {
-    throw new Exception('My first Sentry error!');
-});
