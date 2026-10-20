@@ -33,5 +33,5 @@
         "toastr": "^2.1.4",
         "velocity-animate": "^1.5.2"
     },
-    "version": "2.0.0"
+    "version": "3.0.0"
 }

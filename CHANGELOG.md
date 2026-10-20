@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-10-20
+
 ### Upgrade notes
 
 This release changes how the application is installed, built, configured and secured. Before you deploy it to a
@@ -107,4 +109,5 @@ server that runs 2.0.0, in this order:
 
 The state of the application before release tags were introduced (commit `b03ba33`). It is not tagged.
 
-[Unreleased]: https://github.com/scify/Memor-i-Studio/compare/b03ba33...HEAD
+[Unreleased]: https://github.com/scify/Memor-i-Studio/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/scify/Memor-i-Studio/compare/b03ba33...v3.0.0
