@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\UsersTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -34,5 +35,15 @@ class UsersTableSeederTest extends TestCase {
         $this->expectExceptionMessage('DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED');
 
         $this->seed(UsersTableSeeder::class);
+    }
+
+    public function test_database_seeding_keeps_the_users_outside_local_environments(): void {
+        $existing = DB::table('users')->insertGetId(['name' => 'Existing', 'email' => 'existing@example.com', 'password' => 'x', 'logout' => 0]);
+        $this->app['env'] = 'production';
+
+        // Directly, because artisan db:seed asks for confirmation in production.
+        $this->app->make(DatabaseSeeder::class)->setContainer($this->app)->__invoke();
+
+        $this->assertDatabaseHas('users', ['id' => $existing]);
     }
 }
