@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Concerns\UsesTemporaryStorage;
 use Tests\TestCase;
 
@@ -35,5 +36,10 @@ class ResolveDataTest extends TestCase {
     public function test_a_path_outside_storage_app_is_refused(): void {
         $this->get('/resolveData/../../composer.json')->assertNotFound();
         $this->get('/resolveData/game_versions/img/..%2F..%2F..%2Fcomposer.json')->assertNotFound();
+    }
+
+    public function test_uploads_in_these_tests_go_to_the_temporary_folder(): void {
+        $this->assertStringStartsWith(storage_path('app'), Storage::disk('local')->path('x'));
+        $this->assertStringNotContainsString('/var/www/html/storage', Storage::disk('local')->path('x'));
     }
 }
