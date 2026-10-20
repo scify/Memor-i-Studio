@@ -91,8 +91,11 @@ class GameFlavorStorage {
                     ->on('game_flavor.id', '=', 'resource_file.game_flavor_id');
             })
             ->where(['published' => true])
-            ->where(['game_flavor.lang_id' => $lang_id])
-            ->orWhere(['internationally_available' => true])
+            // Grouped, so the OR cannot bypass the published condition.
+            ->where(function ($query) use ($lang_id) {
+                $query->where('game_flavor.lang_id', $lang_id)
+                    ->orWhere('game_flavor.internationally_available', true);
+            })
             ->orderBy('game_flavor.created_at', 'desc')
             ->get();
     }

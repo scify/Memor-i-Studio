@@ -54,4 +54,15 @@ class GameListVisibilityTest extends TestCase {
             'internationally_available' => $international, 'is_default' => 0, 'created_at' => now(),
         ]);
     }
+
+    public function test_the_desktop_game_list_keeps_unpublished_games_hidden(): void {
+        foreach (DB::table('game_flavor')->pluck('id') as $gameId) {
+            DB::table('resource_file')->insert(['file_path' => "cover{$gameId}.png", 'resource_id' => 1, 'game_flavor_id' => $gameId]);
+        }
+
+        $this->getJson('/api/games?lang=el')
+            ->assertOk()
+            ->assertSee('Published game')
+            ->assertDontSee('Unpublished international game');
+    }
 }
