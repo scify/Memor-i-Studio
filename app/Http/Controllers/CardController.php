@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\CardManager;
 use App\Models\Card;
+use App\Models\EquivalenceSet;
+use App\Models\GameFlavor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +30,9 @@ class CardController extends Controller {
      * @return RedirectResponse
      */
     public function edit(Request $request) {
+        // The card's own game decides access and the upload folder, not the game id in the request.
+        $gameFlavor = GameFlavor::findOrFail(EquivalenceSet::findOrFail(Card::findOrFail($request->input('cardId'))->equivalence_set_id)->flavor_id);
+        $this->authorize('manage', $gameFlavor);
         // dd($request->all());
         $this->validate($request, [
             'card.*.image' => 'file|image|max:2000|mimes:jpeg,jpg,png,gif',
@@ -36,7 +41,7 @@ class CardController extends Controller {
         ]);
 
         $input = $request->all();
-        $gameFlavorId = $input['card'][1]['game_flavor_id'];
+        $gameFlavorId = $gameFlavor->id;
 
         try {
             $editedCard = $this->cardManager->editCard($gameFlavorId, $request->all());

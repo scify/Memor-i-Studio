@@ -6,6 +6,8 @@ use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetViewModelProvider;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\Models\EquivalenceSet;
+use App\Models\GameFlavor;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,6 +74,7 @@ class EquivalenceSetController extends Controller {
      * @throws ValidationException
      */
     public function create(Request $request): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail($request->input('card.1.game_flavor_id')));
         // dd($request->all());
         // The validation messages are defined in resources/lang/en/validation.php
         $this->validate($request, [
@@ -109,6 +112,7 @@ class EquivalenceSetController extends Controller {
      * @throws ValidationException
      */
     public function edit(Request $request): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail(EquivalenceSet::findOrFail($request->input('equivalence_set_id'))->flavor_id));
         $this->validate($request, [
             'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100',
@@ -137,6 +141,7 @@ class EquivalenceSetController extends Controller {
      * @return RedirectResponse
      */
     public function delete(Request $request): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail(EquivalenceSet::findOrFail($request->id)->flavor_id));
         try {
             $this->equivalenceSetManager->deleteSet($request->id);
         } catch (\Exception $e) {

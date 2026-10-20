@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\GameFlavor;
+use App\Models\User;
+
+class GameFlavorPolicy {
+    /**
+     * Change the game, its card sets and its cards, build it or submit it for approval.
+     */
+    public function manage(User $user, GameFlavor $gameFlavor): bool {
+        return $user->isAdmin() || $gameFlavor->creator_id === $user->id;
+    }
+
+    /**
+     * Copy the game into the user's own games.
+     */
+    public function clone(User $user, GameFlavor $gameFlavor): bool {
+        return $this->manage($user, $gameFlavor) || ($gameFlavor->published && $gameFlavor->allow_clone);
+    }
+}

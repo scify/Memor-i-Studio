@@ -262,6 +262,7 @@ class GameFlavorController extends Controller {
      * @return RedirectResponse
      */
     public function cloneGameFlavorAndFiles($gameFlavorId): RedirectResponse {
+        $this->authorize('clone', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->gameFlavorManager->cloneGameFlavorAndFiles($gameFlavorId);
         } catch (Exception $e) {
@@ -275,6 +276,7 @@ class GameFlavorController extends Controller {
     }
 
     public function submitGameFlavorForApproval($gameFlavorId): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
             $this->gameFlavorManager->sendEmailForGameSubmissionToAdmin($gameFlavorId);
@@ -297,6 +299,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {
+        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->buildExecutables(intval($gameFlavorId));
         } catch (Exception $e) {
@@ -308,6 +311,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
+        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->buildExecutables(intval($gameFlavorId));
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator(intval($gameFlavorId));
