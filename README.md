@@ -32,8 +32,11 @@ their own flavors of Memor-i game!
    again at any time, also by hand: `ddev composer setup`. DDEV writes the database and `APP_URL` settings into
    `.env`.
 
-2. Edit `.env` if you need the external services (`WINDOWS_SETUP_SERVICE_URL`, Sentry, Firebase). DDEV catches all
-   mail in [Mailpit](https://mailpit.axllent.org/) (`ddev mailpit`).
+2. Edit `.env`:
+   - `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED`: the password of the admin users that the seeders create (required for
+     `db:seed`; it has no default)
+   - the external services if you need them (`WINDOWS_SETUP_SERVICE_URL`, Sentry, Firebase). DDEV catches all mail in
+     [Mailpit](https://mailpit.axllent.org/) (`ddev mailpit`).
 
 3. Create the starter data:
 

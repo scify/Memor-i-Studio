@@ -91,6 +91,9 @@ return [
 
     'env' => env('APP_ENV', 'local'),
     'version' => env('APP_VERSION', '1.0.0'),
+
+    // Password of the users that database/seeders/UsersTableSeeder.php creates; no default on purpose.
+    'default_admin_password_for_seed' => env('DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

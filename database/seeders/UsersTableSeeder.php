@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use RuntimeException;
 
 class UsersTableSeeder extends Seeder {
     /**
@@ -12,11 +14,17 @@ class UsersTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
+        $plainPassword = config('app.default_admin_password_for_seed');
+        if (empty($plainPassword)) {
+            throw new RuntimeException('Set DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED in .env before you seed the users.');
+        }
+        $password = Hash::make($plainPassword);
+
         DB::table('users')->delete();
         DB::table('users')->insert([
-            ['id'=> 1, 'name'=>'Paul Isaris', 'role_id' => 2, 'email'=>'paul@scify.org', 'password' => '$2y$10$AB2Q2QgPWuMXyVis.EgUau2F2TZK25lFe6SB/LyEMFzL38Qqjgy1e'],
-            ['id'=> 2, 'name'=>'Alex Tzoumas', 'role_id' => 2, 'email'=>'a.tzoumas@scify.org', 'password' => '$2y$10$AB2Q2QgPWuMXyVis.EgUau2F2TZK25lFe6SB/LyEMFzL38Qqjgy1e'],
-            ['id'=> 3, 'name'=>'Scify Tester', 'role_id' => 2, 'email'=>'tiasonidis@scify.org', 'password' => '$2y$10$AB2Q2QgPWuMXyVis.EgUau2F2TZK25lFe6SB/LyEMFzL38Qqjgy1e'],
+            ['id'=> 1, 'name'=>'Paul Isaris', 'role_id' => 2, 'email'=>'paul@scify.org', 'password' => $password],
+            ['id'=> 2, 'name'=>'Alex Tzoumas', 'role_id' => 2, 'email'=>'a.tzoumas@scify.org', 'password' => $password],
+            ['id'=> 3, 'name'=>'Scify Tester', 'role_id' => 2, 'email'=>'tiasonidis@scify.org', 'password' => $password],
         ]);
     }
 }
