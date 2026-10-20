@@ -24,15 +24,13 @@ Before the deploy:
    `/etc/php/8.4/fpm/php.ini` (README "Deployment"), point nginx `fastcgi_pass` to the 8.4 socket, and make the CLI
    `php` (Composer, cron) PHP 8.4.
 4. Node 24.21.0 or newer (`.nvmrc`; npm refuses older versions), ffmpeg (or the older avconv) and ImageMagick.
-5. Check that nginx sets the visitor's address (`/etc/nginx/conf.d/cloudflare-realip.conf` with the Cloudflare ranges and
-   `real_ip_header CF-Connecting-IP`, README "Deployment"): the new login limits count per visitor address.
 
 The deploy (the site answers HTTP 500 between the checkout and the build, so keep it in maintenance mode):
 
-6. `php artisan down` (on the old code).
-7. If the working tree has local changes in `public/vendor/scify`, run `git checkout -- public/vendor/scify`: these
+5. `php artisan down` (on the old code).
+6. If the working tree has local changes in `public/vendor/scify`, run `git checkout -- public/vendor/scify`: these
    files are no longer in git. Then `git fetch --tags && git checkout v3.0.0`.
-8. `.env`, before the build:
+7. `.env`, before the build:
    - set `VITE_SENTRY_DSN_PUBLIC` instead of `MIX_SENTRY_DSN_PUBLIC` (Vite reads it at build time);
    - set `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://memoristudio.scify.org` (requests for other
      hosts than this one and its subdomains now get HTTP 400);
@@ -40,7 +38,7 @@ The deploy (the site answers HTTP 500 between the checkout and the build, so kee
    - set `MAIL_FROM_ADDRESS` and `MAIL_FROM_NAME` if they are missing;
    - set `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED` only where you run `db:seed` (the staff users are seeded only in
      `local` and `testing`).
-9. Install, build and migrate:
+8. Install, build and migrate:
 
    ```bash
    composer install --no-dev --optimize-autoloader
@@ -56,10 +54,10 @@ The deploy (the site answers HTTP 500 between the checkout and the build, so kee
    - There are no new migrations; `migrate` reports nothing to do.
    - `optimize:clear` removes cached routes and config; an old route cache would keep the removed routes and the old
      GET actions. To cache again: `php artisan config:cache && php artisan route:cache && php artisan view:cache`.
-10. Delete the old Laravel Mix output: `public/js`, `public/css`, `public/dist` (if present), `public/mix-manifest.json`.
-11. Run `sudo ./set-file-permissions.sh www-data <server user> .` once, so storage folders get the setgid bit.
-12. Reload php-fpm, then `php artisan up`.
-13. Give every account that still uses the password of the old `UsersTableSeeder` a new password: its hash stays in
+9. Delete the old Laravel Mix output: `public/js`, `public/css`, `public/dist` (if present), `public/mix-manifest.json`.
+10. Run `sudo ./set-file-permissions.sh www-data <server user> .` once, so storage folders get the setgid bit.
+11. Reload php-fpm, then `php artisan up`.
+12. Give every account that still uses the password of the old `UsersTableSeeder` a new password: its hash stays in
     the git history.
 
 ### Security

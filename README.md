@@ -224,11 +224,6 @@ sudo ./set-file-permissions.sh www-data project_memori .
   configuration values).
 - `APP_URL` is the public address (`https://memoristudio.scify.org`). The app answers only requests for this host and
   its subdomains; the desktop game uses the same host.
-- The site runs behind Cloudflare, and nginx sets the visitor's address: `/etc/nginx/conf.d/cloudflare-realip.conf`
-  lists the Cloudflare ranges with `set_real_ip_from` and sets `real_ip_header CF-Connecting-IP` (as on the SciFY
-  production servers). The app trusts no proxy itself. Without this nginx file, every visitor would have a Cloudflare address in
-  the app, and the login limits would block many players at once. Keep the file in sync with
-  <https://www.cloudflare.com/ips/>.
 
 ### Updating
 
