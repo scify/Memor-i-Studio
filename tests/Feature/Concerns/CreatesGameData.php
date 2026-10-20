@@ -20,7 +20,7 @@ trait CreatesGameData {
     }
 
     protected function createUser(int $roleId): User {
-        return User::create([
+        return User::forceCreate([
             'name' => 'Test user',
             'email' => uniqid('user-') . '@example.com',
             'password' => bcrypt('password'),

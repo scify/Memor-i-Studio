@@ -25,7 +25,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'hashed_email', 'logout',
+        // role_id is not fillable: request data must never choose a role.
+        'name', 'email', 'password', 'hashed_email', 'logout',
     ];
 
     /**
