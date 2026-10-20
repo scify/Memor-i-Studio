@@ -24,9 +24,9 @@ class GameMovementController {
 
     public function createGameMovement(Request $request) {
         $validator = Validator::make($request->all(), [
-            'player_id' => 'required',
+            'player_id' => 'required|integer',
             'movement_json' => 'required',
-            'game_request_id' => 'required',
+            'game_request_id' => 'required|integer',
             'timestamp' => 'required',
         ]);
         if ($validator->fails()) {
@@ -41,8 +41,8 @@ class GameMovementController {
 
     public function getLatestOpponentGameMovement(Request $request) {
         $validator = Validator::make($request->all(), [
-            'opponent_id' => 'required',
-            'game_request_id' => 'required',
+            'opponent_id' => 'required|integer',
+            'game_request_id' => 'required|integer',
             'last_timestamp' => 'required',
         ]);
         if ($validator->fails()) {

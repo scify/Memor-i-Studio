@@ -27,4 +27,11 @@ class Player extends Model implements AuthenticatableContract {
     protected $fillable = [
         'user_name', 'app_id', 'last_seen_online', 'in_game', 'password', 'game_flavor_playing',
     ];
+
+    /**
+     * Player rows go to other players through the API; never include the password hash.
+     *
+     * @var list<string>
+     */
+    protected $hidden = ['password'];
 }

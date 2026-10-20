@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider {
@@ -21,7 +24,9 @@ class RouteServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        //
+        // Desktop game player login and registration: limit password guessing per address and user name.
+        // The game polls other api/* routes several times per second, so those stay unlimited.
+        RateLimiter::for('player-auth', fn (Request $request) => Limit::perMinute(10)->by($request->ip() . '|' . $request->input('user_name')));
 
         parent::boot();
     }

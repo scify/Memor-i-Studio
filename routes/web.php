@@ -38,8 +38,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('player/random', 'PlayerController@getRandomPlayer')->name('getRandomPlayer');
     Route::post('player/setOnline', 'PlayerController@setPlayerOnline')->name('setPlayerOnline');
 
-    Route::post('player/register', 'PlayerController@registerNewPlayer')->name('registerNewPlayer');
-    Route::post('player/login', 'PlayerController@logInPlayer')->name('logInPlayer');
+    Route::post('player/register', 'PlayerController@registerNewPlayer')->middleware('throttle:player-auth')->name('registerNewPlayer');
+    Route::post('player/login', 'PlayerController@logInPlayer')->middleware('throttle:player-auth')->name('logInPlayer');
     Route::post('player/notInGame', 'PlayerController@setPlayerNotInGame')->name('setPlayerNotInGame');
     Route::post('gameRequest/initiate', 'GameRequestController@initiateGameRequest')->name('initiateGameRequest');
     Route::get('gameRequest/reply', 'GameRequestController@getReplyForGameRequest')->name('getReplyForGameRequest');

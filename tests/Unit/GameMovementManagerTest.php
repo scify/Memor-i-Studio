@@ -16,6 +16,8 @@ class GameMovementManagerTest extends TestCase {
     public function test_latest_movement_reports_an_offline_opponent(): void {
         $gameRequest = new GameRequest;
         $gameRequest->id = 7;
+        $gameRequest->player_initiator_id = 1;
+        $gameRequest->player_opponent_id = 3;
         $opponent = new Player;
 
         $gameRequestManager = Mockery::mock(GameRequestManager::class);

@@ -24,10 +24,10 @@ class GameRequestController {
 
     public function initiateGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
-            'player_initiator_id' => 'required',
-            'player_opponent_id' => 'required',
+            'player_initiator_id' => 'required|integer',
+            'player_opponent_id' => 'required|integer',
             'game_identifier' => 'required',
-            'game_level_id' => 'required',
+            'game_level_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -41,8 +41,8 @@ class GameRequestController {
 
     public function getReplyForGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
-            'game_request_id' => 'required',
-            'opponent_id' => 'required',
+            'game_request_id' => 'required|integer',
+            'opponent_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -63,7 +63,7 @@ class GameRequestController {
     public function setShuffledCardsForGame(Request $request) {
         $validator = Validator::make($request->all(), [
             'shuffled_cards' => 'required',
-            'game_request_id' => 'required',
+            'game_request_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -77,8 +77,8 @@ class GameRequestController {
 
     public function getShuffledCardsForGame(Request $request) {
         $validator = Validator::make($request->all(), [
-            'game_request_id' => 'required',
-            'opponent_id' => 'required',
+            'game_request_id' => 'required|integer',
+            'opponent_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -93,7 +93,7 @@ class GameRequestController {
     public function replyToGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
             'accepted' => 'required',
-            'game_request_id' => 'required',
+            'game_request_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -107,7 +107,7 @@ class GameRequestController {
 
     public function endGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
-            'game_request_id' => 'required',
+            'game_request_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -121,7 +121,7 @@ class GameRequestController {
 
     public function cancelGameRequest(Request $request) {
         $validator = Validator::make($request->all(), [
-            'game_request_id' => 'required',
+            'game_request_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
