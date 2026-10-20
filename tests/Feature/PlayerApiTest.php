@@ -109,4 +109,23 @@ class PlayerApiTest extends TestCase {
 
         $this->assertDatabaseMissing('player', ['user_name' => 'newplayer']);
     }
+
+    public function test_ipv6_addresses_of_one_network_share_the_login_limit(): void {
+        for ($i = 0; $i < 30; $i++) {
+            $this->withServerVariables(['REMOTE_ADDR' => "2001:db8:1:2::{$i}"])
+                ->postJson('/api/player/login', ['user_name' => "player-{$i}", 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertOk();
+        }
+
+        $this->withServerVariables(['REMOTE_ADDR' => '2001:db8:1:2::ffff'])
+            ->postJson('/api/player/login', ['user_name' => 'player-31', 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])
+            ->assertTooManyRequests();
+    }
+
+    public function test_upper_and_lower_case_user_names_share_the_login_limit(): void {
+        foreach (['player1', 'Player1', 'PLAYER1', 'pLayer1', 'plAyer1', 'plaYer1', 'playEr1', 'playeR1', 'PLAyer1', 'plaYER1'] as $userName) {
+            $this->postJson('/api/player/login', ['user_name' => $userName, 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertOk();
+        }
+
+        $this->postJson('/api/player/login', ['user_name' => 'PlAyEr1', 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertTooManyRequests();
+    }
 }
