@@ -21,6 +21,7 @@ game downloads the published ones.
 - [Tests](#tests)
 - [Code quality](#code-quality)
 - [Continuous integration](#continuous-integration)
+- [Releasing](#releasing)
 - [Deployment](#deployment)
 - [License](#license)
 
@@ -137,7 +138,56 @@ GitHub Actions run the shared [SciFY workflows](https://github.com/scify/.github
 
 The `master` branch should require the check `ci / CI`; `dependabot_auto_merge.yml` relies on it.
 
+## Releasing
+
+Releases follow [Semantic Versioning](https://semver.org/): increase the **major** version for changes that break
+users or deployments without a migration path, the **minor** version for new features and compatible changes, and the
+**patch** version for bug fixes only. The version is defined only in `package.json`; the app shows it in the footer.
+Releases are tagged `vX.Y.Z`. All changes are recorded in [CHANGELOG.md](CHANGELOG.md).
+
+Changes reach `master` through pull requests with a passing `ci / CI` check, so a release goes through a pull request
+too. To release version `X.Y.Z` from an up-to-date `master` with green CI:
+
+1. Create a branch, for example `git switch -c chore/release-vX.Y.Z`. In `CHANGELOG.md`, rename `## [Unreleased]`
+   to `## [X.Y.Z] - YYYY-MM-DD`, add a new empty `## [Unreleased]` above it, and update the compare links at the end
+   of the file.
+2. Set the version (this updates `package.json` and `package-lock.json`, without a commit or tag):
+
+   ```bash
+   ddev npm version X.Y.Z --no-git-tag-version
+   ```
+
+3. Commit, push and open a pull request; merge it with a merge commit when CI passes:
+
+   ```bash
+   git add CHANGELOG.md package.json package-lock.json
+   git commit -m "chore: release vX.Y.Z"
+   git push -u origin chore/release-vX.Y.Z
+   gh pr create --title "chore: release vX.Y.Z" --body "Release vX.Y.Z. See CHANGELOG.md."
+   ```
+
+4. Tag the merge commit on `master` and push the tag:
+
+   ```bash
+   git switch master && git pull --ff-only
+   git tag -a vX.Y.Z -m "vX.Y.Z"
+   git push origin vX.Y.Z
+   ```
+
+5. Create the GitHub release, with the changelog section as the release notes:
+
+   ```bash
+   awk '/^## \[X.Y.Z\]/{found=1; next} /^## \[/{found=0} found' CHANGELOG.md > release-notes.md
+   gh release create vX.Y.Z --title "vX.Y.Z" --notes-file release-notes.md --verify-tag
+   rm release-notes.md
+   ```
+
+6. Deploy the tag, not the branch (see below).
+
 ## Deployment
+
+Deploy a release tag (`git checkout vX.Y.Z`), not `master`. Read the upgrade notes of every release in
+[CHANGELOG.md](CHANGELOG.md) since the deployed version.
 
 ### Server
 
