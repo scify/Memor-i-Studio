@@ -24,8 +24,8 @@ Before the deploy:
    `/etc/php/8.4/fpm/php.ini` (README "Deployment"), point nginx `fastcgi_pass` to the 8.4 socket, and make the CLI
    `php` (Composer, cron) PHP 8.4.
 4. Node 24.21.0 or newer (`.nvmrc`; npm refuses older versions), ffmpeg (or the older avconv) and ImageMagick.
-5. Check the proxy setup: the app trusts only the Cloudflare ranges in `config/proxies.php` (README "Deployment"). If
-   another proxy sits between Cloudflare and PHP, add it there and make it accept only Cloudflare traffic.
+5. Check that nginx sets the visitor's address (`/etc/nginx/conf.d/cloudflare-realip.conf` with the Cloudflare ranges and
+   `real_ip_header CF-Connecting-IP`, README "Deployment"): the new login limits count per visitor address.
 
 The deploy (the site answers HTTP 500 between the checkout and the build, so keep it in maintenance mode):
 
@@ -78,8 +78,7 @@ The deploy (the site answers HTTP 500 between the checkout and the build, so kee
   check.
 - The desktop player API no longer returns password hashes, checks that players belong to the game request, validates
   its input, and limits logins and registrations per address and user name. The polling routes stay unlimited.
-- Behind Cloudflare, the client address comes from `CF-Connecting-IP`; TrustHosts accepts only the `APP_URL` host and
-  its subdomains.
+- TrustHosts accepts only the `APP_URL` host and its subdomains.
 - `role_id` is no longer mass-assignable; the games page no longer embeds the full user row.
 - The seeded staff users get the password from `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED` instead of a committed hash.
 - Card preview images and game list errors are no longer built as HTML strings.

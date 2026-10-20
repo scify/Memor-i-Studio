@@ -7,7 +7,6 @@ use App\Http\Middleware\LogoutUsers;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrustHosts;
-use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
@@ -29,7 +28,6 @@ class Kernel extends HttpKernel {
      * @var array
      */
     protected $middleware = [
-        TrustProxies::class,
         TrustHosts::class,
         CheckForMaintenanceMode::class,
     ];

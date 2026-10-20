@@ -224,12 +224,11 @@ sudo ./set-file-permissions.sh www-data project_memori .
   configuration values).
 - `APP_URL` is the public address (`https://memoristudio.scify.org`). The app answers only requests for this host and
   its subdomains; the desktop game uses the same host.
-- The site runs behind Cloudflare. The app takes the client address from `CF-Connecting-IP` when the request comes from
-  a Cloudflare address listed in `config/proxies.php`. If another proxy (for example a local nginx or load balancer)
-  sits between Cloudflare and PHP, add its address to that list; otherwise every player shares one login limit.
-  Then that proxy must accept only Cloudflare traffic (firewall or Authenticated Origin Pulls) or overwrite
-  `CF-Connecting-IP` for other senders; otherwise a direct request can choose its own address.
-- Update `config/proxies.php` when Cloudflare publishes new ranges (<https://www.cloudflare.com/ips/>).
+- The site runs behind Cloudflare, and nginx sets the visitor's address: `/etc/nginx/conf.d/cloudflare-realip.conf`
+  lists the Cloudflare ranges with `set_real_ip_from` and sets `real_ip_header CF-Connecting-IP` (as on the SciFY
+  production servers). The app trusts no proxy itself. Without this nginx file, every visitor would have a Cloudflare address in
+  the app, and the login limits would block many players at once. Keep the file in sync with
+  <https://www.cloudflare.com/ips/>.
 
 ### Updating
 
