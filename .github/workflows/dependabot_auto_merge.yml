@@ -12,8 +12,8 @@
 #
 # Prerequisites (repository settings — without these the workflow is unsafe):
 #   1. "Allow auto-merge" enabled (Settings -> General)
-#   2. Branch protection on `main` with required status checks
-#      `quality` (check.yml) and `run-tests` (tests.yml).
+#   2. Branch protection on `master` requiring the aggregate check
+#      `ci / CI` from ci.yml.
 #      WARNING: with no required checks, `gh pr merge --auto` merges
 #      immediately, before CI has run.
 
