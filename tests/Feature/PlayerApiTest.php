@@ -128,4 +128,10 @@ class PlayerApiTest extends TestCase {
 
         $this->postJson('/api/player/login', ['user_name' => 'PlAyEr1', 'password' => 'wrong', 'game_flavor_pack_identifier' => 'x'])->assertTooManyRequests();
     }
+
+    public function test_a_game_identifier_must_be_a_string(): void {
+        $this->postJson('/api/player/register', ['user_name' => 'newplayer', 'password' => 'secret', 'game_flavor_pack_identifier' => ['x']])
+            ->assertOk()
+            ->assertJsonPath('code', ServerResponses::$VALIDATION_ERROR);
+    }
 }

@@ -31,7 +31,7 @@ class PlayerController extends Controller {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
             'password' => 'required|min:2',
-            'game_flavor_pack_identifier' => 'required',
+            'game_flavor_pack_identifier' => 'required|string',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -47,7 +47,7 @@ class PlayerController extends Controller {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
             'password' => 'required|min:2',
-            'game_flavor_pack_identifier' => 'required',
+            'game_flavor_pack_identifier' => 'required|string',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());
@@ -76,7 +76,7 @@ class PlayerController extends Controller {
     public function getPlayerAvailability(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
-            'game_flavor_pack_identifier' => 'required',
+            'game_flavor_pack_identifier' => 'required|string',
             'player_initiator_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
@@ -92,7 +92,7 @@ class PlayerController extends Controller {
     public function getRandomPlayer(Request $request) {
         $validator = Validator::make($request->all(), [
             'player_id' => 'required|integer',
-            'game_flavor_pack_identifier' => 'required',
+            'game_flavor_pack_identifier' => 'required|string',
         ]);
         if ($validator->fails()) {
             $response = new ApiOperationResponse(ServerResponses::$VALIDATION_ERROR, 'validation_failed', $validator->messages());

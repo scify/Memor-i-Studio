@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -100,8 +101,9 @@ class GameFlavorController extends Controller {
     public function create(Request $request): RedirectResponse {
         $this->validate($request, [
             'name' => 'required|max:255',
-            'game_version_id' => 'required|integer|exists:game_version,id',
-            'lang_id' => 'required|integer|exists:language,id',
+            // Soft-deleted versions and languages do not count.
+            'game_version_id' => ['required', 'integer', Rule::exists('game_version', 'id')->whereNull('deleted_at')],
+            'lang_id' => ['required', 'integer', Rule::exists('language', 'id')->whereNull('deleted_at')],
             'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
             'copyright_link' => 'url',
             'terms' => 'required',

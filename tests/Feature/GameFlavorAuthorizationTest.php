@@ -117,6 +117,14 @@ class GameFlavorAuthorizationTest extends TestCase {
         ])->assertSessionHasErrors(['game_version_id', 'lang_id']);
     }
 
+    public function test_creating_a_game_on_a_deleted_version_is_refused(): void {
+        DB::table('game_version')->where('id', 1)->update(['deleted_at' => now()]);
+
+        $this->actingAs($this->owner)->post('/gameFlavor/create', [
+            'name' => 'New game', 'terms' => 'on', 'files_usage' => 'on', 'game_version_id' => 1, 'lang_id' => 1,
+        ])->assertSessionHasErrors('game_version_id');
+    }
+
     public function test_another_member_cannot_clone_a_private_game(): void {
         $this->actingAs($this->otherMember)->post("/gameFlavor/{$this->gameId}/clone")->assertForbidden();
     }
