@@ -27,7 +27,7 @@ class AddGameVersionIdToResourceCategoriesTable extends Migration {
      */
     public function down() {
         Schema::table('resource_category', function (Blueprint $table) {
-            $table->dropForeign('resource_category_game_version_id_foreign');
+            $table->dropForeign(['game_version_id']);
             $table->dropColumn('game_version_id');
         });
     }

@@ -23,6 +23,7 @@ class AddedGameLevelIdInGameRequestTable extends Migration {
      */
     public function down() {
         Schema::table('game_request', function (Blueprint $table) {
+            $table->dropUnique(['game_level_id']);
             $table->dropColumn('game_level_id');
         });
     }

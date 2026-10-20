@@ -28,7 +28,7 @@ class AddSetDescriptionResourceIdAndDescriptionProbabilityToEquivalenceSetTable 
      */
     public function down() {
         Schema::table('equivalence_set', function (Blueprint $table) {
-            $table->dropForeign('equivalence_set_description_sound_id_foreign');
+            $table->dropForeign(['description_sound_id']);
             $table->dropColumn('description_sound_id');
             $table->dropColumn('description_sound_probability');
         });

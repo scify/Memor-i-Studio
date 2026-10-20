@@ -27,7 +27,7 @@ class AddCreatorIdToGameFlavorTable extends Migration {
      */
     public function down() {
         Schema::table('game_flavor', function (Blueprint $table) {
-            $table->dropForeign('game_flavor_creator_id_foreign');
+            $table->dropForeign(['creator_id']);
             $table->dropColumn('creator_id');
         });
     }

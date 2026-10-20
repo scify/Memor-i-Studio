@@ -27,7 +27,7 @@ class AddInterfaceLangIdOnGameFlavor extends Migration {
      */
     public function down() {
         Schema::table('game_flavor', function (Blueprint $table) {
-            $table->dropForeign('game_flavor_interface_lang_id_foreign');
+            $table->dropForeign(['interface_lang_id']);
             $table->dropColumn('interface_lang_id');
         });
     }
