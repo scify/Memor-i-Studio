@@ -167,13 +167,13 @@ class GameFlavorManager {
             }
         } catch (ModelNotFoundException $e) {
             $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true, null, $language_id);
-        } finally {
-            foreach ($gameFlavorsToBeReturned as $gameFlavor) {
-                $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
-            }
-
-            return $gameFlavorsToBeReturned;
         }
+
+        foreach ($gameFlavorsToBeReturned as $gameFlavor) {
+            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
+        }
+
+        return $gameFlavorsToBeReturned;
     }
 
     private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor) {
