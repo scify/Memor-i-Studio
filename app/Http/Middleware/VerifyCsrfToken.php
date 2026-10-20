@@ -11,7 +11,7 @@ class VerifyCsrfToken extends BaseVerifier {
      * @var array
      */
     protected $except = [
+        // The desktop game API (no browser session).
         'api/*',
-        'gameVersion/*',
     ];
 }
