@@ -178,6 +178,9 @@ Production `.env`:
   configuration values).
 - `APP_URL` is the public address (`https://memoristudio.scify.org`). The app answers only requests for this host and
   its subdomains; the desktop game uses the same host.
+- The site runs behind Cloudflare. The app takes the client address from `CF-Connecting-IP` when the request comes from
+  a Cloudflare address listed in `config/proxies.php`. If another proxy (for example a local nginx or load balancer)
+  sits between Cloudflare and PHP, add its address to that list; otherwise every player shares one login limit.
 
 After every `git pull`, install the PHP dependencies with Composer scripts enabled:
 
