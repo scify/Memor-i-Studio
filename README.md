@@ -172,6 +172,13 @@ So you will need to setup and have this service running, and then change the `WI
 The server needs PHP 8.4 or newer (`composer.lock` requires it), MySQL 8.0, and Node with the version from `.nvmrc`.
 Point the web server to the `public` directory.
 
+Production `.env`:
+
+- `APP_ENV=production` and `APP_DEBUG=false` (`.env.example` has local values; debug mode shows stack traces with
+  configuration values).
+- `APP_URL` is the public address (`https://memoristudio.scify.org`). The app answers only requests for this host and
+  its subdomains; the desktop game uses the same host.
+
 After every `git pull`, install the PHP dependencies with Composer scripts enabled:
 
 ```bash
