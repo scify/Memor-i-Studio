@@ -3,37 +3,37 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\File;
+use Tests\Feature\Concerns\UsesTemporaryStorage;
 use Tests\TestCase;
 
 class ResolveDataTest extends TestCase {
-    private string $directory;
+    use UsesTemporaryStorage;
 
     protected function setUp(): void {
         parent::setUp();
 
-        $this->directory = storage_path('app/resolve-data-test');
-        File::ensureDirectoryExists($this->directory);
-        File::put($this->directory . '/card.txt', 'card data');
+        $this->useTemporaryStorage();
+        File::ensureDirectoryExists(storage_path('app/game_versions/img'));
+        File::put(storage_path('app/game_versions/img/card.txt'), 'card data');
+        File::put(storage_path('app/backup.sql'), 'secret');
     }
 
-    protected function tearDown(): void {
-        File::deleteDirectory($this->directory);
-
-        parent::tearDown();
-    }
-
-    public function test_a_file_in_storage_app_is_served(): void {
-        $this->get('/resolveData/resolve-data-test/card.txt')
+    public function test_a_base_version_file_is_served(): void {
+        $this->get('/resolveData/game_versions/img/card.txt')
             ->assertOk()
             ->assertSee('card data');
     }
 
     public function test_a_missing_file_answers_not_found(): void {
-        $this->get('/resolveData/resolve-data-test/missing.txt')->assertNotFound();
+        $this->get('/resolveData/game_versions/img/missing.txt')->assertNotFound();
+    }
+
+    public function test_a_file_outside_the_known_folders_answers_not_found(): void {
+        $this->get('/resolveData/backup.sql')->assertNotFound();
     }
 
     public function test_a_path_outside_storage_app_is_refused(): void {
         $this->get('/resolveData/../../composer.json')->assertNotFound();
-        $this->get('/resolveData/resolve-data-test/..%2F..%2F..%2Fcomposer.json')->assertNotFound();
+        $this->get('/resolveData/game_versions/img/..%2F..%2F..%2Fcomposer.json')->assertNotFound();
     }
 }

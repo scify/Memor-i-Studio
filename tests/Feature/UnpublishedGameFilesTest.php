@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Tests\Feature\Concerns\CreatesGameData;
+use Tests\Feature\Concerns\UsesTemporaryStorage;
 use Tests\TestCase;
 
 /**
@@ -16,6 +17,8 @@ class UnpublishedGameFilesTest extends TestCase {
 
     use RefreshDatabase;
 
+    use UsesTemporaryStorage;
+
     protected bool $seed = true;
 
     private User $owner;
@@ -24,11 +27,10 @@ class UnpublishedGameFilesTest extends TestCase {
 
     private int $publicGameId;
 
-    private array $directories = [];
-
     protected function setUp(): void {
         parent::setUp();
 
+        $this->useTemporaryStorage();
         $this->owner = $this->createUser(self::MEMBER_ROLE_ID);
         $this->createGameVersion($this->owner->id);
         $this->privateGameId = $this->createGame($this->owner->id);
@@ -39,16 +41,7 @@ class UnpublishedGameFilesTest extends TestCase {
             File::put($directory . '/card.txt', 'card data');
             File::put($directory . '/memori.jar', 'jar');
             File::put($directory . '/Output/memor-i-setup.exe', 'exe');
-            $this->directories[] = $directory;
         }
-    }
-
-    protected function tearDown(): void {
-        foreach ($this->directories as $directory) {
-            File::deleteDirectory($directory);
-        }
-
-        parent::tearDown();
     }
 
     public function test_a_guest_cannot_read_files_of_an_unpublished_game(): void {
@@ -65,6 +58,10 @@ class UnpublishedGameFilesTest extends TestCase {
     public function test_a_guest_can_read_files_of_a_published_game(): void {
         $this->get("/resolveData/data_packs/additional_pack_{$this->publicGameId}/card.txt")->assertOk()->assertSee('card data');
         $this->get("/flavor/{$this->publicGameId}/downloadWin")->assertOk();
+    }
+
+    public function test_a_published_game_path_cannot_reach_an_unpublished_game(): void {
+        $this->get("/resolveData/data_packs/additional_pack_{$this->publicGameId}/../additional_pack_{$this->privateGameId}/card.txt")->assertNotFound();
     }
 
     public function test_a_null_byte_answers_not_found(): void {

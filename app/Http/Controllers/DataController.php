@@ -20,13 +20,15 @@ class DataController extends Controller {
             abort(404);
         }
 
-        // Files of a game (data_packs/additional_pack_{id}/...) follow the game's view rule; base version files are public.
+        // Only known folders are served. Files of a game follow the game's view rule; base version files are public.
         $relativePath = substr($path, strlen($root) + 1);
-        if (preg_match('#^data_packs/additional_pack_(\d+)/#', $relativePath, $matches)) {
+        if (preg_match('#^data_packs/additional_pack_(\d+)/#i', $relativePath, $matches)) {
             $gameFlavor = GameFlavor::find($matches[1]);
             if ($gameFlavor === null || Gate::denies('view', $gameFlavor)) {
                 abort(404);
             }
+        } elseif (!preg_match('#^game_versions/(data|img|jar|exe)/#i', $relativePath)) {
+            abort(404);
         }
 
         $response = Response::make(File::get($path), 200);
