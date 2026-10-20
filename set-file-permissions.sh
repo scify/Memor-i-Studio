@@ -26,4 +26,4 @@ find "$folder"/storage -type d -exec chmod 775 {} \;
 chgrp -R "$groupname" "$folder"/storage "$folder"/bootstrap/cache
 
 # New folders inherit the webserver group, also when a CLI user creates them (the file cache uses 0774)
-find "$folder"/storage -type d -exec chmod g+s {} \;
+find "$folder"/storage "$folder"/bootstrap/cache -type d -exec chmod g+s {} \;
