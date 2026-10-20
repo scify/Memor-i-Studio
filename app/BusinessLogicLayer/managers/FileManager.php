@@ -13,9 +13,4 @@ class FileManager {
             throw new \Exception("Couldn't copy file " . $sourceFile . ' to ' . $destinationFile);
         }
     }
-
-    public function replaceStringInFileWith($filePath, $stringToBeReplaced, $newString) {
-        $command = "sed -i 's/" . $stringToBeReplaced . '/' . $newString . "/g' " . $filePath;
-        exec($command);
-    }
 }
