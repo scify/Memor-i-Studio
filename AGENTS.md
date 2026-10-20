@@ -5,11 +5,11 @@ deployment are in `README.md`; changes are recorded in `CHANGELOG.md`.
 
 ## Project
 
-Memor-i Studio (<https://memoristudio.scify.org/>): a Laravel 12 app where members create their own games for the
+Memor-i Studio (<https://memoristudio.scify.org/>): a Laravel app where members create their own games for the
 Memor-i desktop memory game for blind people. A **game** (`GameFlavor`, table `game_flavor`) is based on a **base
 version** (`GameVersion`, managed by admins) and holds **card sets** (`EquivalenceSet`) of **cards** (`Card`) with
 images and sounds. An admin builds a game (Linux jar, Windows installer) and publishes it; the desktop game reads
-published games through the API. Default branch: `master`.
+published games through the API.
 
 ## Working rules
 
@@ -21,13 +21,12 @@ published games through the API. Default branch: `master`.
   writes against it. For browser checks, create temporary users and data, and delete them afterwards by id.
 - **Commit gate**: run each tool as its own command and read its exit code, then commit in a separate command:
   `ddev composer lint:check`, `ddev npm run build`, and the tests (`ddev exec php artisan config:clear`, then
-  `ddev exec env COLUMNS=120 php artisan test --compact`). A commit chained after a gate went in with errors three
-  times across the SciFY marketplace projects.
+  `ddev exec env COLUMNS=120 php artisan test --compact`).
 - Without a terminal, DDEV sets `COLUMNS=0`, and Collision crashes when it renders a failure; scripted test runs pass
   `COLUMNS` (`ddev coverage` does this itself).
-- `phpstan-baseline.neon`: new code adds no entries. When a change removes code that an entry ignores, remove that
-  entry in the same commit (PHPStan fails on unmatched entries).
-- New npm packages: versions released at least 7 days ago (`.npmrc` `min-release-age=7` enforces it).
+- When a change removes code that a `phpstan-baseline.neon` entry ignores, remove that entry in the same commit
+  (PHPStan fails on unmatched entries).
+- New npm packages: pick versions released at least 7 days ago; `.npmrc` `min-release-age=7` refuses newer ones.
 - `composer require` / `composer update` without `-W`; use `-w` with the exact packages instead.
 - `master` accepts only pull requests with a passing `ci / CI` check (ruleset). Work on a branch; ask before every
   push, force push, tag and release. Merge with a merge commit: `.git-blame-ignore-revs` lists a commit hash.
@@ -38,10 +37,9 @@ published games through the API. Default branch: `master`.
 
 ## Tests
 
-- **Tests run on SQLite in memory only.** DDEV sets `DB_CONNECTION=mysql` and `DB_HOST=db` as container variables;
-  the `<server>` lines in `phpunit.xml` override them (`<env>` lines would not). `tests/TestCase.php` refuses any
-  other connection before every test (`setUpTraits()`), and `tests/CreatesApplication.php` refuses a cached config,
-  which would replace all `<server>` lines. Keep all three.
+- **Tests run on SQLite in memory only** (README "Tests"). Keep all three guards: the `<server>` lines in
+  `phpunit.xml` (DDEV's `DB_*` container variables beat `<env>` lines), the connection check in `tests/TestCase.php`
+  (`setUpTraits()`) and the cached-config check in `tests/CreatesApplication.php`.
 - **Every database test sets `protected bool $seed = true;`.** `RefreshDatabase` migrates once per run and seeds only
   on that first migration, so one test without `$seed` leaves every later test without roles and staff users.
   Seeding needs `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED`, which `phpunit.xml` sets.
@@ -51,9 +49,9 @@ published games through the API. Default branch: `master`.
   (see the MP3 frames in `tests/Feature/EquivalenceSetCreateTest.php`).
 - Laravel skips CSRF and TrustHosts in tests: `tests/Unit/CsrfExceptionsTest.php` checks the CSRF
   exceptions directly; check request-level behaviour in a browser with real sessions.
-- Write the test first and watch it fail for the right reason; for access rules, also remove the check once and watch
-  the test fail. Many controllers answer a failed action with `common.error_message` and status 200, so assert the
-  real result (a redirect without `flash_message_failure`, or the expected view), not "not 403".
+- For access rules, remove the check once and watch the test fail. Many controllers answer a failed action with
+  `common.error_message` and status 200, so assert the real result (a redirect without `flash_message_failure`, or the
+  expected view), not "not 403".
 
 ## Domain and architecture
 
@@ -71,10 +69,11 @@ published games through the API. Default branch: `master`.
 - External programs run through `Process` with argument arrays; stored upload names keep only `[a-z0-9_-]`
   (`ResourceManager::slugifyFileName()`).
 - A clone starts unbuilt and not submitted (`GameFlavorManager::cloneGameFlavor()`).
-- The desktop game API is the `api/*` group in `routes/web.php` (no session, CSRF-exempt) plus `routes/api.php`
-  (`GET api/games`). Responses are `ApiOperationResponse` objects with `ServerResponses` codes. The game polls every
-  200 ms, so only `player/login` and `player/register` are throttled (`player-auth` in `RouteServiceProvider`, keyed by
-  `App\Support\RateLimitAddress`). Players are not authenticated (see Known issues); ids in a request are checked
+- The desktop game API is the `api/*` group in `routes/web.php` (`web` middleware, CSRF-exempt). Responses are
+  `ApiOperationResponse` objects with `ServerResponses` codes. The game polls every 200 ms, so in that group only
+  `player/login` and `player/register` are throttled (`player-auth` in `RouteServiceProvider`, keyed by
+  `App\Support\RateLimitAddress`). Add game endpoints there: `routes/api.php` (`GET api/games`, analytics) has the
+  `api` group's `throttle:60,1`. Players are not authenticated (see Known issues); ids in a request are checked
   against the game request (`GameRequest::hasPlayer()`).
 - The servers set the visitor address in nginx (Cloudflare `real_ip`); the app trusts no proxy.
 
@@ -82,8 +81,8 @@ published games through the API. Default branch: `master`.
 
 - Vite entries are listed in `vite.config.js`; Blade loads them with `@vite()`. The dev server runs in DDEV on port
   5176.
-- The markup and CSS are Bootstrap 3, so the JavaScript comes from `bootstrap-sass` (3.4.1); the `bootstrap` 5
-  package is not used.
+- The markup and CSS are Bootstrap 3 (`data-toggle`, `.modal('toggle')`), so the JavaScript comes from
+  `bootstrap-sass` 3.4.3 (Bootstrap 3.4.1); keep Bootstrap 4 or 5 packages out.
 - jQuery: `resources/assets/js/jquery-global.js` sets `window.$`; modules import `$`. Inline Blade scripts that use
   jQuery are `type="module"` (`tests/Unit/InlineScriptsTest.php` enforces it).
 - `resources/assets/pleasure-admin-panel/js/pleasure.js` imports the jQuery UI widget files in dependency order:
