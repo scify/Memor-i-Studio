@@ -75,7 +75,10 @@ class EquivalenceSetController extends Controller {
      * @throws ValidationException
      */
     public function create(Request $request): RedirectResponse {
-        $this->authorize('manage', GameFlavor::findOrFail($request->input('card.1.game_flavor_id')));
+        // The id builds storage paths, so it must be an integer before anything uses it.
+        $this->validate($request, ['card.1.game_flavor_id' => 'required|integer']);
+        $gameFlavor = GameFlavor::findOrFail($request->integer('card.1.game_flavor_id'));
+        $this->authorize('manage', $gameFlavor);
         // dd($request->all());
         // The validation messages are defined in resources/lang/en/validation.php
         $this->validate($request, [
@@ -88,7 +91,7 @@ class EquivalenceSetController extends Controller {
         ]);
 
         $input = $request->all();
-        $gameFlavorId = $input['card'][1]['game_flavor_id'];
+        $gameFlavorId = $gameFlavor->id;
 
         try {
             // One transaction: a failed card must not leave a card set without its cards.

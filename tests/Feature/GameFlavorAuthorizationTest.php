@@ -127,6 +127,12 @@ class GameFlavorAuthorizationTest extends TestCase {
         $this->actingAs($this->otherMember)->post("/gameFlavor/{$publicGameId}/clone")->assertRedirect();
     }
 
+    public function test_the_card_set_game_id_must_be_an_integer(): void {
+        $this->actingAs($this->owner)
+            ->post('/set/create', ['card' => [1 => ['game_flavor_id' => $this->gameId . '/../additional_pack_99']]])
+            ->assertSessionHasErrors('card.1.game_flavor_id');
+    }
+
     public function test_another_member_cannot_add_a_card_set(): void {
         $this->actingAs($this->otherMember)
             ->post('/set/create', ['card' => [1 => ['game_flavor_id' => $this->gameId]]])
