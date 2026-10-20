@@ -27,7 +27,7 @@ class AddCoverImgToGameFlavorTable extends Migration {
      */
     public function down() {
         Schema::table('game_flavor', function (Blueprint $table) {
-            $table->dropForeign('game_flavor_cover_img_id_foreign');
+            $table->dropForeign(['cover_img_id']);
             $table->dropColumn('cover_img_id');
         });
     }

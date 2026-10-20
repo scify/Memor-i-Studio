@@ -27,7 +27,7 @@ class AddResourceCategoryTypeOnResourceTable extends Migration {
      */
     public function down() {
         Schema::table('resource_category', function (Blueprint $table) {
-            $table->dropForeign('resource_category_type_id_foreign');
+            $table->dropForeign(['type_id']);
             $table->dropColumn('type_id');
         });
     }

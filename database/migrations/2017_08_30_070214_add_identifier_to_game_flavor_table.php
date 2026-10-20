@@ -23,6 +23,7 @@ class AddIdentifierToGameFlavorTable extends Migration {
      */
     public function down() {
         Schema::table('game_flavor', function (Blueprint $table) {
+            $table->dropUnique(['pack_identifier']);
             $table->dropColumn('pack_identifier');
         });
     }

@@ -29,9 +29,9 @@ class AddImagesIdToCardTable extends Migration {
      */
     public function down() {
         Schema::table('card', function (Blueprint $table) {
-            $table->dropForeign('card_image_id_foreign');
+            $table->dropForeign(['image_id']);
             $table->dropColumn('image_id');
-            $table->dropForeign('card_negative_image_id_foreign');
+            $table->dropForeign(['negative_image_id']);
             $table->dropColumn('negative_image_id');
         });
     }

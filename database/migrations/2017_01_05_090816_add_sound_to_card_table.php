@@ -27,7 +27,7 @@ class AddSoundToCardTable extends Migration {
      */
     public function down() {
         Schema::table('card', function (Blueprint $table) {
-            $table->dropForeign('card_sound_id_foreign');
+            $table->dropForeign(['sound_id']);
             $table->dropColumn('sound_id');
         });
     }

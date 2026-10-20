@@ -7,46 +7,10 @@ parameters:
 			path: app/BusinessLogicLayer/managers/CardManager.php
 
 		-
-			message: '#^Instantiated class League\\Flysystem\\Exception not found\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/BusinessLogicLayer/managers/CardManager.php
-
-		-
-			message: '#^Throwing object of an unknown class League\\Flysystem\\Exception\.$#'
-			identifier: class.notFound
-			count: 2
-			path: app/BusinessLogicLayer/managers/CardManager.php
-
-		-
-			message: '#^Instantiated class League\\Flysystem\\Exception not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
 			message: '#^PHPDoc tag @return has invalid value \(bool\. True if the game version was deleted successfully, false if the user has no access\)\: Unexpected token "\.", expected TOKEN_HORIZONTAL_WS at offset 96 on line 3$#'
 			identifier: phpDoc.parseError
 			count: 1
 			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
-			message: '#^Throwing object of an unknown class League\\Flysystem\\Exception\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
-			message: '#^Variable \$gameFlavorsToBeReturned might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameFlavorManager.php
-
-		-
-			message: '#^Undefined variable\: \$playerManager$#'
-			identifier: variable.undefined
-			count: 1
-			path: app/BusinessLogicLayer/managers/GameMovementManager.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$resources\.$#'
@@ -119,12 +83,6 @@ parameters:
 			identifier: property.phpDocType
 			count: 1
 			path: app/Exceptions/Handler.php
-
-		-
-			message: '#^Function throwException not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: app/Http/Controllers/CardController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\GameFlavorReportController\:\:createGameFlavorReport\(\) should return Illuminate\\Http\\Response but returns Illuminate\\Http\\RedirectResponse\.$#'

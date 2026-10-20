@@ -25,7 +25,7 @@ class ChangesInPlayerTable extends Migration {
     public function down() {
         Schema::table('player', function ($table) {
             $table->string('app_id', 200)->comment('The unique app id produced from the application');
-            $table->dropForeign('player_game_flavor_playing_foreign');
+            $table->dropForeign(['game_flavor_playing']);
             $table->dropColumn('game_flavor_playing');
         });
     }

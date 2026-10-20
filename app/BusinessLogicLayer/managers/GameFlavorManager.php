@@ -9,6 +9,7 @@ use App\Models\User;
 use App\StorageLayer\GameFlavorStorage;
 use App\StorageLayer\LanguageStorage;
 use App\StorageLayer\UserRepository;
+use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -17,7 +18,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Exception;
 
 include_once 'functions.php';
 
@@ -73,7 +73,7 @@ class GameFlavorManager {
      * @param  array  $inputFields  contain the game flavor parameters
      * @return GameFlavor the newly created instance
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @internal param Request $request the request object
      */
@@ -112,14 +112,14 @@ class GameFlavorManager {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId): GameFlavor {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
         $gameVersion = $this->gameVersionManager->getGameVersion($gameVersionId);
 
         if (!$gameFlavor || !$gameVersion) {
-            throw new \Exception('ERROR game flavor id: ' . $gameFlavorId . ' or game version id: ' . $gameVersionId . ' do not exist');
+            throw new Exception('ERROR game flavor id: ' . $gameFlavorId . ' or game version id: ' . $gameVersionId . ' do not exist');
         }
         $gameFlavor->game_version_id = $gameVersion->id;
         $gameFlavor->save();
@@ -167,13 +167,13 @@ class GameFlavorManager {
             }
         } catch (ModelNotFoundException $e) {
             $gameFlavorsToBeReturned = $this->gameFlavorStorage->getGameFlavors(true, null, $language_id);
-        } finally {
-            foreach ($gameFlavorsToBeReturned as $gameFlavor) {
-                $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
-            }
-
-            return $gameFlavorsToBeReturned;
         }
+
+        foreach ($gameFlavorsToBeReturned as $gameFlavor) {
+            $gameFlavor->accessed_by_user = $this->isGameFlavorAccessedByUser($gameFlavor->user_creator_id, $user);
+        }
+
+        return $gameFlavorsToBeReturned;
     }
 
     private function getGameFlavorCoverImgFilePath(GameFlavor $gameFlavor) {
@@ -194,7 +194,7 @@ class GameFlavorManager {
      * @param  $id  . the id of game version
      * @return GameFlavor desired {@see GameFlavor} object, or null if the user has no access to this object
      *
-     * @throws \Exception if a game flavor is not found
+     * @throws Exception if a game flavor is not found
      */
     public function getGameFlavor($id): ?GameFlavor {
         $user = Auth::user();
@@ -206,19 +206,19 @@ class GameFlavorManager {
                 return $gameFlavor;
             }
         } else {
-            throw new \Exception('Game flavor not found. Id queried: ' . $id);
+            throw new Exception('Game flavor not found. Id queried: ' . $id);
         }
 
         return null;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getGameFlavorByGameIdentifier($gameFlavorIdentifier) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
         if (!$gameFlavor) {
-            throw new \Exception('Game flavor not found. Identifier queried: ' . $gameFlavorIdentifier);
+            throw new Exception('Game flavor not found. Identifier queried: ' . $gameFlavorIdentifier);
         }
 
         return $gameFlavor;
@@ -266,7 +266,7 @@ class GameFlavorManager {
      * @param  $gameFlavorId  . The id of the game version to be deleted
      * @return bool. True if the game version was deleted successfully, false if the user has no access
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteGameFlavor($gameFlavorId): bool {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
@@ -306,7 +306,7 @@ class GameFlavorManager {
      * @param  $gameFlavorId  int the id of the @see GameFlavor to be updated
      * @return bool if the update process was successful or not
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function toggleGameFlavorPublishedState(int $gameFlavorId): bool {
         $gameFlavor = $this->getGameFlavor($gameFlavorId);
@@ -322,12 +322,12 @@ class GameFlavorManager {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function buildGameFlavor(int $gameFlavorId) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($gameFlavorId);
         if ($gameFlavor == null) {
-            throw new \Exception('Game flavor not found. Id queried: ' . $gameFlavorId);
+            throw new Exception('Game flavor not found. Id queried: ' . $gameFlavorId);
         }
         $gameFlavorImgCoverFile = $this->resourceManager->getFileForResourceForGameFlavor($gameFlavor->coverImg, $gameFlavor->id);
         $this->convertGameFlavorCoverImgToIcon($gameFlavorImgCoverFile);
@@ -343,7 +343,7 @@ class GameFlavorManager {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function packageFlavor(int $gameFlavorId) {
         // create the resources map file
@@ -362,7 +362,7 @@ class GameFlavorManager {
     /**
      * @param  $gameFlavor  GameFlavor the @see GameFlavor
      *
-     * @throws \Exception if the .jar file cannot be copied to the destination path
+     * @throws Exception if the .jar file cannot be copied to the destination path
      */
     private function copyGameVersionJarFileToDataPackDir(GameFlavor $gameFlavor) {
         $sourceFile = $this->gameVersionManager->getGameVersionJarFile($gameFlavor->game_version_id);
@@ -518,7 +518,7 @@ class GameFlavorManager {
      *
      * @param  $id  int the game flavor id
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function markGameFlavorAsNotSubmittedForApproval(int $id) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorById($id);
@@ -567,14 +567,14 @@ class GameFlavorManager {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFlavorIdFromIdentifier(string $gameFlavorIdentifier) {
         $gameFlavor = $this->gameFlavorStorage->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
         if ($gameFlavor) {
             return $gameFlavor->id;
         } else {
-            throw new \Exception('Game Flavor not found. Identifier: ' . $gameFlavorIdentifier);
+            throw new Exception('Game Flavor not found. Identifier: ' . $gameFlavorIdentifier);
         }
     }
 
