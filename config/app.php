@@ -56,7 +56,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Translation\TranslationServiceProvider;
 use Illuminate\Validation\ValidationServiceProvider;
 use Illuminate\View\ViewServiceProvider;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 use Lunaweb\RecaptchaV3\Providers\RecaptchaV3ServiceProvider;
 use Madnest\Madzipper\Madzipper;
 use Madnest\Madzipper\MadzipperServiceProvider;
@@ -234,7 +233,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         EventServiceProvider::class,
         RouteServiceProvider::class,
-        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         MadzipperServiceProvider::class,
         RecaptchaV3ServiceProvider::class,
 
@@ -285,7 +283,6 @@ return [
         'URL' => URL::class,
         'Validator' => Validator::class,
         'View' => View::class,
-        'Javascript' => JavaScriptFacade::class,
         'Madzipper' => Madzipper::class,
     ],
 

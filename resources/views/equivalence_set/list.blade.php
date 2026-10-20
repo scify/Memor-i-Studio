@@ -121,7 +121,7 @@
     @vite('resources/assets/js/controllers/equivalenceSetsController.js')
     <script type="module">
         $(function () {
-            var controller = new window.EquivalenceSetsController(cards, editCardRoute);
+            var controller = new window.EquivalenceSetsController(@json($cards), @json($editCardRoute), @json($createEquivalenceSetRoute));
             controller.init();
         });
     </script>

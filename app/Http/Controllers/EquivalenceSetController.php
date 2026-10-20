@@ -13,7 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Javascript;
 
 /**
  * Class EquivalenceSetController controller for requests regarding equivalence sets (sets of cards that are equivalent)
@@ -54,13 +53,13 @@ class EquivalenceSetController extends Controller {
             $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
             $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
 
-            Javascript::put([
-                'cards' => json_encode($cards),
+            return view('equivalence_set.list', [
+                'equivalenceSets' => $equivalenceSets,
+                'gameFlavor' => $gameFlavor,
+                'cards' => $cards,
                 'editCardRoute' => route('editCard'),
                 'createEquivalenceSetRoute' => route('createEquivalenceSet'),
             ]);
-
-            return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
         } catch (ModelNotFoundException $e) {
             return view('common.error_message', ['message' => trans('messages.game_flavor_not_exist')]);
         }
