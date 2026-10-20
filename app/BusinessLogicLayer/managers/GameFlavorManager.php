@@ -479,6 +479,9 @@ class GameFlavorManager {
         $newGameFlavor->name .= '_copy';
         $newGameFlavor->creator_id = $userId;
         $newGameFlavor->published = false;
+        // The new owner can change everything, so an admin must build and approve the clone again.
+        $newGameFlavor->is_built = false;
+        $newGameFlavor->submitted_for_approval = false;
         $newGameFlavor->game_identifier .= generateRandomString(3);
         $newGameFlavor->save();
 

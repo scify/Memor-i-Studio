@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ab7189527ff9d326791b68b665bf9c1",
+    "content-hash": "84142afeddacff2a74679fd999222594",
     "packages": [
         {
             "name": "brick/math",
@@ -2461,6 +2461,81 @@
                 }
             ],
             "time": "2026-10-16T15:19:33+00:00"
+        },
+        {
+            "name": "madnest/madzipper",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/madnest/madzipper.git",
+                "reference": "527c35105820a0b4c8cfdadd3f475b26d62d9ac2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/madnest/madzipper/zipball/527c35105820a0b4c8cfdadd3f475b26d62d9ac2",
+                "reference": "527c35105820a0b4c8cfdadd3f475b26d62d9ac2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zip": "*",
+                "illuminate/filesystem": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.15",
+                "mockery/mockery": "^1.4.4",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^10.5|^11.5.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Madzipper": "Madnest\\Madzipper\\Madzipper"
+                    },
+                    "providers": [
+                        "Madnest\\Madzipper\\MadzipperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Madnest\\Madzipper\\": "src/Madnest/Madzipper"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Plaschke",
+                    "email": "github@nilsplaschke.de",
+                    "homepage": "http://nilsplaschke.de",
+                    "role": "Original author"
+                },
+                {
+                    "name": "Jakub Theimer",
+                    "email": "jakub@dy.st",
+                    "homepage": "https://dy.st",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easier zip file handling for Laravel applications.",
+            "homepage": "https://github.com/madnest/madzipper",
+            "keywords": [
+                "laravel",
+                "php",
+                "zip",
+                "ziparchive"
+            ],
+            "support": {
+                "issues": "https://github.com/madnest/madzipper/issues",
+                "source": "https://github.com/madnest/madzipper/tree/v1.6.0"
+            },
+            "time": "2025-02-25T20:01:40+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -8042,67 +8117,6 @@
             "time": "2026-01-28T22:20:33+00:00"
         },
         {
-            "name": "laracasts/utilities",
-            "version": "3.2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laracasts/PHP-Vars-To-Js-Transformer.git",
-                "reference": "e4d5bb22a3e8d6d92d8454b773bd9c8df2473c17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/PHP-Vars-To-Js-Transformer/zipball/e4d5bb22a3e8d6d92d8454b773bd9c8df2473c17",
-                "reference": "e4d5bb22a3e8d6d92d8454b773bd9c8df2473c17",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-                "php": ">=5.5.0|>=7.2.5|>=8.0.0"
-            },
-            "require-dev": {
-                "phpspec/phpspec": ">=2.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "JavaScript": "Laracasts\\Utilities\\JavaScript\\JavaScriptFacade"
-                    },
-                    "providers": [
-                        "Laracasts\\Utilities\\JavaScript\\JavaScriptServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Laracasts\\Utilities\\JavaScript\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@laracasts.com"
-                }
-            ],
-            "description": "Transform your PHP to JavaScript",
-            "keywords": [
-                "javascript",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/laracasts/PHP-Vars-To-Js-Transformer/issues",
-                "source": "https://github.com/laracasts/PHP-Vars-To-Js-Transformer/tree/3.2.5"
-            },
-            "time": "2026-02-24T22:12:50+00:00"
-        },
-        {
             "name": "larastan/larastan",
             "version": "v3.13.0",
             "source": {
@@ -8260,81 +8274,6 @@
                 "source": "https://github.com/laravel/pint"
             },
             "time": "2026-09-10T10:47:55+00:00"
-        },
-        {
-            "name": "madnest/madzipper",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/madnest/madzipper.git",
-                "reference": "527c35105820a0b4c8cfdadd3f475b26d62d9ac2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/madnest/madzipper/zipball/527c35105820a0b4c8cfdadd3f475b26d62d9ac2",
-                "reference": "527c35105820a0b4c8cfdadd3f475b26d62d9ac2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-zip": "*",
-                "illuminate/filesystem": "^11.0|^12.0",
-                "illuminate/support": "^11.0|^12.0",
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.15",
-                "mockery/mockery": "^1.4.4",
-                "nunomaduro/collision": "^8.0",
-                "orchestra/testbench": "^9.0|^10.0",
-                "phpunit/phpunit": "^10.5|^11.5.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Madzipper": "Madnest\\Madzipper\\Madzipper"
-                    },
-                    "providers": [
-                        "Madnest\\Madzipper\\MadzipperServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Madnest\\Madzipper\\": "src/Madnest/Madzipper"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nils Plaschke",
-                    "email": "github@nilsplaschke.de",
-                    "homepage": "http://nilsplaschke.de",
-                    "role": "Original author"
-                },
-                {
-                    "name": "Jakub Theimer",
-                    "email": "jakub@dy.st",
-                    "homepage": "https://dy.st",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Easier zip file handling for Laravel applications.",
-            "homepage": "https://github.com/madnest/madzipper",
-            "keywords": [
-                "laravel",
-                "php",
-                "zip",
-                "ziparchive"
-            ],
-            "support": {
-                "issues": "https://github.com/madnest/madzipper/issues",
-                "source": "https://github.com/madnest/madzipper/tree/v1.6.0"
-            },
-            "time": "2025-02-25T20:01:40+00:00"
         },
         {
             "name": "mockery/mockery",

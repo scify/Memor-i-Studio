@@ -109,6 +109,9 @@ class GameRequestManager {
     public function getReplyForGameRequest(array $input) {
         try {
             $gameRequest = $this->getGameRequest($input['game_request_id']);
+            if (!$gameRequest->hasPlayer($input['opponent_id'])) {
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'player_not_in_game', '');
+            }
             $opponent = $this->playerManager->getPlayerById($input['opponent_id']);
             if (!$this->playerManager->isPlayerOnline($opponent)) {
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', '');

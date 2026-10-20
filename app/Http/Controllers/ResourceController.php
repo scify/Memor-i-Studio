@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+
 use App\BusinessLogicLayer\managers\GameVersionLanguageManager;
 use App\BusinessLogicLayer\managers\ResourceCategoryManager;
 use App\BusinessLogicLayer\managers\ResourceManager;
+use App\Models\GameFlavor;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -62,6 +64,7 @@ class ResourceController extends Controller {
      * @return Factory|View
      */
     public function getResourcesForGameFlavor(Request $request, $gameFlavorId) {
+        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
         $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($gameFlavorId);
         $input = $request->all();
 
@@ -86,8 +89,11 @@ class ResourceController extends Controller {
      * @throws ValidationException
      */
     public function updateGameResourcesFiles(Request $request): RedirectResponse {
+        // The id builds the storage path, so it must be an integer before anything uses it.
+        $this->validate($request, ['game_flavor_id' => 'required|integer']);
+        $this->authorize('manage', GameFlavor::findOrFail($request->integer('game_flavor_id')));
         $resourceInputs = $request->resources;
-        $gameFlavorId = $request->game_flavor_id;
+        $gameFlavorId = $request->integer('game_flavor_id');
         $this->validate($request, [
             'resources.*.audio' => 'mimetypes:audio/mpeg,audio/x-wav|max:4000',
         ]);

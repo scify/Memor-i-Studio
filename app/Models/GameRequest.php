@@ -36,6 +36,10 @@ class GameRequest extends Model {
         return $this->hasOne('App\Models\GameFlavor', 'id', 'game_flavor_id');
     }
 
+    public function hasPlayer($playerId): bool {
+        return in_array((int) $playerId, [(int) $this->player_initiator_id, (int) $this->player_opponent_id], true);
+    }
+
     public function gameMovements(): HasMany {
         return $this->hasMany('App\Models\GameMovement', 'game_request_id', 'id');
     }

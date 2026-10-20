@@ -101,7 +101,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">{!! __('messages.cancel') !!}</button>
-                <a href="" class="btn btn-flat btn-primary btn-danger submitLink">{!! __('messages.delete') !!}</a>
+                <form method="POST" action="{{ route('deleteEquivalenceSet', $gameFlavor->id) }}" style="display: inline">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id" value="">
+                    <button type="submit" class="btn btn-flat btn-primary btn-danger">{!! __('messages.delete') !!}</button>
+                </form>
             </div>
         </div><!--.modal-content-->
     </div><!--.modal-dialog-->

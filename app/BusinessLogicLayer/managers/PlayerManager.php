@@ -25,13 +25,19 @@ class PlayerManager {
 
     private $gameFlavorManager;
 
-    private $gameRequestManager;
+    private ?GameRequestManager $gameRequestManager = null;
 
-    public function __construct(PlayerStorage $playerStorage, GameFlavorManager $gameFlavorManager,
-        GameRequestManager $gameRequestManager) {
+    public function __construct(PlayerStorage $playerStorage, GameFlavorManager $gameFlavorManager) {
         $this->playerStorage = $playerStorage;
         $this->gameFlavorManager = $gameFlavorManager;
-        $this->gameRequestManager = $gameRequestManager;
+    }
+
+    /**
+     * GameRequestManager needs a PlayerManager in its constructor, so resolve it on first use;
+     * a constructor dependency in both directions makes the container recurse without end.
+     */
+    private function gameRequestManager(): GameRequestManager {
+        return $this->gameRequestManager ??= app(GameRequestManager::class);
     }
 
     public function playerWithUserNameExists($userName) {
@@ -68,6 +74,8 @@ class PlayerManager {
             if ($this->playerWithUserNameExists($username)) {
                 return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'user_name_taken', '');
             } else {
+                // Check the game first, so an unknown identifier leaves no player behind.
+                $this->gameFlavorManager->getFlavorIdFromIdentifier($gameFlavorPackIdentifier);
                 $newPlayer = new Player([
                     'user_name' => $username,
                     'password' => Hash::make($password),
@@ -131,11 +139,11 @@ class PlayerManager {
         $gameFlavorIdentifier = $input['game_flavor_pack_identifier'];
         $initiatorPlayer = $this->getPlayerById($input['player_initiator_id']);
         try {
-            $this->gameRequestManager->deleteOldGameRequests($initiatorPlayer->id);
+            $this->gameRequestManager()->deleteOldGameRequests($initiatorPlayer->id);
             $gameFlavor = $this->gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
             if ($this->playerWithUserNameExists($playerUserName)) {
                 $opponentPlayer = $this->getPlayerByUserName($playerUserName);
-                if ($this->gameRequestManager->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
+                if ($this->gameRequestManager()->playersAlreadyHaveOpenRequest($opponentPlayer->id, $initiatorPlayer->id)) {
                     return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', '');
                 } else {
                     if ($this->isPlayerAvailableForGameFlavor($opponentPlayer, $gameFlavor)) {
@@ -161,9 +169,9 @@ class PlayerManager {
         $playerId = $input['player_id'];
         try {
             $player = $this->getPlayerById($playerId);
-            $this->gameRequestManager->deleteOldGameRequests($player->id);
+            $this->gameRequestManager()->deleteOldGameRequests($player->id);
             $gameFlavor = $this->gameFlavorManager->getGameFlavorByGameIdentifier($gameFlavorIdentifier);
-            if ($this->gameRequestManager->playerExistsAsOpponentInAnotherRequest($player->id)) {
+            if ($this->gameRequestManager()->playerExistsAsOpponentInAnotherRequest($player->id)) {
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_HAS_ALREADY_SENT_REQUEST, 'game_request_exists', '');
             }
             $players = $this->playerStorage->getOnlinePlayersForGameFlavorExcept($gameFlavor->id, $playerId);
@@ -229,9 +237,9 @@ class PlayerManager {
     }
 
     private function closeAllOpenRequestsForPlayer(Player $player) {
-        $openRequests = $this->gameRequestManager->getOpenRequestsForPlayer($player);
+        $openRequests = $this->gameRequestManager()->getOpenRequestsForPlayer($player);
         foreach ($openRequests as $openRequest) {
-            $this->gameRequestManager->updateGameRequestStatusAndGetResponse($openRequest, GameRequestStatus::CANCELED);
+            $this->gameRequestManager()->updateGameRequestStatusAndGetResponse($openRequest, GameRequestStatus::CANCELED);
         }
     }
 }

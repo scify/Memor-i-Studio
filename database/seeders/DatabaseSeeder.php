@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder {
         $this->call(LanguagesTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(ResourceCategoryTypeTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
+        // UsersTableSeeder replaces every user with the staff admins; never run it outside development.
+        if (app()->environment(['local', 'testing'])) {
+            $this->call(UsersTableSeeder::class);
+        }
     }
 }

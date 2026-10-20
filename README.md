@@ -32,8 +32,11 @@ their own flavors of Memor-i game!
    again at any time, also by hand: `ddev composer setup`. DDEV writes the database and `APP_URL` settings into
    `.env`.
 
-2. Edit `.env` if you need the external services (`WINDOWS_SETUP_SERVICE_URL`, Sentry, Firebase). DDEV catches all
-   mail in [Mailpit](https://mailpit.axllent.org/) (`ddev mailpit`).
+2. Edit `.env`:
+   - `DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED`: the password of the admin users that the seeders create (required for
+     `db:seed`; it has no default)
+   - the external services if you need them (`WINDOWS_SETUP_SERVICE_URL`, Sentry, Firebase). DDEV catches all mail in
+     [Mailpit](https://mailpit.axllent.org/) (`ddev mailpit`).
 
 3. Create the starter data:
 
@@ -168,6 +171,19 @@ So you will need to setup and have this service running, and then change the `WI
 
 The server needs PHP 8.4 or newer (`composer.lock` requires it), MySQL 8.0, and Node with the version from `.nvmrc`.
 Point the web server to the `public` directory.
+
+Production `.env`:
+
+- `APP_ENV=production` and `APP_DEBUG=false` (`.env.example` has local values; debug mode shows stack traces with
+  configuration values).
+- `APP_URL` is the public address (`https://memoristudio.scify.org`). The app answers only requests for this host and
+  its subdomains; the desktop game uses the same host.
+- The site runs behind Cloudflare. The app takes the client address from `CF-Connecting-IP` when the request comes from
+  a Cloudflare address listed in `config/proxies.php`. If another proxy (for example a local nginx or load balancer)
+  sits between Cloudflare and PHP, add its address to that list; otherwise every player shares one login limit.
+  Then that proxy must accept only Cloudflare traffic (firewall or Authenticated Origin Pulls) or overwrite
+  `CF-Connecting-IP` for other senders; otherwise a direct request can choose its own address.
+- Update `config/proxies.php` when Cloudflare publishes new ranges (<https://www.cloudflare.com/ips/>).
 
 After every `git pull`, install the PHP dependencies with Composer scripts enabled:
 

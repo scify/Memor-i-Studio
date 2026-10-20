@@ -9,6 +9,7 @@ use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use App\StorageLayer\ResourceTranslationStorage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
 include_once 'functions.php';
@@ -157,22 +158,16 @@ class ResourceManager {
     }
 
     protected function slugifyFileName($original) {
-        $str_arr = explode('.', $original);
-        $only_name = $str_arr[0];
-        $extension = $str_arr[1];
-        $converted = greeklish($only_name);
+        // The name reaches external programs, so keep only letters, digits, - and _ (greeklish ends with Str::slug).
+        $converted = greeklish(pathinfo($original, PATHINFO_FILENAME));
+        $extension = preg_replace('/[^a-z0-9]/', '', strtolower(pathinfo($original, PATHINFO_EXTENSION)));
 
         return $converted . '.' . $extension;
     }
 
     private function convertFileToMp3AndStore($filePath, $newFilePath) {
-        $old_path = getcwd();
-        chdir(public_path());
-        $command = './convert_file_to_mp3.sh ' . $filePath . ' ' . $newFilePath;
-        $output = shell_exec($command);
-        chdir($old_path);
-
-        return $output;
+        // An argument array runs without a shell, so file names cannot inject commands.
+        return Process::path(public_path())->run(['./convert_file_to_mp3.sh', $filePath, $newFilePath])->output();
     }
 
     /**

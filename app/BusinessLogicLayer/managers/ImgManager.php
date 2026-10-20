@@ -13,6 +13,7 @@ use App\Models\GameFlavor;
 use App\StorageLayer\ResourceCategoryStorage;
 use App\StorageLayer\ResourceStorage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Process;
 
 /**
  * Class ImgManager handles image resources, like Card images and game flavor images
@@ -64,12 +65,7 @@ class ImgManager {
     }
 
     public function covertImgToIco($path, $imgFileName, $icoFileName) {
-        $old_path = getcwd();
-        chdir($path);
-        $command = 'convert -resize x64 -background transparent ' . $imgFileName . ' ' . $icoFileName;
-        $output = shell_exec($command);
-        chdir($old_path);
-
-        return $output;
+        // An argument array runs without a shell, so file names cannot inject commands.
+        return Process::path($path)->run(['convert', '-resize', 'x64', '-background', 'transparent', $imgFileName, $icoFileName])->output();
     }
 }

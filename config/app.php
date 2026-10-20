@@ -56,7 +56,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Translation\TranslationServiceProvider;
 use Illuminate\Validation\ValidationServiceProvider;
 use Illuminate\View\ViewServiceProvider;
-use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 use Lunaweb\RecaptchaV3\Providers\RecaptchaV3ServiceProvider;
 use Madnest\Madzipper\Madzipper;
 use Madnest\Madzipper\MadzipperServiceProvider;
@@ -91,6 +90,9 @@ return [
 
     'env' => env('APP_ENV', 'local'),
     'version' => env('APP_VERSION', '1.0.0'),
+
+    // Password of the users that database/seeders/UsersTableSeeder.php creates; no default on purpose.
+    'default_admin_password_for_seed' => env('DEFAULT_ADMIN_USER_PASSWORD_FOR_SEED'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -231,7 +233,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         EventServiceProvider::class,
         RouteServiceProvider::class,
-        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         MadzipperServiceProvider::class,
         RecaptchaV3ServiceProvider::class,
 
@@ -282,7 +283,6 @@ return [
         'URL' => URL::class,
         'Validator' => Validator::class,
         'View' => View::class,
-        'Javascript' => JavaScriptFacade::class,
         'Madzipper' => Madzipper::class,
     ],
 

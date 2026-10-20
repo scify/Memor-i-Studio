@@ -30,7 +30,6 @@ class PageAccessTest extends TestCase {
 
     public static function memberPages(): array {
         return [
-            'game versions' => ['/gameVersions/all', 'game_version.list'],
             'select game version' => ['/gameFlavor/selectVersion', 'game_flavor.forms.select_game_version'],
         ];
     }
@@ -38,6 +37,7 @@ class PageAccessTest extends TestCase {
     public static function administrationPages(): array {
         return [
             'platform statistics' => ['/administration/platform-statistics', 'admin.platform-statistics'],
+            'game versions' => ['/gameVersions/all', 'game_version.list'],
             'create game version' => ['/administration/gameVersion/create', 'game_version.create_edit_index'],
             'games submitted for approval' => ['/administration/gameFlavors/submittedForApproval', 'game_flavor.list'],
             'user reports' => ['/administration/gameFlavors/userReports', 'game_flavor_report.list_all'],
@@ -75,7 +75,7 @@ class PageAccessTest extends TestCase {
     }
 
     private function createUser(int $roleId): User {
-        return User::create([
+        return User::forceCreate([
             'name' => 'Test user',
             'email' => uniqid('user-') . '@example.com',
             'password' => bcrypt('password'),

@@ -13,6 +13,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -77,7 +79,8 @@ class GameFlavorController extends Controller {
      * @return string
      */
     public function getGameFlavorsForUser(Request $request): string {
-        $userId = $request->user ? $request->user['id'] : 0;
+        // Never take the user from the request body: an admin id there would list every unpublished game.
+        $userId = Auth::id() ?? 0;
         $language_id = $request->language_id ?: null;
 
         $gameFlavors = $this->gameFlavorManager->getGameFlavors($userId, $language_id);
@@ -98,6 +101,9 @@ class GameFlavorController extends Controller {
     public function create(Request $request): RedirectResponse {
         $this->validate($request, [
             'name' => 'required|max:255',
+            // Soft-deleted versions and languages do not count.
+            'game_version_id' => ['required', 'integer', Rule::exists('game_version', 'id')->whereNull('deleted_at')],
+            'lang_id' => ['required', 'integer', Rule::exists('language', 'id')->whereNull('deleted_at')],
             'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
             'copyright_link' => 'url',
             'terms' => 'required',
@@ -124,6 +130,7 @@ class GameFlavorController extends Controller {
      * @return Application|Factory|View
      */
     public function editIndex(int $id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         try {
             $gameFlavor = $this->gameFlavorManager->getGameFlavorViewModel($id);
         } catch (Exception $e) {
@@ -148,6 +155,7 @@ class GameFlavorController extends Controller {
      * @throws ValidationException
      */
     public function edit(Request $request, $id): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         $this->validate($request, [
             'name' => 'required|max:255',
             'cover_img' => 'image|max:5000|mimes:jpeg,jpg,png',
@@ -174,6 +182,7 @@ class GameFlavorController extends Controller {
      * @throws Exception
      */
     public function delete(int $id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         $result = $this->gameFlavorManager->deleteGameFlavor($id);
         if (!$result) {
             return view('common.error_message', ['message' => trans('messages.error_generic')]);
@@ -184,6 +193,7 @@ class GameFlavorController extends Controller {
     }
 
     public function publish($id) {
+        $this->authorize('publish', GameFlavor::findOrFail($id));
         try {
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
@@ -200,6 +210,7 @@ class GameFlavorController extends Controller {
     }
 
     public function unPublish($id) {
+        $this->authorize('manage', GameFlavor::findOrFail($id));
         try {
             $result = $this->gameFlavorManager->toggleGameFlavorPublishedState($id);
             $this->gameFlavorManager->markGameFlavorAsNotSubmittedForApproval($id);
@@ -224,6 +235,9 @@ class GameFlavorController extends Controller {
      * @return RedirectResponse|BinaryFileResponse
      */
     public function downloadWindows($gameFlavorId) {
+        if (Gate::denies('view', GameFlavor::findOrFail($gameFlavorId))) {
+            abort(404);
+        }
         try {
             $filePath = $this->gameFlavorManager->getWindowsSetupFileForGameFlavor($gameFlavorId);
 
@@ -243,6 +257,9 @@ class GameFlavorController extends Controller {
      * @return BinaryFileResponse|RedirectResponse
      */
     public function downloadLinux($gameFlavorId) {
+        if (Gate::denies('view', GameFlavor::findOrFail($gameFlavorId))) {
+            abort(404);
+        }
         try {
             $filePath = $this->gameFlavorManager->getLinuxSetupFileForGameFlavor($gameFlavorId);
         } catch (Exception $e) {
@@ -261,6 +278,7 @@ class GameFlavorController extends Controller {
      * @return RedirectResponse
      */
     public function cloneGameFlavorAndFiles($gameFlavorId): RedirectResponse {
+        $this->authorize('clone', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->gameFlavorManager->cloneGameFlavorAndFiles($gameFlavorId);
         } catch (Exception $e) {
@@ -274,6 +292,7 @@ class GameFlavorController extends Controller {
     }
 
     public function submitGameFlavorForApproval($gameFlavorId): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
         try {
             $this->gameFlavorManager->markGameFlavorAsSubmittedForApproval($gameFlavorId);
             $this->gameFlavorManager->sendEmailForGameSubmissionToAdmin($gameFlavorId);
@@ -296,6 +315,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {
+        $this->authorize('manage-platform');
         try {
             $this->buildExecutables(intval($gameFlavorId));
         } catch (Exception $e) {
@@ -307,6 +327,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
+        $this->authorize('manage-platform');
         try {
             $this->buildExecutables(intval($gameFlavorId));
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator(intval($gameFlavorId));
@@ -318,18 +339,15 @@ class GameFlavorController extends Controller {
         return redirect()->back();
     }
 
-    protected function buildExecutables(int $gameFlavorId) {
-        try {
-            $this->gameFlavorManager->buildGameFlavor($gameFlavorId);
-        } catch (Exception $e) {
-            return view('common.error_message', ['message' => $e->getMessage()]);
-        }
-        session()->flash('flash_message_success', trans('messages.game_was_built'));
-
-        return redirect()->back();
+    /**
+     * Throws when the build fails; the callers show the error and do not report success.
+     */
+    protected function buildExecutables(int $gameFlavorId): void {
+        $this->gameFlavorManager->buildGameFlavor($gameFlavorId);
     }
 
     public function assignGameFlavorToGameVersion($gameFlavorId, Request $request) {
+        $this->authorize('manage-platform');
         $gameVersionId = $request['game_version_id'];
         try {
             $this->gameFlavorManager->assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId);
@@ -342,6 +360,7 @@ class GameFlavorController extends Controller {
     }
 
     public function changeGameVersionIndex($gameFlavorId) {
+        $this->authorize('manage-platform');
         $gameFlavor = $this->gameFlavorManager->getGameFlavor($gameFlavorId);
         $gameVersions = $this->gameVersionManager->getAllGameVersions();
 

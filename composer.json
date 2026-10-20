@@ -12,6 +12,7 @@
         "josiasmontag/laravel-recaptchav3": "^1.0",
         "laravel/framework": "^12.61",
         "laravel/ui": "^4.6",
+        "madnest/madzipper": "^1.6",
         "scify/laravel-cookie-guard": "^5.1.0",
         "sentry/sentry-laravel": "^4.12",
         "spatie/laravel-sitemap": "^7.3",
@@ -21,10 +22,8 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
         "filp/whoops": "~2.18",
-        "laracasts/utilities": "~3.2.4",
         "larastan/larastan": "^3",
         "laravel/pint": "^1.30",
-        "madnest/madzipper": "^1.6",
         "mockery/mockery": "^1.5",
         "nunomaduro/collision": "^8.8",
         "phpunit/phpunit": "^11.0",

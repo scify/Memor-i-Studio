@@ -6,11 +6,13 @@ use App\BusinessLogicLayer\managers\CardManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetManager;
 use App\BusinessLogicLayer\managers\EquivalenceSetViewModelProvider;
 use App\BusinessLogicLayer\managers\GameFlavorManager;
+use App\Models\EquivalenceSet;
+use App\Models\GameFlavor;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Javascript;
 
 /**
  * Class EquivalenceSetController controller for requests regarding equivalence sets (sets of cards that are equivalent)
@@ -51,13 +53,13 @@ class EquivalenceSetController extends Controller {
             $equivalenceSets = $this->equivalenceSetViewModelProvider->getEquivalenceSetsViewModelsForGameFlavor($gameFlavorId);
             $cards = $this->cardManager->getCardsForGameFlavor($gameFlavorId);
 
-            Javascript::put([
-                'cards' => json_encode($cards),
+            return view('equivalence_set.list', [
+                'equivalenceSets' => $equivalenceSets,
+                'gameFlavor' => $gameFlavor,
+                'cards' => $cards,
                 'editCardRoute' => route('editCard'),
                 'createEquivalenceSetRoute' => route('createEquivalenceSet'),
             ]);
-
-            return view('equivalence_set.list', ['equivalenceSets' => $equivalenceSets, 'gameFlavor' => $gameFlavor]);
         } catch (ModelNotFoundException $e) {
             return view('common.error_message', ['message' => trans('messages.game_flavor_not_exist')]);
         }
@@ -72,6 +74,10 @@ class EquivalenceSetController extends Controller {
      * @throws ValidationException
      */
     public function create(Request $request): RedirectResponse {
+        // The id builds storage paths, so it must be an integer before anything uses it.
+        $this->validate($request, ['card.1.game_flavor_id' => 'required|integer']);
+        $gameFlavor = GameFlavor::findOrFail($request->integer('card.1.game_flavor_id'));
+        $this->authorize('manage', $gameFlavor);
         // dd($request->all());
         // The validation messages are defined in resources/lang/en/validation.php
         $this->validate($request, [
@@ -84,11 +90,14 @@ class EquivalenceSetController extends Controller {
         ]);
 
         $input = $request->all();
-        $gameFlavorId = $input['card'][1]['game_flavor_id'];
+        $gameFlavorId = $gameFlavor->id;
 
         try {
-            $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
-            $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
+            // One transaction: a failed card must not leave a card set without its cards.
+            DB::transaction(function () use ($gameFlavorId, $input) {
+                $newEquivalenceSet = $this->equivalenceSetManager->createEquivalenceSet($gameFlavorId, $input);
+                $this->cardManager->createCards($gameFlavorId, $newEquivalenceSet, $input);
+            });
         } catch (\Exception $e) {
             session()->flash('flash_message_failure', 'Error: ' . $e->getCode() . '  ' . $e->getMessage());
 
@@ -109,6 +118,7 @@ class EquivalenceSetController extends Controller {
      * @throws ValidationException
      */
     public function edit(Request $request): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail(EquivalenceSet::findOrFail($request->input('equivalence_set_id'))->flavor_id));
         $this->validate($request, [
             'equivalence_set_description_sound' => 'file|max:3000|mimetypes:audio/mpeg,audio/x-wav',
             'equivalence_set_description_sound_probability' => 'numeric|min:1|max:100',
@@ -137,6 +147,7 @@ class EquivalenceSetController extends Controller {
      * @return RedirectResponse
      */
     public function delete(Request $request): RedirectResponse {
+        $this->authorize('manage', GameFlavor::findOrFail(EquivalenceSet::findOrFail($request->id)->flavor_id));
         try {
             $this->equivalenceSetManager->deleteSet($request->id);
         } catch (\Exception $e) {

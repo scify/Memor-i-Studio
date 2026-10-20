@@ -32,6 +32,9 @@ class GameMovementManager {
     public function createGameMovement(array $input) {
         try {
             $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
+            if (!$gameRequest->hasPlayer($input['player_id'])) {
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'player_not_in_game', '');
+            }
             $newGameMovement = $this->create($input['player_id'], $input['movement_json'], $gameRequest->id, $input['timestamp']);
 
             return new ApiOperationResponse(ServerResponses::$RESPONSE_SUCCESSFUL, 'game_movement_created', ['game_movement_id' => $newGameMovement->id]);
@@ -54,6 +57,9 @@ class GameMovementManager {
     public function getLatestOpponentGameMovement($input) {
         try {
             $gameRequest = $this->gameRequestManager->getGameRequest($input['game_request_id']);
+            if (!$gameRequest->hasPlayer($input['opponent_id'])) {
+                return new ApiOperationResponse(ServerResponses::$RESPONSE_ERROR, 'player_not_in_game', '');
+            }
             $opponent = $this->playerManager->getPlayerById($input['opponent_id']);
             if (!$this->playerManager->isPlayerOnline($opponent)) {
                 return new ApiOperationResponse(ServerResponses::$OPPONENT_OFFLINE, 'opponent_offline', '');
