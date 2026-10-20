@@ -51,7 +51,7 @@
                                 <li><a href="{{url('gameFlavor/delete', $gameFlavor->id)}}"
                                        class="btn btn-flat btn-ripple"><i class="fa fa-trash-o" aria-hidden="true"></i>
                                         {!! __('messages.delete') !!}</a></li>
-                                @if($loggedInUser->isAdmin())
+                                @if($loggedInUser->isAdmin() && $gameFlavor->is_built)
                                     @if(!$gameFlavor->published)
                                         <li><a href="{{url('gameFlavor/publish', $gameFlavor->id)}}"
                                                class="btn btn-flat btn-ripple"><i class="fa fa-check"

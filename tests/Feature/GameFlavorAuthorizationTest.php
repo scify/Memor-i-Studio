@@ -49,22 +49,33 @@ class GameFlavorAuthorizationTest extends TestCase {
         $this->mock(CardManager::class, fn (MockInterface $mock) => $mock->shouldIgnoreMissing());
     }
 
-    public static function gameActions(): array {
+    public static function adminOnlyActions(): array {
         return [
             'build for testing' => ['/gameFlavor/buildTest/%d'],
             'build' => ['/gameFlavor/build/%d'],
-            'submit for approval' => ['/gameFlavor/%d/submitForApproval'],
+            'change version page' => ['/gameFlavor/changeVersionIndex/%d'],
+            'change version' => ['/gameFlavor/changeVersion/%d'],
         ];
     }
 
-    #[DataProvider('gameActions')]
-    public function test_another_member_cannot_run_a_game_action(string $url): void {
-        $this->actingAs($this->otherMember)->get(sprintf($url, $this->gameId))->assertForbidden();
+    #[DataProvider('adminOnlyActions')]
+    public function test_the_owner_cannot_run_an_admin_action(string $url): void {
+        $this->actingAs($this->owner)->get(sprintf($url, $this->gameId))->assertForbidden();
     }
 
-    #[DataProvider('gameActions')]
-    public function test_the_owner_can_run_a_game_action(string $url): void {
-        $this->actingAs($this->owner)->get(sprintf($url, $this->gameId))->assertRedirect();
+    #[DataProvider('adminOnlyActions')]
+    public function test_an_admin_can_run_an_admin_action(string $url): void {
+        $response = $this->actingAs($this->createUser(self::ADMIN_ROLE_ID))->get(sprintf($url, $this->gameId));
+
+        $this->assertNotSame(403, $response->status());
+    }
+
+    public function test_another_member_cannot_submit_the_game_for_approval(): void {
+        $this->actingAs($this->otherMember)->get("/gameFlavor/{$this->gameId}/submitForApproval")->assertForbidden();
+    }
+
+    public function test_the_owner_can_submit_the_game_for_approval(): void {
+        $this->actingAs($this->owner)->get("/gameFlavor/{$this->gameId}/submitForApproval")->assertRedirect();
     }
 
     public function test_the_owner_can_publish_a_built_game(): void {

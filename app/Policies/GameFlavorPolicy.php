@@ -7,7 +7,8 @@ use App\Models\User;
 
 class GameFlavorPolicy {
     /**
-     * Change the game, its card sets and its cards, build it or submit it for approval.
+     * Change the game, its card sets and its cards, or submit it for approval. Builds and the base version are
+     * admin actions (manage-platform).
      */
     public function manage(User $user, GameFlavor $gameFlavor): bool {
         return $user->isAdmin() || $gameFlavor->creator_id === $user->id;

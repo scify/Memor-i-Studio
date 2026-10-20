@@ -301,7 +301,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesForTesting($gameFlavorId) {
-        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
+        $this->authorize('manage-platform');
         try {
             $this->buildExecutables(intval($gameFlavorId));
         } catch (Exception $e) {
@@ -313,7 +313,7 @@ class GameFlavorController extends Controller {
     }
 
     public function buildExecutablesAndCongratulate($gameFlavorId) {
-        $this->authorize('manage', GameFlavor::findOrFail($gameFlavorId));
+        $this->authorize('manage-platform');
         try {
             $this->buildExecutables(intval($gameFlavorId));
             $this->gameFlavorManager->sendCongratulationsEmailToGameCreator(intval($gameFlavorId));
@@ -337,6 +337,7 @@ class GameFlavorController extends Controller {
     }
 
     public function assignGameFlavorToGameVersion($gameFlavorId, Request $request) {
+        $this->authorize('manage-platform');
         $gameVersionId = $request['game_version_id'];
         try {
             $this->gameFlavorManager->assignGameFlavorToGameVersion($gameFlavorId, $gameVersionId);
@@ -349,6 +350,7 @@ class GameFlavorController extends Controller {
     }
 
     public function changeGameVersionIndex($gameFlavorId) {
+        $this->authorize('manage-platform');
         $gameFlavor = $this->gameFlavorManager->getGameFlavor($gameFlavorId);
         $gameVersions = $this->gameVersionManager->getAllGameVersions();
 
