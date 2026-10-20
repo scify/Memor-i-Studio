@@ -14,7 +14,7 @@ class RemoveGameFlavorStatusFromGameFlavorTable extends Migration
     public function up()
     {
         Schema::table('game_flavor', function(Blueprint $table){
-            $table->dropForeign('game_flavor_game_status_id_foreign');
+            $table->dropForeign(['game_status_id']);
             $table->dropColumn('game_status_id');
         });
     }
