@@ -10,7 +10,7 @@
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
         "josiasmontag/laravel-recaptchav3": "^1.0",
-        "laravel/framework": "^12.61",
+        "laravel/framework": "^12.70.1",
         "laravel/ui": "^4.6",
         "madnest/madzipper": "^1.6",
         "scify/laravel-cookie-guard": "^5.1.0",
