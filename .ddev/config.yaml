@@ -11,7 +11,7 @@ additional_fqdns: []
 database:
   type: mysql
   version: "8.0"
-nodejs_version: "24.21.0"
+nodejs_version: "24.22.1"
 # convert (ImageMagick) makes the game .ico files; public/convert_file_to_mp3.sh needs ffmpeg.
 webimage_extra_packages: [ffmpeg, imagemagick]
 web_extra_exposed_ports:
